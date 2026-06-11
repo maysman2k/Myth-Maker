@@ -7,12 +7,12 @@
  *
  * Usage: npm run import-gtfs
  */
-import AdmZip from "adm-zip";
 import Database from "better-sqlite3";
 import { parse } from "csv-parse";
 import fs from "node:fs";
 import path from "node:path";
 import { pipeline } from "node:stream/promises";
+import yauzl from "yauzl";
 import { config } from "../config.js";
 import { timeToSeconds } from "../db.js";
 
@@ -92,6 +92,42 @@ async function download(url, destination) {
   console.log(`Saved ${megabytes} MB`);
 }
 
+/**
+ * Streaming unzip via yauzl. The national GTFS archive contains files
+ * larger than 2 GB, which buffer-based unzippers cannot write in one go —
+ * streaming each entry to disk handles any size in constant memory.
+ * Entry names are flattened with basename(), which also prevents zip-slip.
+ */
+function extractZip(zipPath, destinationDir) {
+  fs.mkdirSync(destinationDir, { recursive: true });
+  return new Promise((resolve, reject) => {
+    yauzl.open(zipPath, { lazyEntries: true }, (err, zipfile) => {
+      if (err) return reject(err);
+      zipfile.on("error", reject);
+      zipfile.on("end", resolve);
+      zipfile.on("entry", (entry) => {
+        if (entry.fileName.endsWith("/")) {
+          zipfile.readEntry();
+          return;
+        }
+        const destination = path.join(destinationDir, path.basename(entry.fileName));
+        zipfile.openReadStream(entry, (streamErr, stream) => {
+          if (streamErr) return reject(streamErr);
+          const out = fs.createWriteStream(destination);
+          stream.on("error", reject);
+          out.on("error", reject);
+          out.on("finish", () => {
+            console.log(`  extracted ${path.basename(destination)} (${(fs.statSync(destination).size / 1e6).toFixed(1)} MB)`);
+            zipfile.readEntry();
+          });
+          stream.pipe(out);
+        });
+      });
+      zipfile.readEntry();
+    });
+  });
+}
+
 /** Stream a GTFS csv file row-by-row through `onRow`, in one transaction per chunk. */
 async function importCSV(filePath, db, onRow, chunkSize = 5000) {
   if (!fs.existsSync(filePath)) {
@@ -124,6 +160,12 @@ async function importCSV(filePath, db, onRow, chunkSize = 5000) {
 }
 
 async function main() {
+  if (config.gtfsRegion === "all") {
+    console.log(
+      "⚠ GTFS_REGION=all is the national dataset: ~1.4 GB download, ~6 GB disk while importing, and a long import.\n" +
+      "  A regional import (e.g. GTFS_REGION=north_west) takes minutes. Continuing with 'all' …",
+    );
+  }
   fs.mkdirSync(config.dataDir, { recursive: true });
   const zipPath = path.join(config.dataDir, "gtfs.zip");
   const extractDir = path.join(config.dataDir, "gtfs");
@@ -133,7 +175,7 @@ async function main() {
 
   console.log("Extracting …");
   fs.rmSync(extractDir, { recursive: true, force: true });
-  new AdmZip(zipPath).extractAllTo(extractDir, true);
+  await extractZip(zipPath, extractDir);
 
   fs.rmSync(tmpDB, { force: true });
   const db = new Database(tmpDB);
