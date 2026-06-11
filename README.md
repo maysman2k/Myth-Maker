@@ -1,3 +1,6 @@
+> This repository contains two independent iOS apps:
+> **Planr** (group event planning — below) and **[BusPulse](BusPulse/README.md)** (live UK bus tracking with offline timetables, in `BusPulse/`).
+
 # Planr 🎉
 
 **Plan great events without the group chat chaos.**
