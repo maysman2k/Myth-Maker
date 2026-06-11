@@ -8,6 +8,9 @@ struct BusPulseApp: App {
     @State private var network = NetworkMonitor()
     @State private var location = LocationProvider()
 
+    /// Development uses bustimes.org. For production/commercial release,
+    /// point this at your own BODS-backed proxy (see Backend/README.md):
+    /// `BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!)`
     private let api: BusTimesAPIProviding = BusTimesAPI()
 
     var body: some Scene {

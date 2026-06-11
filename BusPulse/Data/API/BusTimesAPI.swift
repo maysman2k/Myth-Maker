@@ -29,12 +29,14 @@ enum APIError: LocalizedError {
     }
 }
 
-/// Client for bustimes.org's public JSON endpoints. Identifies itself with
-/// a proper User-Agent and keeps request volume polite — it's a community
-/// project, not a commercial API.
+/// Client for the bus data JSON endpoints. Defaults to bustimes.org for
+/// development; point `baseURL` at your own BODS-backed proxy (see
+/// `Backend/`) for production — it serves identical paths and shapes.
+/// Identifies itself with a proper User-Agent and keeps request volume
+/// polite either way.
 final class BusTimesAPI: BusTimesAPIProviding {
 
-    private let baseURL = URL(string: "https://bustimes.org")!
+    private let baseURL: URL
     private let session: URLSession
     private let decoder = JSONDecoder()
 
@@ -42,7 +44,8 @@ final class BusTimesAPI: BusTimesAPIProviding {
     /// never turn into an unbounded crawl.
     private let maxPages = 30
 
-    init() {
+    init(baseURL: URL = URL(string: "https://bustimes.org")!) {
+        self.baseURL = baseURL
         let config = URLSessionConfiguration.default
         config.httpAdditionalHeaders = [
             "User-Agent": "BusPulse/1.0 (iOS; contact: support@bricksinabag.com)",
