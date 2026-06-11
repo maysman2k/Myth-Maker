@@ -11,6 +11,10 @@ if (!process.env.BODS_API_KEY || process.env.BODS_API_KEY.startsWith("paste-")) 
 export const config = {
   bodsApiKey: process.env.BODS_API_KEY ?? "",
   gtfsRegion: process.env.GTFS_REGION ?? "north_west",
+  /// Route map lines (shapes.txt) are the second-biggest part of the
+  /// national dataset. Set GTFS_IMPORT_SHAPES=false to skip them and
+  /// roughly halve the disk needed — route detail maps just lose the line.
+  importShapes: (process.env.GTFS_IMPORT_SHAPES ?? "true").toLowerCase() !== "false",
   pollSeconds: Math.max(5, Number(process.env.POLL_SECONDS ?? 10)),
   port: Number(process.env.PORT ?? 3000),
 

@@ -128,7 +128,8 @@ function extractZip(zipPath, destinationDir) {
   });
 }
 
-/** Stream a GTFS csv file row-by-row through `onRow`, in one transaction per chunk. */
+/** Stream a GTFS csv file row-by-row through `onRow`, in one transaction per chunk.
+ *  Deletes the file afterwards to keep peak disk usage down on big imports. */
 async function importCSV(filePath, db, onRow, chunkSize = 5000) {
   if (!fs.existsSync(filePath)) {
     console.log(`(${path.basename(filePath)} not present — skipping)`);
@@ -156,13 +157,16 @@ async function importCSV(filePath, db, onRow, chunkSize = 5000) {
     count += chunk.length;
   }
   console.log(`${path.basename(filePath)}: ${count.toLocaleString()} rows`);
+  fs.rmSync(filePath, { force: true });
   return count;
 }
 
 async function main() {
   if (config.gtfsRegion === "all") {
     console.log(
-      "⚠ GTFS_REGION=all is the national dataset: ~1.4 GB download, ~6 GB disk while importing, and a long import.\n" +
+      "⚠ GTFS_REGION=all is the national dataset: ~1.4 GB download and a LONG import.\n" +
+      `  Recommend at least ${config.importShapes ? "15" : "10"} GB free disk before starting` +
+      `${config.importShapes ? " (or set GTFS_IMPORT_SHAPES=false to need less)" : ""}.\n` +
       "  A regional import (e.g. GTFS_REGION=north_west) takes minutes. Continuing with 'all' …",
     );
   }
@@ -176,6 +180,12 @@ async function main() {
   console.log("Extracting …");
   fs.rmSync(extractDir, { recursive: true, force: true });
   await extractZip(zipPath, extractDir);
+  // Free the archive immediately — every gigabyte counts on big imports.
+  fs.rmSync(zipPath, { force: true });
+  if (!config.importShapes) {
+    fs.rmSync(path.join(extractDir, "shapes.txt"), { force: true });
+    console.log("(GTFS_IMPORT_SHAPES=false — skipping route map lines to save disk)");
+  }
 
   fs.rmSync(tmpDB, { force: true });
   const db = new Database(tmpDB);
