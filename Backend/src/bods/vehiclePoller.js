@@ -119,19 +119,26 @@ export function startPolling(store) {
   /** Locked-in feed URL once a candidate succeeds. */
   let feedURL = null;
 
+  // Some gov.uk front-ends reject requests with bare/absent user agents.
+  const headers = {
+    "User-Agent": "Mozilla/5.0 (compatible; BusPulse/1.0; +support@bricksinabag.com)",
+    Accept: "*/*",
+  };
+
   async function fetchFeed() {
     // Probe candidates until one answers; stick with it afterwards.
     const candidates = feedURL ? [feedURL] : config.gtfsRealtimeCandidates();
     let lastError = null;
     for (const candidate of candidates) {
       try {
-        const response = await fetch(candidate, { redirect: "follow" });
+        const response = await fetch(candidate, { redirect: "follow", headers });
         if (!response.ok) {
           // BODS explains refusals in the body — surface it.
           const body = (await response.text().catch(() => "")).slice(0, 200).trim();
           lastError = new Error(
-            `BODS GTFS-RT: HTTP ${response.status} from ${candidate.split("?")[0]}${body ? ` — ${body}` : ""}`,
+            `HTTP ${response.status} from ${candidate.split("?")[0]}${body ? ` — ${body}` : ""}`,
           );
+          if (!feedURL) console.error(`  candidate refused: ${lastError.message}`);
           continue;
         }
         const buffer = Buffer.from(await response.arrayBuffer());
@@ -143,6 +150,7 @@ export function startPolling(store) {
         return message;
       } catch (error) {
         lastError = error;
+        if (!feedURL) console.error(`  candidate failed: ${String(error.message ?? error).slice(0, 200)}`);
       }
     }
     // Nothing worked — forget the lock so the next attempt re-probes all.

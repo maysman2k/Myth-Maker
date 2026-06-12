@@ -35,6 +35,9 @@ export const config = {
   /// have been observed on both.)
   gtfsRealtimeCandidates: () => [
     `https://data.bus-data.dft.gov.uk/avl/download/gtfsrt?api_key=${process.env.BODS_API_KEY}`,
+    // The bulk download endpoint also serves without a key (verified in a
+    // browser) — keeps live data flowing even if the key is misconfigured.
+    "https://data.bus-data.dft.gov.uk/avl/download/gtfsrt",
     `https://data.bus-data.dft.gov.uk/api/v1/gtfsrtdatafeed/?api_key=${process.env.BODS_API_KEY}`,
   ],
 
