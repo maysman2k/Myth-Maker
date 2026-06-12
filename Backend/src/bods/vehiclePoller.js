@@ -127,7 +127,11 @@ export function startPolling(store) {
       try {
         const response = await fetch(candidate, { redirect: "follow" });
         if (!response.ok) {
-          lastError = new Error(`BODS GTFS-RT: HTTP ${response.status}`);
+          // BODS explains refusals in the body — surface it.
+          const body = (await response.text().catch(() => "")).slice(0, 200).trim();
+          lastError = new Error(
+            `BODS GTFS-RT: HTTP ${response.status} from ${candidate.split("?")[0]}${body ? ` — ${body}` : ""}`,
+          );
           continue;
         }
         const buffer = Buffer.from(await response.arrayBuffer());
