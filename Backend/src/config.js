@@ -24,8 +24,14 @@ export const config = {
   // BODS endpoints. Documented at https://data.bus-data.dft.gov.uk/
   gtfsStaticURL: (region) =>
     `https://data.bus-data.dft.gov.uk/timetable/download/gtfs-file/${region}`,
-  gtfsRealtimeURL: () =>
+  /// Candidate GTFS-RT live feed URLs — the poller probes these in order
+  /// and locks onto the first that responds. (GOV.UK blocks automated doc
+  /// reads, so the exact path couldn't be verified ahead of time; accounts
+  /// have been observed on both.)
+  gtfsRealtimeCandidates: () => [
+    `https://data.bus-data.dft.gov.uk/avl/download/gtfsrt?api_key=${process.env.BODS_API_KEY}`,
     `https://data.bus-data.dft.gov.uk/api/v1/gtfsrtdatafeed/?api_key=${process.env.BODS_API_KEY}`,
+  ],
 
   // Drop live vehicles not seen for this long.
   vehicleStaleSeconds: 300,

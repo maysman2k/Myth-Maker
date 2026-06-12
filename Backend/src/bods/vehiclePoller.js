@@ -116,13 +116,39 @@ export class VehicleStore {
 
 export function startPolling(store) {
   let backoff = 0;
+  /** Locked-in feed URL once a candidate succeeds. */
+  let feedURL = null;
+
+  async function fetchFeed() {
+    // Probe candidates until one answers; stick with it afterwards.
+    const candidates = feedURL ? [feedURL] : config.gtfsRealtimeCandidates();
+    let lastError = null;
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate, { redirect: "follow" });
+        if (!response.ok) {
+          lastError = new Error(`BODS GTFS-RT: HTTP ${response.status}`);
+          continue;
+        }
+        const buffer = Buffer.from(await response.arrayBuffer());
+        const message = transit_realtime.FeedMessage.decode(buffer);
+        if (!feedURL) {
+          feedURL = candidate;
+          console.log(`Live feed connected: ${candidate.split("?")[0]}`);
+        }
+        return message;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    // Nothing worked — forget the lock so the next attempt re-probes all.
+    feedURL = null;
+    throw lastError ?? new Error("BODS GTFS-RT: no candidate URL succeeded");
+  }
 
   async function poll() {
     try {
-      const response = await fetch(config.gtfsRealtimeURL());
-      if (!response.ok) throw new Error(`BODS GTFS-RT: HTTP ${response.status}`);
-      const buffer = Buffer.from(await response.arrayBuffer());
-      const message = transit_realtime.FeedMessage.decode(buffer);
+      const message = await fetchFeed();
       store.ingest(message);
       store.lastError = null;
       backoff = 0;
