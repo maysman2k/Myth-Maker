@@ -4,7 +4,12 @@ import { fileURLToPath } from "node:url";
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-if (!process.env.BODS_API_KEY || process.env.BODS_API_KEY.startsWith("paste-")) {
+// Stray whitespace in .env (e.g. "BODS_API_KEY= abc") silently breaks
+// authentication — normalise the key once here so it can't.
+const apiKey = (process.env.BODS_API_KEY ?? "").trim();
+process.env.BODS_API_KEY = apiKey;
+
+if (!apiKey || apiKey.startsWith("paste-")) {
   console.warn("⚠ BODS_API_KEY is not set — copy .env.example to .env and add your key.");
 }
 
