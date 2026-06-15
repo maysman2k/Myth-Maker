@@ -62,47 +62,61 @@ struct ServiceDetailView: View {
         }
     }
 
-    // MARK: Map
+    // MARK: Map (tap to open the full live map, filtered to this route)
 
     private var routeMap: some View {
-        Map(position: $mapPosition) {
-            ForEach(routeLines.indices, id: \.self) { index in
-                MapPolyline(coordinates: routeLines[index].compactMap { pair in
-                    pair.count >= 2
-                        ? CLLocationCoordinate2D(latitude: pair[1], longitude: pair[0])
-                        : nil
-                })
-                .stroke(BPColor.signal, lineWidth: 3)
-            }
-            ForEach(stops) { stop in
-                Annotation(stop.name, coordinate: stop.coordinate, anchor: .center) {
-                    Circle()
-                        .fill(BPColor.surfacePrimary)
-                        .stroke(BPColor.signal, lineWidth: 2)
-                        .frame(width: 8, height: 8)
+        NavigationLink {
+            LiveMapView(mode: .routes(ServiceFocus(serviceIDs: [service.id],
+                                                   lineNames: [service.lineName])))
+        } label: {
+            Map(position: $mapPosition, interactionModes: []) {
+                ForEach(routeLines.indices, id: \.self) { index in
+                    MapPolyline(coordinates: routeLines[index].compactMap { pair in
+                        pair.count >= 2
+                            ? CLLocationCoordinate2D(latitude: pair[1], longitude: pair[0])
+                            : nil
+                    })
+                    .stroke(BPColor.signal, lineWidth: 3)
                 }
-                .annotationTitles(.hidden)
-            }
-            ForEach(stream?.vehicles ?? []) { vehicle in
-                Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
-                    VehicleMarker(vehicle: vehicle)
+                ForEach(stops) { stop in
+                    Annotation(stop.name, coordinate: stop.coordinate, anchor: .center) {
+                        Circle()
+                            .fill(BPColor.surfacePrimary)
+                            .stroke(BPColor.signal, lineWidth: 2)
+                            .frame(width: 8, height: 8)
+                    }
+                    .annotationTitles(.hidden)
                 }
-                .annotationTitles(.hidden)
+                ForEach(stream?.vehicles ?? []) { vehicle in
+                    Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
+                        VehicleMarker(vehicle: vehicle)
+                    }
+                    .annotationTitles(.hidden)
+                }
             }
-        }
-        .frame(height: 260)
-        .clipShape(RoundedRectangle(cornerRadius: BPRadius.card, style: .continuous))
-        .overlay(alignment: .topLeading) {
-            HStack(spacing: BPSpacing.sm) {
-                LiveBadge()
-                Text("\(stream?.vehicles.count ?? 0) on route")
+            .frame(height: 260)
+            .clipShape(RoundedRectangle(cornerRadius: BPRadius.card, style: .continuous))
+            .overlay(alignment: .topLeading) {
+                HStack(spacing: BPSpacing.sm) {
+                    LiveBadge()
+                    Text("\(stream?.vehicles.count ?? 0) on route")
+                        .font(.caption2.weight(.semibold))
+                }
+                .padding(.horizontal, BPSpacing.md)
+                .padding(.vertical, BPSpacing.xs)
+                .background(.ultraThinMaterial, in: Capsule())
+                .padding(BPSpacing.sm)
+            }
+            .overlay(alignment: .bottomTrailing) {
+                Label("Tap for full live map", systemImage: "arrow.up.left.and.arrow.down.right")
                     .font(.caption2.weight(.semibold))
+                    .padding(.horizontal, BPSpacing.sm)
+                    .padding(.vertical, BPSpacing.xs)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding(BPSpacing.sm)
             }
-            .padding(.horizontal, BPSpacing.md)
-            .padding(.vertical, BPSpacing.xs)
-            .background(.ultraThinMaterial, in: Capsule())
-            .padding(BPSpacing.sm)
         }
+        .buttonStyle(.plain)
     }
 
     // MARK: Offline timetable
