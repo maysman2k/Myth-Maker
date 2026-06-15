@@ -4,10 +4,46 @@
  * from the GTFS database so the app gets line names and headsigns.
  */
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
+import yauzl from "yauzl";
 import { config } from "../config.js";
 import { openDB } from "../db.js";
 
 const { transit_realtime } = GtfsRealtimeBindings;
+
+/**
+ * BODS's bulk feed (/avl/download/gtfsrt) returns a ZIP containing the
+ * GTFS-RT protobuf (gtfsrt.bin); the datafeed API returns raw protobuf.
+ * Detect a zip by its "PK\x03\x04" magic bytes and unwrap the first file,
+ * otherwise pass the buffer straight through.
+ */
+function extractProtobuf(buffer) {
+  const isZip = buffer.length > 4
+    && buffer[0] === 0x50 && buffer[1] === 0x4b
+    && buffer[2] === 0x03 && buffer[3] === 0x04;
+  if (!isZip) return Promise.resolve(buffer);
+
+  return new Promise((resolve, reject) => {
+    yauzl.fromBuffer(buffer, { lazyEntries: true }, (err, zipfile) => {
+      if (err) return reject(err);
+      zipfile.on("error", reject);
+      zipfile.on("end", () => reject(new Error("zip contained no files")));
+      zipfile.on("entry", (entry) => {
+        if (entry.fileName.endsWith("/")) {
+          zipfile.readEntry();
+          return;
+        }
+        zipfile.openReadStream(entry, (streamErr, stream) => {
+          if (streamErr) return reject(streamErr);
+          const chunks = [];
+          stream.on("data", (chunk) => chunks.push(chunk));
+          stream.on("end", () => resolve(Buffer.concat(chunks)));
+          stream.on("error", reject);
+        });
+      });
+      zipfile.readEntry();
+    });
+  });
+}
 
 export class VehicleStore {
   /** @type {Map<string, object>} entity id → vehicle record */
@@ -141,11 +177,12 @@ export function startPolling(store) {
           if (!feedURL) console.error(`  candidate refused: ${lastError.message}`);
           continue;
         }
-        const buffer = Buffer.from(await response.arrayBuffer());
-        const message = transit_realtime.FeedMessage.decode(buffer);
+        const raw = Buffer.from(await response.arrayBuffer());
+        const protobuf = await extractProtobuf(raw);
+        const message = transit_realtime.FeedMessage.decode(protobuf);
         if (!feedURL) {
           feedURL = candidate;
-          console.log(`Live feed connected: ${candidate.split("?")[0]}`);
+          console.log(`Live feed connected: ${candidate.split("?")[0]} (${message.entity?.length ?? 0} vehicles)`);
         }
         return message;
       } catch (error) {
