@@ -62,31 +62,52 @@ export class VehicleStore {
   /** Lazy caches over the GTFS db for enrichment. */
   #routeByGtfsID = new Map();
   #tripByGtfsID = new Map();
+  /** Resolved once per poll: the GTFS db handle, or null if not imported yet.
+   *  Live positions must work with no timetable data — enrichment (route
+   *  names, headsigns) is a bonus that switches on the moment the import
+   *  has run, without a server restart. */
+  #dbHandle = undefined;
+
+  #db() {
+    if (this.#dbHandle === undefined) {
+      try {
+        this.#dbHandle = openDB();
+      } catch {
+        this.#dbHandle = null;
+      }
+    }
+    return this.#dbHandle;
+  }
 
   #route(gtfsRouteID) {
     if (!gtfsRouteID) return null;
-    if (!this.#routeByGtfsID.has(gtfsRouteID)) {
-      const row = openDB()
-        .prepare("SELECT id, line_name FROM routes WHERE gtfs_id = ?")
-        .get(gtfsRouteID);
-      this.#routeByGtfsID.set(gtfsRouteID, row ?? null);
-    }
-    return this.#routeByGtfsID.get(gtfsRouteID);
+    if (this.#routeByGtfsID.has(gtfsRouteID)) return this.#routeByGtfsID.get(gtfsRouteID);
+    const db = this.#db();
+    if (!db) return null; // no timetable yet — don't cache, retry when it lands
+    const row = db
+      .prepare("SELECT id, line_name FROM routes WHERE gtfs_id = ?")
+      .get(gtfsRouteID);
+    this.#routeByGtfsID.set(gtfsRouteID, row ?? null);
+    return row ?? null;
   }
 
   #trip(gtfsTripID) {
     if (!gtfsTripID) return null;
-    if (!this.#tripByGtfsID.has(gtfsTripID)) {
-      const row = openDB()
-        .prepare("SELECT id, headsign, route_id FROM trips WHERE gtfs_id = ?")
-        .get(gtfsTripID);
-      this.#tripByGtfsID.set(gtfsTripID, row ?? null);
-    }
-    return this.#tripByGtfsID.get(gtfsTripID);
+    if (this.#tripByGtfsID.has(gtfsTripID)) return this.#tripByGtfsID.get(gtfsTripID);
+    const db = this.#db();
+    if (!db) return null;
+    const row = db
+      .prepare("SELECT id, headsign, route_id FROM trips WHERE gtfs_id = ?")
+      .get(gtfsTripID);
+    this.#tripByGtfsID.set(gtfsTripID, row ?? null);
+    return row ?? null;
   }
 
   ingest(feedMessage) {
     const now = Date.now();
+    // Re-check for the timetable database once per poll so enrichment
+    // begins automatically after the import runs.
+    this.#dbHandle = undefined;
     for (const entity of feedMessage.entity ?? []) {
       const vp = entity.vehicle;
       const position = vp?.position;
