@@ -4,6 +4,20 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>BusPulse uses your location to find bus stops near you and centre the live map.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Development only: allow plain HTTP to the local BODS proxy on
+		     localhost. The production server uses HTTPS, so this exception
+		     has no effect on release builds. -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>

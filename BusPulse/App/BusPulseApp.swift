@@ -8,10 +8,17 @@ struct BusPulseApp: App {
     @State private var network = NetworkMonitor()
     @State private var location = LocationProvider()
 
-    /// Development uses bustimes.org. For production/commercial release,
-    /// point this at your own BODS-backed proxy (see Backend/README.md):
-    /// `BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!)`
-    private let api: BusTimesAPIProviding = BusTimesAPI()
+    /// Where the app gets its data.
+    /// DEBUG builds (running from Xcode) talk to your local BODS proxy in
+    /// `Backend/` on localhost. Release builds use your deployed server —
+    /// swap in your domain when you ship (see Backend/README.md).
+    private let api: BusTimesAPIProviding = {
+        #if DEBUG
+        return BusTimesAPI(baseURL: URL(string: "http://localhost:3000")!)
+        #else
+        return BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!)
+        #endif
+    }()
 
     var body: some Scene {
         WindowGroup {
