@@ -10,6 +10,17 @@ import { openDB } from "../db.js";
 
 const { transit_realtime } = GtfsRealtimeBindings;
 
+/** Deterministic positive 32-bit id from a stable vehicle key (FNV-1a),
+ *  so the app gets a consistent integer id per bus with no growing map. */
+function stableIntID(key) {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < key.length; i++) {
+    hash ^= key.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
 /**
  * BODS's bulk feed (/avl/download/gtfsrt) returns a ZIP containing the
  * GTFS-RT protobuf (gtfsrt.bin); the datafeed API returns raw protobuf.
@@ -46,18 +57,13 @@ function extractProtobuf(buffer) {
 }
 
 export class VehicleStore {
-  /** @type {Map<string, object>} entity id → vehicle record */
+  /** @type {Map<string, object>} stable vehicle key → vehicle record.
+   *  Rebuilt every poll: the bulk GTFS-RT feed is a complete snapshot of
+   *  every current vehicle, so we replace the set rather than accumulate
+   *  (which previously grew to hundreds of thousands of stale duplicates). */
   #vehicles = new Map();
-  /** Stable integer ids for the app (it expects Int ids). */
-  #intIDs = new Map();
-  #nextIntID = 1;
   lastUpdated = null;
   lastError = null;
-
-  #intID(entityID) {
-    if (!this.#intIDs.has(entityID)) this.#intIDs.set(entityID, this.#nextIntID++);
-    return this.#intIDs.get(entityID);
-  }
 
   /** Lazy caches over the GTFS db for enrichment. */
   #routeByGtfsID = new Map();
@@ -108,17 +114,24 @@ export class VehicleStore {
     // Re-check for the timetable database once per poll so enrichment
     // begins automatically after the import runs.
     this.#dbHandle = undefined;
+
+    const fresh = new Map();
     for (const entity of feedMessage.entity ?? []) {
       const vp = entity.vehicle;
       const position = vp?.position;
       if (!position) continue;
 
+      // Identify a vehicle by its physical id where the feed gives one,
+      // so the app sees a stable id across polls; fall back to entity/trip.
+      const key = vp.vehicle?.id || entity.id || vp.trip?.tripId;
+      if (!key) continue;
+
       const route = this.#route(vp.trip?.routeId);
       const trip = this.#trip(vp.trip?.tripId);
       const timestamp = vp.timestamp ? Number(vp.timestamp) * 1000 : now;
 
-      this.#vehicles.set(entity.id, {
-        id: this.#intID(entity.id),
+      fresh.set(String(key), {
+        id: stableIntID(String(key)),
         journey_id: null,
         service_id: route?.id ?? trip?.route_id ?? null,
         trip_id: trip?.id ?? null,
@@ -134,18 +147,10 @@ export class VehicleStore {
           url: null,
         },
         delay: null, // Fast-follow: GTFS-RT trip updates / SIRI-VM.
-        _seenAt: now,
       });
     }
-    this.#prune(now);
+    this.#vehicles = fresh;
     this.lastUpdated = new Date(now).toISOString();
-  }
-
-  #prune(now) {
-    const cutoff = now - config.vehicleStaleSeconds * 1000;
-    for (const [key, vehicle] of this.#vehicles) {
-      if (vehicle._seenAt < cutoff) this.#vehicles.delete(key);
-    }
   }
 
   /** All current vehicles inside a lon/lat bounding box. */
