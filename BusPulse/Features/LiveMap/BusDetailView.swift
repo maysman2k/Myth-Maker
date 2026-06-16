@@ -7,6 +7,8 @@ import SwiftUI
 struct BusDetailView: View {
     @Environment(\.busAPI) private var api
     @Environment(SettingsStore.self) private var settings
+    @Environment(AlarmManager.self) private var alarms
+    @Environment(LocationProvider.self) private var location
 
     let bus: BusRef
 
@@ -14,6 +16,8 @@ struct BusDetailView: View {
     @State private var miniPosition: MapCameraPosition
     @State private var journey: TimetableTrip?
     @State private var journeyFailed = false
+    @State private var showAlarmOptions = false
+    @State private var alarmFeedback: String?
 
     init(bus: BusRef) {
         self.bus = bus
@@ -32,6 +36,7 @@ struct BusDetailView: View {
             VStack(alignment: .leading, spacing: BPSpacing.lg) {
                 focusedMap
                 header
+                alarmButton
                 shareButton
                 journeySection
                 fullRouteLink
@@ -42,6 +47,15 @@ struct BusDetailView: View {
         .background(BPColor.backgroundPrimary)
         .navigationTitle("Route \(bus.lineName)")
         .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog("Notify me when this bus is…", isPresented: $showAlarmOptions,
+                            titleVisibility: .visible) {
+            ForEach(AlarmDistance.allCases) { distance in
+                Button(distance.label) { setAlarm(distance) }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("We'll buzz you when the \(bus.lineName) gets within range of where you are now. Keep the app open or recently used for the alarm to fire.")
+        }
         .task {
             if let serviceID = bus.serviceID {
                 if stream == nil {
@@ -124,6 +138,64 @@ struct BusDetailView: View {
         .bpCard()
     }
 
+    // MARK: Arrival alarm
+
+    @ViewBuilder
+    private var alarmButton: some View {
+        VStack(spacing: BPSpacing.sm) {
+            if let existing = alarms.alarm(forVehicle: bus.vehicleID) {
+                HStack(spacing: BPSpacing.md) {
+                    Image(systemName: "bell.fill")
+                        .foregroundStyle(BPColor.signal)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Alarm set")
+                            .font(.subheadline.weight(.semibold))
+                        Text("We'll buzz you when it's \(existing.distanceShortLabel) away.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Button("Cancel", role: .destructive) {
+                        alarms.cancelAlarm(forVehicle: bus.vehicleID)
+                    }
+                    .font(.caption.weight(.bold))
+                }
+                .bpCard()
+            } else {
+                Button {
+                    showAlarmOptions = true
+                } label: {
+                    Label("Set arrival alarm", systemImage: "bell.badge")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, BPSpacing.sm)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(BPColor.signal)
+            }
+            if let alarmFeedback {
+                Text(alarmFeedback)
+                    .font(.caption)
+                    .foregroundStyle(BPColor.late)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
+
+    private func setAlarm(_ distance: AlarmDistance) {
+        guard let reference = location.location?.coordinate else {
+            alarmFeedback = "Turn on location to set an arrival alarm — we need to know where you're waiting."
+            return
+        }
+        alarmFeedback = nil
+        Task {
+            let granted = await alarms.setAlarm(for: bus, distance: distance, reference: reference)
+            if !granted {
+                alarmFeedback = "Allow notifications for Wait Less in Settings to use arrival alarms."
+            }
+        }
+    }
+
     private var shareButton: some View {
         ShareLink(item: shareURL, message: Text(shareText)) {
             Label("Share live bus", systemImage: "square.and.arrow.up")
@@ -131,7 +203,7 @@ struct BusDetailView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, BPSpacing.sm)
         }
-        .buttonStyle(.borderedProminent)
+        .buttonStyle(.bordered)
     }
 
     // MARK: Journey
