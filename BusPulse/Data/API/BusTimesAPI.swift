@@ -44,13 +44,20 @@ final class BusTimesAPI: BusTimesAPIProviding {
     /// never turn into an unbounded crawl.
     private let maxPages = 30
 
-    init(baseURL: URL = URL(string: "https://bustimes.org")!) {
+    /// Optional shared token sent as `x-app-token`. Empty means "don't send"
+    /// (development). Set it for release builds to match the server's
+    /// APP_SHARED_TOKEN — a basic gate against casual free-riding.
+    init(baseURL: URL = URL(string: "https://bustimes.org")!, appToken: String = "") {
         self.baseURL = baseURL
         let config = URLSessionConfiguration.default
-        config.httpAdditionalHeaders = [
+        var headers: [AnyHashable: Any] = [
             "User-Agent": "WaitLess/1.0 (iOS; contact: support@bricksinabag.com)",
             "Accept": "application/json",
         ]
+        if !appToken.isEmpty {
+            headers["x-app-token"] = appToken
+        }
+        config.httpAdditionalHeaders = headers
         config.timeoutIntervalForRequest = 20
         config.requestCachePolicy = .useProtocolCachePolicy
         session = URLSession(configuration: config)

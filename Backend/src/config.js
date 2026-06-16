@@ -23,6 +23,20 @@ export const config = {
   pollSeconds: Math.max(5, Number(process.env.POLL_SECONDS ?? 10)),
   port: Number(process.env.PORT ?? 3000),
 
+  // --- Security / abuse protection ---
+  // Requests allowed per IP per minute (rate limiting). Generous enough for
+  // a phone polling the live map; low enough to blunt scraping/DoS.
+  rateLimitPerMinute: Number(process.env.RATE_LIMIT_PER_MINUTE ?? 120),
+  // Optional shared secret. When set, clients must send a matching
+  // `x-app-token` header. Left empty in development so localhost just works;
+  // set it in production for a basic gate against casual free-riding.
+  appSharedToken: (process.env.APP_SHARED_TOKEN ?? "").trim(),
+  // Reject stop/vehicle bounding boxes larger than this (square degrees) —
+  // defends the server even if a client ignores its own clamp.
+  maxQueryBBoxArea: 0.5,
+  // True in production: suppresses internal error detail in responses.
+  isProduction: process.env.NODE_ENV === "production",
+
   dataDir: path.join(root, "data"),
   dbPath: path.join(root, "data", "gtfs.sqlite"),
 

@@ -16,7 +16,9 @@ struct BusPulseApp: App {
         #if DEBUG
         return BusTimesAPI(baseURL: URL(string: "http://localhost:3000")!)
         #else
-        return BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!)
+        // Set appToken to match the server's APP_SHARED_TOKEN when you deploy.
+        return BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!,
+                           appToken: "")
         #endif
     }()
 

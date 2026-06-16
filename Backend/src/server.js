@@ -4,6 +4,7 @@
  * Swapping the app over is a base-URL change only.
  */
 import express from "express";
+import rateLimit from "express-rate-limit";
 import { config } from "./config.js";
 import { activeServiceIDs, dbStats, openDB, secondsToTime } from "./db.js";
 import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
@@ -11,9 +12,36 @@ import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
 const app = express();
 const store = new VehicleStore();
 
+// Behind a reverse proxy (TLS terminator) in production, so client IPs and
+// the secure flag come from forwarded headers.
+app.set("trust proxy", 1);
+app.disable("x-powered-by");
+
+// Minimal security headers. HSTS only takes effect once served over HTTPS
+// (the production reverse proxy), and is harmless otherwise.
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
+  res.set("X-Content-Type-Options", "nosniff");
+  res.set("Referrer-Policy", "no-referrer");
+  res.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   next();
+});
+
+// Rate limit every client by IP to blunt scraping and denial-of-service.
+app.use(rateLimit({
+  windowMs: 60_000,
+  limit: config.rateLimitPerMinute,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests. Slow down and try again shortly." },
+}));
+
+// Optional shared-token gate. Off unless APP_SHARED_TOKEN is set, so local
+// development is unaffected; /health stays open for uptime checks.
+app.use((req, res, next) => {
+  if (!config.appSharedToken || req.path === "/health") return next();
+  if (req.get("x-app-token") === config.appSharedToken) return next();
+  res.status(401).json({ error: "Unauthorised." });
 });
 
 function parseBBox(query) {
@@ -21,6 +49,9 @@ function parseBBox(query) {
     Number(query[k]),
   );
   if (![xmin, ymin, xmax, ymax].every(Number.isFinite)) return null;
+  // Reject absurd boxes (defence in depth; the app already clamps).
+  const area = Math.abs(xmax - xmin) * Math.abs(ymax - ymin);
+  if (area > config.maxQueryBBoxArea) return null;
   return { xmin, ymin, xmax, ymax };
 }
 
@@ -134,7 +165,11 @@ app.get("/api/services/", (req, res) => {
   let rows = [];
 
   if (req.query.search) {
-    const term = `%${String(req.query.search).trim()}%`;
+    // Bound the search term: ignore trivially short queries and cap length
+    // so a single request can't ask for an expensive scan.
+    const raw = String(req.query.search).trim().slice(0, 60);
+    if (raw.length < 1) return res.json({ results: [], next: null });
+    const term = `%${raw}%`;
     rows = db
       .prepare(
         `SELECT * FROM routes
@@ -246,6 +281,25 @@ app.get("/health", (req, res) => {
   });
 });
 
+// MARK: Errors
+// Catch anything thrown in a route (e.g. the GTFS database not yet imported)
+// and return a clean JSON message. Never leak stack traces or file paths to
+// clients — the full error is logged server-side only.
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found." });
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(`Request error on ${req.method} ${req.path}:`, err);
+  const timetableMissing = String(err?.message ?? "").includes("No GTFS database");
+  if (timetableMissing) {
+    return res.status(503).json({ error: "Timetable data is not available yet." });
+  }
+  res.status(500).json({ error: "Something went wrong. Please try again." });
+});
+
 // MARK: Boot
 
 try {
@@ -253,7 +307,7 @@ try {
   console.log("GTFS database:", dbStats());
 } catch (error) {
   console.warn(`⚠ ${error.message}`);
-  console.warn("Timetable endpoints will 500 until the import has run.");
+  console.warn("Timetable endpoints will return 503 until the import has run.");
 }
 
 startPolling(store);
