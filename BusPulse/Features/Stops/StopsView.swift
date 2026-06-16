@@ -21,6 +21,10 @@ struct StopsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BPSpacing.lg) {
+                Text("Find a stop to see its next departures and the buses heading there — by your location, the code on the stop's flag, or your favourites.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
                 smsCodeField
 
                 Picker("View", selection: $tab) {

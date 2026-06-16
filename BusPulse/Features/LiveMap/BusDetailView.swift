@@ -210,7 +210,7 @@ struct BusDetailView: View {
         if let delay = vehicle?.delaySeconds {
             text += " — \(DelayStatus(delaySeconds: delay).label.lowercased())"
         }
-        text += ". Tracked live with BusPulse."
+        text += ". Tracked live with Wait Less."
         return text
     }
 

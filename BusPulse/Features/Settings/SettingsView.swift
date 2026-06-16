@@ -35,16 +35,36 @@ struct SettingsView: View {
             }
 
             Section {
-                Link(destination: URL(string: "https://bustimes.org")!) {
-                    LabeledContent("Data source", value: "bustimes.org")
+                NavigationLink {
+                    LegalDocumentView(title: "Privacy Policy", text: LegalContent.privacyPolicy)
+                } label: {
+                    Label("Privacy Policy", systemImage: "hand.raised")
                 }
-                Link(destination: URL(string: "https://www.bus-data.dft.gov.uk")!) {
-                    LabeledContent("Underlying data", value: "DfT Bus Open Data")
+                NavigationLink {
+                    LegalDocumentView(title: "Terms of Use", text: LegalContent.termsOfUse)
+                } label: {
+                    Label("Terms of Use", systemImage: "doc.text")
+                }
+                NavigationLink {
+                    LegalDocumentView(title: "Data & Attribution", text: LegalContent.dataAttribution)
+                } label: {
+                    Label("Data & Attribution", systemImage: "info.circle")
                 }
             } header: {
-                Text("About the data")
+                Text("Legal & privacy")
             } footer: {
-                Text("Live positions and timetables come from bustimes.org, a brilliant community project by Joshua Goodwin, built on the Department for Transport's Bus Open Data Service (Open Government Licence v3). BusPulse keeps its request rate deliberately gentle. If you find the data useful, consider supporting bustimes.org.")
+                Text("Contains public sector information licensed under the Open Government Licence v3.0, from the Department for Transport's Bus Open Data Service.")
+            }
+
+            Section {
+                Link(destination: URL(string: "https://www.bus-data.dft.gov.uk")!) {
+                    LabeledContent("Bus Open Data Service", value: "bus-data.dft.gov.uk")
+                }
+                Link(destination: URL(string: "mailto:\(LegalContent.contactEmail)")!) {
+                    LabeledContent("Contact", value: LegalContent.contactEmail)
+                }
+            } header: {
+                Text("About")
             }
 
             Section {

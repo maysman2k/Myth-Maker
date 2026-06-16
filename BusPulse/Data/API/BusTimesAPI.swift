@@ -48,7 +48,7 @@ final class BusTimesAPI: BusTimesAPIProviding {
         self.baseURL = baseURL
         let config = URLSessionConfiguration.default
         config.httpAdditionalHeaders = [
-            "User-Agent": "BusPulse/1.0 (iOS; contact: support@bricksinabag.com)",
+            "User-Agent": "WaitLess/1.0 (iOS; contact: support@bricksinabag.com)",
             "Accept": "application/json",
         ]
         config.timeoutIntervalForRequest = 20
