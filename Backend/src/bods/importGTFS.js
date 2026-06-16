@@ -72,15 +72,23 @@ const SCHEMA = `
   );
 `;
 
-const INDEXES = `
+// Indexes built BEFORE deriving, so the derive queries below use them
+// instead of full-scanning tens of millions of rows. (idx_stop_times_trip
+// is the critical one — without it the derive step is effectively endless.)
+const PRE_DERIVE_INDEXES = `
   CREATE INDEX idx_stop_times_trip ON stop_times (trip_id, seq);
   CREATE INDEX idx_stop_times_atco ON stop_times (atco);
   CREATE INDEX idx_trips_route ON trips (route_id);
   CREATE INDEX idx_trips_service ON trips (service_id);
   CREATE INDEX idx_shapes ON shapes (shape_id, seq);
   CREATE INDEX idx_stops_geo ON stops (lat, lon);
-  CREATE INDEX idx_route_stops_atco ON route_stops (atco);
   CREATE INDEX idx_calendar_dates ON calendar_dates (date);
+`;
+
+// route_stops is only populated during the derive step, so its index is
+// built afterwards.
+const POST_DERIVE_INDEXES = `
+  CREATE INDEX idx_route_stops_atco ON route_stops (atco);
 `;
 
 async function download(url, destination) {
@@ -280,6 +288,9 @@ async function main() {
     insertShape.run(r.shape_id, Number(r.shape_pt_sequence) || 0, lat, lon);
   });
 
+  console.log("Indexing core tables (needed before deriving) …");
+  db.exec(PRE_DERIVE_INDEXES);
+
   console.log("Deriving trip start times and route↔stop links …");
   db.exec(`
     UPDATE trips SET start_seconds = (
@@ -291,8 +302,8 @@ async function main() {
       FROM stop_times JOIN trips ON trips.id = stop_times.trip_id;
   `);
 
-  console.log("Indexing …");
-  db.exec(INDEXES);
+  console.log("Indexing derived tables …");
+  db.exec(POST_DERIVE_INDEXES);
   db.prepare("INSERT INTO meta VALUES ('imported_at', ?)").run(new Date().toISOString());
   db.prepare("INSERT INTO meta VALUES ('region', ?)").run(config.gtfsRegion);
   db.close();
