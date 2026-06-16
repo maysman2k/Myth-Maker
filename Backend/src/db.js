@@ -17,7 +17,8 @@ export function openDB() {
     );
   }
   db = new Database(config.dbPath, { readonly: true, fileMustExist: true });
-  db.pragma("journal_mode = WAL");
+  // No journal_mode pragma here: this is a read-only connection, and changing
+  // the journal mode writes to the file ("attempt to write a readonly database").
   return db;
 }
 
