@@ -116,7 +116,7 @@ final class AlarmManager {
                 // updates every ~10s, so faster than this gains nothing.
                 try? await Task.sleep(for: .seconds(10))
             }
-            await self?.clearTask()
+            self?.clearTask()
         }
     }
 
