@@ -19,9 +19,9 @@ struct StopDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: BPSpacing.lg) {
                 header
+                servicesSection
                 departureBoard
                 liveSection
-                servicesSection
             }
             .padding(.horizontal, BPSpacing.screenMargin)
             .padding(.vertical, BPSpacing.md)
@@ -196,10 +196,10 @@ struct StopDetailView: View {
 
     private var servicesSection: some View {
         VStack(alignment: .leading, spacing: BPSpacing.sm) {
-            Text("Routes from this stop")
+            Text("Buses from this stop")
                 .font(BPFont.cardTitle)
             if services.isEmpty {
-                Text(network.isOnline ? "Loading routes…" : "Connect once to load this stop's routes.")
+                Text(network.isOnline ? "Loading buses…" : "Connect once to load the buses from this stop.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

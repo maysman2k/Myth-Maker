@@ -15,6 +15,7 @@ struct LiveMapView: View {
     @Environment(\.busAPI) private var api
     @Environment(SettingsStore.self) private var settings
     @Environment(LocationProvider.self) private var location
+    @Environment(FavoritesStore.self) private var favorites
 
     let mode: Mode
 
@@ -77,7 +78,7 @@ struct LiveMapView: View {
             }
 
             if showBuses {
-                ForEach(exploreStream?.vehicles ?? []) { vehicle in
+                ForEach(displayedVehicles) { vehicle in
                     Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
                         NavigationLink {
                             BusDetailView(bus: BusRef(vehicle: vehicle))
@@ -126,6 +127,26 @@ struct LiveMapView: View {
             .frame(width: 11, height: 11)
     }
 
+    /// Reference point for "closest" — the centre of what the user is looking at.
+    private var mapCentre: CLLocationCoordinate2D {
+        visibleRegion?.center
+            ?? location.location?.coordinate
+            ?? CLLocationCoordinate2D(latitude: 53.4808, longitude: -2.2426)
+    }
+
+    /// The buses actually drawn: capped to the nearest few, favourites first,
+    /// so a busy area can't flood the map and freeze it.
+    private var displayedVehicles: [VehiclePosition] {
+        VehiclePrioritiser.prioritised(exploreStream?.vehicles ?? [],
+                                       favouriteServiceIDs: Set(favorites.services.map(\.id)),
+                                       near: mapCentre)
+    }
+
+    /// How many buses are in view in total (before the cap).
+    private var candidateBusCount: Int {
+        exploreStream?.vehicles.count ?? 0
+    }
+
     @ViewBuilder
     private var exploreHint: some View {
         let area = visibleRegion.map { BoundingBox(region: $0).area } ?? 0
@@ -136,16 +157,25 @@ struct LiveMapView: View {
                 .padding(.vertical, BPSpacing.sm)
                 .background(.ultraThinMaterial, in: Capsule())
                 .padding(.top, BPSpacing.sm)
-        } else if showBuses, let stream = exploreStream {
-            HStack(spacing: BPSpacing.sm) {
-                LiveBadge()
-                Text("\(stream.vehicles.count) buses")
-                    .font(.caption.weight(.semibold).monospacedDigit())
+        } else if showBuses {
+            VStack(spacing: BPSpacing.xs) {
+                HStack(spacing: BPSpacing.sm) {
+                    LiveBadge()
+                    Text("\(displayedVehicles.count) of \(candidateBusCount) buses")
+                        .font(.caption.weight(.semibold).monospacedDigit())
+                }
+                if candidateBusCount > 11 {
+                    Text("Showing the nearest \(VehiclePrioritiser.displayLimit) — use Routes to find a specific bus")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
             }
             .padding(.horizontal, BPSpacing.md)
             .padding(.vertical, BPSpacing.sm)
             .background(.ultraThinMaterial, in: Capsule())
             .padding(.top, BPSpacing.sm)
+            .padding(.horizontal, BPSpacing.screenMargin)
         }
     }
 
