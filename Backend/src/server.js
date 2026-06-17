@@ -10,6 +10,7 @@ import { activeServiceIDs, dbStats, openDB, secondsToTime } from "./db.js";
 import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
 import { ApnsClient } from "./apns/apnsClient.js";
 import { DeviceStore } from "./apns/deviceStore.js";
+import { scheduleDailyImport } from "./scheduler.js";
 
 const app = express();
 const store = new VehicleStore();
@@ -575,6 +576,7 @@ try {
 }
 
 startPolling(store);
+scheduleDailyImport();
 app.listen(config.port, () => {
   console.log(`BusPulse backend listening on :${config.port}`);
   console.log("Attribution: contains public sector information licensed under OGL v3.0 (DfT BODS).");

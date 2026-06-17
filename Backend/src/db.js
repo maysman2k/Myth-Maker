@@ -22,6 +22,15 @@ export function openDB() {
   return db;
 }
 
+/// Closes the cached handle so the next openDB() picks up a freshly imported
+/// database (the import atomically swaps the file underneath us).
+export function closeDB() {
+  if (db) {
+    try { db.close(); } catch { /* already closed */ }
+    db = null;
+  }
+}
+
 export function dbStats() {
   const d = openDB();
   const one = (sql) => d.prepare(sql).get().n;
