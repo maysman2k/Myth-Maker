@@ -45,7 +45,11 @@ app.use(rateLimit({
 // Optional shared-token gate. Off unless APP_SHARED_TOKEN is set, so local
 // development is unaffected; /health stays open for uptime checks.
 app.use((req, res, next) => {
-  if (!config.appSharedToken || req.path === "/health" || req.path === "/devices") return next();
+  if (!config.appSharedToken
+      || req.path === "/health"
+      || req.path === "/devices"
+      || req.path === "/share"
+      || req.path.startsWith("/.well-known/")) return next();
   if (req.get("x-app-token") === config.appSharedToken) return next();
   res.status(401).json({ error: "Unauthorised." });
 });
@@ -344,11 +348,30 @@ function escapeHTML(value) {
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+// Apple App Site Association — lets the iOS app claim https://…/share links
+// as Universal Links. Uses the same Team ID as APNs. The app must also add
+// the Associated Domains capability (applinks:waitless.bricksinabag.com).
+app.get("/.well-known/apple-app-site-association", (req, res) => {
+  const appID = `${config.apns.teamId}.${config.apns.bundleId}`;
+  res.json({
+    applinks: {
+      details: [{ appIDs: [appID], components: [{ "/": "/share*" }] }],
+    },
+  });
+});
+
 app.get("/share", (req, res) => {
   const type = String(req.query.type ?? "bus");
   const line = escapeHTML(req.query.line ?? "");
   const destination = escapeHTML(req.query.to ?? "");
   const stopName = escapeHTML(req.query.name ?? "");
+
+  // Deep link into the app (works once installed via the custom scheme).
+  const appQuery = new URLSearchParams();
+  for (const key of ["type", "line", "service", "to", "atco", "name"]) {
+    if (req.query[key] != null) appQuery.set(key, String(req.query[key]));
+  }
+  const appLink = `waitless://share?${appQuery.toString()}`;
 
   let heading;
   let detail = "";
@@ -402,7 +425,7 @@ app.get("/share", (req, res) => {
     <span class="badge">🚌 Wait Less</span>
     <h1>${heading}</h1>
     <p class="detail">${detail}</p>
-    <a class="cta" href="https://waitless.bricksinabag.com">Open in Wait Less</a>
+    <a class="cta" href="${escapeHTML(appLink)}">Open in Wait Less</a>
     <p class="note">Wait Less shows live buses across the UK, with arrival alarms.<br>Coming soon to the App Store.</p>
   </div>
 </body>
