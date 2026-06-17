@@ -261,10 +261,14 @@ struct TripTimeDTO: Decodable {
         case aimed_arrival_time, aimed_departure_time, arrival, departure
     }
 
+    let latitude: Double?
+    let longitude: Double?
+
     private struct StopRef: Decodable {
         let atco_code: String?
         let name: String?
         let common_name: String?
+        let location: [Double]?
     }
 
     init(from decoder: Decoder) throws {
@@ -273,12 +277,23 @@ struct TripTimeDTO: Decodable {
         if let ref = try? container.decodeIfPresent(StopRef.self, forKey: .stop) {
             stopATCO = ref.atco_code
             stopName = ref.name ?? ref.common_name
+            if let location = ref.location, location.count >= 2 {
+                longitude = location[0]
+                latitude = location[1]
+            } else {
+                latitude = nil
+                longitude = nil
+            }
         } else if let code = try? container.decodeIfPresent(String.self, forKey: .stop) {
             stopATCO = code
             stopName = nil
+            latitude = nil
+            longitude = nil
         } else {
             stopATCO = nil
             stopName = nil
+            latitude = nil
+            longitude = nil
         }
         aimedArrival = (try? container.decodeIfPresent(String.self, forKey: .aimed_arrival_time))
             ?? (try? container.decodeIfPresent(String.self, forKey: .arrival)) ?? nil
@@ -290,7 +305,9 @@ struct TripTimeDTO: Decodable {
         TimetableStopTime(atcoCode: stopATCO,
                           stopName: stopName,
                           departureSeconds: TimeOfDay.seconds(from: aimedDeparture),
-                          arrivalSeconds: TimeOfDay.seconds(from: aimedArrival))
+                          arrivalSeconds: TimeOfDay.seconds(from: aimedArrival),
+                          latitude: latitude,
+                          longitude: longitude)
     }
 }
 

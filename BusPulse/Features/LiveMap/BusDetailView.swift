@@ -16,6 +16,7 @@ struct BusDetailView: View {
     @State private var miniPosition: MapCameraPosition
     @State private var journey: TimetableTrip?
     @State private var journeyFailed = false
+    @State private var routeLines: [[CLLocationCoordinate2D]] = []
     @State private var showAlarmOptions = false
     @State private var showStopPicker = false
     @State private var alarmFeedback: String?
@@ -73,6 +74,7 @@ struct BusDetailView: View {
                 stream?.start()
             }
             await loadJourney()
+            await loadRouteLine()
         }
         .onDisappear { stream?.stop() }
     }
@@ -82,6 +84,10 @@ struct BusDetailView: View {
     @ViewBuilder
     private var focusedMap: some View {
         let map = Map(position: $miniPosition, interactionModes: []) {
+            ForEach(routeLines.indices, id: \.self) { index in
+                MapPolyline(coordinates: routeLines[index])
+                    .stroke(BPColor.signal, lineWidth: 3)
+            }
             ForEach(stream?.vehicles ?? []) { vehicle in
                 Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
                     VehicleMarker(vehicle: vehicle)
@@ -257,40 +263,67 @@ struct BusDetailView: View {
 
     @ViewBuilder
     private var journeySection: some View {
-        if let journey, !journey.times.isEmpty {
-            VStack(alignment: .leading, spacing: BPSpacing.sm) {
-                Text("This journey")
-                    .font(BPFont.cardTitle)
-                ForEach(Array(journey.times.enumerated()), id: \.offset) { index, time in
-                    HStack(spacing: BPSpacing.md) {
-                        Image(systemName: index == 0 ? "circle.fill"
-                              : index == journey.times.count - 1 ? "mappin.circle.fill"
-                              : "smallcircle.filled.circle")
-                            .font(.caption2)
-                            .foregroundStyle(BPColor.signal)
-                        Text(time.stopName ?? time.atcoCode ?? "Stop")
-                            .font(.subheadline)
-                            .lineLimit(1)
-                        Spacer()
-                        if let seconds = time.departureSeconds ?? time.arrivalSeconds {
-                            Text(TimeOfDay.label(forSeconds: seconds))
+        if let progress, !progress.upcoming.isEmpty {
+            TimelineView(.everyMinute) { context in
+                VStack(alignment: .leading, spacing: BPSpacing.sm) {
+                    Text("Still to come")
+                        .font(BPFont.cardTitle)
+                    Text("Estimated arrival at each upcoming stop, based on where the bus is now.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    ForEach(Array(progress.upcoming.enumerated()), id: \.element.id) { index, stop in
+                        HStack(spacing: BPSpacing.md) {
+                            Image(systemName: stop.isNext ? "location.fill"
+                                  : index == progress.upcoming.count - 1 ? "mappin.circle.fill"
+                                  : "smallcircle.filled.circle")
+                                .font(.caption2)
+                                .foregroundStyle(stop.isNext ? BPColor.live : BPColor.signal)
+                            Text(stop.name)
+                                .font(.subheadline.weight(stop.isNext ? .semibold : .regular))
+                                .lineLimit(1)
+                            Spacer()
+                            Text(etaLabel(stop.eta, now: context.date))
                                 .font(.subheadline.monospacedDigit())
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(stop.isNext ? BPColor.live : .secondary)
                         }
                     }
+                    if progress.passedCount > 0 {
+                        Text("\(progress.passedCount) stop\(progress.passedCount == 1 ? "" : "s") already passed")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                    }
                 }
+                .bpCard()
             }
-            .bpCard()
         } else if bus.tripID != nil && !journeyFailed {
             HStack {
                 ProgressView()
-                Text("Loading journey…")
+                Text("Working out the journey…")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, BPSpacing.md)
         }
+    }
+
+    /// Live journey progress for the tracked bus, recomputed from its current
+    /// position against the scheduled stop times.
+    private var progress: JourneyProgress.Result? {
+        guard let journey, !journey.times.isEmpty else { return nil }
+        let coordinate = vehicle?.coordinate ?? bus.coordinate
+        return JourneyProgress.compute(times: journey.times,
+                                       busCoordinate: coordinate,
+                                       now: .now,
+                                       dayStart: Calendar.current.startOfDay(for: .now))
+    }
+
+    private func etaLabel(_ eta: Date, now: Date) -> String {
+        let seconds = eta.timeIntervalSince(now)
+        if seconds < 60 { return "Due" }
+        let minutes = Int(seconds / 60)
+        if minutes <= 59 { return "\(minutes) min" }
+        return eta.formatted(date: .omitted, time: .shortened)
     }
 
     // MARK: Full route link
@@ -339,6 +372,17 @@ struct BusDetailView: View {
             journey = try await api.trip(id: tripID)
         } catch {
             journeyFailed = true
+        }
+    }
+
+    private func loadRouteLine() async {
+        guard let serviceID = bus.serviceID,
+              let geometry = try? await api.routeGeometry(serviceID: serviceID) else { return }
+        routeLines = geometry.compactMap { segment in
+            let coords = segment.compactMap { pair -> CLLocationCoordinate2D? in
+                pair.count >= 2 ? CLLocationCoordinate2D(latitude: pair[1], longitude: pair[0]) : nil
+            }
+            return coords.count > 1 ? coords : nil
         }
     }
 }

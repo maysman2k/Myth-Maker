@@ -106,6 +106,15 @@ struct TimetableStopTime: Codable, Hashable {
     /// (timetables use 24:xx/25:xx for trips that run past midnight).
     var departureSeconds: Int?
     var arrivalSeconds: Int?
+    /// Stop coordinates, where the server provides them — used to work out how
+    /// far along its journey a live bus is.
+    var latitude: Double?
+    var longitude: Double?
+
+    var coordinate: CLLocationCoordinate2D? {
+        guard let latitude, let longitude else { return nil }
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
 }
 
 // MARK: - A computed departure for a departure board

@@ -268,7 +268,8 @@ function describeRoute(db, route) {
 function tripJSON(db, trip) {
   const times = db
     .prepare(
-      `SELECT stop_times.*, stops.name AS stop_name FROM stop_times
+      `SELECT stop_times.*, stops.name AS stop_name, stops.lat AS stop_lat, stops.lon AS stop_lon
+       FROM stop_times
        LEFT JOIN stops ON stops.atco = stop_times.atco
        WHERE trip_id = ? ORDER BY seq`,
     )
@@ -277,7 +278,11 @@ function tripJSON(db, trip) {
     id: trip.id,
     headsign: trip.headsign,
     times: times.map((t) => ({
-      stop: { atco_code: t.atco, name: t.stop_name ?? t.atco },
+      stop: {
+        atco_code: t.atco,
+        name: t.stop_name ?? t.atco,
+        location: (t.stop_lon != null && t.stop_lat != null) ? [t.stop_lon, t.stop_lat] : null,
+      },
       aimed_arrival_time: secondsToTime(t.arrival_seconds),
       aimed_departure_time: secondsToTime(t.departure_seconds),
     })),
