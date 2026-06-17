@@ -8,9 +8,15 @@ import rateLimit from "express-rate-limit";
 import { config } from "./config.js";
 import { activeServiceIDs, dbStats, openDB, secondsToTime } from "./db.js";
 import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
+import { ApnsClient } from "./apns/apnsClient.js";
+import { DeviceStore } from "./apns/deviceStore.js";
 
 const app = express();
 const store = new VehicleStore();
+const apns = new ApnsClient();
+const devices = new DeviceStore();
+
+app.use(express.json({ limit: "16kb" }));
 
 // Behind a reverse proxy (TLS terminator) in production, so client IPs and
 // the secure flag come from forwarded headers.
@@ -39,9 +45,38 @@ app.use(rateLimit({
 // Optional shared-token gate. Off unless APP_SHARED_TOKEN is set, so local
 // development is unaffected; /health stays open for uptime checks.
 app.use((req, res, next) => {
-  if (!config.appSharedToken || req.path === "/health") return next();
+  if (!config.appSharedToken || req.path === "/health" || req.path === "/devices") return next();
   if (req.get("x-app-token") === config.appSharedToken) return next();
   res.status(401).json({ error: "Unauthorised." });
+});
+
+// MARK: Push — register a device token, plus an admin test push
+
+app.post("/devices", (req, res) => {
+  devices.add(req.body?.token);
+  res.json({ ok: true });
+});
+
+app.post("/admin/test-push", async (req, res) => {
+  if (!config.adminKey || req.get("x-admin-key") !== config.adminKey) {
+    return res.status(401).json({ error: "Unauthorised." });
+  }
+  if (!apns.configured) {
+    return res.status(503).json({ error: "APNs is not configured on the server." });
+  }
+  const targets = req.body?.token ? [req.body.token] : devices.all();
+  if (targets.length === 0) return res.json({ sent: 0, note: "No devices registered yet." });
+
+  const results = [];
+  for (const token of targets) {
+    const result = await apns.send(token, {
+      title: "Wait Less",
+      body: "Test push — your alarms are ready to go. 🚌",
+    });
+    if (result.status === 410) devices.remove(token); // token no longer valid
+    results.push({ token: `${token.slice(0, 8)}…`, ...result });
+  }
+  res.json({ sent: results.length, results });
 });
 
 function parseBBox(query) {
@@ -383,6 +418,7 @@ app.get("/health", (req, res) => {
     lastVehicleUpdate: store.lastUpdated,
     pollerError: store.lastError,
     gtfs: stats,
+    push: { configured: apns.configured, devices: devices.count },
   });
 });
 

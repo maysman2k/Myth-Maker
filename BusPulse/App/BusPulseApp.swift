@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct BusPulseApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var settings: SettingsStore
     @State private var timetables = TimetableStore()
     @State private var favorites = FavoritesStore()

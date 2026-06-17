@@ -37,6 +37,20 @@ export const config = {
   // True in production: suppresses internal error detail in responses.
   isProduction: process.env.NODE_ENV === "production",
 
+  // --- Push notifications (APNs) ---
+  // Token-based auth: a .p8 key from the Apple Developer account. Server
+  // push is disabled until these are set.
+  apns: {
+    keyPath: process.env.APNS_KEY_PATH ?? path.join(root, "apns-key.p8"),
+    keyId: (process.env.APNS_KEY_ID ?? "").trim(),
+    teamId: (process.env.APNS_TEAM_ID ?? "").trim(),
+    bundleId: (process.env.APNS_BUNDLE_ID ?? "com.bricksinabag.buspulse").trim(),
+    // Dev/TestFlight device tokens use the sandbox; App Store uses production.
+    production: (process.env.APNS_PRODUCTION ?? "false").toLowerCase() === "true",
+  },
+  // Protects admin-only endpoints (e.g. the test push).
+  adminKey: (process.env.ADMIN_KEY ?? "").trim(),
+
   dataDir: path.join(root, "data"),
   dbPath: path.join(root, "data", "gtfs.sqlite"),
 
