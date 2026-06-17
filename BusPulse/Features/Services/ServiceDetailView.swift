@@ -15,6 +15,9 @@ struct ServiceDetailView: View {
     @State private var stream: LiveVehiclesModel?
     @State private var stops: [Stop] = []
     @State private var routeLines: [[[Double]]] = []
+    @State private var fallbackBox: BoundingBox?
+    @State private var fallbackVehicles: [VehiclePosition] = []
+    @State private var fallbackTask: Task<Void, Never>?
     @State private var downloadError: String?
     @State private var mapPosition: MapCameraPosition = .automatic
 
@@ -55,9 +58,12 @@ struct ServiceDetailView: View {
             }
             stream?.watch(.services([service.id]))
             await loadStaticData()
+            startFallbackPolling()
         }
         .onDisappear {
             stream?.stop()
+            fallbackTask?.cancel()
+            fallbackTask = nil
         }
     }
 
@@ -86,7 +92,7 @@ struct ServiceDetailView: View {
                     }
                     .annotationTitles(.hidden)
                 }
-                ForEach(stream?.vehicles ?? []) { vehicle in
+                ForEach(displayedVehicles) { vehicle in
                     Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
                         VehicleMarker(vehicle: vehicle)
                     }
@@ -98,7 +104,7 @@ struct ServiceDetailView: View {
             .overlay(alignment: .topLeading) {
                 HStack(spacing: BPSpacing.sm) {
                     LiveBadge()
-                    Text("\(stream?.vehicles.count ?? 0) on route")
+                    Text("\(displayedVehicles.count) on route")
                         .font(.caption2.weight(.semibold))
                 }
                 .padding(.horizontal, BPSpacing.md)
@@ -226,5 +232,42 @@ struct ServiceDetailView: View {
         async let geometryResult = try? api.routeGeometry(serviceID: service.id)
         stops = (await stopsResult) ?? []
         routeLines = (await geometryResult) ?? []
+        let lineCoordinates = routeLines.flatMap { segment in
+            segment.compactMap { pair in
+                pair.count >= 2
+                    ? CLLocationCoordinate2D(latitude: pair[1], longitude: pair[0])
+                    : nil
+            }
+        }
+        let routeCoordinates = lineCoordinates + stops.map(\.coordinate)
+        fallbackBox = BoundingBox(coordinates: routeCoordinates, paddingMetres: 1_200)?
+            .clamped(toArea: 0.5)
+        await refreshFallbackVehicles()
+    }
+
+    private var displayedVehicles: [VehiclePosition] {
+        RouteVehicleMatcher.merged(primary: stream?.vehicles ?? [],
+                                   fallback: fallbackVehicles,
+                                   lineNames: [service.lineName])
+    }
+
+    private func startFallbackPolling() {
+        guard fallbackTask == nil else { return }
+        fallbackTask = Task {
+            while !Task.isCancelled {
+                await refreshFallbackVehicles()
+                let interval = max(settings.refreshSeconds, 5)
+                try? await Task.sleep(for: .seconds(interval))
+            }
+        }
+    }
+
+    private func refreshFallbackVehicles() async {
+        guard let fallbackBox else {
+            fallbackVehicles = []
+            return
+        }
+        guard let vehicles = try? await api.liveVehicles(in: fallbackBox) else { return }
+        fallbackVehicles = RouteVehicleMatcher.matching(vehicles, lineNames: [service.lineName])
     }
 }

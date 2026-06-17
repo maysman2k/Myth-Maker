@@ -40,6 +40,9 @@ struct LiveMapView: View {
     @State private var routeStream: LiveVehiclesModel?
     @State private var routeLines: [[CLLocationCoordinate2D]] = []
     @State private var routeStops: [Stop] = []
+    @State private var routeFallbackBox: BoundingBox?
+    @State private var routeFallbackVehicles: [VehiclePosition] = []
+    @State private var routeFallbackTask: Task<Void, Never>?
     @State private var showAddRoute = false
 
     /// Above this viewport size (square degrees) we stop loading map objects —
@@ -191,7 +194,7 @@ struct LiveMapView: View {
                         .font(.caption.weight(.semibold).monospacedDigit())
                 }
                 if candidateBusCount > 11 {
-                    Text("Showing the nearest \(VehiclePrioritiser.displayLimit) — use Routes to find a specific bus")
+                    Text("Showing the nearest \(VehiclePrioritiser.displayLimit) — to see more live buses, use search")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -288,7 +291,7 @@ struct LiveMapView: View {
                 }
                 .annotationTitles(.hidden)
             }
-            ForEach(routeStream?.vehicles ?? []) { vehicle in
+            ForEach(displayedRouteVehicles) { vehicle in
                 Annotation(vehicle.routeLabel, coordinate: vehicle.coordinate, anchor: .center) {
                     NavigationLink {
                         BusDetailView(bus: BusRef(vehicle: vehicle))
@@ -325,14 +328,19 @@ struct LiveMapView: View {
             routeStream?.watch(.services(focus.serviceIDs))
             routeStream?.start()
             await loadRouteStaticData()
+            startRouteFallbackPolling()
         }
-        .onDisappear { routeStream?.stop() }
+        .onDisappear {
+            routeStream?.stop()
+            routeFallbackTask?.cancel()
+            routeFallbackTask = nil
+        }
     }
 
     private var routesCountBar: some View {
         HStack(spacing: BPSpacing.sm) {
             LiveBadge()
-            Text("\(routeStream?.vehicles.count ?? 0) buses on \(focus.lineNames.count) route\(focus.lineNames.count == 1 ? "" : "s")")
+            Text("\(displayedRouteVehicles.count) buses on \(focus.lineNames.count) route\(focus.lineNames.count == 1 ? "" : "s")")
                 .font(.caption.weight(.semibold))
         }
         .padding(.horizontal, BPSpacing.md)
@@ -346,7 +354,10 @@ struct LiveMapView: View {
         focus.serviceIDs.append(service.id)
         focus.lineNames.append(service.lineName)
         routeStream?.watch(.services(focus.serviceIDs))
-        Task { await loadRouteStaticData() }
+        Task {
+            await loadRouteStaticData()
+            await refreshRouteFallbackVehicles()
+        }
     }
 
     private func loadRouteStaticData() async {
@@ -369,6 +380,36 @@ struct LiveMapView: View {
         }
         routeLines = lines
         routeStops = allStops
+        let routeCoordinates = lines.flatMap { $0 } + allStops.map(\.coordinate)
+        routeFallbackBox = BoundingBox(coordinates: routeCoordinates, paddingMetres: 1_200)?
+            .clamped(toArea: 0.5)
+        await refreshRouteFallbackVehicles()
+    }
+
+    private var displayedRouteVehicles: [VehiclePosition] {
+        RouteVehicleMatcher.merged(primary: routeStream?.vehicles ?? [],
+                                   fallback: routeFallbackVehicles,
+                                   lineNames: focus.lineNames)
+    }
+
+    private func startRouteFallbackPolling() {
+        guard routeFallbackTask == nil else { return }
+        routeFallbackTask = Task {
+            while !Task.isCancelled {
+                await refreshRouteFallbackVehicles()
+                let interval = max(settings.refreshSeconds, 5)
+                try? await Task.sleep(for: .seconds(interval))
+            }
+        }
+    }
+
+    private func refreshRouteFallbackVehicles() async {
+        guard let routeFallbackBox else {
+            routeFallbackVehicles = []
+            return
+        }
+        guard let vehicles = try? await api.liveVehicles(in: routeFallbackBox) else { return }
+        routeFallbackVehicles = RouteVehicleMatcher.matching(vehicles, lineNames: focus.lineNames)
     }
 }
 

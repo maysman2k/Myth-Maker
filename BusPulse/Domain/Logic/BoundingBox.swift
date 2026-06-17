@@ -37,6 +37,38 @@ struct BoundingBox: Equatable {
                   maxLatitude: center.latitude + latDelta)
     }
 
+    /// Smallest box containing every coordinate, padded equally in metres.
+    init?(coordinates: [CLLocationCoordinate2D], paddingMetres: Double = 0) {
+        guard let first = coordinates.first else { return nil }
+
+        var minLongitude = first.longitude
+        var maxLongitude = first.longitude
+        var minLatitude = first.latitude
+        var maxLatitude = first.latitude
+
+        for coordinate in coordinates.dropFirst() {
+            minLongitude = min(minLongitude, coordinate.longitude)
+            maxLongitude = max(maxLongitude, coordinate.longitude)
+            minLatitude = min(minLatitude, coordinate.latitude)
+            maxLatitude = max(maxLatitude, coordinate.latitude)
+        }
+
+        if paddingMetres > 0 {
+            let centerLatitude = (minLatitude + maxLatitude) / 2
+            let latPadding = paddingMetres / 111_111
+            let lonPadding = paddingMetres / (111_111 * max(0.2, cos(centerLatitude * .pi / 180)))
+            minLongitude -= lonPadding
+            maxLongitude += lonPadding
+            minLatitude -= latPadding
+            maxLatitude += latPadding
+        }
+
+        self.init(minLongitude: minLongitude,
+                  minLatitude: minLatitude,
+                  maxLongitude: maxLongitude,
+                  maxLatitude: maxLatitude)
+    }
+
     var area: Double {
         (maxLongitude - minLongitude) * (maxLatitude - minLatitude)
     }

@@ -51,6 +51,20 @@ final class BoundingBoxTests: XCTestCase {
         XCTAssertEqual(box.maxLatitude - box.minLatitude, 0.018, accuracy: 0.002)
         XCTAssertTrue(box.contains(center))
     }
+
+    func testCoordinateInitialiserWrapsPointsAndAddsPadding() {
+        let coordinates = [
+            CLLocationCoordinate2D(latitude: 53.48, longitude: -2.24),
+            CLLocationCoordinate2D(latitude: 53.50, longitude: -2.20),
+        ]
+
+        let box = try XCTUnwrap(BoundingBox(coordinates: coordinates, paddingMetres: 500))
+
+        XCTAssertTrue(box.contains(coordinates[0]))
+        XCTAssertTrue(box.contains(coordinates[1]))
+        XCTAssertLessThan(box.minLatitude, 53.48)
+        XCTAssertGreaterThan(box.maxLongitude, -2.20)
+    }
 }
 
 final class LiveryColorTests: XCTestCase {
@@ -78,5 +92,50 @@ final class LiveryColorTests: XCTestCase {
     func testContrastingForeground() {
         XCTAssertEqual(LiveryColor.contrastingForeground(forHex: "#ffffff"), "#000000")
         XCTAssertEqual(LiveryColor.contrastingForeground(forHex: "#1a1a1a"), "#ffffff")
+    }
+}
+
+final class RouteVehicleMatcherTests: XCTestCase {
+
+    func testFallbackAddsSiblingVehiclesWithSamePublicLineName() {
+        let primary = [
+            VehiclePosition(id: 1, journeyID: nil, serviceID: 100, tripID: nil,
+                            latitude: 53.48, longitude: -2.24, heading: nil,
+                            recordedAt: nil, lineName: "X7", destination: nil,
+                            vehicleName: nil, vehicleURL: nil,
+                            liveryBackground: nil, liveryForeground: nil, delaySeconds: nil),
+        ]
+        let fallback = [
+            VehiclePosition(id: 2, journeyID: nil, serviceID: 101, tripID: nil,
+                            latitude: 53.49, longitude: -2.25, heading: nil,
+                            recordedAt: nil, lineName: " x7 ", destination: nil,
+                            vehicleName: nil, vehicleURL: nil,
+                            liveryBackground: nil, liveryForeground: nil, delaySeconds: nil),
+            VehiclePosition(id: 3, journeyID: nil, serviceID: 102, tripID: nil,
+                            latitude: 53.50, longitude: -2.26, heading: nil,
+                            recordedAt: nil, lineName: "X8", destination: nil,
+                            vehicleName: nil, vehicleURL: nil,
+                            liveryBackground: nil, liveryForeground: nil, delaySeconds: nil),
+        ]
+
+        let merged = RouteVehicleMatcher.merged(primary: primary,
+                                                fallback: fallback,
+                                                lineNames: ["X7"])
+
+        XCTAssertEqual(merged.map(\.id), [1, 2])
+    }
+
+    func testMergedVehiclesDoNotDuplicatePrimaryMatches() {
+        let vehicle = VehiclePosition(id: 1, journeyID: nil, serviceID: 100, tripID: nil,
+                                      latitude: 53.48, longitude: -2.24, heading: nil,
+                                      recordedAt: nil, lineName: "X7", destination: nil,
+                                      vehicleName: nil, vehicleURL: nil,
+                                      liveryBackground: nil, liveryForeground: nil, delaySeconds: nil)
+
+        let merged = RouteVehicleMatcher.merged(primary: [vehicle],
+                                                fallback: [vehicle],
+                                                lineNames: ["X7"])
+
+        XCTAssertEqual(merged.count, 1)
     }
 }
