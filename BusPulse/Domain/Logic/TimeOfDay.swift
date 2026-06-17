@@ -27,6 +27,12 @@ enum TimeOfDay {
         return seconds >= 86_400 ? "\(base) (night)" : base
     }
 
+    /// Compact "HH:mm" with no night suffix — for tight timetable grid cells.
+    static func clock(forSeconds seconds: Int) -> String {
+        let wrapped = seconds % 86_400
+        return String(format: "%02d:%02d", wrapped / 3600, (wrapped % 3600) / 60)
+    }
+
     /// Resolves seconds-after-midnight against the start of an operating day
     /// into an absolute Date. Handles >24h values naturally.
     static func date(forSeconds seconds: Int, onDayStarting dayStart: Date) -> Date {

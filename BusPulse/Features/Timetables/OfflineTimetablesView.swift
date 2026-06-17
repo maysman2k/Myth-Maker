@@ -30,13 +30,18 @@ struct OfflineTimetablesView: View {
                         }
                     }
                 } footer: {
-                    Text("Saved timetables cover the day they were downloaded. Refresh before you travel for the latest schedule. Using \(ByteCountFormatter.string(fromByteCount: Int64(timetables.totalSizeBytes), countStyle: .file)).")
+                    Text("Swipe a timetable left, or tap Edit, to delete it. Saved timetables cover the day they were downloaded — refresh before you travel. Using \(ByteCountFormatter.string(fromByteCount: Int64(timetables.totalSizeBytes), countStyle: .file)).")
                 }
             }
         }
         .scrollContentBackground(.hidden)
         .background(BPColor.backgroundPrimary)
         .navigationTitle("Saved timetables")
+        .toolbar {
+            if !timetables.timetables.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) { EditButton() }
+            }
+        }
     }
 
     private func row(for timetable: CachedTimetable) -> some View {
@@ -74,75 +79,117 @@ struct OfflineTimetablesView: View {
     }
 }
 
-/// Browse a saved timetable: journeys by departure time, fully offline.
+/// A saved timetable shown as the classic grid — stops down the side,
+/// journeys across the top, grouped by direction. Works fully offline.
 struct TimetableBrowserView: View {
+    @Environment(TimetableStore.self) private var timetables
+    @Environment(\.dismiss) private var dismiss
+
     let timetable: CachedTimetable
 
+    @State private var showDeleteConfirm = false
+
+    private let rowHeight: CGFloat = 34
+    private let stopColumnWidth: CGFloat = 158
+    private let timeColumnWidth: CGFloat = 56
+
+    private var directions: [TimetableGrid.Direction] {
+        TimetableGrid.directions(from: timetable.trips)
+    }
+
     var body: some View {
-        List {
-            Section {
-                ForEach(sortedTrips) { trip in
-                    NavigationLink {
-                        TripTimesView(trip: trip, service: timetable.service)
-                    } label: {
-                        HStack(spacing: BPSpacing.md) {
-                            Text(trip.startSeconds.map(TimeOfDay.label(forSeconds:)) ?? "—")
-                                .font(BPFont.time)
-                                .foregroundStyle(BPColor.signal)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(trip.headsign ?? trip.times.last?.stopName ?? "Journey")
-                                    .font(.subheadline.weight(.semibold))
-                                    .lineLimit(1)
-                                Text("from \(trip.times.first?.stopName ?? "first stop") · \(trip.times.count) stops")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: BPSpacing.xl) {
+                Text(timetable.date.formatted(date: .complete, time: .omitted))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, BPSpacing.screenMargin)
+
+                if directions.isEmpty {
+                    BPEmptyState(symbol: "calendar.badge.exclamationmark",
+                                 title: "No journeys saved",
+                                 message: "This saved timetable has no journeys for its date. Refresh it from the Saved list while online.")
+                } else {
+                    ForEach(directions) { direction in
+                        directionGrid(direction)
+                    }
+                }
+            }
+            .padding(.vertical, BPSpacing.md)
+        }
+        .background(BPColor.backgroundPrimary)
+        .navigationTitle("Route \(timetable.service.lineName)")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .accessibilityLabel("Delete saved timetable")
+            }
+        }
+        .confirmationDialog("Delete this saved timetable?",
+                            isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) {
+                timetables.delete(serviceID: timetable.service.id)
+                dismiss()
+            }
+        } message: {
+            Text("You can download it again any time you're online.")
+        }
+    }
+
+    private func directionGrid(_ direction: TimetableGrid.Direction) -> some View {
+        VStack(alignment: .leading, spacing: BPSpacing.sm) {
+            Text(direction.heading)
+                .font(BPFont.cardTitle)
+                .padding(.horizontal, BPSpacing.screenMargin)
+
+            HStack(alignment: .top, spacing: 0) {
+                // Frozen stop-name column.
+                VStack(spacing: 0) {
+                    cell(text: "", width: stopColumnWidth, isHeader: true)
+                    ForEach(Array(direction.stops.enumerated()), id: \.offset) { index, stop in
+                        Text(stop.name)
+                            .font(.caption)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .frame(width: stopColumnWidth, height: rowHeight, alignment: .leading)
+                            .padding(.leading, BPSpacing.md)
+                            .background(index.isMultiple(of: 2) ? Color.clear : BPColor.signal.opacity(0.05))
+                    }
+                }
+                .background(BPColor.surfacePrimary)
+
+                // Scrollable journey columns.
+                ScrollView(.horizontal, showsIndicators: true) {
+                    HStack(spacing: 0) {
+                        ForEach(direction.columns) { column in
+                            VStack(spacing: 0) {
+                                Text(column.startSeconds.map(TimeOfDay.clock(forSeconds:)) ?? "")
+                                    .font(.caption2.weight(.bold))
+                                    .frame(width: timeColumnWidth, height: rowHeight)
+                                    .foregroundStyle(BPColor.signal)
+                                ForEach(Array(column.times.enumerated()), id: \.offset) { index, seconds in
+                                    Text(seconds.map(TimeOfDay.clock(forSeconds:)) ?? "·")
+                                        .font(.caption.monospacedDigit())
+                                        .frame(width: timeColumnWidth, height: rowHeight)
+                                        .foregroundStyle(seconds == nil ? .tertiary : .primary)
+                                        .background(index.isMultiple(of: 2) ? Color.clear : BPColor.signal.opacity(0.05))
+                                }
                             }
                         }
                     }
                 }
-            } header: {
-                Text(timetable.date.formatted(date: .complete, time: .omitted))
             }
         }
-        .scrollContentBackground(.hidden)
-        .background(BPColor.backgroundPrimary)
-        .navigationTitle("Route \(timetable.service.lineName)")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
-    private var sortedTrips: [TimetableTrip] {
-        timetable.trips.sorted { ($0.startSeconds ?? 0) < ($1.startSeconds ?? 0) }
-    }
-}
-
-/// All calling points of one journey.
-struct TripTimesView: View {
-    let trip: TimetableTrip
-    let service: Service
-
-    var body: some View {
-        List {
-            ForEach(Array(trip.times.enumerated()), id: \.offset) { index, time in
-                HStack(spacing: BPSpacing.md) {
-                    Text((time.departureSeconds ?? time.arrivalSeconds)
-                            .map(TimeOfDay.label(forSeconds:)) ?? "—")
-                        .font(.subheadline.monospacedDigit().weight(.semibold))
-                        .foregroundStyle(BPColor.signal)
-                        .frame(width: 84, alignment: .leading)
-                    Image(systemName: index == 0 ? "circle.fill"
-                          : index == trip.times.count - 1 ? "mappin.circle.fill"
-                          : "smallcircle.filled.circle")
-                        .font(.caption)
-                        .foregroundStyle(BPColor.signal)
-                    Text(time.stopName ?? time.atcoCode ?? "Stop")
-                        .font(.subheadline)
-                }
-                .accessibilityElement(children: .combine)
-            }
-        }
-        .scrollContentBackground(.hidden)
-        .background(BPColor.backgroundPrimary)
-        .navigationTitle(trip.headsign ?? "Journey")
-        .navigationBarTitleDisplayMode(.inline)
+    private func cell(text: String, width: CGFloat, isHeader: Bool) -> some View {
+        Text(text)
+            .font(.caption2.weight(.bold))
+            .frame(width: width, height: rowHeight)
     }
 }
