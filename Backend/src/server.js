@@ -192,12 +192,41 @@ app.get("/api/services/", (req, res) => {
       id: route.id,
       slug: null,
       line_name: route.line_name,
-      description: route.description,
+      description: describeRoute(db, route),
       mode: route.mode,
     })),
     next: null,
   });
 });
+
+/**
+ * A human description for a route. Many GTFS routes have an empty
+ * route_long_name, leaving search results indistinguishable (ten identical
+ * "X7"s). Fall back to the route's terminus destinations, taken from the two
+ * most common trip headsigns, e.g. "Newcastle – Blyth".
+ */
+const routeDescriptionCache = new Map();
+function describeRoute(db, route) {
+  if (route.description && route.description.trim()) return route.description.trim();
+  if (routeDescriptionCache.has(route.id)) return routeDescriptionCache.get(route.id);
+
+  const headsigns = db
+    .prepare(
+      `SELECT headsign, COUNT(*) AS c FROM trips
+       WHERE route_id = ? AND headsign IS NOT NULL AND headsign <> ''
+       GROUP BY headsign ORDER BY c DESC LIMIT 2`,
+    )
+    .all(route.id)
+    .map((r) => r.headsign);
+
+  let description;
+  if (headsigns.length >= 2) description = `${headsigns[0]} – ${headsigns[1]}`;
+  else if (headsigns.length === 1) description = `Towards ${headsigns[0]}`;
+  else description = route.mode ? `${route.mode[0].toUpperCase()}${route.mode.slice(1)} service` : "Bus service";
+
+  routeDescriptionCache.set(route.id, description);
+  return description;
+}
 
 // MARK: Timetable trips — GET /api/trips/ and /api/trips/:id/
 
@@ -262,6 +291,82 @@ app.get("/services/:id.json", (req, res) => {
     .filter((line) => line.length > 1);
 
   res.json({ geometry: { type: "MultiLineString", coordinates: lines } });
+});
+
+// MARK: Share pages — GET /share
+// A small web page for shared links, so a recipient sees the bus/route even
+// without the app. Once Universal Links are configured (needs the Apple
+// Developer Team ID in an apple-app-site-association file), these same URLs
+// will open the app directly instead.
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+app.get("/share", (req, res) => {
+  const type = String(req.query.type ?? "bus");
+  const line = escapeHTML(req.query.line ?? "");
+  const destination = escapeHTML(req.query.to ?? "");
+  const stopName = escapeHTML(req.query.name ?? "");
+
+  let heading;
+  let detail = "";
+  if (type === "stop") {
+    heading = stopName || "Bus stop";
+    detail = "See the next departures and live buses heading here.";
+  } else if (type === "route") {
+    let description = "";
+    try {
+      const serviceID = Number(req.query.service);
+      if (Number.isInteger(serviceID)) {
+        const route = openDB().prepare("SELECT * FROM routes WHERE id = ?").get(serviceID);
+        if (route) description = describeRoute(openDB(), route);
+      }
+    } catch { /* DB optional for the share page */ }
+    heading = `The ${line || "bus"}`;
+    detail = description ? escapeHTML(description) : "Track this route live.";
+  } else {
+    heading = destination ? `The ${line} to ${destination}` : `The ${line || "bus"}`;
+    detail = "Follow it live, with arrival alerts so you never miss it.";
+  }
+
+  res.set("Content-Type", "text/html; charset=utf-8");
+  res.send(`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${heading} — Wait Less</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; font: 17px/1.5 -apple-system, system-ui, sans-serif;
+         display: flex; min-height: 100vh; align-items: center; justify-content: center;
+         background: #f4f6f8; color: #11161c; }
+  @media (prefers-color-scheme: dark) { body { background: #12161b; color: #f1f4f7; } }
+  .card { max-width: 420px; margin: 24px; padding: 28px; border-radius: 20px;
+          background: #fff; box-shadow: 0 10px 40px rgba(0,0,0,.08); text-align: center; }
+  @media (prefers-color-scheme: dark) { .card { background: #1b2027; } }
+  .badge { display: inline-block; background: #00b0c4; color: #fff; font-weight: 800;
+           padding: 6px 14px; border-radius: 10px; letter-spacing: .5px; }
+  h1 { font-size: 26px; margin: 18px 0 6px; }
+  p.detail { color: #6b7480; margin: 0 0 22px; }
+  .cta { display: block; background: #e02438; color: #fff; text-decoration: none;
+         font-weight: 700; padding: 14px; border-radius: 14px; margin-bottom: 10px; }
+  .note { font-size: 13px; color: #8a929c; }
+  .live { color: #e02438; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">🚌 Wait Less</span>
+    <h1>${heading}</h1>
+    <p class="detail">${detail}</p>
+    <a class="cta" href="https://waitless.bricksinabag.com">Open in Wait Less</a>
+    <p class="note">Wait Less shows live buses across the UK, with arrival alarms.<br>Coming soon to the App Store.</p>
+  </div>
+</body>
+</html>`);
 });
 
 // MARK: Health

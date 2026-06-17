@@ -53,7 +53,7 @@ final class AlarmManager {
     /// Returns false if notification permission was refused (so the UI can
     /// nudge the user to Settings).
     @discardableResult
-    func setAlarm(for bus: BusRef, distance: AlarmDistance,
+    func setAlarm(for bus: BusRef, metres: Double,
                   reference: CLLocationCoordinate2D) async -> Bool {
         let granted = await notifications.requestAuthorization()
         guard granted else { return false }
@@ -63,7 +63,7 @@ final class AlarmManager {
                                serviceID: bus.serviceID,
                                lineName: bus.lineName,
                                destination: bus.destination,
-                               thresholdMetres: distance.rawValue,
+                               thresholdMetres: metres,
                                reference: reference))
         persist()
         start()

@@ -1,32 +1,51 @@
 import CoreLocation
 import Foundation
 
-/// Distances offered when setting a bus arrival alarm. UK-friendly miles,
-/// stored internally as metres.
-enum AlarmDistance: Double, CaseIterable, Identifiable {
-    case quarterMile = 402.336
-    case halfMile = 804.672
-    case oneMile = 1609.344
-    case twoMiles = 3218.688
+/// One selectable alarm distance, stored internally as metres so the
+/// underlying maths is unit-agnostic.
+struct AlarmDistanceOption: Identifiable, Hashable {
+    let metres: Double
+    let label: String
+    var id: Double { metres }
+}
 
-    var id: Double { rawValue }
+/// Provides alarm distances and labels in the units the device is set to —
+/// kilometres for metric locales, miles for the UK and US.
+enum AlarmDistances {
 
-    var label: String {
-        switch self {
-        case .quarterMile: return "¼ mile away"
-        case .halfMile: return "½ mile away"
-        case .oneMile: return "1 mile away"
-        case .twoMiles: return "2 miles away"
-        }
+    static var usesMetric: Bool {
+        Locale.current.measurementSystem == .metric
     }
 
-    var shortLabel: String {
-        switch self {
-        case .quarterMile: return "¼ mile"
-        case .halfMile: return "½ mile"
-        case .oneMile: return "1 mile"
-        case .twoMiles: return "2 miles"
+    static var options: [AlarmDistanceOption] {
+        if usesMetric {
+            return [
+                AlarmDistanceOption(metres: 500, label: "500 m away"),
+                AlarmDistanceOption(metres: 1000, label: "1 km away"),
+                AlarmDistanceOption(metres: 2000, label: "2 km away"),
+                AlarmDistanceOption(metres: 3000, label: "3 km away"),
+            ]
         }
+        return [
+            AlarmDistanceOption(metres: 402.336, label: "¼ mile away"),
+            AlarmDistanceOption(metres: 804.672, label: "½ mile away"),
+            AlarmDistanceOption(metres: 1609.344, label: "1 mile away"),
+            AlarmDistanceOption(metres: 3218.688, label: "2 miles away"),
+        ]
+    }
+
+    /// Compact label for an arbitrary metre value, in the device's units.
+    static func shortLabel(forMetres metres: Double) -> String {
+        if usesMetric {
+            return metres >= 1000
+                ? String(format: "%.0f km", metres / 1000)
+                : String(format: "%.0f m", metres)
+        }
+        let miles = metres / 1609.344
+        if abs(miles - 0.25) < 0.05 { return "¼ mile" }
+        if abs(miles - 0.5) < 0.05 { return "½ mile" }
+        if abs(miles - 1) < 0.25 { return "1 mile" }
+        return String(format: "%.0f miles", miles.rounded())
     }
 }
 
@@ -68,7 +87,6 @@ struct BusAlarm: Identifiable, Codable, Hashable {
     }
 
     var distanceShortLabel: String {
-        AlarmDistance(rawValue: thresholdMetres)?.shortLabel
-            ?? String(format: "%.1f mi", thresholdMetres / 1609.344)
+        AlarmDistances.shortLabel(forMetres: thresholdMetres)
     }
 }

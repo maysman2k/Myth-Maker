@@ -42,11 +42,10 @@ struct ServiceDetailView: View {
                                     ? "Remove from favourites" : "Add to favourites")
             }
             ToolbarItem(placement: .topBarTrailing) {
-                if let url = service.webURL {
-                    ShareLink(item: url,
-                              message: Text("Route \(service.lineName) — \(service.description) 🚌")) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
+                ShareLink(item: WaitlessShare.route(line: service.lineName, serviceID: service.id),
+                          message: Text(WaitlessShare.routeMessage(line: service.lineName,
+                                                                   description: service.description))) {
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
         }

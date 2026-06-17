@@ -40,8 +40,8 @@ struct StopDetailView: View {
                                     ? "Remove from favourites" : "Add to favourites")
             }
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(item: URL(string: "https://bustimes.org/stops/\(stop.id)")!,
-                          message: Text("Bus times for \(stop.displayName) 🚌")) {
+                ShareLink(item: WaitlessShare.stop(name: stop.displayName, atco: stop.id),
+                          message: Text(WaitlessShare.stopMessage(name: stop.displayName))) {
                     Image(systemName: "square.and.arrow.up")
                 }
             }

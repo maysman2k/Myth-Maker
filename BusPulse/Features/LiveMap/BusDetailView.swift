@@ -49,8 +49,8 @@ struct BusDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog("Notify me when this bus is…", isPresented: $showAlarmOptions,
                             titleVisibility: .visible) {
-            ForEach(AlarmDistance.allCases) { distance in
-                Button(distance.label) { setAlarm(distance) }
+            ForEach(AlarmDistances.options) { option in
+                Button(option.label) { setAlarm(option.metres) }
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -182,14 +182,14 @@ struct BusDetailView: View {
         }
     }
 
-    private func setAlarm(_ distance: AlarmDistance) {
+    private func setAlarm(_ metres: Double) {
         guard let reference = location.location?.coordinate else {
             alarmFeedback = "Turn on location to set an arrival alarm — we need to know where you're waiting."
             return
         }
         alarmFeedback = nil
         Task {
-            let granted = await alarms.setAlarm(for: bus, distance: distance, reference: reference)
+            let granted = await alarms.setAlarm(for: bus, metres: metres, reference: reference)
             if !granted {
                 alarmFeedback = "Allow notifications for Wait Less in Settings to use arrival alarms."
             }
@@ -273,17 +273,14 @@ struct BusDetailView: View {
     // MARK: Helpers
 
     private var shareURL: URL {
-        vehicle?.webURL ?? URL(string: "https://bustimes.org")!
+        WaitlessShare.bus(line: bus.lineName,
+                          serviceID: bus.serviceID,
+                          destination: vehicle?.destination ?? bus.destination)
     }
 
     private var shareText: String {
-        var text = "🚌 Route \(bus.lineName)"
-        if let destination = vehicle?.destination ?? bus.destination { text += " to \(destination)" }
-        if let delay = vehicle?.delaySeconds {
-            text += " — \(DelayStatus(delaySeconds: delay).label.lowercased())"
-        }
-        text += ". Tracked live with Wait Less."
-        return text
+        WaitlessShare.busMessage(line: bus.lineName,
+                                 destination: vehicle?.destination ?? bus.destination)
     }
 
     private func loadJourney() async {
