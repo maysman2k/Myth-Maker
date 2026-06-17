@@ -153,21 +153,30 @@ struct StopDetailView: View {
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(nearestVehicles) { vehicle in
-                    HStack(spacing: BPSpacing.md) {
-                        RoutePill(lineName: vehicle.routeLabel,
-                                  backgroundHex: vehicle.liveryBackground,
-                                  foregroundHex: vehicle.liveryForeground)
-                        Text(vehicle.destination ?? "In service")
-                            .font(.subheadline)
-                            .lineLimit(1)
-                        Spacer()
-                        if let delay = vehicle.delaySeconds {
-                            DelayChip(status: DelayStatus(delaySeconds: delay))
+                    NavigationLink {
+                        BusDetailView(bus: BusRef(vehicle: vehicle))
+                    } label: {
+                        HStack(spacing: BPSpacing.md) {
+                            RoutePill(lineName: vehicle.routeLabel,
+                                      backgroundHex: vehicle.liveryBackground,
+                                      foregroundHex: vehicle.liveryForeground)
+                            Text(vehicle.destination ?? "In service")
+                                .font(.subheadline)
+                                .foregroundStyle(.primary)
+                                .lineLimit(1)
+                            Spacer()
+                            if let delay = vehicle.delaySeconds {
+                                DelayChip(status: DelayStatus(delaySeconds: delay))
+                            }
+                            Text(distanceLabel(for: vehicle))
+                                .font(.caption.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
                         }
-                        Text(distanceLabel(for: vehicle))
-                            .font(.caption.monospacedDigit())
-                            .foregroundStyle(.secondary)
                     }
+                    .buttonStyle(.plain)
                     .accessibilityElement(children: .combine)
                 }
             }
