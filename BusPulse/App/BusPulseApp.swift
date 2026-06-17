@@ -16,15 +16,11 @@ struct BusPulseApp: App {
     private let api: BusTimesAPIProviding
 
     init() {
-        let api: BusTimesAPIProviding = {
-            #if DEBUG
-            return BusTimesAPI(baseURL: URL(string: "http://localhost:3000")!)
-            #else
-            // Set appToken to match the server's APP_SHARED_TOKEN when you deploy.
-            return BusTimesAPI(baseURL: URL(string: "https://api.your-domain.com")!,
-                               appToken: "")
-            #endif
-        }()
+        // Live backend on the droplet — the app talks to this on every
+        // build now, so no local server is needed. For local backend work,
+        // temporarily swap in: URL(string: "http://localhost:3000")!
+        let api: BusTimesAPIProviding =
+            BusTimesAPI(baseURL: URL(string: "https://waitless.bricksinabag.com")!)
         self.api = api
         let settings = SettingsStore()
         _settings = State(initialValue: settings)
