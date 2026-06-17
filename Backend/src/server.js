@@ -317,6 +317,101 @@ app.get("/api/trips/:id/", (req, res) => {
   res.json(tripJSON(db, trip));
 });
 
+// MARK: Journey planner — GET /api/journey (direct buses only, v1)
+// Finds routes whose journeys call at a stop near the start before a stop
+// near the destination, with the next few departures. No transfers yet.
+
+function ukSecondsSinceMidnight(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
+  }).formatToParts(date);
+  const value = (type) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  return (value("hour") % 24) * 3600 + value("minute") * 60 + value("second");
+}
+
+app.get("/api/journey", (req, res) => {
+  const db = openDB();
+  const fromLat = Number(req.query.fromLat);
+  const fromLon = Number(req.query.fromLon);
+  const toLat = Number(req.query.toLat);
+  const toLon = Number(req.query.toLon);
+  if (![fromLat, fromLon, toLat, toLon].every(Number.isFinite)) {
+    return res.status(400).json({ error: "fromLat/fromLon/toLat/toLon required" });
+  }
+
+  const stopsNear = (lat, lon) => {
+    const dLat = 0.006; // ~650 m
+    const dLon = 0.006 / Math.max(0.2, Math.cos((lat * Math.PI) / 180));
+    return db
+      .prepare(
+        `SELECT atco, name FROM stops
+         WHERE lat BETWEEN ? AND ? AND lon BETWEEN ? AND ? LIMIT 40`,
+      )
+      .all(lat - dLat, lat + dLat, lon - dLon, lon + dLon);
+  };
+
+  const fromStops = stopsNear(fromLat, fromLon);
+  const toStops = stopsNear(toLat, toLon);
+  if (fromStops.length === 0 || toStops.length === 0) return res.json({ options: [] });
+
+  const toName = new Map(toStops.map((s) => [s.atco, s.name]));
+  const fromName = new Map(fromStops.map((s) => [s.atco, s.name]));
+  const ph = (arr) => arr.map(() => "?").join(",");
+
+  const pairs = db
+    .prepare(
+      `SELECT DISTINCT trips.route_id AS route_id, st1.atco AS from_atco, st2.atco AS to_atco
+       FROM stop_times st1
+       JOIN stop_times st2 ON st2.trip_id = st1.trip_id AND st2.seq > st1.seq
+       JOIN trips ON trips.id = st1.trip_id
+       WHERE st1.atco IN (${ph(fromStops)}) AND st2.atco IN (${ph(toStops)})
+       LIMIT 300`,
+    )
+    .all(...fromStops.map((s) => s.atco), ...toStops.map((s) => s.atco));
+
+  // One option per route (first from/to pairing seen).
+  const byRoute = new Map();
+  for (const p of pairs) if (!byRoute.has(p.route_id)) byRoute.set(p.route_id, p);
+
+  const active = activeServiceIDs(new Date().toISOString().slice(0, 10));
+  const nowSeconds = ukSecondsSinceMidnight();
+  const departuresStmt = db.prepare(
+    `SELECT trips.service_id AS service_id, st.departure_seconds AS dep
+     FROM trips JOIN stop_times st ON st.trip_id = trips.id
+     WHERE trips.route_id = ? AND st.atco = ? AND st.departure_seconds IS NOT NULL
+     ORDER BY st.departure_seconds`,
+  );
+
+  const options = [];
+  for (const [routeID, pair] of byRoute) {
+    const route = db.prepare("SELECT * FROM routes WHERE id = ?").get(routeID);
+    if (!route) continue;
+    const nextDeps = departuresStmt
+      .all(routeID, pair.from_atco)
+      .filter((t) => active.has(t.service_id) && t.dep >= nowSeconds)
+      .slice(0, 3)
+      .map((t) => secondsToTime(t.dep));
+    options.push({
+      service: { id: route.id, line_name: route.line_name, description: describeRoute(db, route) },
+      from: { atco: pair.from_atco, name: fromName.get(pair.from_atco) ?? pair.from_atco },
+      to: { atco: pair.to_atco, name: toName.get(pair.to_atco) ?? pair.to_atco },
+      departures: nextDeps,
+      nextDepartureSeconds: nextDeps.length
+        ? (TimeOfDaySeconds(nextDeps[0]) ?? 99_999) : 99_999,
+    });
+  }
+
+  // Soonest-departing first, then routes with no upcoming departures.
+  options.sort((a, b) => a.nextDepartureSeconds - b.nextDepartureSeconds);
+  res.json({ options: options.slice(0, 15).map(({ nextDepartureSeconds, ...rest }) => rest) });
+});
+
+function TimeOfDaySeconds(hhmm) {
+  if (!hhmm) return null;
+  const [h, m] = hhmm.split(":").map(Number);
+  return Number.isFinite(h) && Number.isFinite(m) ? h * 3600 + m * 60 : null;
+}
+
 // MARK: Route geometry — GET /services/:id.json
 
 app.get("/services/:id.json", (req, res) => {

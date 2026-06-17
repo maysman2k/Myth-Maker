@@ -48,6 +48,15 @@ struct ServiceSearchView: View {
         .onChange(of: query) {
             search()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    JourneyPlannerView()
+                } label: {
+                    Label("Plan a journey", systemImage: "point.topleft.down.to.point.bottomright.curvepath")
+                }
+            }
+        }
     }
 
     private func serviceRow(_ service: Service) -> some View {

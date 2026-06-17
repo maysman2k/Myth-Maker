@@ -311,6 +311,31 @@ struct TripTimeDTO: Decodable {
     }
 }
 
+// MARK: - /api/journey (direct buses)
+
+struct JourneyResponseDTO: Decodable {
+    let options: [JourneyOptionDTO]
+}
+
+struct JourneyOptionDTO: Decodable {
+    let service: ServiceDTO
+    let from: StopRefDTO
+    let to: StopRefDTO
+    let departures: [String]
+
+    struct StopRefDTO: Decodable {
+        let atco: String?
+        let name: String?
+    }
+
+    func toDomain() -> JourneyOption {
+        JourneyOption(service: service.toDomain(),
+                      fromStopName: from.name ?? "Stop",
+                      toStopName: to.name ?? "Stop",
+                      departures: departures)
+    }
+}
+
 // MARK: - /services/{id}.json (route geometry, best effort)
 
 struct ServiceGeometryDTO: Decodable {

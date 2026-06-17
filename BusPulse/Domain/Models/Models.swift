@@ -117,6 +117,18 @@ struct TimetableStopTime: Codable, Hashable {
     }
 }
 
+// MARK: - Journey planner (direct buses)
+
+struct JourneyOption: Identifiable {
+    var service: Service
+    var fromStopName: String
+    var toStopName: String
+    /// Next few departure times at the boarding stop, e.g. ["07:05", "07:35"].
+    var departures: [String]
+
+    var id: Int { service.id }
+}
+
 // MARK: - A computed departure for a departure board
 
 struct Departure: Identifiable, Hashable {
