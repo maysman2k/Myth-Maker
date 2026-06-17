@@ -50,10 +50,20 @@ enum AlarmDistances {
 }
 
 /// An active "tell me when this bus is near" alarm. The reference point is
+/// What kind of arrival the alarm watches for.
+enum AlarmKind: String, Codable, Hashable {
+    /// The bus comes within a chosen distance of where the user set it.
+    case proximity
+    /// The bus reaches a specific stop (e.g. a parent watching a public bus
+    /// reach a stop — it follows the bus, not any person).
+    case stopArrival
+}
+
 /// where the user was standing when they set it (e.g. their stop), so the
 /// alarm is stable even if they move around while waiting.
 struct BusAlarm: Identifiable, Codable, Hashable {
     var id: String
+    var kind: AlarmKind
     var vehicleID: Int
     var serviceID: Int?
     var lineName: String
@@ -61,17 +71,22 @@ struct BusAlarm: Identifiable, Codable, Hashable {
     var thresholdMetres: Double
     var referenceLatitude: Double
     var referenceLongitude: Double
+    /// Stop name for `.stopArrival` alarms.
+    var targetName: String?
     var createdAt: Date
 
     init(id: String = UUID().uuidString,
+         kind: AlarmKind = .proximity,
          vehicleID: Int,
          serviceID: Int?,
          lineName: String,
          destination: String?,
          thresholdMetres: Double,
          reference: CLLocationCoordinate2D,
+         targetName: String? = nil,
          createdAt: Date = .now) {
         self.id = id
+        self.kind = kind
         self.vehicleID = vehicleID
         self.serviceID = serviceID
         self.lineName = lineName
@@ -79,6 +94,7 @@ struct BusAlarm: Identifiable, Codable, Hashable {
         self.thresholdMetres = thresholdMetres
         self.referenceLatitude = reference.latitude
         self.referenceLongitude = reference.longitude
+        self.targetName = targetName
         self.createdAt = createdAt
     }
 

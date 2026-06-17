@@ -10,6 +10,11 @@ struct LiveMapView: View {
     enum Mode: Equatable {
         case explore
         case routes(ServiceFocus)
+
+        var isExplore: Bool {
+            if case .explore = self { return true }
+            return false
+        }
     }
 
     @Environment(\.busAPI) private var api
@@ -41,16 +46,33 @@ struct LiveMapView: View {
     /// this is what keeps the national feed from swamping the device.
     private let maxObjectArea = 0.05
 
+    /// Set once we've centred on the user, so we don't yank the map back if
+    /// they've panned away.
+    @State private var didCentreOnUser = false
+
     init(mode: Mode = .explore) {
         self.mode = mode
         switch mode {
         case .explore:
-            _position = State(initialValue: .userLocation(fallback: .region(
+            // Start on a sensible region; jump to the user once a fix arrives
+            // (see centreOnUserOnce), then leave the camera to the user.
+            _position = State(initialValue: .region(
                 MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 53.4808, longitude: -2.2426),
-                                   span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)))))
+                                   span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))))
         case .routes(let value):
             _focus = State(initialValue: value)
             _position = State(initialValue: .automatic)
+        }
+    }
+
+    private func centreOnUserOnce() {
+        guard mode.isExplore, !didCentreOnUser,
+              let coordinate = location.location?.coordinate else { return }
+        didCentreOnUser = true
+        withAnimation {
+            position = .region(MKCoordinateRegion(
+                center: coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)))
         }
     }
 
@@ -108,6 +130,10 @@ struct LiveMapView: View {
         }
         .task {
             location.requestAccess()
+            centreOnUserOnce()
+        }
+        .onChange(of: location.location?.timestamp) { _, _ in
+            centreOnUserOnce()
         }
         .onChange(of: showBuses) { _, on in
             if on {

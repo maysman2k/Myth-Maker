@@ -49,6 +49,19 @@ final class LocalNotifications: NSObject, UNUserNotificationCenterDelegate {
         UNUserNotificationCenter.current().add(request)
     }
 
+    /// Fires when a tracked bus reaches the chosen stop.
+    func fireBusAtStop(lineName: String, stopName: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "The \(lineName) has arrived"
+        content.body = "The \(lineName) has reached \(stopName)."
+        content.sound = .default
+
+        let request = UNNotificationRequest(identifier: "bus-stop-alarm-\(UUID().uuidString)",
+                                            content: content,
+                                            trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+    }
+
     // Show the alarm even if the app is open when it fires.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification) async

@@ -17,6 +17,7 @@ struct BusDetailView: View {
     @State private var journey: TimetableTrip?
     @State private var journeyFailed = false
     @State private var showAlarmOptions = false
+    @State private var showStopPicker = false
     @State private var alarmFeedback: String?
 
     init(bus: BusRef) {
@@ -55,6 +56,13 @@ struct BusDetailView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("We'll buzz you when the \(bus.lineName) gets within range of where you are now. Keep the app open or recently used for the alarm to fire.")
+        }
+        .sheet(isPresented: $showStopPicker) {
+            if let serviceID = bus.serviceID {
+                AlarmStopPickerSheet(serviceID: serviceID, lineName: bus.lineName) { name, coordinate in
+                    setStopAlarm(name: name, coordinate: coordinate)
+                }
+            }
         }
         .task {
             if let serviceID = bus.serviceID {
@@ -143,29 +151,18 @@ struct BusDetailView: View {
     @ViewBuilder
     private var alarmButton: some View {
         VStack(spacing: BPSpacing.sm) {
-            if let existing = alarms.alarm(forVehicle: bus.vehicleID) {
-                HStack(spacing: BPSpacing.md) {
-                    Image(systemName: "bell.fill")
-                        .foregroundStyle(BPColor.signal)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Alarm set")
-                            .font(.subheadline.weight(.semibold))
-                        Text("We'll buzz you when it's \(existing.distanceShortLabel) away.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    Spacer()
-                    Button("Cancel", role: .destructive) {
-                        alarms.cancelAlarm(forVehicle: bus.vehicleID)
-                    }
-                    .font(.caption.weight(.bold))
+            // "Near me" alarm.
+            if let existing = alarms.alarm(forVehicle: bus.vehicleID, kind: .proximity) {
+                alarmRow(icon: "bell.fill",
+                         title: "Near-me alarm set",
+                         detail: "We'll buzz you when it's \(existing.distanceShortLabel) away.") {
+                    alarms.cancelAlarm(forVehicle: bus.vehicleID, kind: .proximity)
                 }
-                .bpCard()
             } else {
                 Button {
                     showAlarmOptions = true
                 } label: {
-                    Label("Set arrival alarm", systemImage: "bell.badge")
+                    Label("Alarm when it's near me", systemImage: "bell.badge")
                         .font(.subheadline.weight(.semibold))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, BPSpacing.sm)
@@ -173,6 +170,26 @@ struct BusDetailView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(BPColor.signal)
             }
+
+            // "Reaches a stop" alarm.
+            if let existing = alarms.alarm(forVehicle: bus.vehicleID, kind: .stopArrival) {
+                alarmRow(icon: "mappin.circle.fill",
+                         title: "Stop alarm set",
+                         detail: "We'll tell you when it reaches \(existing.targetName ?? "the stop").") {
+                    alarms.cancelAlarm(forVehicle: bus.vehicleID, kind: .stopArrival)
+                }
+            } else if bus.serviceID != nil {
+                Button {
+                    showStopPicker = true
+                } label: {
+                    Label("Alarm when it reaches a stop", systemImage: "mappin.and.ellipse")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, BPSpacing.sm)
+                }
+                .buttonStyle(.bordered)
+            }
+
             if let alarmFeedback {
                 Text(alarmFeedback)
                     .font(.caption)
@@ -182,16 +199,46 @@ struct BusDetailView: View {
         }
     }
 
+    private func alarmRow(icon: String, title: String, detail: String,
+                          cancel: @escaping () -> Void) -> some View {
+        HStack(spacing: BPSpacing.md) {
+            Image(systemName: icon)
+                .foregroundStyle(BPColor.signal)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                Text(detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Button("Cancel", role: .destructive, action: cancel)
+                .font(.caption.weight(.bold))
+        }
+        .bpCard()
+    }
+
     private func setAlarm(_ metres: Double) {
         guard let reference = location.location?.coordinate else {
-            alarmFeedback = "Turn on location to set an arrival alarm — we need to know where you're waiting."
+            alarmFeedback = "Turn on location to set a near-me alarm — we need to know where you're waiting."
             return
         }
         alarmFeedback = nil
         Task {
             let granted = await alarms.setAlarm(for: bus, metres: metres, reference: reference)
             if !granted {
-                alarmFeedback = "Allow notifications for Wait Less in Settings to use arrival alarms."
+                alarmFeedback = "Allow notifications for Wait Less in Settings to use alarms."
+            }
+        }
+    }
+
+    private func setStopAlarm(name: String, coordinate: CLLocationCoordinate2D) {
+        alarmFeedback = nil
+        Task {
+            let granted = await alarms.setStopArrivalAlarm(for: bus, stopName: name,
+                                                           stopCoordinate: coordinate)
+            if !granted {
+                alarmFeedback = "Allow notifications for Wait Less in Settings to use alarms."
             }
         }
     }

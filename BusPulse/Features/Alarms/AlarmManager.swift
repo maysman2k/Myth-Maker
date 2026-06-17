@@ -46,25 +46,48 @@ final class AlarmManager {
         alarms.contains { $0.vehicleID == vehicleID }
     }
 
-    func alarm(forVehicle vehicleID: Int) -> BusAlarm? {
-        alarms.first { $0.vehicleID == vehicleID }
+    func alarm(forVehicle vehicleID: Int, kind: AlarmKind) -> BusAlarm? {
+        alarms.first { $0.vehicleID == vehicleID && $0.kind == kind }
     }
 
-    /// Returns false if notification permission was refused (so the UI can
-    /// nudge the user to Settings).
+    /// "Tell me when it's near me." Returns false if notification permission
+    /// was refused (so the UI can nudge the user to Settings).
     @discardableResult
     func setAlarm(for bus: BusRef, metres: Double,
                   reference: CLLocationCoordinate2D) async -> Bool {
         let granted = await notifications.requestAuthorization()
         guard granted else { return false }
 
-        alarms.removeAll { $0.vehicleID == bus.vehicleID }
-        alarms.append(BusAlarm(vehicleID: bus.vehicleID,
+        alarms.removeAll { $0.vehicleID == bus.vehicleID && $0.kind == .proximity }
+        alarms.append(BusAlarm(kind: .proximity,
+                               vehicleID: bus.vehicleID,
                                serviceID: bus.serviceID,
                                lineName: bus.lineName,
                                destination: bus.destination,
                                thresholdMetres: metres,
                                reference: reference))
+        persist()
+        start()
+        return true
+    }
+
+    /// "Tell me when this bus reaches a stop." Follows the public bus to the
+    /// chosen stop; a small radius counts as "arrived".
+    @discardableResult
+    func setStopArrivalAlarm(for bus: BusRef, stopName: String,
+                             stopCoordinate: CLLocationCoordinate2D) async -> Bool {
+        let granted = await notifications.requestAuthorization()
+        guard granted else { return false }
+
+        alarms.removeAll { $0.vehicleID == bus.vehicleID && $0.kind == .stopArrival }
+        alarms.append(BusAlarm(kind: .stopArrival,
+                               vehicleID: bus.vehicleID,
+                               serviceID: bus.serviceID,
+                               lineName: bus.lineName,
+                               destination: bus.destination,
+                               thresholdMetres: 120,
+                               reference: stopCoordinate,
+                               targetName: stopName))
         persist()
         start()
         return true
@@ -76,8 +99,8 @@ final class AlarmManager {
         if alarms.isEmpty { stop() }
     }
 
-    func cancelAlarm(forVehicle vehicleID: Int) {
-        alarms.removeAll { $0.vehicleID == vehicleID }
+    func cancelAlarm(forVehicle vehicleID: Int, kind: AlarmKind) {
+        alarms.removeAll { $0.vehicleID == vehicleID && $0.kind == kind }
         persist()
         if alarms.isEmpty { stop() }
     }
@@ -89,8 +112,9 @@ final class AlarmManager {
         pollTask = Task { [weak self] in
             while let self, !self.alarms.isEmpty, !Task.isCancelled {
                 await self.check()
-                let interval = max(15, self.settings.refreshSeconds)
-                try? await Task.sleep(for: .seconds(interval))
+                // Poll briskly while an alarm is live — the server itself
+                // updates every ~10s, so faster than this gains nothing.
+                try? await Task.sleep(for: .seconds(10))
             }
             await self?.clearTask()
         }
@@ -123,15 +147,33 @@ final class AlarmManager {
         for alarm in alarms {
             guard let vehicle = vehicles.first(where: { $0.id == alarm.vehicleID }) else { continue }
             let busLocation = CLLocation(latitude: vehicle.latitude, longitude: vehicle.longitude)
-            if busLocation.distance(from: alarm.referenceLocation) <= alarm.thresholdMetres {
+            let distance = busLocation.distance(from: alarm.referenceLocation)
+            // Compensate for stale data: estimate how far the bus has likely
+            // travelled since its last reported position and fire that bit
+            // earlier. Only for "near me" alarms — a "reached the stop" alarm
+            // should mean it genuinely arrived, so no lead there.
+            let lead: Double
+            if alarm.kind == .proximity, let recorded = vehicle.recordedAt {
+                let age = max(0, now.timeIntervalSince(recorded))
+                lead = min(400, 9.0 * age) // ~20 mph * data age, capped at 400 m
+            } else {
+                lead = 0
+            }
+            if distance <= alarm.thresholdMetres + lead {
                 triggered.append(alarm)
             }
         }
 
         for alarm in triggered {
-            notifications.fireBusNearby(lineName: alarm.lineName,
-                                        destination: alarm.destination,
-                                        distanceLabel: alarm.distanceShortLabel)
+            switch alarm.kind {
+            case .proximity:
+                notifications.fireBusNearby(lineName: alarm.lineName,
+                                            destination: alarm.destination,
+                                            distanceLabel: alarm.distanceShortLabel)
+            case .stopArrival:
+                notifications.fireBusAtStop(lineName: alarm.lineName,
+                                            stopName: alarm.targetName ?? "the stop")
+            }
         }
         if !triggered.isEmpty {
             alarms.removeAll { alarm in triggered.contains { $0.id == alarm.id } }
