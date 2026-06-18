@@ -132,6 +132,35 @@ struct JourneyOption: Identifiable {
     var id: Int { service.id }
 }
 
+/// A full plan for a from→to query: direct buses plus single-change journeys.
+struct JourneyPlan {
+    var direct: [JourneyOption]
+    var itineraries: [JourneyItinerary]
+}
+
+/// A journey made of legs — bus, (walk), bus — when no single bus does it.
+struct JourneyItinerary: Identifiable {
+    let id = UUID()
+    var changes: Int
+    /// Final arrival time at the destination, "HH:MM:SS".
+    var arrival: String?
+    var legs: [JourneyLeg]
+}
+
+struct JourneyLeg: Identifiable {
+    let id = UUID()
+    enum Kind: String { case bus, walk }
+    var kind: Kind
+    // Bus legs:
+    var service: Service? = nil
+    var fromStopName: String? = nil
+    var toStopName: String? = nil
+    var departure: String? = nil
+    var arrival: String? = nil
+    // Walk legs:
+    var walkMeters: Int? = nil
+}
+
 // MARK: - A computed departure for a departure board
 
 struct Departure: Identifiable, Hashable {

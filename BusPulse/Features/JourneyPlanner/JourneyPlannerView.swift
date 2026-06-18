@@ -25,7 +25,8 @@ struct JourneyPlannerView: View {
     @FocusState private var focusedField: Field?
     @StateObject private var places = PlaceCompleter()
 
-    @State private var options: [JourneyOption] = []
+    @State private var direct: [JourneyOption] = []
+    @State private var itineraries: [JourneyItinerary] = []
     @State private var state: LoadState = .idle
 
     var body: some View {
@@ -151,22 +152,93 @@ struct JourneyPlannerView: View {
         case .failed(let message):
             BPEmptyState(symbol: "exclamationmark.triangle", title: "Couldn't plan that", message: message)
         case .loaded:
-            VStack(alignment: .leading, spacing: BPSpacing.md) {
-                Text("Direct buses").font(BPFont.cardTitle)
-                ForEach(options) { option in
-                    NavigationLink {
-                        ServiceDetailView(service: option.service)
-                    } label: {
-                        optionCard(option)
+            VStack(alignment: .leading, spacing: BPSpacing.lg) {
+                if !direct.isEmpty {
+                    VStack(alignment: .leading, spacing: BPSpacing.md) {
+                        Text("Direct buses").font(BPFont.cardTitle)
+                        ForEach(direct) { option in
+                            NavigationLink {
+                                ServiceDetailView(service: option.service)
+                            } label: {
+                                optionCard(option)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
-                    .buttonStyle(.plain)
                 }
-                Text("Sorted by shortest walk to a stop. Shows buses you can take without changing — multi-leg journeys with transfers are a planned enhancement.")
+
+                if !itineraries.isEmpty {
+                    VStack(alignment: .leading, spacing: BPSpacing.md) {
+                        Text(direct.isEmpty ? "No direct bus — with one change" : "Or with one change")
+                            .font(BPFont.cardTitle)
+                        if direct.isEmpty {
+                            Text("There's no single bus for this trip. These journeys take one change of bus — times are checked so you can make the connection.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        ForEach(itineraries) { itineraryCard($0) }
+                    }
+                }
+
+                Text("Sorted by shortest walk / soonest arrival. Direct buses and journeys with a single change — trips needing two or more changes aren't planned yet.")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }
         }
     }
+
+    private func itineraryCard(_ itinerary: JourneyItinerary) -> some View {
+        VStack(alignment: .leading, spacing: BPSpacing.sm) {
+            HStack {
+                Label(itinerary.changes == 1 ? "1 change" : "\(itinerary.changes) changes",
+                      systemImage: "arrow.triangle.swap")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(BPColor.signal)
+                Spacer()
+                if let arrival = itinerary.arrival {
+                    Text("Arrives \(hhmm(arrival))")
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                }
+            }
+            ForEach(itinerary.legs) { leg in
+                legRow(leg)
+            }
+        }
+        .bpCard()
+    }
+
+    @ViewBuilder
+    private func legRow(_ leg: JourneyLeg) -> some View {
+        switch leg.kind {
+        case .walk:
+            Label("Walk \(walkText(leg.walkMeters ?? 0)) to the next stop", systemImage: "figure.walk")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding(.leading, BPSpacing.xs)
+        case .bus:
+            HStack(spacing: BPSpacing.md) {
+                if let service = leg.service {
+                    RoutePill(lineName: service.lineName)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(leg.fromStopName ?? "Stop") → \(leg.toStopName ?? "Stop")")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                    if let departure = leg.departure, let arrival = leg.arrival {
+                        Text("\(hhmm(departure)) – \(hhmm(arrival))")
+                            .font(.caption2.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+            }
+        }
+    }
+
+    /// "HH:MM:SS" (or "HH:MM") → "HH:MM".
+    private func hhmm(_ time: String) -> String { String(time.prefix(5)) }
 
     private func optionCard(_ option: JourneyOption) -> some View {
         VStack(alignment: .leading, spacing: BPSpacing.sm) {
@@ -287,10 +359,11 @@ struct JourneyPlannerView: View {
         state = .loading
         Task {
             do {
-                let found = try await api.journeyOptions(fromLat: from.latitude, fromLon: from.longitude,
-                                                         toLat: to.latitude, toLon: to.longitude)
-                options = found
-                state = found.isEmpty ? .empty : .loaded
+                let plan = try await api.journeyOptions(fromLat: from.latitude, fromLon: from.longitude,
+                                                        toLat: to.latitude, toLon: to.longitude)
+                direct = plan.direct
+                itineraries = plan.itineraries
+                state = (plan.direct.isEmpty && plan.itineraries.isEmpty) ? .empty : .loaded
             } catch {
                 state = .failed(error.localizedDescription)
             }

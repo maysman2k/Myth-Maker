@@ -330,6 +330,14 @@ function ukSecondsSinceMidnight(date = new Date()) {
   return (value("hour") % 24) * 3600 + value("minute") * 60 + value("second");
 }
 
+/// Straight-line distance in metres (equirectangular — accurate enough at the
+/// short ranges used here, and cheap).
+function metresBetween(lat1, lon1, lat2, lon2) {
+  const x = (lon2 - lon1) * 111_320 * Math.cos((lat1 * Math.PI) / 180);
+  const y = (lat2 - lat1) * 111_320;
+  return Math.sqrt(x * x + y * y);
+}
+
 app.get("/api/journey", (req, res) => {
   const db = openDB();
   const fromLat = Number(req.query.fromLat);
@@ -339,14 +347,6 @@ app.get("/api/journey", (req, res) => {
   if (![fromLat, fromLon, toLat, toLon].every(Number.isFinite)) {
     return res.status(400).json({ error: "fromLat/fromLon/toLat/toLon required" });
   }
-
-  // Distance in metres between two points (equirectangular — accurate enough
-  // at these short ranges and cheap).
-  const metresBetween = (lat1, lon1, lat2, lon2) => {
-    const x = (lon2 - lon1) * 111_320 * Math.cos((lat1 * Math.PI) / 180);
-    const y = (lat2 - lat1) * 111_320;
-    return Math.sqrt(x * x + y * y);
-  };
 
   // Stops within `radiusM` of a point, NEAREST FIRST, capped. Ordering by
   // distance (not arbitrary rowid) matters in dense city centres, where a
@@ -445,12 +445,179 @@ app.get("/api/journey", (req, res) => {
       a.totalWalk - b.totalWalk ||
       a.nextDepartureSeconds - b.nextDepartureSeconds,
   );
-  res.json({
-    options: options
-      .slice(0, 15)
-      .map(({ totalWalk, nextDepartureSeconds, ...rest }) => rest),
-  });
+  const direct = options
+    .slice(0, 15)
+    .map(({ totalWalk, nextDepartureSeconds, ...rest }) => rest);
+
+  // When there's no good direct bus, work out journeys with a single change
+  // (one bus, an optional short walk, a second bus) so we can tell the rider
+  // "you'll need a change" with the actual route — not just a dead end.
+  const interchange = direct.length >= 3
+    ? []
+    : oneChangeJourneys({ db, fromStops, toStops, active, now: nowSeconds });
+
+  res.json({ options: direct, interchange });
 });
+
+/// Single-change journeys: board a near-term bus from the origin, ride to an
+/// interchange, optionally walk a short way, then catch a second bus that
+/// reaches the destination — with timing checked so the connection is real.
+/// Bounded throughout so one request can't run away on the national dataset.
+function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
+  const LEG1_WINDOW = 75 * 60;   // first bus departs within 75 min
+  const LOOKAHEAD = 3 * 3600;    // arrive at destination within 3 h
+  const TRANSFER_BUFFER = 180;   // need at least 3 min to change
+  const MAX_WALK = 400;          // metres you'll walk between stops to change
+  const WALK_SPEED = 1.3;        // m/s
+  const LEG1_TRIPS = 60, LEG2_TRIPS = 200, DOWNSTREAM = 40, UPSTREAM = 40;
+  const REACH_CAP = 250, BOARD_CAP = 500;
+
+  const ph = (arr) => arr.map(() => "?").join(",");
+  const fromAtcos = fromStops.map((s) => s.atco);
+  const toAtcos = toStops.map((s) => s.atco);
+  const fromDist = new Map(fromStops.map((s) => [s.atco, s.dist]));
+  const toDist = new Map(toStops.map((s) => [s.atco, s.dist]));
+  const fromName = new Map(fromStops.map((s) => [s.atco, s.name]));
+  const toName = new Map(toStops.map((s) => [s.atco, s.name]));
+
+  // Leg 1: near-term departures from the origin, and the earliest each
+  // downstream stop can be reached (those are the candidate interchanges).
+  const leg1 = db
+    .prepare(
+      `SELECT st.trip_id AS trip_id, st.atco AS board_atco, st.seq AS board_seq,
+              st.departure_seconds AS dep, trips.route_id AS route_id, trips.service_id AS service_id
+       FROM stop_times st JOIN trips ON trips.id = st.trip_id
+       WHERE st.atco IN (${ph(fromAtcos)}) AND st.departure_seconds BETWEEN ? AND ?
+       ORDER BY st.departure_seconds LIMIT 600`,
+    )
+    .all(...fromAtcos, now, now + LEG1_WINDOW)
+    .filter((r) => active.has(r.service_id));
+
+  const downstreamStmt = db.prepare(
+    `SELECT atco, COALESCE(arrival_seconds, departure_seconds) AS arr, seq
+     FROM stop_times WHERE trip_id = ? AND seq > ? ORDER BY seq LIMIT ${DOWNSTREAM}`,
+  );
+
+  const reach = new Map(); // interchange atco -> { arrive, routeId, boardAtco, boardDep }
+  let used1 = 0;
+  for (const b of leg1) {
+    if (used1++ >= LEG1_TRIPS) break;
+    for (const s of downstreamStmt.all(b.trip_id, b.board_seq)) {
+      if (s.arr == null || fromDist.has(s.atco)) continue; // still in origin cluster
+      const prev = reach.get(s.atco);
+      if (!prev || s.arr < prev.arrive) {
+        reach.set(s.atco, { arrive: s.arr, routeId: b.route_id, boardAtco: b.board_atco, boardDep: b.dep });
+      }
+    }
+  }
+  if (reach.size === 0) return [];
+
+  // Leg 2: near-term arrivals into the destination, and from which upstream
+  // stops (and when) you could have boarded to make them.
+  const leg2 = db
+    .prepare(
+      `SELECT st.trip_id AS trip_id, st.atco AS alight_atco, st.seq AS alight_seq,
+              COALESCE(st.arrival_seconds, st.departure_seconds) AS arr,
+              trips.route_id AS route_id, trips.service_id AS service_id
+       FROM stop_times st JOIN trips ON trips.id = st.trip_id
+       WHERE st.atco IN (${ph(toAtcos)})
+         AND COALESCE(st.arrival_seconds, st.departure_seconds) BETWEEN ? AND ?
+       ORDER BY 4 LIMIT 1500`,
+    )
+    .all(...toAtcos, now, now + LOOKAHEAD)
+    .filter((r) => active.has(r.service_id));
+
+  const upstreamStmt = db.prepare(
+    `SELECT atco, departure_seconds AS dep, seq
+     FROM stop_times WHERE trip_id = ? AND seq < ? AND departure_seconds IS NOT NULL
+     ORDER BY seq LIMIT ${UPSTREAM}`,
+  );
+
+  const board2 = new Map(); // boarding atco -> [{ dep, routeId, alightAtco, arriveD }]
+  let used2 = 0;
+  for (const a of leg2) {
+    if (used2++ >= LEG2_TRIPS) break;
+    if (a.arr == null) continue;
+    for (const s of upstreamStmt.all(a.trip_id, a.alight_seq)) {
+      if (toDist.has(s.atco)) continue; // boarding inside destination cluster = basically direct
+      const list = board2.get(s.atco) ?? [];
+      list.push({ dep: s.dep, routeId: a.route_id, alightAtco: a.alight_atco, arriveD: a.arr });
+      board2.set(s.atco, list);
+    }
+  }
+  if (board2.size === 0) return [];
+  for (const list of board2.values()) list.sort((p, q) => p.dep - q.dep);
+
+  // Coordinates for the interchange stops (needed to measure walking transfers).
+  const interAtcos = [...new Set([...reach.keys(), ...board2.keys()])];
+  const coord = new Map();
+  for (let i = 0; i < interAtcos.length; i += 400) {
+    const chunk = interAtcos.slice(i, i + 400);
+    for (const r of db
+      .prepare(`SELECT atco, name, lat, lon FROM stops WHERE atco IN (${ph(chunk)})`)
+      .all(...chunk)) {
+      coord.set(r.atco, r);
+    }
+  }
+
+  // Connect leg 1 → (optional walk) → leg 2, keeping only feasible timings.
+  const reachArr = [...reach.entries()].sort((p, q) => p[1].arrive - q[1].arrive).slice(0, REACH_CAP);
+  const boardArr = [...board2.keys()].slice(0, BOARD_CAP);
+  const journeys = [];
+  for (const [x, a] of reachArr) {
+    const consider = (y, walk) => {
+      const readyAt = a.arrive + TRANSFER_BUFFER + walk / WALK_SPEED;
+      const opt = board2.get(y)?.find((o) => o.dep >= readyAt && o.routeId !== a.routeId);
+      if (opt) journeys.push({ x, y, walk, a, opt });
+    };
+    if (board2.has(x)) consider(x, 0); // change at the same stop
+    const xc = coord.get(x);
+    if (xc) {
+      for (const y of boardArr) {
+        if (y === x) continue;
+        const yc = coord.get(y);
+        if (!yc) continue;
+        const w = metresBetween(xc.lat, xc.lon, yc.lat, yc.lon);
+        if (w <= MAX_WALK) consider(y, w);
+      }
+    }
+  }
+  if (journeys.length === 0) return [];
+
+  // Best journey per route-pair, soonest arrival at the destination first.
+  const byPair = new Map();
+  for (const j of journeys) {
+    const key = `${j.a.routeId}>${j.opt.routeId}`;
+    const prev = byPair.get(key);
+    if (!prev || j.opt.arriveD < prev.opt.arriveD) byPair.set(key, j);
+  }
+  const best = [...byPair.values()].sort((p, q) => p.opt.arriveD - q.opt.arriveD).slice(0, 5);
+
+  const routeInfo = (id) => db.prepare("SELECT * FROM routes WHERE id = ?").get(id);
+  const nameOf = (atco) => fromName.get(atco) ?? toName.get(atco) ?? coord.get(atco)?.name ?? atco;
+  const busLeg = (routeId, fromAtco, toAtco, dep, arr, fromWalk, toWalk) => {
+    const r = routeInfo(routeId);
+    return {
+      mode: "bus",
+      service: r ? { id: r.id, line_name: r.line_name, description: describeRoute(db, r) } : null,
+      from: { atco: fromAtco, name: nameOf(fromAtco), walk_meters: fromWalk },
+      to: { atco: toAtco, name: nameOf(toAtco), walk_meters: toWalk },
+      departure: secondsToTime(dep),
+      arrival: secondsToTime(arr),
+    };
+  };
+
+  return best.map((j) => {
+    const legs = [
+      busLeg(j.a.routeId, j.a.boardAtco, j.x, j.a.boardDep, j.a.arrive,
+             Math.round(fromDist.get(j.a.boardAtco) ?? 0), null),
+    ];
+    if (j.walk > 0) legs.push({ mode: "walk", meters: Math.round(j.walk) });
+    legs.push(busLeg(j.opt.routeId, j.y, j.opt.alightAtco, j.opt.dep, j.opt.arriveD,
+                     null, Math.round(toDist.get(j.opt.alightAtco) ?? 0)));
+    return { changes: 1, arrival: secondsToTime(j.opt.arriveD), legs };
+  });
+}
 
 function TimeOfDaySeconds(hhmm) {
   if (!hhmm) return null;

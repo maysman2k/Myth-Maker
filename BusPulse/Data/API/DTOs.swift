@@ -315,6 +315,40 @@ struct TripTimeDTO: Decodable {
 
 struct JourneyResponseDTO: Decodable {
     let options: [JourneyOptionDTO]
+    let interchange: [InterchangeDTO]?
+}
+
+struct InterchangeDTO: Decodable {
+    let changes: Int
+    let arrival: String?
+    let legs: [LegDTO]
+
+    struct LegDTO: Decodable {
+        let mode: String
+        let service: ServiceDTO?
+        let from: JourneyOptionDTO.StopRefDTO?
+        let to: JourneyOptionDTO.StopRefDTO?
+        let departure: String?
+        let arrival: String?
+        let meters: Int?
+    }
+
+    func toDomain() -> JourneyItinerary {
+        JourneyItinerary(
+            changes: changes,
+            arrival: arrival,
+            legs: legs.map { leg in
+                if leg.mode == "walk" {
+                    return JourneyLeg(kind: .walk, walkMeters: leg.meters)
+                }
+                return JourneyLeg(kind: .bus,
+                                  service: leg.service?.toDomain(),
+                                  fromStopName: leg.from?.name,
+                                  toStopName: leg.to?.name,
+                                  departure: leg.departure,
+                                  arrival: leg.arrival)
+            })
+    }
 }
 
 struct JourneyOptionDTO: Decodable {

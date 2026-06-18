@@ -14,7 +14,7 @@ protocol BusTimesAPIProviding: Sendable {
     func trip(id: Int) async throws -> TimetableTrip
     func routeGeometry(serviceID: Int) async throws -> [[[Double]]]
     func journeyOptions(fromLat: Double, fromLon: Double,
-                        toLat: Double, toLon: Double) async throws -> [JourneyOption]
+                        toLat: Double, toLon: Double) async throws -> JourneyPlan
 }
 
 enum APIError: LocalizedError {
@@ -165,14 +165,15 @@ final class BusTimesAPI: BusTimesAPIProviding {
     }
 
     func journeyOptions(fromLat: Double, fromLon: Double,
-                        toLat: Double, toLon: Double) async throws -> [JourneyOption] {
+                        toLat: Double, toLon: Double) async throws -> JourneyPlan {
         let response: JourneyResponseDTO = try await get(
             path: "/api/journey",
             queryItems: [URLQueryItem(name: "fromLat", value: String(fromLat)),
                          URLQueryItem(name: "fromLon", value: String(fromLon)),
                          URLQueryItem(name: "toLat", value: String(toLat)),
                          URLQueryItem(name: "toLon", value: String(toLon))])
-        return response.options.map { $0.toDomain() }
+        return JourneyPlan(direct: response.options.map { $0.toDomain() },
+                           itineraries: (response.interchange ?? []).map { $0.toDomain() })
     }
 
     // MARK: Plumbing
