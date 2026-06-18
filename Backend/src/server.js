@@ -340,23 +340,43 @@ app.get("/api/journey", (req, res) => {
     return res.status(400).json({ error: "fromLat/fromLon/toLat/toLon required" });
   }
 
-  const stopsNear = (lat, lon) => {
-    const dLat = 0.006; // ~650 m
-    const dLon = 0.006 / Math.max(0.2, Math.cos((lat * Math.PI) / 180));
-    return db
-      .prepare(
-        `SELECT atco, name FROM stops
-         WHERE lat BETWEEN ? AND ? AND lon BETWEEN ? AND ? LIMIT 40`,
-      )
-      .all(lat - dLat, lat + dLat, lon - dLon, lon + dLon);
+  // Distance in metres between two points (equirectangular — accurate enough
+  // at these short ranges and cheap).
+  const metresBetween = (lat1, lon1, lat2, lon2) => {
+    const x = (lon2 - lon1) * 111_320 * Math.cos((lat1 * Math.PI) / 180);
+    const y = (lat2 - lat1) * 111_320;
+    return Math.sqrt(x * x + y * y);
   };
 
-  const fromStops = stopsNear(fromLat, fromLon);
-  const toStops = stopsNear(toLat, toLon);
+  // Stops within `radiusM` of a point, NEAREST FIRST, capped. Ordering by
+  // distance (not arbitrary rowid) matters in dense city centres, where a
+  // blind LIMIT could silently drop the very interchange the rider wants.
+  const stopsNear = (lat, lon, radiusM, cap) => {
+    const dLat = radiusM / 111_320;
+    const dLon = dLat / Math.max(0.2, Math.cos((lat * Math.PI) / 180));
+    return db
+      .prepare(
+        `SELECT atco, name, lat, lon FROM stops
+         WHERE lat BETWEEN ? AND ? AND lon BETWEEN ? AND ?`,
+      )
+      .all(lat - dLat, lat + dLat, lon - dLon, lon + dLon)
+      .map((s) => ({ ...s, dist: metresBetween(lat, lon, s.lat, s.lon) }))
+      .filter((s) => s.dist <= radiusM)
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, cap);
+  };
+
+  // Origin: keep it tight — you walk to a nearby stop. Destination: a place
+  // search like "Newcastle" is one fuzzy pin standing for a whole centre, so
+  // cast a wider net, or the obvious terminus (e.g. Haymarket) falls outside.
+  const fromStops = stopsNear(fromLat, fromLon, 800, 50);
+  const toStops = stopsNear(toLat, toLon, 1500, 80);
   if (fromStops.length === 0 || toStops.length === 0) return res.json({ options: [] });
 
   const toName = new Map(toStops.map((s) => [s.atco, s.name]));
   const fromName = new Map(fromStops.map((s) => [s.atco, s.name]));
+  const fromDist = new Map(fromStops.map((s) => [s.atco, s.dist]));
+  const toDist = new Map(toStops.map((s) => [s.atco, s.dist]));
   const ph = (arr) => arr.map(() => "?").join(",");
 
   const pairs = db
@@ -366,13 +386,18 @@ app.get("/api/journey", (req, res) => {
        JOIN stop_times st2 ON st2.trip_id = st1.trip_id AND st2.seq > st1.seq
        JOIN trips ON trips.id = st1.trip_id
        WHERE st1.atco IN (${ph(fromStops)}) AND st2.atco IN (${ph(toStops)})
-       LIMIT 300`,
+       LIMIT 800`,
     )
     .all(...fromStops.map((s) => s.atco), ...toStops.map((s) => s.atco));
 
-  // One option per route (first from/to pairing seen).
+  // One option per route, choosing the from/to pairing with the LEAST total
+  // walking — so we recommend your nearest stop, not just the first matched.
   const byRoute = new Map();
-  for (const p of pairs) if (!byRoute.has(p.route_id)) byRoute.set(p.route_id, p);
+  for (const p of pairs) {
+    const walk = (fromDist.get(p.from_atco) ?? 1e9) + (toDist.get(p.to_atco) ?? 1e9);
+    const prev = byRoute.get(p.route_id);
+    if (!prev || walk < prev.walk) byRoute.set(p.route_id, { ...p, walk });
+  }
 
   const active = activeServiceIDs(new Date().toISOString().slice(0, 10));
   const nowSeconds = ukSecondsSinceMidnight();
@@ -394,17 +419,37 @@ app.get("/api/journey", (req, res) => {
       .map((t) => secondsToTime(t.dep));
     options.push({
       service: { id: route.id, line_name: route.line_name, description: describeRoute(db, route) },
-      from: { atco: pair.from_atco, name: fromName.get(pair.from_atco) ?? pair.from_atco },
-      to: { atco: pair.to_atco, name: toName.get(pair.to_atco) ?? pair.to_atco },
+      from: {
+        atco: pair.from_atco,
+        name: fromName.get(pair.from_atco) ?? pair.from_atco,
+        walk_meters: Math.round(fromDist.get(pair.from_atco) ?? 0),
+      },
+      to: {
+        atco: pair.to_atco,
+        name: toName.get(pair.to_atco) ?? pair.to_atco,
+        walk_meters: Math.round(toDist.get(pair.to_atco) ?? 0),
+      },
       departures: nextDeps,
+      totalWalk: pair.walk,
       nextDepartureSeconds: nextDeps.length
         ? (TimeOfDaySeconds(nextDeps[0]) ?? 99_999) : 99_999,
     });
   }
 
-  // Soonest-departing first, then routes with no upcoming departures.
-  options.sort((a, b) => a.nextDepartureSeconds - b.nextDepartureSeconds);
-  res.json({ options: options.slice(0, 15).map(({ nextDepartureSeconds, ...rest }) => rest) });
+  // Running buses first, then shortest total walk, then soonest departure —
+  // surfaces the nearest convenient bus rather than an arbitrary match.
+  const stillRunning = (o) => (o.departures.length ? 0 : 1);
+  options.sort(
+    (a, b) =>
+      stillRunning(a) - stillRunning(b) ||
+      a.totalWalk - b.totalWalk ||
+      a.nextDepartureSeconds - b.nextDepartureSeconds,
+  );
+  res.json({
+    options: options
+      .slice(0, 15)
+      .map(({ totalWalk, nextDepartureSeconds, ...rest }) => rest),
+  });
 });
 
 function TimeOfDaySeconds(hhmm) {

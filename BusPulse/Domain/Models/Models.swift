@@ -125,6 +125,9 @@ struct JourneyOption: Identifiable {
     var toStopName: String
     /// Next few departure times at the boarding stop, e.g. ["07:05", "07:35"].
     var departures: [String]
+    /// Walk to the boarding stop / from the alighting stop, in metres.
+    var fromWalkMeters: Int?
+    var toWalkMeters: Int?
 
     var id: Int { service.id }
 }

@@ -326,13 +326,16 @@ struct JourneyOptionDTO: Decodable {
     struct StopRefDTO: Decodable {
         let atco: String?
         let name: String?
+        let walk_meters: Int?
     }
 
     func toDomain() -> JourneyOption {
         JourneyOption(service: service.toDomain(),
                       fromStopName: from.name ?? "Stop",
                       toStopName: to.name ?? "Stop",
-                      departures: departures)
+                      departures: departures,
+                      fromWalkMeters: from.walk_meters,
+                      toWalkMeters: to.walk_meters)
     }
 }
 
