@@ -331,6 +331,12 @@ struct InterchangeDTO: Decodable {
         let departure: String?
         let arrival: String?
         let meters: Int?
+        let stops: [LegStopDTO]?
+
+        struct LegStopDTO: Decodable {
+            let name: String?
+            let time: String?
+        }
     }
 
     func toDomain() -> JourneyItinerary {
@@ -346,7 +352,10 @@ struct InterchangeDTO: Decodable {
                                   fromStopName: leg.from?.name,
                                   toStopName: leg.to?.name,
                                   departure: leg.departure,
-                                  arrival: leg.arrival)
+                                  arrival: leg.arrival,
+                                  stops: (leg.stops ?? []).map {
+                                      JourneyLegStop(name: $0.name ?? "Stop", time: $0.time)
+                                  })
             })
     }
 }

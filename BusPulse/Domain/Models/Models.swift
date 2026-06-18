@@ -157,8 +157,17 @@ struct JourneyLeg: Identifiable {
     var toStopName: String? = nil
     var departure: String? = nil
     var arrival: String? = nil
+    /// Calling points along this leg, board → alight.
+    var stops: [JourneyLegStop] = []
     // Walk legs:
     var walkMeters: Int? = nil
+}
+
+struct JourneyLegStop: Identifiable {
+    let id = UUID()
+    var name: String
+    /// "HH:MM:SS" (or "HH:MM").
+    var time: String?
 }
 
 // MARK: - A computed departure for a departure board

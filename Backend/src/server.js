@@ -498,15 +498,22 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
      FROM stop_times WHERE trip_id = ? AND seq > ? ORDER BY seq LIMIT ${DOWNSTREAM}`,
   );
 
-  const reach = new Map(); // interchange atco -> { arrive, routeId, boardAtco, boardDep }
+  const reach = new Map(); // interchange atco -> { arrive, routeId, boardAtco, boardDep, boardWalk, tripId, boardSeq, interSeq }
   let used1 = 0;
   for (const b of leg1) {
     if (used1++ >= LEG1_TRIPS) break;
+    const boardWalk = fromDist.get(b.board_atco) ?? 0;
     for (const s of downstreamStmt.all(b.trip_id, b.board_seq)) {
       if (s.arr == null || fromDist.has(s.atco)) continue; // still in origin cluster
       const prev = reach.get(s.atco);
-      if (!prev || s.arr < prev.arrive) {
-        reach.set(s.atco, { arrive: s.arr, routeId: b.route_id, boardAtco: b.board_atco, boardDep: b.dep });
+      // Prefer the boarding with the SHORTEST walk from the origin (then the
+      // earliest arrival) — send the rider to their nearest usable stop.
+      if (!prev || boardWalk < prev.boardWalk ||
+          (boardWalk === prev.boardWalk && s.arr < prev.arrive)) {
+        reach.set(s.atco, {
+          arrive: s.arr, routeId: b.route_id, boardAtco: b.board_atco, boardDep: b.dep,
+          boardWalk, tripId: b.trip_id, boardSeq: b.board_seq, interSeq: s.seq,
+        });
       }
     }
   }
@@ -541,7 +548,8 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
     for (const s of upstreamStmt.all(a.trip_id, a.alight_seq)) {
       if (toDist.has(s.atco)) continue; // boarding inside destination cluster = basically direct
       const list = board2.get(s.atco) ?? [];
-      list.push({ dep: s.dep, routeId: a.route_id, alightAtco: a.alight_atco, arriveD: a.arr });
+      list.push({ dep: s.dep, routeId: a.route_id, alightAtco: a.alight_atco, arriveD: a.arr,
+                  tripId: a.trip_id, boardSeq: s.seq, alightSeq: a.alight_seq });
       board2.set(s.atco, list);
     }
   }
@@ -561,14 +569,20 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
   }
 
   // Connect leg 1 → (optional walk) → leg 2, keeping only feasible timings.
-  const reachArr = [...reach.entries()].sort((p, q) => p[1].arrive - q[1].arrive).slice(0, REACH_CAP);
+  // Walk to the first stop dominates how it feels, so order candidates by it.
+  const reachArr = [...reach.entries()]
+    .sort((p, q) => p[1].boardWalk - q[1].boardWalk || p[1].arrive - q[1].arrive)
+    .slice(0, REACH_CAP);
   const boardArr = [...board2.keys()].slice(0, BOARD_CAP);
   const journeys = [];
   for (const [x, a] of reachArr) {
     const consider = (y, walk) => {
       const readyAt = a.arrive + TRANSFER_BUFFER + walk / WALK_SPEED;
       const opt = board2.get(y)?.find((o) => o.dep >= readyAt && o.routeId !== a.routeId);
-      if (opt) journeys.push({ x, y, walk, a, opt });
+      if (opt) {
+        const totalWalk = a.boardWalk + walk + (toDist.get(opt.alightAtco) ?? 0);
+        journeys.push({ x, y, walk, a, opt, totalWalk });
+      }
     };
     if (board2.has(x)) consider(x, 0); // change at the same stop
     const xc = coord.get(x);
@@ -584,18 +598,35 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
   }
   if (journeys.length === 0) return [];
 
-  // Best journey per route-pair, soonest arrival at the destination first.
+  // Best journey per route-pair by least total walk, then overall least-walk
+  // / soonest-arriving — so your nearest boarding stop surfaces first.
   const byPair = new Map();
   for (const j of journeys) {
     const key = `${j.a.routeId}>${j.opt.routeId}`;
     const prev = byPair.get(key);
-    if (!prev || j.opt.arriveD < prev.opt.arriveD) byPair.set(key, j);
+    if (!prev || j.totalWalk < prev.totalWalk ||
+        (j.totalWalk === prev.totalWalk && j.opt.arriveD < prev.opt.arriveD)) {
+      byPair.set(key, j);
+    }
   }
-  const best = [...byPair.values()].sort((p, q) => p.opt.arriveD - q.opt.arriveD).slice(0, 5);
+  const best = [...byPair.values()]
+    .sort((p, q) => p.totalWalk - q.totalWalk || p.opt.arriveD - q.opt.arriveD)
+    .slice(0, 5);
+
+  // Calling points for a slice of a trip, with stop names and times — these
+  // power the full journey breakdown in the app.
+  const sliceStmt = db.prepare(
+    `SELECT st.atco AS atco, st.seq AS seq,
+            COALESCE(st.departure_seconds, st.arrival_seconds) AS t, sp.name AS name
+     FROM stop_times st JOIN stops sp ON sp.atco = st.atco
+     WHERE st.trip_id = ? AND st.seq BETWEEN ? AND ? ORDER BY st.seq LIMIT 80`,
+  );
+  const callingPoints = (tripId, fromSeq, toSeq) =>
+    sliceStmt.all(tripId, fromSeq, toSeq).map((r) => ({ name: r.name ?? r.atco, time: secondsToTime(r.t) }));
 
   const routeInfo = (id) => db.prepare("SELECT * FROM routes WHERE id = ?").get(id);
   const nameOf = (atco) => fromName.get(atco) ?? toName.get(atco) ?? coord.get(atco)?.name ?? atco;
-  const busLeg = (routeId, fromAtco, toAtco, dep, arr, fromWalk, toWalk) => {
+  const busLeg = (routeId, fromAtco, toAtco, dep, arr, fromWalk, toWalk, stops) => {
     const r = routeInfo(routeId);
     return {
       mode: "bus",
@@ -604,17 +635,20 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
       to: { atco: toAtco, name: nameOf(toAtco), walk_meters: toWalk },
       departure: secondsToTime(dep),
       arrival: secondsToTime(arr),
+      stops,
     };
   };
 
   return best.map((j) => {
     const legs = [
       busLeg(j.a.routeId, j.a.boardAtco, j.x, j.a.boardDep, j.a.arrive,
-             Math.round(fromDist.get(j.a.boardAtco) ?? 0), null),
+             Math.round(j.a.boardWalk), null,
+             callingPoints(j.a.tripId, j.a.boardSeq, j.a.interSeq)),
     ];
     if (j.walk > 0) legs.push({ mode: "walk", meters: Math.round(j.walk) });
     legs.push(busLeg(j.opt.routeId, j.y, j.opt.alightAtco, j.opt.dep, j.opt.arriveD,
-                     null, Math.round(toDist.get(j.opt.alightAtco) ?? 0)));
+                     null, Math.round(toDist.get(j.opt.alightAtco) ?? 0),
+                     callingPoints(j.opt.tripId, j.opt.boardSeq, j.opt.alightSeq)));
     return { changes: 1, arrival: secondsToTime(j.opt.arriveD), legs };
   });
 }

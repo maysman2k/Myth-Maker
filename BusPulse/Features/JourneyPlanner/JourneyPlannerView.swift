@@ -176,7 +176,14 @@ struct JourneyPlannerView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
-                        ForEach(itineraries) { itineraryCard($0) }
+                        ForEach(itineraries) { itinerary in
+                            NavigationLink {
+                                JourneyItineraryDetailView(itinerary: itinerary)
+                            } label: {
+                                itineraryCard(itinerary)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
 
@@ -200,6 +207,7 @@ struct JourneyPlannerView: View {
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(.secondary)
                 }
+                Image(systemName: "chevron.right").font(.caption2).foregroundStyle(.tertiary)
             }
             ForEach(itinerary.legs) { leg in
                 legRow(leg)
@@ -369,6 +377,111 @@ struct JourneyPlannerView: View {
             }
         }
     }
+}
+
+/// Full breakdown of a single-change journey: each bus leg with all its
+/// calling points and times, and the walk in between.
+struct JourneyItineraryDetailView: View {
+    let itinerary: JourneyItinerary
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: BPSpacing.lg) {
+                header
+                ForEach(itinerary.legs) { leg in
+                    legSection(leg)
+                }
+            }
+            .padding(.horizontal, BPSpacing.screenMargin)
+            .padding(.vertical, BPSpacing.md)
+        }
+        .background(BPColor.backgroundPrimary)
+        .navigationTitle("Your journey")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var header: some View {
+        HStack {
+            Label(itinerary.changes == 1 ? "1 change" : "\(itinerary.changes) changes",
+                  systemImage: "arrow.triangle.swap")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(BPColor.signal)
+            Spacer()
+            if let arrival = itinerary.arrival {
+                Text("Arrives \(hhmm(arrival))")
+                    .font(.subheadline.monospacedDigit())
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func legSection(_ leg: JourneyLeg) -> some View {
+        switch leg.kind {
+        case .walk:
+            Label("Walk \(walkText(leg.walkMeters ?? 0)) to the next stop", systemImage: "figure.walk")
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, BPSpacing.xs)
+        case .bus:
+            VStack(alignment: .leading, spacing: BPSpacing.sm) {
+                HStack(spacing: BPSpacing.md) {
+                    if let service = leg.service {
+                        RoutePill(lineName: service.lineName)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(leg.service?.description ?? "Bus")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.primary)
+                            .lineLimit(2)
+                        if let departure = leg.departure, let arrival = leg.arrival {
+                            Text("\(hhmm(departure)) – \(hhmm(arrival))")
+                                .font(.caption.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer()
+                }
+                if leg.stops.isEmpty {
+                    Text("\(leg.fromStopName ?? "Start") → \(leg.toStopName ?? "End")")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(leg.stops.enumerated()), id: \.element.id) { index, stop in
+                            stopRow(stop, isEnd: index == 0 || index == leg.stops.count - 1)
+                        }
+                    }
+                }
+            }
+            .bpCard()
+        }
+    }
+
+    private func stopRow(_ stop: JourneyLegStop, isEnd: Bool) -> some View {
+        HStack(spacing: BPSpacing.sm) {
+            Text(stop.time.map(hhmm) ?? "")
+                .font(.caption.monospacedDigit())
+                .foregroundStyle(.secondary)
+                .frame(width: 46, alignment: .leading)
+            Image(systemName: isEnd ? "circle.fill" : "circle")
+                .font(.system(size: 7))
+                .foregroundStyle(isEnd ? BPColor.signal : .secondary)
+            Text(stop.name)
+                .font(.caption.weight(isEnd ? .semibold : .regular))
+                .foregroundStyle(isEnd ? .primary : .secondary)
+                .lineLimit(1)
+            Spacer()
+        }
+        .padding(.vertical, 3)
+    }
+
+    private func walkText(_ metres: Int) -> String {
+        metres < 1000 ? "\(metres) m" : String(format: "%.1f km", Double(metres) / 1000)
+    }
+
+    private func hhmm(_ time: String) -> String { String(time.prefix(5)) }
 }
 
 /// As-you-type place suggestions via MapKit's local-search completer, with a
