@@ -232,9 +232,12 @@ try {
   const overlay = parseSiriVehicles(`
     <Siri><ServiceDelivery><VehicleMonitoringDelivery>
       <VehicleActivity>
+        <RecordedAtTime>2026-01-01T00:00:00Z</RecordedAtTime>
         <MonitoredVehicleJourney>
           <PublishedLineName>X1</PublishedLineName>
           <DestinationName>City Centre</DestinationName>
+          <VehicleLocation><Longitude>-1.6002</Longitude><Latitude>55.0011</Latitude></VehicleLocation>
+          <Bearing>90</Bearing>
           <VehicleRef>OP-777</VehicleRef>
         </MonitoredVehicleJourney>
       </VehicleActivity>
@@ -250,6 +253,8 @@ try {
     </VehicleMonitoringDelivery></ServiceDelivery></Siri>`);
   check("parser extracts line + destination per vehicle ref",
         overlay.get("OP-777")?.line === "X1" && overlay.get("OP-777")?.destination === "City Centre");
+  check("parser captures position and bearing",
+        overlay.get("OP-777")?.lat === 55.0011 && overlay.get("OP-777")?.bearing === 90);
   check("parser falls back to LineRef and skips ref-less entries",
         overlay.get("OP-888")?.line === "42" && overlay.size === 2);
 
@@ -269,6 +274,23 @@ try {
   const onX1AfterSiri = store.onServices([x1]);
   check("SIRI-named vehicle now shows on the route page",
         onX1AfterSiri.some((v) => v.service?.line_name === "X1"));
+
+  // A bus that exists ONLY in SIRI (the GTFS-RT conversion dropped it) must
+  // still appear, with its position taken from SIRI. The stale OP-777 SIRI
+  // position (RecordedAtTime 2026-01-01) must NOT be resurrected as a ghost.
+  const overlay2 = new Map(overlay);
+  overlay2.set("999", { line: "X1", destination: "Village", lat: 55.0012, lon: -1.6003,
+                        bearing: null, recordedAt: new Date().toISOString() });
+  store.applySiriOverlay(overlay2);
+  store.ingest({ entity: [
+    { id: "e9", vehicle: { trip: { routeId: "NO-SUCH-ROUTE" }, vehicle: { id: "777" },
+                           position: { latitude: 55.001, longitude: -1.6 } } },
+  ] });
+  const withSiriOnly = store.onServices([x1]);
+  check("a SIRI-only vehicle appears on the route (union of both feeds)",
+        withSiriOnly.some((v) => v.vehicle?.name === "999" && v.service?.line_name === "X1"));
+  check("stale SIRI-only entries are not resurrected",
+        store.matchStats.total === 2 && store.matchStats.siriOnly === 1);
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;

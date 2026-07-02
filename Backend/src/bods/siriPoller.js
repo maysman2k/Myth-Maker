@@ -20,19 +20,37 @@ const candidates = () => [
   "https://data.bus-data.dft.gov.uk/avl/download/bulk_archive",
 ];
 
-/// VehicleRef → { line, destination } from a SIRI-VM XML document. Zero-dep,
-/// tolerant scan: national feeds are tens of MB, so full XML parsing is
-/// avoided in favour of per-<VehicleActivity> field extraction.
+/// VehicleRef → { line, destination, lat, lon, bearing, recordedAt } from a
+/// SIRI-VM XML document. Zero-dep, tolerant scan: national feeds are tens of
+/// MB, so full XML parsing is avoided in favour of per-<VehicleActivity>
+/// field extraction. Position is captured so vehicles that exist ONLY in
+/// SIRI (dropped from the GTFS-RT conversion) can still be shown.
 export function parseSiriVehicles(xml) {
   const out = new Map();
   const field = (block, name) =>
     block.match(new RegExp(`<${name}>([^<]*)</${name}>`))?.[1]?.trim() || null;
+  // NB: a missing field must stay null — Number(null) is 0, which would
+  // silently place coordinate-less vehicles at (0,0).
+  const num = (block, name) => {
+    const raw = field(block, name);
+    if (raw == null) return null;
+    const value = Number(raw);
+    return Number.isFinite(value) ? value : null;
+  };
   for (const match of xml.matchAll(/<VehicleActivity>([\s\S]*?)<\/VehicleActivity>/g)) {
     const block = match[1];
     const ref = field(block, "VehicleRef");
     const line = field(block, "PublishedLineName") ?? field(block, "LineRef");
     if (!ref || !line) continue;
-    out.set(ref, { line, destination: field(block, "DestinationName") });
+    const bearing = num(block, "Bearing");
+    out.set(ref, {
+      line,
+      destination: field(block, "DestinationName"),
+      lat: num(block, "Latitude"),
+      lon: num(block, "Longitude"),
+      bearing: bearing === 0 ? null : bearing,
+      recordedAt: field(block, "RecordedAtTime"),
+    });
   }
   return out;
 }

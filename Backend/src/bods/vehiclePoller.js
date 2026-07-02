@@ -75,6 +75,8 @@ export class VehicleStore {
   /** Overlay freshness, surfaced on /health. */
   siriOverlaySize = 0;
   siriOverlayUpdated = null;
+  /** Original ref → info, for adding vehicles that exist only in SIRI. */
+  #siriRaw = new Map();
 
   applySiriOverlay(byRef) {
     const expanded = new Map();
@@ -87,6 +89,7 @@ export class VehicleStore {
       if (suffix && suffix !== key && !expanded.has(suffix)) expanded.set(suffix, info);
     }
     this.#siri = expanded;
+    this.#siriRaw = byRef;
     this.siriOverlaySize = byRef.size;
     this.siriOverlayUpdated = new Date().toISOString();
   }
@@ -187,7 +190,7 @@ export class VehicleStore {
 
     const fresh = new Map();
     const stats = { total: 0, matchedToTimetable: 0, namedBySiri: 0, unnamed: 0,
-                    sampleUnmatchedRouteIds: [] };
+                    siriOnly: 0, sampleUnmatchedRouteIds: [] };
     for (const entity of feedMessage.entity ?? []) {
       const vp = entity.vehicle;
       const position = vp?.position;
@@ -238,6 +241,45 @@ export class VehicleStore {
         delay: null, // Fast-follow: GTFS-RT trip updates.
       });
     }
+    // Vehicles that exist ONLY in SIRI: the GTFS-RT feed is generated from
+    // SIRI and silently drops vehicles it can't map to a timetable trip, so
+    // without this step those buses can never appear anywhere in the app.
+    if (this.#siriRaw.size > 0) {
+      const seenRefs = new Set();
+      for (const key of fresh.keys()) {
+        const k = key.toUpperCase();
+        seenRefs.add(k);
+        const suffix = k.split(/[-:]/).pop();
+        if (suffix) seenRefs.add(suffix);
+      }
+      for (const [ref, info] of this.#siriRaw) {
+        if (info.lat == null || info.lon == null) continue;
+        if (info.lat === 0 && info.lon === 0) continue; // GPS-less placeholder
+        const k = String(ref).toUpperCase();
+        if (seenRefs.has(k) || seenRefs.has(k.split(/[-:]/).pop())) continue;
+        // Skip stale SIRI entries — the bulk archive can lag per operator.
+        const recorded = info.recordedAt ? Date.parse(info.recordedAt) : NaN;
+        if (Number.isFinite(recorded) && now - recorded > config.vehicleStaleSeconds * 1000) continue;
+        stats.total += 1;
+        stats.siriOnly += 1;
+        fresh.set(`siri:${ref}`, {
+          id: stableIntID(`siri:${ref}`),
+          journey_id: null,
+          service_id: null,
+          trip_id: null,
+          coordinates: [info.lon, info.lat],
+          heading: info.bearing,
+          datetime: Number.isFinite(recorded)
+            ? new Date(recorded).toISOString()
+            : new Date(now).toISOString(),
+          destination: info.destination ?? null,
+          service: { line_name: info.line },
+          vehicle: { name: String(ref), url: null },
+          delay: null,
+        });
+      }
+    }
+
     this.#vehicles = fresh;
     this.matchStats = stats;
     this.lastUpdated = new Date(now).toISOString();
