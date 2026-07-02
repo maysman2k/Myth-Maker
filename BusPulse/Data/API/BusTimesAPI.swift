@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 
 /// Abstraction over the data source so the backend can be swapped
@@ -7,7 +8,9 @@ protocol BusTimesAPIProviding: Sendable {
     func liveVehicles(serviceIDs: [Int]) async throws -> [VehiclePosition]
     func nearbyStops(in box: BoundingBox) async throws -> [Stop]
     func stop(naptanCode: String) async throws -> Stop?
-    func services(matching query: String) async throws -> [Service]
+    /// `near` biases ranking towards the user — a national dataset has many
+    /// routes sharing one number, and theirs should come first.
+    func services(matching query: String, near: CLLocationCoordinate2D?) async throws -> [Service]
     func services(callingAt atcoCode: String) async throws -> [Service]
     func stops(onService serviceID: Int) async throws -> [Stop]
     func trips(serviceID: Int, date: Date) async throws -> [TimetableTrip]
@@ -106,10 +109,13 @@ final class BusTimesAPI: BusTimesAPIProviding {
 
     // MARK: Services
 
-    func services(matching query: String) async throws -> [Service] {
-        let page: APIPage<ServiceDTO> = try await get(
-            path: "/api/services/",
-            queryItems: [URLQueryItem(name: "search", value: query)])
+    func services(matching query: String, near: CLLocationCoordinate2D? = nil) async throws -> [Service] {
+        var queryItems = [URLQueryItem(name: "search", value: query)]
+        if let near {
+            queryItems.append(URLQueryItem(name: "lat", value: String(near.latitude)))
+            queryItems.append(URLQueryItem(name: "lon", value: String(near.longitude)))
+        }
+        let page: APIPage<ServiceDTO> = try await get(path: "/api/services/", queryItems: queryItems)
         return page.results.map { $0.toDomain() }
     }
 

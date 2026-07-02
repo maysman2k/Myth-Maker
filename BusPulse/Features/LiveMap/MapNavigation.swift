@@ -108,6 +108,7 @@ struct LocationSearchSheet: View {
 /// Search for a service and hand it back, e.g. to add the X83 alongside the 83.
 struct ServicePickerSheet: View {
     @Environment(\.busAPI) private var api
+    @Environment(LocationProvider.self) private var location
     @Environment(\.dismiss) private var dismiss
     let onPick: (Service) -> Void
 
@@ -159,7 +160,8 @@ struct ServicePickerSheet: View {
         searchTask = Task {
             try? await Task.sleep(for: .milliseconds(400))
             guard !Task.isCancelled else { return }
-            if let found = try? await api.services(matching: trimmed) {
+            if let found = try? await api.services(matching: trimmed,
+                                                   near: location.location?.coordinate) {
                 results = found
             }
         }

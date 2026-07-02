@@ -192,6 +192,20 @@ struct ServiceDetailView: View {
 
     // MARK: Stops
 
+    /// Stops arrive from the server in journey order, tagged by direction —
+    /// group consecutive runs so each direction reads as its own section.
+    private var stopGroups: [(direction: String?, stops: [Stop])] {
+        var groups: [(direction: String?, stops: [Stop])] = []
+        for stop in stops {
+            if let last = groups.indices.last, groups[last].direction == stop.direction {
+                groups[last].stops.append(stop)
+            } else {
+                groups.append((stop.direction, [stop]))
+            }
+        }
+        return groups
+    }
+
     private var stopsSection: some View {
         VStack(alignment: .leading, spacing: BPSpacing.sm) {
             Text("Stops on this route")
@@ -201,26 +215,39 @@ struct ServiceDetailView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            ForEach(stops) { stop in
-                NavigationLink {
-                    StopDetailView(stop: stop)
-                } label: {
-                    HStack {
-                        Image(systemName: "smallcircle.filled.circle")
-                            .font(.caption)
-                            .foregroundStyle(BPColor.signal)
-                        Text(stop.displayName)
-                            .font(.subheadline)
-                            .foregroundStyle(.primary)
-                            .multilineTextAlignment(.leading)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                    }
-                    .padding(.vertical, BPSpacing.xs)
+            ForEach(Array(stopGroups.enumerated()), id: \.offset) { _, group in
+                if let direction = group.direction {
+                    Label(direction, systemImage: "arrow.turn.up.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(BPColor.signal)
+                        .padding(.top, BPSpacing.sm)
+                } else if stopGroups.count > 1 {
+                    Text("Other stops")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .padding(.top, BPSpacing.sm)
                 }
-                .buttonStyle(.plain)
+                ForEach(group.stops) { stop in
+                    NavigationLink {
+                        StopDetailView(stop: stop)
+                    } label: {
+                        HStack {
+                            Image(systemName: "smallcircle.filled.circle")
+                                .font(.caption)
+                                .foregroundStyle(BPColor.signal)
+                            Text(stop.displayName)
+                                .font(.subheadline)
+                                .foregroundStyle(.primary)
+                                .multilineTextAlignment(.leading)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                        .padding(.vertical, BPSpacing.xs)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
         .bpCard()
@@ -246,9 +273,14 @@ struct ServiceDetailView: View {
     }
 
     private var displayedVehicles: [VehiclePosition] {
-        RouteVehicleMatcher.merged(primary: stream?.vehicles ?? [],
-                                   fallback: fallbackVehicles,
-                                   lineNames: [service.lineName])
+        let merged = RouteVehicleMatcher.merged(primary: stream?.vehicles ?? [],
+                                                fallback: fallbackVehicles,
+                                                lineNames: [service.lineName])
+        // A mis-enriched vehicle hundreds of miles away would drag the
+        // auto-fitting camera out to the whole country — keep the mini-map
+        // to vehicles plausibly on THIS route.
+        guard let fallbackBox else { return merged }
+        return merged.filter { fallbackBox.contains($0.coordinate) }
     }
 
     private func startFallbackPolling() {

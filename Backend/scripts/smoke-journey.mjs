@@ -91,6 +91,14 @@ addTrip(x1, "X1-night", "City", [["NEAR", now + 86_400 + 1200], ["CITY", now + 8
 const x2 = insRoute.run("X2", "X2", "Home - City express").lastInsertRowid;
 addTrip(x2, "X2-a", "City", [["FAR", now + 300], ["CITY", now + 1500]]);
 
+// A second "X1" hundreds of miles south — search with a location must rank
+// the local one first, not this one.
+const [southA, southB] = [["SA", "South Stop A", 51.0, -1.0], ["SB", "South Stop B", 51.02, -1.02]];
+insStop.run(southA[0], "sa", southA[1], southA[2], southA[3]);
+insStop.run(southB[0], "sb", southB[1], southB[2], southB[3]);
+const southX1 = insRoute.run("S-X1", "X1", "").lastInsertRowid;
+addTrip(southX1, "S-X1-a", "Southville", [["SA", now + 600], ["SB", now + 1200]]);
+
 // One-change to VILL. The FAR bus (11) reaches the interchange EARLIER, but
 // the planner must board at NEAR (10) — nearest stop wins.
 const r10 = insRoute.run("10", "10", "Home - Interchange").lastInsertRowid;
@@ -126,7 +134,16 @@ const check = (label, ok) => {
 const toSecs = (t) => t.split(":").reduce((acc, n) => acc * 60 + Number(n), 0);
 
 try {
-  await new Promise((resolve) => setTimeout(resolve, 1500)); // server boot
+  // Wait for the server to accept connections (up to ~10s).
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await fetch(`http://localhost:${PORT}/health`);
+      break;
+    } catch {
+      if (attempt >= 40) throw new Error("server did not start");
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+  }
 
   console.log("direct (origin → City):");
   const d = await get("fromLat=55.0&fromLon=-1.6&toLat=55.02&toLon=-1.62");
@@ -153,6 +170,22 @@ try {
   const leg1Arr = journey?.legs?.[0]?.arrival, leg2Dep = journey?.legs?.at(-1)?.departure;
   check("connection is physically makeable (≥3 min + walk)",
         leg1Arr && leg2Dep && toSecs(leg2Dep) - toSecs(leg1Arr) >= 180);
+
+  console.log("route search (two X1s in the country, user in the north):");
+  const searchURL = `http://localhost:${PORT}/api/services/?search=X1&lat=55.0&lon=-1.6`;
+  const s = await (await fetch(searchURL)).json();
+  check("local X1 ranks first", s.results?.[0]?.description === "Home - City");
+  check("the distant X1 still appears, after it",
+        s.results?.some((r) => r.description?.includes("Southville")));
+
+  console.log("stops on a route (direction-grouped, journey order):");
+  const localX1 = s.results?.[0]?.id;
+  const st = await (await fetch(`http://localhost:${PORT}/api/stops/?service=${localX1}`)).json();
+  check("first stop is the origin in journey order, not alphabetical",
+        st.results?.[0]?.atco_code === "NEAR");
+  check("stops carry a direction label", (st.results?.[0]?.direction ?? "").startsWith("Towards"));
+  check("no stop listed twice",
+        new Set(st.results?.map((r) => r.atco_code)).size === (st.results?.length ?? 0));
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;

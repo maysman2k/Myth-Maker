@@ -203,6 +203,7 @@ struct StopDTO: Decodable {
     let location: [Double]?
     let indicator: String?
     let bearing: FlexibleDouble?
+    let direction: String?
     let line_names: [String]?
 
     func toDomain() -> Stop? {
@@ -214,7 +215,8 @@ struct StopDTO: Decodable {
                     latitude: location[1],
                     longitude: location[0],
                     lineNames: line_names ?? [],
-                    naptanCode: naptan_code)
+                    naptanCode: naptan_code,
+                    direction: direction)
     }
 }
 

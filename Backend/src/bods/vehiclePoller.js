@@ -109,11 +109,49 @@ export class VehicleStore {
     return row ?? null;
   }
 
+  /** route id → geographic bounding box of its stops (null if unknown). */
+  #routeBBoxCache = new Map();
+
+  #routeBBox(routeID) {
+    if (this.#routeBBoxCache.has(routeID)) return this.#routeBBoxCache.get(routeID);
+    const db = this.#db();
+    if (!db) return null;
+    const row = db
+      .prepare(
+        `SELECT MIN(lat) AS minLat, MAX(lat) AS maxLat, MIN(lon) AS minLon, MAX(lon) AS maxLon
+         FROM route_stops JOIN stops ON stops.atco = route_stops.atco
+         WHERE route_stops.route_id = ?`,
+      )
+      .get(routeID);
+    const box = row?.minLat != null ? row : null;
+    this.#routeBBoxCache.set(routeID, box);
+    return box;
+  }
+
+  /** The live feed's route/trip ids and the static timetable's are different
+   *  namespaces that collide numerically, so an id match alone can pin a
+   *  vehicle to the wrong route entirely (a London 42 "on" a Tyneside X8).
+   *  Sanity-check the match: the vehicle must be near the route it claims. */
+  #plausiblyOnRoute(routeID, lat, lon) {
+    const box = this.#routeBBox(routeID);
+    if (!box) return true; // no stop data to judge by — keep the match
+    const pad = 0.15; // ~15 km beyond the route's stops
+    return lat >= box.minLat - pad && lat <= box.maxLat + pad
+        && lon >= box.minLon - pad && lon <= box.maxLon + pad;
+  }
+
   ingest(feedMessage) {
     const now = Date.now();
     // Re-check for the timetable database once per poll so enrichment
-    // begins automatically after the import runs.
+    // begins automatically after the import runs. If the daily import swapped
+    // the database since last poll, drop caches keyed by the old ids.
+    const before = this.#dbHandle;
     this.#dbHandle = undefined;
+    if (this.#db() !== before) {
+      this.#routeByGtfsID.clear();
+      this.#tripByGtfsID.clear();
+      this.#routeBBoxCache.clear();
+    }
 
     const fresh = new Map();
     for (const entity of feedMessage.entity ?? []) {
@@ -126,8 +164,14 @@ export class VehicleStore {
       const key = vp.vehicle?.id || entity.id || vp.trip?.tripId;
       if (!key) continue;
 
-      const route = this.#route(vp.trip?.routeId);
-      const trip = this.#trip(vp.trip?.tripId);
+      let route = this.#route(vp.trip?.routeId);
+      let trip = this.#trip(vp.trip?.tripId);
+      if (route && !this.#plausiblyOnRoute(route.id, position.latitude, position.longitude)) {
+        route = null;
+      }
+      if (trip && !this.#plausiblyOnRoute(trip.route_id, position.latitude, position.longitude)) {
+        trip = null;
+      }
       const timestamp = vp.timestamp ? Number(vp.timestamp) * 1000 : now;
 
       fresh.set(String(key), {

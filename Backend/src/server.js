@@ -166,14 +166,7 @@ app.get("/api/stops/", (req, res) => {
       )
       .all(String(naptan), String(naptan));
   } else if (req.query.service) {
-    const serviceID = Number(req.query.service);
-    rows = db
-      .prepare(
-        `SELECT stops.* FROM route_stops
-         JOIN stops ON stops.atco = route_stops.atco
-         WHERE route_stops.route_id = ? ORDER BY stops.name LIMIT 400`,
-      )
-      .all(serviceID);
+    rows = stopsAlongRoute(db, Number(req.query.service));
   }
 
   const lineNames = db.prepare(
@@ -192,11 +185,61 @@ app.get("/api/stops/", (req, res) => {
       location: [stop.lon, stop.lat],
       indicator: null,
       bearing: null,
+      direction: stop.direction ?? null,
       line_names: lineNames.all(stop.atco).map((r) => r.name),
     })),
     next: null,
   });
 });
+
+/// Stops for a route in JOURNEY ORDER, split by direction — not an
+/// alphabetical soup where every stop appears twice (once per side of the
+/// road). Each direction's order comes from its longest timetabled trip;
+/// stops only served by variant journeys are appended unlabelled.
+function stopsAlongRoute(db, routeID) {
+  const headsigns = db
+    .prepare(
+      `SELECT headsign, COUNT(*) AS c FROM trips
+       WHERE route_id = ? AND headsign IS NOT NULL AND headsign <> ''
+       GROUP BY headsign ORDER BY c DESC LIMIT 2`,
+    )
+    .all(routeID)
+    .map((r) => r.headsign);
+
+  const longestTrip = db.prepare(
+    `SELECT trips.id AS id FROM trips JOIN stop_times st ON st.trip_id = trips.id
+     WHERE trips.route_id = ? AND trips.headsign = ?
+     GROUP BY trips.id ORDER BY COUNT(*) DESC LIMIT 1`,
+  );
+  const tripStops = db.prepare(
+    `SELECT stops.* FROM stop_times JOIN stops ON stops.atco = stop_times.atco
+     WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 200`,
+  );
+
+  const seen = new Set();
+  const out = [];
+  for (const headsign of headsigns) {
+    const tripID = longestTrip.get(routeID, headsign)?.id;
+    if (!tripID) continue;
+    for (const stop of tripStops.all(tripID)) {
+      if (seen.has(stop.atco)) continue;
+      seen.add(stop.atco);
+      out.push({ ...stop, direction: `Towards ${headsign}` });
+    }
+  }
+
+  for (const stop of db
+    .prepare(
+      `SELECT stops.* FROM route_stops JOIN stops ON stops.atco = route_stops.atco
+       WHERE route_stops.route_id = ? ORDER BY stops.name LIMIT 400`,
+    )
+    .all(routeID)) {
+    if (seen.has(stop.atco)) continue;
+    seen.add(stop.atco);
+    out.push({ ...stop, direction: null });
+  }
+  return out.slice(0, 400);
+}
 
 // MARK: Services — GET /api/services/
 
@@ -210,13 +253,48 @@ app.get("/api/services/", (req, res) => {
     const raw = String(req.query.search).trim().slice(0, 60);
     if (raw.length < 1) return res.json({ results: [], next: null });
     const term = `%${raw}%`;
-    rows = db
-      .prepare(
-        `SELECT * FROM routes
-         WHERE line_name LIKE ? OR description LIKE ?
-         ORDER BY LENGTH(line_name), line_name LIMIT 40`,
-      )
+    const lat = Number(req.query.lat);
+    const lon = Number(req.query.lon);
+    const hasLocation = Number.isFinite(lat) && Number.isFinite(lon);
+
+    // Rank: exact line-name match, then prefix, then contains — and within a
+    // tier, NEAREST first when the client says where it is. A national
+    // dataset has dozens of "X7"s; without locality the user's own is buried.
+    const candidates = db
+      .prepare("SELECT * FROM routes WHERE line_name LIKE ? OR description LIKE ? LIMIT 300")
       .all(term, term);
+    const centroidStmt = db.prepare(
+      `SELECT AVG(lat) AS lat, AVG(lon) AS lon
+       FROM route_stops JOIN stops ON stops.atco = route_stops.atco
+       WHERE route_stops.route_id = ?`,
+    );
+    const needle = raw.toLowerCase();
+    const scored = candidates.map((route) => {
+      const name = route.line_name.toLowerCase();
+      const tier = name === needle ? 0 : name.startsWith(needle) ? 1 : 2;
+      let distance = 9e9;
+      if (hasLocation) {
+        const centroid = centroidStmt.get(route.id);
+        if (centroid?.lat != null) distance = metresBetween(lat, lon, centroid.lat, centroid.lon);
+      }
+      return { route, tier, distance };
+    });
+    scored.sort((a, b) =>
+      a.tier - b.tier
+      || a.distance - b.distance
+      || a.route.line_name.length - b.route.line_name.length
+      || a.route.line_name.localeCompare(b.route.line_name));
+
+    // Collapse duplicates (same number, same description — typically the same
+    // service imported once per direction or dataset), keeping the nearest.
+    const seen = new Set();
+    for (const { route } of scored) {
+      const key = `${route.line_name.toLowerCase()}|${describeRoute(db, route).toLowerCase()}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      rows.push(route);
+      if (rows.length >= 40) break;
+    }
   } else if (req.query.stops) {
     rows = db
       .prepare(

@@ -4,6 +4,7 @@ struct ServiceSearchView: View {
     @Environment(\.busAPI) private var api
     @Environment(FavoritesStore.self) private var favorites
     @Environment(TimetableStore.self) private var timetables
+    @Environment(LocationProvider.self) private var location
 
     @State private var query = ""
     @State private var results: [Service] = []
@@ -44,6 +45,7 @@ struct ServiceSearchView: View {
         }
         .background(BPColor.backgroundPrimary)
         .navigationTitle("Routes")
+        .task { location.requestAccess() }
         .searchable(text: $query, prompt: "Route number or destination")
         .onChange(of: query) {
             search()
@@ -101,7 +103,8 @@ struct ServiceSearchView: View {
         searchTask = Task {
             try? await Task.sleep(for: .milliseconds(400))
             guard !Task.isCancelled else { return }
-            if let found = try? await api.services(matching: trimmed) {
+            if let found = try? await api.services(matching: trimmed,
+                                                   near: location.location?.coordinate) {
                 results = found
             }
             isSearching = false

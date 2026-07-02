@@ -17,6 +17,9 @@ struct Stop: Identifiable, Codable, Hashable {
     var lineNames: [String]
     /// SMS code printed on the stop flag (NaPTAN code).
     var naptanCode: String?
+    /// On a route's stop list: which direction serves this stop
+    /// (e.g. "Towards Newcastle"). Nil outside that context.
+    var direction: String? = nil
 
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
