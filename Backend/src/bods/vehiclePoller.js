@@ -212,7 +212,31 @@ export class VehicleStore {
 
   onServices(serviceIDs) {
     const wanted = new Set(serviceIDs);
-    return [...this.#vehicles.values()].filter((v) => wanted.has(v.service_id));
+
+    // The static data holds several route rows for one public line (an "X8"
+    // can exist twice), and live vehicles get enriched onto whichever row the
+    // feed references — often a sibling of the row being asked about. Match
+    // the PUBLIC LINE, not just the row: same line name, near this route.
+    const db = this.#db();
+    const lineBoxes = new Map(); // lowercased line name → bounding box
+    if (db) {
+      for (const id of serviceIDs) {
+        const row = db.prepare("SELECT line_name FROM routes WHERE id = ?").get(id);
+        const box = this.#routeBBox(id);
+        if (row?.line_name && box) lineBoxes.set(row.line_name.trim().toLowerCase(), box);
+      }
+    }
+
+    const pad = 0.15; // ~15 km around the route's stops
+    return [...this.#vehicles.values()].filter((v) => {
+      if (wanted.has(v.service_id)) return true;
+      const line = (v.service?.line_name ?? "").trim().toLowerCase();
+      const box = line ? lineBoxes.get(line) : undefined;
+      if (!box) return false;
+      const [lon, lat] = v.coordinates;
+      return lat >= box.minLat - pad && lat <= box.maxLat + pad
+          && lon >= box.minLon - pad && lon <= box.maxLon + pad;
+    });
   }
 
   get count() {

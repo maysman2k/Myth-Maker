@@ -19,6 +19,9 @@ import { fileURLToPath } from "node:url";
 const PORT = 3197;
 const backendRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dbPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "buspulse-smoke-")), "gtfs.sqlite");
+// Point this process's own config at the fixture too, so the VehicleStore
+// tests below (dynamic import) read the same database as the spawned server.
+process.env.DB_PATH = dbPath;
 
 // ---- Fixture ---------------------------------------------------------------
 
@@ -98,6 +101,14 @@ insStop.run(southA[0], "sa", southA[1], southA[2], southA[3]);
 insStop.run(southB[0], "sb", southB[1], southB[2], southB[3]);
 const southX1 = insRoute.run("S-X1", "X1", "").lastInsertRowid;
 addTrip(southX1, "S-X1-a", "Southville", [["SA", now + 600], ["SB", now + 1200]]);
+
+// A SIBLING row for the same public line — the static data often holds the
+// same "X1" as several route records, and live vehicles get tagged onto
+// whichever one the feed references.
+insStop.run("DUPA", "dupa", "Dup Stop A", 55.030, -1.630);
+insStop.run("DUPB", "dupb", "Dup Stop B", 55.035, -1.635);
+const x1Dup = insRoute.run("X1-dup", "X1", "").lastInsertRowid;
+addTrip(x1Dup, "X1-dup-a", "City", [["DUPA", now + 5400], ["DUPB", now + 6000]]);
 
 // A route whose trips carry NO headsigns (common in parts of the data):
 // stop lists must still get a direction label, from the trip's final stop.
@@ -195,6 +206,26 @@ try {
   const st77 = await (await fetch(`http://localhost:${PORT}/api/stops/?service=${r77}`)).json();
   check("routes without headsigns still get directions (from the final stop)",
         st77.results?.[0]?.direction === "Towards City Centre");
+
+  console.log("live vehicles on a route (sibling rows of the same line):");
+  const { VehicleStore } = await import("../src/bods/vehiclePoller.js");
+  const store = new VehicleStore();
+  store.ingest({ entity: [
+    // Tagged to the exact row the user opened.
+    { id: "e1", vehicle: { trip: { routeId: "X1" }, vehicle: { id: "veh-exact" },
+                           position: { latitude: 55.0010, longitude: -1.6000 } } },
+    // Tagged to the SIBLING X1 row, driving the same corridor.
+    { id: "e2", vehicle: { trip: { routeId: "X1-dup" }, vehicle: { id: "veh-sibling" },
+                           position: { latitude: 55.0009, longitude: -1.6001 } } },
+    // A genuinely different X1, 400 miles away — must stay out.
+    { id: "e3", vehicle: { trip: { routeId: "S-X1" }, vehicle: { id: "veh-south" },
+                           position: { latitude: 51.0, longitude: -1.0 } } },
+  ] });
+  const onRoute = store.onServices([x1]);
+  check("exact-row vehicle returned", onRoute.some((v) => v.service_id === x1));
+  check("sibling-row vehicle with the same line name returned too", onRoute.length === 2);
+  check("the distant route's vehicle stays off this route's map",
+        !onRoute.some((v) => v.coordinates[1] < 54));
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;
