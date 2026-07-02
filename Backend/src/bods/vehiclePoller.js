@@ -65,6 +65,32 @@ export class VehicleStore {
   lastUpdated = null;
   lastError = null;
 
+  /** SIRI-VM overlay: vehicle ref → { line, destination }. Fills in names
+   *  for vehicles whose GTFS-RT ids match nothing in the timetable. */
+  #siri = new Map();
+  /** Enrichment health, refreshed each ingest — surfaced on /health. */
+  matchStats = { total: 0, matchedToTimetable: 0, namedBySiri: 0, unnamed: 0,
+                 sampleUnmatchedRouteIds: [] };
+
+  applySiriOverlay(byRef) {
+    const expanded = new Map();
+    for (const [ref, info] of byRef) {
+      const key = String(ref).toUpperCase();
+      expanded.set(key, info);
+      // GTFS-RT vehicle ids are sometimes "OPERATOR-1234" where SIRI says
+      // "1234" (or vice versa) — index the bare suffix too.
+      const suffix = key.split(/[-:]/).pop();
+      if (suffix && suffix !== key && !expanded.has(suffix)) expanded.set(suffix, info);
+    }
+    this.#siri = expanded;
+  }
+
+  #siriFor(key) {
+    if (this.#siri.size === 0) return null;
+    const k = String(key).toUpperCase();
+    return this.#siri.get(k) ?? this.#siri.get(k.split(/[-:]/).pop()) ?? null;
+  }
+
   /** Lazy caches over the GTFS db for enrichment. */
   #routeByGtfsID = new Map();
   #tripByGtfsID = new Map();
@@ -154,6 +180,8 @@ export class VehicleStore {
     }
 
     const fresh = new Map();
+    const stats = { total: 0, matchedToTimetable: 0, namedBySiri: 0, unnamed: 0,
+                    sampleUnmatchedRouteIds: [] };
     for (const entity of feedMessage.entity ?? []) {
       const vp = entity.vehicle;
       const position = vp?.position;
@@ -172,7 +200,18 @@ export class VehicleStore {
       if (trip && !this.#plausiblyOnRoute(trip.route_id, position.latitude, position.longitude)) {
         trip = null;
       }
+      const siri = route ? null : this.#siriFor(key);
       const timestamp = vp.timestamp ? Number(vp.timestamp) * 1000 : now;
+
+      stats.total += 1;
+      if (route || trip) stats.matchedToTimetable += 1;
+      else if (siri) stats.namedBySiri += 1;
+      else {
+        stats.unnamed += 1;
+        if (stats.sampleUnmatchedRouteIds.length < 5 && vp.trip?.routeId) {
+          stats.sampleUnmatchedRouteIds.push(String(vp.trip.routeId));
+        }
+      }
 
       fresh.set(String(key), {
         id: stableIntID(String(key)),
@@ -184,16 +223,17 @@ export class VehicleStore {
           ? position.bearing
           : null,
         datetime: new Date(timestamp).toISOString(),
-        destination: trip?.headsign ?? null,
-        service: { line_name: route?.line_name ?? null },
+        destination: trip?.headsign ?? siri?.destination ?? null,
+        service: { line_name: route?.line_name ?? siri?.line ?? null },
         vehicle: {
           name: vp.vehicle?.label || vp.vehicle?.id || null,
           url: null,
         },
-        delay: null, // Fast-follow: GTFS-RT trip updates / SIRI-VM.
+        delay: null, // Fast-follow: GTFS-RT trip updates.
       });
     }
     this.#vehicles = fresh;
+    this.matchStats = stats;
     this.lastUpdated = new Date(now).toISOString();
   }
 

@@ -8,6 +8,7 @@ import rateLimit from "express-rate-limit";
 import { config } from "./config.js";
 import { activeServiceIDs, dbGeneration, dbStats, openDB, secondsToTime } from "./db.js";
 import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
+import { startSiriPolling } from "./bods/siriPoller.js";
 import { ApnsClient } from "./apns/apnsClient.js";
 import { DeviceStore } from "./apns/deviceStore.js";
 import { scheduleDailyImport } from "./scheduler.js";
@@ -963,6 +964,7 @@ app.get("/health", (req, res) => {
     vehicles: store.count,
     lastVehicleUpdate: store.lastUpdated,
     pollerError: store.lastError,
+    live: store.matchStats,
     gtfs: stats,
     push: { configured: apns.configured, devices: devices.count },
   });
@@ -998,6 +1000,7 @@ try {
 }
 
 startPolling(store);
+startSiriPolling(store);
 scheduleDailyImport();
 app.listen(config.port, () => {
   console.log(`BusPulse backend listening on :${config.port}`);

@@ -21,6 +21,8 @@ export const config = {
   /// roughly halve the disk needed — route detail maps just lose the line.
   importShapes: (process.env.GTFS_IMPORT_SHAPES ?? "true").toLowerCase() !== "false",
   pollSeconds: Math.max(5, Number(process.env.POLL_SECONDS ?? 10)),
+  /// SIRI-VM overlay poll cadence — line names change rarely, so slow is fine.
+  siriPollSeconds: Math.max(60, Number(process.env.SIRI_POLL_SECONDS ?? 120)),
   port: Number(process.env.PORT ?? 3000),
 
   // --- Security / abuse protection ---

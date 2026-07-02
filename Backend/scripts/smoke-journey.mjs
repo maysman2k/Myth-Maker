@@ -226,6 +226,49 @@ try {
   check("sibling-row vehicle with the same line name returned too", onRoute.length === 2);
   check("the distant route's vehicle stays off this route's map",
         !onRoute.some((v) => v.coordinates[1] < 54));
+
+  console.log("SIRI-VM overlay (names for vehicles the timetable can't match):");
+  const { parseSiriVehicles } = await import("../src/bods/siriPoller.js");
+  const overlay = parseSiriVehicles(`
+    <Siri><ServiceDelivery><VehicleMonitoringDelivery>
+      <VehicleActivity>
+        <MonitoredVehicleJourney>
+          <PublishedLineName>X1</PublishedLineName>
+          <DestinationName>City Centre</DestinationName>
+          <VehicleRef>OP-777</VehicleRef>
+        </MonitoredVehicleJourney>
+      </VehicleActivity>
+      <VehicleActivity>
+        <MonitoredVehicleJourney>
+          <LineRef>42</LineRef>
+          <VehicleRef>OP-888</VehicleRef>
+        </MonitoredVehicleJourney>
+      </VehicleActivity>
+      <VehicleActivity><MonitoredVehicleJourney>
+        <PublishedLineName>9</PublishedLineName>
+      </MonitoredVehicleJourney></VehicleActivity>
+    </VehicleMonitoringDelivery></ServiceDelivery></Siri>`);
+  check("parser extracts line + destination per vehicle ref",
+        overlay.get("OP-777")?.line === "X1" && overlay.get("OP-777")?.destination === "City Centre");
+  check("parser falls back to LineRef and skips ref-less entries",
+        overlay.get("OP-888")?.line === "42" && overlay.size === 2);
+
+  store.applySiriOverlay(overlay);
+  store.ingest({ entity: [
+    // GTFS-RT ids match nothing in the timetable; SIRI knows it as OP-777
+    // (the GTFS-RT key is the bare "777" — suffix matching bridges them).
+    { id: "e9", vehicle: { trip: { routeId: "NO-SUCH-ROUTE" }, vehicle: { id: "777" },
+                           position: { latitude: 55.001, longitude: -1.6 } } },
+  ] });
+  const named = store.inBoundingBox(-2, 54, -1, 56);
+  check("unmatched vehicle gets its line name from SIRI",
+        named[0]?.service?.line_name === "X1" && named[0]?.destination === "City Centre");
+  check("match stats expose the split",
+        store.matchStats.total === 1 && store.matchStats.namedBySiri === 1
+        && store.matchStats.matchedToTimetable === 0);
+  const onX1AfterSiri = store.onServices([x1]);
+  check("SIRI-named vehicle now shows on the route page",
+        onX1AfterSiri.some((v) => v.service?.line_name === "X1"));
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;
