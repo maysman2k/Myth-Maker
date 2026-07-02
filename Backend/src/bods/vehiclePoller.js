@@ -72,6 +72,10 @@ export class VehicleStore {
   matchStats = { total: 0, matchedToTimetable: 0, namedBySiri: 0, unnamed: 0,
                  sampleUnmatchedRouteIds: [] };
 
+  /** Overlay freshness, surfaced on /health. */
+  siriOverlaySize = 0;
+  siriOverlayUpdated = null;
+
   applySiriOverlay(byRef) {
     const expanded = new Map();
     for (const [ref, info] of byRef) {
@@ -83,6 +87,8 @@ export class VehicleStore {
       if (suffix && suffix !== key && !expanded.has(suffix)) expanded.set(suffix, info);
     }
     this.#siri = expanded;
+    this.siriOverlaySize = byRef.size;
+    this.siriOverlayUpdated = new Date().toISOString();
   }
 
   #siriFor(key) {

@@ -965,6 +965,7 @@ app.get("/health", (req, res) => {
     lastVehicleUpdate: store.lastUpdated,
     pollerError: store.lastError,
     live: store.matchStats,
+    siri: { vehicles: store.siriOverlaySize, lastUpdated: store.siriOverlayUpdated },
     gtfs: stats,
     push: { configured: apns.configured, devices: devices.count },
   });

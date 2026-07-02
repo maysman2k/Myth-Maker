@@ -9,7 +9,16 @@
  * uses. We poll it slowly and merge: GTFS-RT stays the position source,
  * SIRI supplies names where timetable enrichment failed.
  */
+import yauzl from "yauzl";
 import { config } from "../config.js";
+
+/// Candidate SIRI-VM sources, probed in order; the first that yields
+/// vehicles is locked in. The datafeed API returns raw XML (key required);
+/// the bulk archive returns a zip containing one XML file.
+const candidates = () => [
+  `https://data.bus-data.dft.gov.uk/api/v1/datafeed/?api_key=${config.bodsApiKey}`,
+  "https://data.bus-data.dft.gov.uk/avl/download/bulk_archive",
+];
 
 /// VehicleRef → { line, destination } from a SIRI-VM XML document. Zero-dep,
 /// tolerant scan: national feeds are tens of MB, so full XML parsing is
@@ -28,37 +37,82 @@ export function parseSiriVehicles(xml) {
   return out;
 }
 
+/// First entry of a zip buffer, as text.
+function unzipFirstEntry(buffer) {
+  return new Promise((resolve, reject) => {
+    yauzl.fromBuffer(buffer, { lazyEntries: true }, (err, zip) => {
+      if (err) return reject(err);
+      zip.on("error", reject);
+      zip.on("entry", (entry) => {
+        zip.openReadStream(entry, (streamErr, stream) => {
+          if (streamErr) return reject(streamErr);
+          const chunks = [];
+          stream.on("data", (chunk) => chunks.push(chunk));
+          stream.on("error", reject);
+          stream.on("end", () => {
+            resolve(Buffer.concat(chunks).toString("utf8"));
+            zip.close();
+          });
+        });
+      });
+      zip.readEntry();
+    });
+  });
+}
+
 export function startSiriPolling(store) {
   if (!config.bodsApiKey) {
     console.log("SIRI-VM overlay disabled (no BODS_API_KEY).");
     return;
   }
-  const url = `https://data.bus-data.dft.gov.uk/api/v1/datafeed/?api_key=${config.bodsApiKey}`;
+  let lockedURL = null;
   let announced = false;
   let backoff = 0;
 
+  async function fetchOverlay(url) {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; BusPulse/1.0; +support@bricksinabag.com)",
+        Accept: "*/*",
+      },
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const buffer = Buffer.from(await response.arrayBuffer());
+    // Zip archives start "PK"; everything else is treated as XML text.
+    const xml = buffer[0] === 0x50 && buffer[1] === 0x4b
+      ? await unzipFirstEntry(buffer)
+      : buffer.toString("utf8");
+    const overlay = parseSiriVehicles(xml);
+    if (overlay.size === 0) {
+      throw new Error(`parsed 0 vehicles (body starts: ${xml.slice(0, 120).replaceAll("\n", " ")})`);
+    }
+    return overlay;
+  }
+
   async function poll() {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; BusPulse/1.0; +support@bricksinabag.com)",
-          Accept: "*/*",
-        },
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const overlay = parseSiriVehicles(await response.text());
-      if (overlay.size > 0) {
+    const urls = lockedURL ? [lockedURL] : candidates();
+    let lastError = null;
+    for (const url of urls) {
+      try {
+        const overlay = await fetchOverlay(url);
         store.applySiriOverlay(overlay);
+        lockedURL = url;
         backoff = 0;
         if (!announced) {
           announced = true;
           console.log(`SIRI-VM overlay active: line names for ${overlay.size} vehicles.`);
         }
+        lastError = null;
+        break;
+      } catch (error) {
+        lastError = error;
+        console.error(`SIRI-VM candidate failed (${url.split("?")[0]}):`,
+                      String(error.message ?? error).slice(0, 200));
       }
-    } catch (error) {
+    }
+    if (lastError) {
+      lockedURL = null; // re-probe all candidates next time
       backoff = Math.min(backoff ? backoff * 2 : 60, 900);
-      console.error(`SIRI-VM poll failed (backing off ${backoff}s):`,
-                    String(error.message ?? error).slice(0, 200));
     }
     setTimeout(poll, (backoff || config.siriPollSeconds) * 1000);
   }
