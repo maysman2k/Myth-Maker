@@ -291,6 +291,39 @@ try {
         withSiriOnly.some((v) => v.vehicle?.name === "999" && v.service?.line_name === "X1"));
   check("stale SIRI-only entries are not resurrected",
         store.matchStats.total === 2 && store.matchStats.siriOnly === 1);
+
+  console.log("fresher-of-two-feeds position + diagnostics:");
+  // A GTFS-RT vehicle whose SIRI twin has a NEWER position: the store should
+  // move it to the SIRI coordinate rather than keep the stale GTFS-RT one.
+  const store2 = new VehicleStore();
+  store2.applySiriOverlay(new Map([["FRESH-1234", {
+    line: "X1", destination: "City", lat: 55.05, lon: -1.66, bearing: 10,
+    recordedAt: new Date().toISOString(),
+  }]]));
+  store2.ingest({ entity: [
+    { id: "g1", vehicle: { trip: { routeId: "NO-SUCH" }, vehicle: { id: "1234" },
+                           timestamp: Math.floor((Date.now() - 5 * 60 * 1000) / 1000),
+                           position: { latitude: 55.001, longitude: -1.6, bearing: 0 } } },
+  ] });
+  const moved = store2.inBoundingBox(-2, 54, -1, 56)[0];
+  check("takes the fresher SIRI position for a GTFS-RT vehicle",
+        moved?.coordinates[1] === 55.05 && moved?.posFrom === "siri");
+  const dbg = store2.debugLine("X1");
+  check("debugLine reports served + SIRI counts and per-vehicle source",
+        dbg.servedCount === 1 && dbg.siriCount === 1 && dbg.served[0].source === "gtfs");
+
+  console.log("suffix bridging is guarded against short-number collisions:");
+  const store3 = new VehicleStore();
+  store3.applySiriOverlay(new Map([
+    ["OP1-77", { line: "A", lat: 1, lon: 1, bearing: null, recordedAt: new Date().toISOString() }],
+    ["OP2-77", { line: "B", lat: 2, lon: 2, bearing: null, recordedAt: new Date().toISOString() }],
+  ]));
+  store3.ingest({ entity: [
+    { id: "z", vehicle: { trip: {}, vehicle: { id: "77" },
+                          position: { latitude: 55, longitude: -1.6 } } },
+  ] });
+  check("a 2-digit fleet number is NOT bridged to an ambiguous operator ref",
+        store3.inBoundingBox(-2, 54, -1, 56)[0]?.service?.line_name == null);
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;

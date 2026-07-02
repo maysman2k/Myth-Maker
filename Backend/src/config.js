@@ -21,8 +21,10 @@ export const config = {
   /// roughly halve the disk needed — route detail maps just lose the line.
   importShapes: (process.env.GTFS_IMPORT_SHAPES ?? "true").toLowerCase() !== "false",
   pollSeconds: Math.max(5, Number(process.env.POLL_SECONDS ?? 10)),
-  /// SIRI-VM overlay poll cadence — line names change rarely, so slow is fine.
-  siriPollSeconds: Math.max(60, Number(process.env.SIRI_POLL_SECONDS ?? 120)),
+  /// SIRI-VM poll cadence. SIRI carries positions too, and we prefer the
+  /// fresher of the two feeds per vehicle, so this shouldn't lag far behind
+  /// the GTFS-RT poll. The bulk archive is a large ZIP, hence not every 10s.
+  siriPollSeconds: Math.max(15, Number(process.env.SIRI_POLL_SECONDS ?? 30)),
   port: Number(process.env.PORT ?? 3000),
 
   // --- Security / abuse protection ---

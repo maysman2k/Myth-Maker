@@ -78,15 +78,30 @@ export class VehicleStore {
   /** Original ref → info, for adding vehicles that exist only in SIRI. */
   #siriRaw = new Map();
 
+  /** The bare fleet-number suffix of a ref (e.g. "OP-1234" → "1234").
+   *  Ambiguity — the same suffix claimed by two operators — is handled where
+   *  the index is built (such suffixes are dropped), so here we only need a
+   *  plausible suffix that differs from the whole ref. */
+  #bareSuffix(key) {
+    const upper = String(key).toUpperCase();
+    const suffix = upper.split(/[-:_/]/).pop();
+    return suffix && suffix.length >= 2 && suffix !== upper ? suffix : null;
+  }
+
   applySiriOverlay(byRef) {
     const expanded = new Map();
+    const collided = new Set();
     for (const [ref, info] of byRef) {
       const key = String(ref).toUpperCase();
       expanded.set(key, info);
       // GTFS-RT vehicle ids are sometimes "OPERATOR-1234" where SIRI says
-      // "1234" (or vice versa) — index the bare suffix too.
-      const suffix = key.split(/[-:]/).pop();
-      if (suffix && suffix !== key && !expanded.has(suffix)) expanded.set(suffix, info);
+      // "1234" (or vice versa) — index the bare suffix too, but drop any
+      // suffix claimed by two different operators (an ambiguous bridge).
+      const suffix = this.#bareSuffix(key);
+      if (suffix && !collided.has(suffix)) {
+        if (expanded.has(suffix)) { expanded.delete(suffix); collided.add(suffix); }
+        else expanded.set(suffix, info);
+      }
     }
     this.#siri = expanded;
     this.#siriRaw = byRef;
@@ -97,7 +112,8 @@ export class VehicleStore {
   #siriFor(key) {
     if (this.#siri.size === 0) return null;
     const k = String(key).toUpperCase();
-    return this.#siri.get(k) ?? this.#siri.get(k.split(/[-:]/).pop()) ?? null;
+    const suffix = this.#bareSuffix(k);
+    return this.#siri.get(k) ?? (suffix ? this.#siri.get(suffix) : null) ?? null;
   }
 
   /** Lazy caches over the GTFS db for enrichment. */
@@ -209,12 +225,33 @@ export class VehicleStore {
       if (trip && !this.#plausiblyOnRoute(trip.route_id, position.latitude, position.longitude)) {
         trip = null;
       }
-      const siri = route ? null : this.#siriFor(key);
-      const timestamp = vp.timestamp ? Number(vp.timestamp) * 1000 : now;
+      // Always consult SIRI — not just for naming, but so we can take its
+      // position when it's fresher than GTFS-RT's (bustimes reads SIRI, so
+      // matching its positions means preferring the newer of the two).
+      const siri = this.#siriFor(key);
+      const gtfsTs = vp.timestamp ? Number(vp.timestamp) * 1000 : now;
+
+      let lon = position.longitude;
+      let lat = position.latitude;
+      let heading = Number.isFinite(position.bearing) && position.bearing !== 0
+        ? position.bearing : null;
+      let timestamp = gtfsTs;
+      let posFrom = "gtfs";
+      const siriHasPos = siri && siri.lat != null && siri.lon != null
+        && !(siri.lat === 0 && siri.lon === 0);
+      if (siriHasPos) {
+        const siriTs = siri.recordedAt ? Date.parse(siri.recordedAt) : NaN;
+        if (Number.isFinite(siriTs) && siriTs > gtfsTs) {
+          lon = siri.lon; lat = siri.lat;
+          heading = siri.bearing ?? heading;
+          timestamp = siriTs;
+          posFrom = "siri";
+        }
+      }
 
       stats.total += 1;
       if (route || trip) stats.matchedToTimetable += 1;
-      else if (siri) stats.namedBySiri += 1;
+      else if (siri?.line) stats.namedBySiri += 1;
       else {
         stats.unnamed += 1;
         if (stats.sampleUnmatchedRouteIds.length < 5 && vp.trip?.routeId) {
@@ -227,10 +264,8 @@ export class VehicleStore {
         journey_id: null,
         service_id: route?.id ?? trip?.route_id ?? null,
         trip_id: trip?.id ?? null,
-        coordinates: [position.longitude, position.latitude],
-        heading: Number.isFinite(position.bearing) && position.bearing !== 0
-          ? position.bearing
-          : null,
+        coordinates: [lon, lat],
+        heading,
         datetime: new Date(timestamp).toISOString(),
         destination: trip?.headsign ?? siri?.destination ?? null,
         service: { line_name: route?.line_name ?? siri?.line ?? null },
@@ -238,6 +273,8 @@ export class VehicleStore {
           name: vp.vehicle?.label || vp.vehicle?.id || null,
           url: null,
         },
+        source: "gtfs",
+        posFrom,
         delay: null, // Fast-follow: GTFS-RT trip updates.
       });
     }
@@ -249,14 +286,15 @@ export class VehicleStore {
       for (const key of fresh.keys()) {
         const k = key.toUpperCase();
         seenRefs.add(k);
-        const suffix = k.split(/[-:]/).pop();
+        const suffix = this.#bareSuffix(k);
         if (suffix) seenRefs.add(suffix);
       }
       for (const [ref, info] of this.#siriRaw) {
         if (info.lat == null || info.lon == null) continue;
         if (info.lat === 0 && info.lon === 0) continue; // GPS-less placeholder
         const k = String(ref).toUpperCase();
-        if (seenRefs.has(k) || seenRefs.has(k.split(/[-:]/).pop())) continue;
+        const suffix = this.#bareSuffix(k);
+        if (seenRefs.has(k) || (suffix && seenRefs.has(suffix))) continue;
         // Skip stale SIRI entries — the bulk archive can lag per operator.
         const recorded = info.recordedAt ? Date.parse(info.recordedAt) : NaN;
         if (Number.isFinite(recorded) && now - recorded > config.vehicleStaleSeconds * 1000) continue;
@@ -275,6 +313,8 @@ export class VehicleStore {
           destination: info.destination ?? null,
           service: { line_name: info.line },
           vehicle: { name: String(ref), url: null },
+          source: "siri",
+          posFrom: "siri",
           delay: null,
         });
       }
@@ -329,6 +369,39 @@ export class VehicleStore {
 
   get count() {
     return this.#vehicles.size;
+  }
+
+  /** Everything both feeds know about one public line — for diagnosing why a
+   *  route shows fewer/differently-placed buses than another tracker. */
+  debugLine(lineName) {
+    const name = (lineName ?? "").trim().toLowerCase();
+    const now = Date.now();
+    const ageOf = (iso) => {
+      const t = Date.parse(iso);
+      return Number.isFinite(t) ? Math.round((now - t) / 1000) : null;
+    };
+    const served = [...this.#vehicles.values()]
+      .filter((v) => (v.service?.line_name ?? "").trim().toLowerCase() === name)
+      .map((v) => ({
+        ref: v.vehicle?.name, service_id: v.service_id, source: v.source,
+        posFrom: v.posFrom, lon: v.coordinates[0], lat: v.coordinates[1],
+        ageSeconds: ageOf(v.datetime),
+      }));
+    const siri = [...this.#siriRaw.entries()]
+      .filter(([, info]) => (info.line ?? "").trim().toLowerCase() === name)
+      .map(([ref, info]) => ({
+        ref, line: info.line, lat: info.lat, lon: info.lon,
+        hasPosition: info.lat != null && info.lon != null && !(info.lat === 0 && info.lon === 0),
+        ageSeconds: info.recordedAt ? ageOf(info.recordedAt) : null,
+      }));
+    return {
+      line: lineName,
+      servedCount: served.length,
+      siriCount: siri.length,
+      siriWithPosition: siri.filter((s) => s.hasPosition).length,
+      served,
+      siri,
+    };
   }
 }
 

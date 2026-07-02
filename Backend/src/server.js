@@ -51,6 +51,7 @@ app.use((req, res, next) => {
       || req.path === "/health"
       || req.path === "/devices"
       || req.path === "/share"
+      || req.path.startsWith("/api/debug/")
       || req.path.startsWith("/.well-known/")) return next();
   if (req.get("x-app-token") === config.appSharedToken) return next();
   res.status(401).json({ error: "Unauthorised." });
@@ -969,6 +970,16 @@ app.get("/health", (req, res) => {
     gtfs: stats,
     push: { configured: apns.configured, devices: devices.count },
   });
+});
+
+// MARK: Diagnostics — GET /api/debug/line?name=X8
+// Shows, for one public line, exactly what each live feed knows: the
+// vehicles we serve (with source + position age) and everything SIRI has.
+// Read-only live data; handy for comparing our map against another tracker.
+app.get("/api/debug/line", (req, res) => {
+  const name = String(req.query.name ?? "").trim();
+  if (!name) return res.status(400).json({ error: "name required, e.g. ?name=X8" });
+  res.json(store.debugLine(name));
 });
 
 // MARK: Errors
