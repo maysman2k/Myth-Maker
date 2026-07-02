@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node src/server.js",
     "import-gtfs": "node src/bods/importGTFS.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "test": "node scripts/smoke-journey.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^11.5.0",

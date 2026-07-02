@@ -51,8 +51,19 @@ export const config = {
   // Protects admin-only endpoints (e.g. the test push).
   adminKey: (process.env.ADMIN_KEY ?? "").trim(),
 
+  // --- Journey planner tuning ---
+  journey: {
+    /// How far ahead (minutes) the first bus of a one-change journey may depart.
+    leg1WindowMinutes: Number(process.env.JOURNEY_LEG1_WINDOW_MINUTES ?? 75),
+    /// Minimum time (seconds) allowed to change buses, before any walking.
+    transferBufferSeconds: Number(process.env.JOURNEY_TRANSFER_BUFFER_SECONDS ?? 180),
+    /// Longest walk (metres) between two stops when changing buses.
+    maxTransferWalkMeters: Number(process.env.JOURNEY_MAX_TRANSFER_WALK_METERS ?? 400),
+  },
+
   dataDir: path.join(root, "data"),
-  dbPath: path.join(root, "data", "gtfs.sqlite"),
+  // DB_PATH override exists for tests (point the server at a fixture DB).
+  dbPath: process.env.DB_PATH ?? path.join(root, "data", "gtfs.sqlite"),
 
   // BODS endpoints. Documented at https://data.bus-data.dft.gov.uk/
   gtfsStaticURL: (region) =>

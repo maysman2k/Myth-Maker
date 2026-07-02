@@ -37,7 +37,7 @@ Wait Less reimagines [bustimes.org](https://bustimes.org) — the community trac
 - **Stops** — nearby (sorted by distance), favourites, and lookup by the SMS code printed on the stop flag. Stop detail shows live buses on its routes (tappable through to the bus), the routes calling there, and a **departure board computed entirely offline** from saved timetables.
 - **Routes** — search by number or destination; route detail has a live mini-map with the route line, the stop list, and the offline download.
 - **Saved timetables** — the headline offline feature. Download a route's full day of journeys (~tens of KB), browse every trip as a **proper grid** (stops down the side, journeys across — like the bustimes.org timetable view), with **Edit / swipe-to-delete** per route. Past-midnight night buses (24:xx / 25:xx times) handled correctly.
-- **Journey planner** — pick a start and destination; see which **direct buses** link them and their next departures. (Multi-leg journeys with transfers are a noted future enhancement.)
+- **Journey planner** — pick a start and destination (typing inline, with live place suggestions); see which **direct buses** link them with next departures and walking distance to the stop, and when no direct bus works, **one-change journeys** (bus → short walk → bus) with connection timing checked and a tappable stop-by-stop breakdown. Results show a **live badge** when vehicles are currently out on that route. (Two-or-more-change journeys are a noted future enhancement.)
 - **Bus arrival alarms** — set an alarm for a bus approaching a stop; a local notification fires. (Server push plumbing is built — see §7.)
 - **Sharing** — share a live bus via a `waitless://` deep link (and an HTTPS `/share` landing page), which opens straight to that bus/route/stop in the app.
 - **Offline awareness** — a network monitor changes the app's tone when disconnected: a banner appears, live sections explain themselves, saved data keeps working.
@@ -159,7 +159,7 @@ GTFS timetables (zip)     →    daily import → SQLite               →   GET
 | `GET /api/services/?search=` / `?stops=` | GTFS `routes` (with derived descriptions) |
 | `GET /api/trips/?service=&date=` | GTFS `trips` + `stop_times` + `calendar` |
 | `GET /api/trips/{id}/` | same (calling points incl. stop `location` for the map) |
-| `GET /api/journey?fromLat&fromLon&toLat&toLon` | direct-bus journey planner |
+| `GET /api/journey?fromLat&fromLon&toLat&toLon` | journey planner: direct buses + one-change itineraries |
 | `GET /services/{id}.json` | GTFS `shapes` → MultiLineString route line |
 | `GET /share?...` | HTML landing page with `waitless://` deep link |
 | `GET /.well-known/apple-app-site-association` | Universal Links association |
@@ -248,7 +248,12 @@ On the Mac: `git pull` in the project folder, then **Clean Build Folder + Run** 
 
 ## 9. Testing
 
-Unit tests (`BusPulseTests`, ⌘U) cover the pure logic:
+**Backend:** `cd Backend && npm test` runs a journey-planner smoke test — it
+builds a fixture timetable, boots the real server against it, and asserts
+nearest-stop ranking, short-working exclusion, past-midnight night buses,
+and one-change feasibility. Run it after touching `/api/journey`.
+
+**App:** unit tests (`BusPulseTests`, ⌘U) cover the pure logic:
 
 - `TimetableLogicTests` — time parsing incl. past-midnight (24:xx/25:xx)
 - `TimetableGridTests` — grouping journeys into the direction grid
@@ -271,6 +276,8 @@ The last development pass delivered five features plus daily auto-import (all co
 5. **Timetable grid + delete** — saved timetables render as a proper grid with Edit/swipe-to-delete.
 6. **Daily automatic GTFS refresh** (~03:00 UK).
 
+A follow-up pass extended the planner: inline place search with suggestions, nearest-stop ranking (least total walking), one-change journeys with timed connections and full stop-by-stop breakdowns, night-bus awareness around midnight, live-vehicle badges on results, and a backend smoke test (`npm test`).
+
 ---
 
 ## 11. Attribution (required — OGL v3)
@@ -283,7 +290,8 @@ Ship this in the app (Settings → About):
 
 ## 12. Known gaps & roadmap
 
-- **Multi-leg journeys with transfers** — planner currently does direct buses only.
+- **Two-or-more-change journeys** — the planner handles direct buses and single-change journeys (with timed connections and a walk between stops); longer chains need a proper routing engine and are deliberately out of scope for now.
+- **Live lateness on planner results** — results show live-vehicle presence today; "running 5 min late" needs the GTFS-RT trip-updates feed (live trip IDs don't match static ones).
 - **No livery colours / fleet details from BODS** — community data only; route pills fall back to a default colour where unavailable.
 - **`delay` from BODS** — live punctuality where the realtime feed provides it; the app handles it when present.
 - **England-focused** — Scotland/Wales/NI publish via Traveline; add later.

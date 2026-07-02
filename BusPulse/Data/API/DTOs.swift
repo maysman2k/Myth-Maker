@@ -331,6 +331,7 @@ struct InterchangeDTO: Decodable {
         let departure: String?
         let arrival: String?
         let meters: Int?
+        let live_vehicles: Int?
         let stops: [LegStopDTO]?
 
         struct LegStopDTO: Decodable {
@@ -355,7 +356,8 @@ struct InterchangeDTO: Decodable {
                                   arrival: leg.arrival,
                                   stops: (leg.stops ?? []).map {
                                       JourneyLegStop(name: $0.name ?? "Stop", time: $0.time)
-                                  })
+                                  },
+                                  liveVehicles: leg.live_vehicles)
             })
     }
 }
@@ -365,6 +367,7 @@ struct JourneyOptionDTO: Decodable {
     let from: StopRefDTO
     let to: StopRefDTO
     let departures: [String]
+    let live_vehicles: Int?
 
     struct StopRefDTO: Decodable {
         let atco: String?
@@ -378,7 +381,8 @@ struct JourneyOptionDTO: Decodable {
                       toStopName: to.name ?? "Stop",
                       departures: departures,
                       fromWalkMeters: from.walk_meters,
-                      toWalkMeters: to.walk_meters)
+                      toWalkMeters: to.walk_meters,
+                      liveVehicles: live_vehicles)
     }
 }
 

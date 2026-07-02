@@ -2,6 +2,30 @@ import CoreLocation
 import MapKit
 import SwiftUI
 
+/// "HH:MM[:SS]" → "HH:MM" for display, wrapping GTFS past-midnight hours
+/// ("24:15" → "00:15") onto the clock face.
+private func displayClock(_ time: String) -> String {
+    let pieces = time.split(separator: ":")
+    guard pieces.count >= 2, let hour = Int(pieces[0]) else { return String(time.prefix(5)) }
+    return String(format: "%02d:%@", hour % 24, String(pieces[1]))
+}
+
+/// Small "N live" indicator shown when the server sees vehicles out on a route.
+private struct LiveNowBadge: View {
+    let count: Int
+
+    var body: some View {
+        if count > 0 {
+            HStack(spacing: 3) {
+                Circle().fill(BPColor.signal).frame(width: 6, height: 6)
+                Text("\(count) live")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(BPColor.signal)
+            }
+        }
+    }
+}
+
 /// Direct-bus journey planner: pick a start and destination and see which
 /// single buses get you there, with the next departures. (Multi-leg routing
 /// with transfers is a future enhancement — see the note in the empty state.)
@@ -24,6 +48,12 @@ struct JourneyPlannerView: View {
 
     @FocusState private var focusedField: Field?
     @StateObject private var places = PlaceCompleter()
+
+    /// What the field held before it was cleared for typing, so tapping in
+    /// and tapping away without choosing doesn't lose the previous choice.
+    private struct FieldStash { var text: String; var coordinate: CLLocationCoordinate2D?; var usingLocation: Bool }
+    @State private var fromStash: FieldStash?
+    @State private var toStash: FieldStash?
 
     @State private var direct: [JourneyOption] = []
     @State private var itineraries: [JourneyItinerary] = []
@@ -147,8 +177,8 @@ struct JourneyPlannerView: View {
             ProgressView("Finding buses…").frame(maxWidth: .infinity).padding(BPSpacing.xl)
         case .empty:
             BPEmptyState(symbol: "bus.trianglebadge.exclamationmark",
-                         title: "No direct buses found",
-                         message: "No single bus links those points right now. Journeys needing a change of bus aren't planned yet — that's coming.")
+                         title: "No journey found",
+                         message: "Nothing links those points in the next few hours — not even with a change of bus. Try a different time or destination. (Journeys needing two or more changes aren't planned yet.)")
         case .failed(let message):
             BPEmptyState(symbol: "exclamationmark.triangle", title: "Couldn't plan that", message: message)
         case .loaded:
@@ -241,12 +271,13 @@ struct JourneyPlannerView: View {
                     }
                 }
                 Spacer()
+                LiveNowBadge(count: leg.liveVehicles ?? 0)
             }
         }
     }
 
     /// "HH:MM:SS" (or "HH:MM") → "HH:MM".
-    private func hhmm(_ time: String) -> String { String(time.prefix(5)) }
+    private func hhmm(_ time: String) -> String { displayClock(time) }
 
     private func optionCard(_ option: JourneyOption) -> some View {
         VStack(alignment: .leading, spacing: BPSpacing.sm) {
@@ -257,6 +288,7 @@ struct JourneyPlannerView: View {
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                 Spacer()
+                LiveNowBadge(count: option.liveVehicles ?? 0)
                 Image(systemName: "chevron.right").font(.caption).foregroundStyle(.tertiary)
             }
             Label("\(option.fromStopName) → \(option.toStopName)", systemImage: "arrow.right")
@@ -273,7 +305,7 @@ struct JourneyPlannerView: View {
             } else {
                 HStack(spacing: BPSpacing.sm) {
                     ForEach(option.departures, id: \.self) { time in
-                        Text(time)
+                        Text(displayClock(time))
                             .font(.caption.monospacedDigit().weight(.semibold))
                             .padding(.horizontal, BPSpacing.sm)
                             .padding(.vertical, BPSpacing.xs)
@@ -309,20 +341,40 @@ struct JourneyPlannerView: View {
 
     private var canPlan: Bool { resolvedFrom != nil && toCoordinate != nil }
 
-    /// Tapping into a field clears it for fresh typing; leaving "From" empty
-    /// falls back to the user's location so the field is never left invalid.
+    /// Tapping into a field stashes its value and clears it for fresh typing.
+    /// Tapping away without choosing restores the stash, so an accidental tap
+    /// never loses a chosen place; an empty "From" falls back to My location.
     private func onFocusChange(_ field: Field?) {
-        if field == nil, fromText.isEmpty, fromCoordinate == nil, !usingCurrentLocationForFrom {
-            usingCurrentLocationForFrom = true
-            fromText = "My location"
+        if field == nil {
+            if fromCoordinate == nil, !usingCurrentLocationForFrom {
+                if let stash = fromStash {
+                    fromText = stash.text
+                    fromCoordinate = stash.coordinate
+                    usingCurrentLocationForFrom = stash.usingLocation
+                } else {
+                    usingCurrentLocationForFrom = true
+                    fromText = "My location"
+                }
+            }
+            if toCoordinate == nil, let stash = toStash {
+                toText = stash.text
+                toCoordinate = stash.coordinate
+            }
+            fromStash = nil
+            toStash = nil
         }
         places.clear()
         switch field {
         case .from:
+            fromStash = FieldStash(text: fromText, coordinate: fromCoordinate,
+                                   usingLocation: usingCurrentLocationForFrom)
             fromText = ""
             usingCurrentLocationForFrom = false
             fromCoordinate = nil
         case .to:
+            if toCoordinate != nil || !toText.isEmpty {
+                toStash = FieldStash(text: toText, coordinate: toCoordinate, usingLocation: false)
+            }
             toText = ""
             toCoordinate = nil
         case nil:
@@ -442,6 +494,7 @@ struct JourneyItineraryDetailView: View {
                         }
                     }
                     Spacer()
+                    LiveNowBadge(count: leg.liveVehicles ?? 0)
                 }
                 if leg.stops.isEmpty {
                     Text("\(leg.fromStopName ?? "Start") → \(leg.toStopName ?? "End")")
@@ -481,7 +534,7 @@ struct JourneyItineraryDetailView: View {
         metres < 1000 ? "\(metres) m" : String(format: "%.1f km", Double(metres) / 1000)
     }
 
-    private func hhmm(_ time: String) -> String { String(time.prefix(5)) }
+    private func hhmm(_ time: String) -> String { displayClock(time) }
 }
 
 /// As-you-type place suggestions via MapKit's local-search completer, with a

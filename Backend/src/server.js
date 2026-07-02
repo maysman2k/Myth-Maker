@@ -330,6 +330,34 @@ function ukSecondsSinceMidnight(date = new Date()) {
   return (value("hour") % 24) * 3600 + value("minute") * 60 + value("second");
 }
 
+/// "YYYY-MM-DD" in UK local time, optionally shifted by whole days. (Using the
+/// UTC date instead is subtly wrong for the first BST hour after midnight.)
+function ukDateString(offsetDays = 0) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" })
+    .format(new Date(Date.now() + offsetDays * 86_400_000));
+}
+
+/// Count of live vehicles that look like this route, near the given stops —
+/// same heuristic as the app's on-map matcher: a matched GTFS-RT route id, or
+/// the same line name inside the corridor. Presence, not punctuality: lateness
+/// needs the trip-updates feed (GTFS-RT ids ≠ static ids), a planned follow-up.
+function liveVehiclesNear(routeID, lineName, points) {
+  const coords = points.filter((p) => Number.isFinite(p?.lat) && Number.isFinite(p?.lon));
+  if (coords.length === 0) return 0;
+  const pad = 0.05; // ~5 km
+  const lats = coords.map((p) => p.lat);
+  const lons = coords.map((p) => p.lon);
+  const nearby = store.inBoundingBox(
+    Math.min(...lons) - pad, Math.min(...lats) - pad,
+    Math.max(...lons) + pad, Math.max(...lats) + pad, 500,
+  );
+  const name = (lineName ?? "").trim().toLowerCase();
+  return nearby.filter(
+    (v) => v.service_id === routeID
+      || (name && (v.service?.line_name ?? "").trim().toLowerCase() === name),
+  ).length;
+}
+
 /// Straight-line distance in metres (equirectangular — accurate enough at the
 /// short ranges used here, and cheap).
 function metresBetween(lat1, lon1, lat2, lon2) {
@@ -399,24 +427,39 @@ app.get("/api/journey", (req, res) => {
     if (!prev || walk < prev.walk) byRoute.set(p.route_id, { ...p, walk });
   }
 
-  const active = activeServiceIDs(new Date().toISOString().slice(0, 10));
+  const activeToday = activeServiceIDs(ukDateString());
+  const activeYesterday = activeServiceIDs(ukDateString(-1));
   const nowSeconds = ukSecondsSinceMidnight();
+  // Only trips that call at BOTH stops, in order — a departure from your stop
+  // on a short working that turns back early is not a bus to your destination.
   const departuresStmt = db.prepare(
     `SELECT trips.service_id AS service_id, st.departure_seconds AS dep
-     FROM trips JOIN stop_times st ON st.trip_id = trips.id
-     WHERE trips.route_id = ? AND st.atco = ? AND st.departure_seconds IS NOT NULL
+     FROM trips
+     JOIN stop_times st  ON st.trip_id = trips.id AND st.atco = ?
+     JOIN stop_times st2 ON st2.trip_id = trips.id AND st2.atco = ? AND st2.seq > st.seq
+     WHERE trips.route_id = ? AND st.departure_seconds IS NOT NULL
      ORDER BY st.departure_seconds`,
   );
+  // Upcoming departures across two GTFS service days: today's, plus
+  // yesterday's past-midnight (24:xx+) trips that are still to come — the
+  // night buses a today-only search goes blind to around midnight.
+  const nextDepartures = (routeID, fromAtco, toAtco) => {
+    const rows = departuresStmt.all(fromAtco, toAtco, routeID);
+    const upcoming = [
+      ...rows.filter((t) => activeToday.has(t.service_id) && t.dep >= nowSeconds)
+        .map((t) => t.dep),
+      ...rows.filter((t) => activeYesterday.has(t.service_id) && t.dep - 86_400 >= nowSeconds)
+        .map((t) => t.dep - 86_400),
+    ];
+    return [...new Set(upcoming)].sort((a, b) => a - b).slice(0, 3).map(secondsToTime);
+  };
 
+  const stopCoord = new Map([...fromStops, ...toStops].map((s) => [s.atco, s]));
   const options = [];
   for (const [routeID, pair] of byRoute) {
     const route = db.prepare("SELECT * FROM routes WHERE id = ?").get(routeID);
     if (!route) continue;
-    const nextDeps = departuresStmt
-      .all(routeID, pair.from_atco)
-      .filter((t) => active.has(t.service_id) && t.dep >= nowSeconds)
-      .slice(0, 3)
-      .map((t) => secondsToTime(t.dep));
+    const nextDeps = nextDepartures(routeID, pair.from_atco, pair.to_atco);
     options.push({
       service: { id: route.id, line_name: route.line_name, description: describeRoute(db, route) },
       from: {
@@ -430,6 +473,8 @@ app.get("/api/journey", (req, res) => {
         walk_meters: Math.round(toDist.get(pair.to_atco) ?? 0),
       },
       departures: nextDeps,
+      live_vehicles: liveVehiclesNear(route.id, route.line_name,
+                                      [stopCoord.get(pair.from_atco), stopCoord.get(pair.to_atco)]),
       totalWalk: pair.walk,
       nextDepartureSeconds: nextDeps.length
         ? (TimeOfDaySeconds(nextDeps[0]) ?? 99_999) : 99_999,
@@ -454,7 +499,7 @@ app.get("/api/journey", (req, res) => {
   // "you'll need a change" with the actual route — not just a dead end.
   const interchange = direct.length >= 3
     ? []
-    : oneChangeJourneys({ db, fromStops, toStops, active, now: nowSeconds });
+    : oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now: nowSeconds });
 
   res.json({ options: direct, interchange });
 });
@@ -463,14 +508,23 @@ app.get("/api/journey", (req, res) => {
 /// interchange, optionally walk a short way, then catch a second bus that
 /// reaches the destination — with timing checked so the connection is real.
 /// Bounded throughout so one request can't run away on the national dataset.
-function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
-  const LEG1_WINDOW = 75 * 60;   // first bus departs within 75 min
+function oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now }) {
+  const LEG1_WINDOW = config.journey.leg1WindowMinutes * 60;
   const LOOKAHEAD = 3 * 3600;    // arrive at destination within 3 h
-  const TRANSFER_BUFFER = 180;   // need at least 3 min to change
-  const MAX_WALK = 400;          // metres you'll walk between stops to change
+  const TRANSFER_BUFFER = config.journey.transferBufferSeconds;
+  const MAX_WALK = config.journey.maxTransferWalkMeters;
   const WALK_SPEED = 1.3;        // m/s
   const LEG1_TRIPS = 60, LEG2_TRIPS = 200, DOWNSTREAM = 40, UPSTREAM = 40;
   const REACH_CAP = 250, BOARD_CAP = 500;
+
+  // Times are searched on two GTFS service days — today, and yesterday's
+  // past-midnight (24:xx+) trips. Each candidate carries `off` (0 or 86400);
+  // subtracting it normalises every stored time to today's clock, after which
+  // all the feasibility arithmetic below is day-agnostic.
+  const serviceDays = [
+    { off: 0, active: activeToday },
+    { off: 86_400, active: activeYesterday },
+  ];
 
   const ph = (arr) => arr.map(() => "?").join(",");
   const fromAtcos = fromStops.map((s) => s.atco);
@@ -482,37 +536,41 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
 
   // Leg 1: near-term departures from the origin, and the earliest each
   // downstream stop can be reached (those are the candidate interchanges).
-  const leg1 = db
-    .prepare(
-      `SELECT st.trip_id AS trip_id, st.atco AS board_atco, st.seq AS board_seq,
-              st.departure_seconds AS dep, trips.route_id AS route_id, trips.service_id AS service_id
-       FROM stop_times st JOIN trips ON trips.id = st.trip_id
-       WHERE st.atco IN (${ph(fromAtcos)}) AND st.departure_seconds BETWEEN ? AND ?
-       ORDER BY st.departure_seconds LIMIT 600`,
-    )
-    .all(...fromAtcos, now, now + LEG1_WINDOW)
-    .filter((r) => active.has(r.service_id));
+  const leg1Stmt = db.prepare(
+    `SELECT st.trip_id AS trip_id, st.atco AS board_atco, st.seq AS board_seq,
+            st.departure_seconds AS dep, trips.route_id AS route_id, trips.service_id AS service_id
+     FROM stop_times st JOIN trips ON trips.id = st.trip_id
+     WHERE st.atco IN (${ph(fromAtcos)}) AND st.departure_seconds BETWEEN ? AND ?
+     ORDER BY st.departure_seconds LIMIT 600`,
+  );
+  const leg1 = serviceDays
+    .flatMap(({ off, active }) =>
+      leg1Stmt.all(...fromAtcos, now + off, now + off + LEG1_WINDOW)
+        .filter((r) => active.has(r.service_id))
+        .map((r) => ({ ...r, dep: r.dep - off, off })))
+    .sort((p, q) => p.dep - q.dep);
 
   const downstreamStmt = db.prepare(
     `SELECT atco, COALESCE(arrival_seconds, departure_seconds) AS arr, seq
      FROM stop_times WHERE trip_id = ? AND seq > ? ORDER BY seq LIMIT ${DOWNSTREAM}`,
   );
 
-  const reach = new Map(); // interchange atco -> { arrive, routeId, boardAtco, boardDep, boardWalk, tripId, boardSeq, interSeq }
+  const reach = new Map(); // interchange atco -> { arrive, routeId, boardAtco, boardDep, boardWalk, tripId, boardSeq, interSeq, off }
   let used1 = 0;
   for (const b of leg1) {
     if (used1++ >= LEG1_TRIPS) break;
     const boardWalk = fromDist.get(b.board_atco) ?? 0;
     for (const s of downstreamStmt.all(b.trip_id, b.board_seq)) {
       if (s.arr == null || fromDist.has(s.atco)) continue; // still in origin cluster
+      const arrive = s.arr - b.off;
       const prev = reach.get(s.atco);
       // Prefer the boarding with the SHORTEST walk from the origin (then the
       // earliest arrival) — send the rider to their nearest usable stop.
       if (!prev || boardWalk < prev.boardWalk ||
-          (boardWalk === prev.boardWalk && s.arr < prev.arrive)) {
+          (boardWalk === prev.boardWalk && arrive < prev.arrive)) {
         reach.set(s.atco, {
-          arrive: s.arr, routeId: b.route_id, boardAtco: b.board_atco, boardDep: b.dep,
-          boardWalk, tripId: b.trip_id, boardSeq: b.board_seq, interSeq: s.seq,
+          arrive, routeId: b.route_id, boardAtco: b.board_atco, boardDep: b.dep,
+          boardWalk, tripId: b.trip_id, boardSeq: b.board_seq, interSeq: s.seq, off: b.off,
         });
       }
     }
@@ -521,18 +579,21 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
 
   // Leg 2: near-term arrivals into the destination, and from which upstream
   // stops (and when) you could have boarded to make them.
-  const leg2 = db
-    .prepare(
-      `SELECT st.trip_id AS trip_id, st.atco AS alight_atco, st.seq AS alight_seq,
-              COALESCE(st.arrival_seconds, st.departure_seconds) AS arr,
-              trips.route_id AS route_id, trips.service_id AS service_id
-       FROM stop_times st JOIN trips ON trips.id = st.trip_id
-       WHERE st.atco IN (${ph(toAtcos)})
-         AND COALESCE(st.arrival_seconds, st.departure_seconds) BETWEEN ? AND ?
-       ORDER BY 4 LIMIT 1500`,
-    )
-    .all(...toAtcos, now, now + LOOKAHEAD)
-    .filter((r) => active.has(r.service_id));
+  const leg2Stmt = db.prepare(
+    `SELECT st.trip_id AS trip_id, st.atco AS alight_atco, st.seq AS alight_seq,
+            COALESCE(st.arrival_seconds, st.departure_seconds) AS arr,
+            trips.route_id AS route_id, trips.service_id AS service_id
+     FROM stop_times st JOIN trips ON trips.id = st.trip_id
+     WHERE st.atco IN (${ph(toAtcos)})
+       AND COALESCE(st.arrival_seconds, st.departure_seconds) BETWEEN ? AND ?
+     ORDER BY 4 LIMIT 1500`,
+  );
+  const leg2 = serviceDays
+    .flatMap(({ off, active }) =>
+      leg2Stmt.all(...toAtcos, now + off, now + off + LOOKAHEAD)
+        .filter((r) => active.has(r.service_id))
+        .map((r) => ({ ...r, arr: r.arr - off, off })))
+    .sort((p, q) => p.arr - q.arr);
 
   const upstreamStmt = db.prepare(
     `SELECT atco, departure_seconds AS dep, seq
@@ -548,8 +609,8 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
     for (const s of upstreamStmt.all(a.trip_id, a.alight_seq)) {
       if (toDist.has(s.atco)) continue; // boarding inside destination cluster = basically direct
       const list = board2.get(s.atco) ?? [];
-      list.push({ dep: s.dep, routeId: a.route_id, alightAtco: a.alight_atco, arriveD: a.arr,
-                  tripId: a.trip_id, boardSeq: s.seq, alightSeq: a.alight_seq });
+      list.push({ dep: s.dep - a.off, routeId: a.route_id, alightAtco: a.alight_atco, arriveD: a.arr,
+                  tripId: a.trip_id, boardSeq: s.seq, alightSeq: a.alight_seq, off: a.off });
       board2.set(s.atco, list);
     }
   }
@@ -621,11 +682,13 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
      FROM stop_times st JOIN stops sp ON sp.atco = st.atco
      WHERE st.trip_id = ? AND st.seq BETWEEN ? AND ? ORDER BY st.seq LIMIT 80`,
   );
-  const callingPoints = (tripId, fromSeq, toSeq) =>
-    sliceStmt.all(tripId, fromSeq, toSeq).map((r) => ({ name: r.name ?? r.atco, time: secondsToTime(r.t) }));
+  const callingPoints = (tripId, fromSeq, toSeq, off) =>
+    sliceStmt.all(tripId, fromSeq, toSeq).map((r) => ({ name: r.name ?? r.atco, time: secondsToTime(r.t - off) }));
 
   const routeInfo = (id) => db.prepare("SELECT * FROM routes WHERE id = ?").get(id);
   const nameOf = (atco) => fromName.get(atco) ?? toName.get(atco) ?? coord.get(atco)?.name ?? atco;
+  const coordOf = (atco) =>
+    coord.get(atco) ?? fromStops.find((s) => s.atco === atco) ?? toStops.find((s) => s.atco === atco);
   const busLeg = (routeId, fromAtco, toAtco, dep, arr, fromWalk, toWalk, stops) => {
     const r = routeInfo(routeId);
     return {
@@ -635,6 +698,7 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
       to: { atco: toAtco, name: nameOf(toAtco), walk_meters: toWalk },
       departure: secondsToTime(dep),
       arrival: secondsToTime(arr),
+      live_vehicles: r ? liveVehiclesNear(r.id, r.line_name, [coordOf(fromAtco), coordOf(toAtco)]) : 0,
       stops,
     };
   };
@@ -643,12 +707,12 @@ function oneChangeJourneys({ db, fromStops, toStops, active, now }) {
     const legs = [
       busLeg(j.a.routeId, j.a.boardAtco, j.x, j.a.boardDep, j.a.arrive,
              Math.round(j.a.boardWalk), null,
-             callingPoints(j.a.tripId, j.a.boardSeq, j.a.interSeq)),
+             callingPoints(j.a.tripId, j.a.boardSeq, j.a.interSeq, j.a.off)),
     ];
     if (j.walk > 0) legs.push({ mode: "walk", meters: Math.round(j.walk) });
     legs.push(busLeg(j.opt.routeId, j.y, j.opt.alightAtco, j.opt.dep, j.opt.arriveD,
                      null, Math.round(toDist.get(j.opt.alightAtco) ?? 0),
-                     callingPoints(j.opt.tripId, j.opt.boardSeq, j.opt.alightSeq)));
+                     callingPoints(j.opt.tripId, j.opt.boardSeq, j.opt.alightSeq, j.opt.off)));
     return { changes: 1, arrival: secondsToTime(j.opt.arriveD), legs };
   });
 }

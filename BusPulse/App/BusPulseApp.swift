@@ -10,10 +10,7 @@ struct BusPulseApp: App {
     @State private var location = LocationProvider()
     @State private var alarms: AlarmManager
 
-    /// Where the app gets its data.
-    /// DEBUG builds (running from Xcode) talk to your local BODS proxy in
-    /// `Backend/` on localhost. Release builds use your deployed server —
-    /// swap in your domain when you ship (see Backend/README.md).
+    /// Where the app gets its data: the deployed BODS proxy (see Backend/).
     private let api: BusTimesAPIProviding
 
     init() {

@@ -128,6 +128,9 @@ struct JourneyOption: Identifiable {
     /// Walk to the boarding stop / from the alighting stop, in metres.
     var fromWalkMeters: Int?
     var toWalkMeters: Int?
+    /// Live vehicles currently out on this route near the journey (0 = none
+    /// seen; nil = server didn't say).
+    var liveVehicles: Int?
 
     var id: Int { service.id }
 }
@@ -159,6 +162,8 @@ struct JourneyLeg: Identifiable {
     var arrival: String? = nil
     /// Calling points along this leg, board → alight.
     var stops: [JourneyLegStop] = []
+    /// Live vehicles currently out on this leg's route (nil = unknown).
+    var liveVehicles: Int? = nil
     // Walk legs:
     var walkMeters: Int? = nil
 }
