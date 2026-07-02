@@ -6,7 +6,7 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
 import { config } from "./config.js";
-import { activeServiceIDs, dbStats, openDB, secondsToTime } from "./db.js";
+import { activeServiceIDs, dbGeneration, dbStats, openDB, secondsToTime } from "./db.js";
 import { startPolling, VehicleStore } from "./bods/vehiclePoller.js";
 import { ApnsClient } from "./apns/apnsClient.js";
 import { DeviceStore } from "./apns/deviceStore.js";
@@ -197,6 +197,15 @@ app.get("/api/stops/", (req, res) => {
 /// road). Each direction's order comes from its longest timetabled trip;
 /// stops only served by variant journeys are appended unlabelled.
 function stopsAlongRoute(db, routeID) {
+  const tripStops = db.prepare(
+    `SELECT stops.* FROM stop_times JOIN stops ON stops.atco = stop_times.atco
+     WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 200`,
+  );
+
+  // One representative (longest) trip per direction. Directions come from
+  // trip headsigns where the data has them; where it doesn't, fall back to
+  // the longest trips outright and label each by its final stop.
+  const representatives = [];
   const headsigns = db
     .prepare(
       `SELECT headsign, COUNT(*) AS c FROM trips
@@ -205,26 +214,44 @@ function stopsAlongRoute(db, routeID) {
     )
     .all(routeID)
     .map((r) => r.headsign);
-
-  const longestTrip = db.prepare(
-    `SELECT trips.id AS id FROM trips JOIN stop_times st ON st.trip_id = trips.id
-     WHERE trips.route_id = ? AND trips.headsign = ?
-     GROUP BY trips.id ORDER BY COUNT(*) DESC LIMIT 1`,
-  );
-  const tripStops = db.prepare(
-    `SELECT stops.* FROM stop_times JOIN stops ON stops.atco = stop_times.atco
-     WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 200`,
-  );
+  if (headsigns.length > 0) {
+    const longestTrip = db.prepare(
+      `SELECT trips.id AS id FROM trips JOIN stop_times st ON st.trip_id = trips.id
+       WHERE trips.route_id = ? AND trips.headsign = ?
+       GROUP BY trips.id ORDER BY COUNT(*) DESC LIMIT 1`,
+    );
+    for (const headsign of headsigns) {
+      const tripID = longestTrip.get(routeID, headsign)?.id;
+      if (tripID) representatives.push({ tripID, label: `Towards ${headsign}` });
+    }
+  } else {
+    const longest = db
+      .prepare(
+        `SELECT trips.id AS id FROM trips JOIN stop_times st ON st.trip_id = trips.id
+         WHERE trips.route_id = ? GROUP BY trips.id ORDER BY COUNT(*) DESC LIMIT 8`,
+      )
+      .all(routeID);
+    const lastStop = db.prepare(
+      `SELECT stops.name AS name FROM stop_times JOIN stops ON stops.atco = stop_times.atco
+       WHERE trip_id = ? ORDER BY seq DESC LIMIT 1`,
+    );
+    const seenTermini = new Set();
+    for (const { id } of longest) {
+      const terminus = lastStop.get(id)?.name;
+      if (!terminus || seenTermini.has(terminus)) continue;
+      seenTermini.add(terminus);
+      representatives.push({ tripID: id, label: `Towards ${terminus}` });
+      if (representatives.length === 2) break;
+    }
+  }
 
   const seen = new Set();
   const out = [];
-  for (const headsign of headsigns) {
-    const tripID = longestTrip.get(routeID, headsign)?.id;
-    if (!tripID) continue;
+  for (const { tripID, label } of representatives) {
     for (const stop of tripStops.all(tripID)) {
       if (seen.has(stop.atco)) continue;
       seen.add(stop.atco);
-      out.push({ ...stop, direction: `Towards ${headsign}` });
+      out.push({ ...stop, direction: label });
     }
   }
 
@@ -318,14 +345,20 @@ app.get("/api/services/", (req, res) => {
 });
 
 /**
- * A human description for a route. Many GTFS routes have an empty
- * route_long_name, leaving search results indistinguishable (ten identical
- * "X7"s). Fall back to the route's terminus destinations, taken from the two
- * most common trip headsigns, e.g. "Newcastle – Blyth".
+ * A human description for a route, derived from its own trips' destinations
+ * (the two most common headsigns → "Newcastle – Blyth"). The GTFS
+ * route_long_name is deliberately NOT trusted first: in the national BODS
+ * feed it is frequently wrong — a North Tyneside X7 arrives labelled
+ * "Salisbury – Southampton" — whereas headsigns describe the actual
+ * journeys. The stored name is only a fallback when trips carry no headsign.
  */
 const routeDescriptionCache = new Map();
+let routeDescriptionGeneration = -1;
 function describeRoute(db, route) {
-  if (route.description && route.description.trim()) return route.description.trim();
+  if (routeDescriptionGeneration !== dbGeneration()) {
+    routeDescriptionCache.clear();
+    routeDescriptionGeneration = dbGeneration();
+  }
   if (routeDescriptionCache.has(route.id)) return routeDescriptionCache.get(route.id);
 
   const headsigns = db
@@ -340,6 +373,7 @@ function describeRoute(db, route) {
   let description;
   if (headsigns.length >= 2) description = `${headsigns[0]} – ${headsigns[1]}`;
   else if (headsigns.length === 1) description = `Towards ${headsigns[0]}`;
+  else if (route.description && route.description.trim()) description = route.description.trim();
   else description = route.mode ? `${route.mode[0].toUpperCase()}${route.mode.slice(1)} service` : "Bus service";
 
   routeDescriptionCache.set(route.id, description);

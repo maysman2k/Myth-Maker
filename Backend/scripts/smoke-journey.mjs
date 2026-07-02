@@ -99,6 +99,11 @@ insStop.run(southB[0], "sb", southB[1], southB[2], southB[3]);
 const southX1 = insRoute.run("S-X1", "X1", "").lastInsertRowid;
 addTrip(southX1, "S-X1-a", "Southville", [["SA", now + 600], ["SB", now + 1200]]);
 
+// A route whose trips carry NO headsigns (common in parts of the data):
+// stop lists must still get a direction label, from the trip's final stop.
+const r77 = insRoute.run("77", "77", "").lastInsertRowid;
+addTrip(r77, "77-a", null, [["NEAR", now + 7200], ["CITY", now + 8400]]);
+
 // One-change to VILL. The FAR bus (11) reaches the interchange EARLIER, but
 // the planner must board at NEAR (10) — nearest stop wins.
 const r10 = insRoute.run("10", "10", "Home - Interchange").lastInsertRowid;
@@ -147,7 +152,8 @@ try {
 
   console.log("direct (origin → City):");
   const d = await get("fromLat=55.0&fromLon=-1.6&toLat=55.02&toLon=-1.62");
-  check("two direct options", d.options.length === 2);
+  check("direct options include the near and far routes",
+        [x1, x2].every((id) => d.options.some((o) => o.service.id === id)));
   check("nearest stop (100m) ranks first",
         d.options[0]?.from?.atco === "NEAR" && d.options[0]?.from?.walk_meters <= 150);
   check("short working not listed as a departure",
@@ -174,18 +180,21 @@ try {
   console.log("route search (two X1s in the country, user in the north):");
   const searchURL = `http://localhost:${PORT}/api/services/?search=X1&lat=55.0&lon=-1.6`;
   const s = await (await fetch(searchURL)).json();
-  check("local X1 ranks first", s.results?.[0]?.description === "Home - City");
-  check("the distant X1 still appears, after it",
-        s.results?.some((r) => r.description?.includes("Southville")));
+  check("local X1 ranks first", s.results?.[0]?.id === x1);
+  check("the distant X1 still appears, after it", s.results?.some((r) => r.id === southX1));
+  check("descriptions come from the route's own destinations, not the stored name",
+        s.results?.[0]?.description?.includes("City"));
 
   console.log("stops on a route (direction-grouped, journey order):");
-  const localX1 = s.results?.[0]?.id;
-  const st = await (await fetch(`http://localhost:${PORT}/api/stops/?service=${localX1}`)).json();
+  const st = await (await fetch(`http://localhost:${PORT}/api/stops/?service=${x1}`)).json();
   check("first stop is the origin in journey order, not alphabetical",
         st.results?.[0]?.atco_code === "NEAR");
   check("stops carry a direction label", (st.results?.[0]?.direction ?? "").startsWith("Towards"));
   check("no stop listed twice",
         new Set(st.results?.map((r) => r.atco_code)).size === (st.results?.length ?? 0));
+  const st77 = await (await fetch(`http://localhost:${PORT}/api/stops/?service=${r77}`)).json();
+  check("routes without headsigns still get directions (from the final stop)",
+        st77.results?.[0]?.direction === "Towards City Centre");
 } catch (error) {
   console.error("smoke test errored:", error.message);
   failures += 1;

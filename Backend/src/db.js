@@ -9,6 +9,13 @@ import { config } from "./config.js";
  */
 let db = null;
 
+/// Bumped whenever the database is swapped. The daily import reassigns row
+/// ids, so caches keyed by them must compare this and drop themselves.
+let generation = 0;
+export function dbGeneration() {
+  return generation;
+}
+
 export function openDB() {
   if (db) return db;
   if (!fs.existsSync(config.dbPath)) {
@@ -28,6 +35,7 @@ export function closeDB() {
   if (db) {
     try { db.close(); } catch { /* already closed */ }
     db = null;
+    generation += 1;
   }
 }
 
