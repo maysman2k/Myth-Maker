@@ -36,7 +36,9 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<!-- Names Siri will accept for App Shortcut phrases, so mis-hearings of
-	     "Wait Less" (commonly heard as "Wallace") still trigger our intent. -->
+	     "Wait Less" (commonly heard as "Wallace") still trigger our intent.
+	     iOS enforces a hard maximum of THREE entries — a fourth makes the
+	     app refuse to install ("Unable to Install"). -->
 	<key>INAlternativeAppNames</key>
 	<array>
 		<dict>
@@ -46,10 +48,6 @@
 		<dict>
 			<key>INAlternativeAppName</key>
 			<string>Wallace</string>
-		</dict>
-		<dict>
-			<key>INAlternativeAppName</key>
-			<string>Wait Less bus</string>
 		</dict>
 		<dict>
 			<key>INAlternativeAppName</key>
