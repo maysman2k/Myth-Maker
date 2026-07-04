@@ -368,7 +368,7 @@ struct JourneyOptionDTO: Decodable {
     let service: ServiceDTO
     let from: StopRefDTO
     let to: StopRefDTO
-    let departures: [String]
+    let departures: [BusTimeDTO]
     let live_vehicles: Int?
 
     struct StopRefDTO: Decodable {
@@ -377,11 +377,18 @@ struct JourneyOptionDTO: Decodable {
         let walk_meters: Int?
     }
 
+    struct BusTimeDTO: Decodable {
+        let departure: String?
+        let arrival: String?
+    }
+
     func toDomain() -> JourneyOption {
         JourneyOption(service: service.toDomain(),
                       fromStopName: from.name ?? "Stop",
                       toStopName: to.name ?? "Stop",
-                      departures: departures,
+                      departures: departures.compactMap { d in
+                          d.departure.map { BusTime(departure: $0, arrival: d.arrival) }
+                      },
                       fromWalkMeters: from.walk_meters,
                       toWalkMeters: to.walk_meters,
                       liveVehicles: live_vehicles)

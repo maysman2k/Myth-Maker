@@ -122,12 +122,19 @@ struct TimetableStopTime: Codable, Hashable {
 
 // MARK: - Journey planner (direct buses)
 
+/// A single bus: when it leaves your stop and when it reaches your destination.
+struct BusTime: Identifiable, Hashable {
+    let id = UUID()
+    var departure: String
+    var arrival: String?
+}
+
 struct JourneyOption: Identifiable {
     var service: Service
     var fromStopName: String
     var toStopName: String
-    /// Next few departure times at the boarding stop, e.g. ["07:05", "07:35"].
-    var departures: [String]
+    /// Next few buses at the boarding stop, with their arrival at the destination.
+    var departures: [BusTime]
     /// Walk to the boarding stop / from the alighting stop, in metres.
     var fromWalkMeters: Int?
     var toWalkMeters: Int?

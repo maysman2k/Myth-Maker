@@ -17,8 +17,7 @@ struct BusPulseApp: App {
         // Live backend on the droplet — the app talks to this on every
         // build now, so no local server is needed. For local backend work,
         // temporarily swap in: URL(string: "http://localhost:3000")!
-        let api: BusTimesAPIProviding =
-            BusTimesAPI(baseURL: URL(string: "https://waitless.bricksinabag.com")!)
+        let api: BusTimesAPIProviding = BusTimesAPI(baseURL: AppConfig.serverURL)
         self.api = api
         let settings = SettingsStore()
         _settings = State(initialValue: settings)

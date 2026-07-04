@@ -16,8 +16,11 @@ protocol BusTimesAPIProviding: Sendable {
     func trips(serviceID: Int, date: Date) async throws -> [TimetableTrip]
     func trip(id: Int) async throws -> TimetableTrip
     func routeGeometry(serviceID: Int) async throws -> [[[Double]]]
+    /// `arriveBy`, when set, plans backwards: only buses that reach the
+    /// destination by that time, keeping the latest that still make it.
     func journeyOptions(fromLat: Double, fromLon: Double,
-                        toLat: Double, toLon: Double) async throws -> JourneyPlan
+                        toLat: Double, toLon: Double,
+                        arriveBy: Date?) async throws -> JourneyPlan
 }
 
 enum APIError: LocalizedError {
@@ -171,13 +174,20 @@ final class BusTimesAPI: BusTimesAPIProviding {
     }
 
     func journeyOptions(fromLat: Double, fromLon: Double,
-                        toLat: Double, toLon: Double) async throws -> JourneyPlan {
-        let response: JourneyResponseDTO = try await get(
-            path: "/api/journey",
-            queryItems: [URLQueryItem(name: "fromLat", value: String(fromLat)),
-                         URLQueryItem(name: "fromLon", value: String(fromLon)),
-                         URLQueryItem(name: "toLat", value: String(toLat)),
-                         URLQueryItem(name: "toLon", value: String(toLon))])
+                        toLat: Double, toLon: Double,
+                        arriveBy: Date? = nil) async throws -> JourneyPlan {
+        var queryItems = [URLQueryItem(name: "fromLat", value: String(fromLat)),
+                          URLQueryItem(name: "fromLon", value: String(fromLon)),
+                          URLQueryItem(name: "toLat", value: String(toLat)),
+                          URLQueryItem(name: "toLon", value: String(toLon))]
+        if let arriveBy {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_GB")
+            formatter.timeZone = TimeZone(identifier: "Europe/London")
+            formatter.dateFormat = "HH:mm"
+            queryItems.append(URLQueryItem(name: "arriveBy", value: formatter.string(from: arriveBy)))
+        }
+        let response: JourneyResponseDTO = try await get(path: "/api/journey", queryItems: queryItems)
         return JourneyPlan(direct: response.options.map { $0.toDomain() },
                            itineraries: (response.interchange ?? []).map { $0.toDomain() })
     }

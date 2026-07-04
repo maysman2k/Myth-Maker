@@ -59,10 +59,18 @@ struct JourneyPlannerView: View {
     @State private var itineraries: [JourneyItinerary] = []
     @State private var state: LoadState = .idle
 
+    enum When: Hashable { case leaveNow, arriveBy }
+    @State private var when: When = .leaveNow
+    @State private var arriveByTime = Calendar.current.date(byAdding: .hour, value: 1, to: Date()) ?? Date()
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BPSpacing.lg) {
                 fieldsCard
+
+                if focusedField == nil {
+                    whenCard
+                }
 
                 if let field = focusedField {
                     suggestions(for: field)
@@ -106,6 +114,22 @@ struct JourneyPlannerView: View {
             Divider()
             fieldRow(title: "To", text: $toText, field: .to,
                      symbol: "mappin.circle.fill", prompt: "Search destination")
+        }
+        .bpCard()
+    }
+
+    private var whenCard: some View {
+        VStack(spacing: BPSpacing.sm) {
+            Picker("When", selection: $when) {
+                Text("Leave now").tag(When.leaveNow)
+                Text("Arrive by").tag(When.arriveBy)
+            }
+            .pickerStyle(.segmented)
+
+            if when == .arriveBy {
+                DatePicker("Arrive by", selection: $arriveByTime, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.compact)
+            }
         }
         .bpCard()
     }
@@ -303,14 +327,19 @@ struct JourneyPlannerView: View {
             if option.departures.isEmpty {
                 Text("No more departures today").font(.caption2).foregroundStyle(.tertiary)
             } else {
-                HStack(spacing: BPSpacing.sm) {
-                    ForEach(option.departures, id: \.self) { time in
-                        Text(displayClock(time))
-                            .font(.caption.monospacedDigit().weight(.semibold))
-                            .padding(.horizontal, BPSpacing.sm)
-                            .padding(.vertical, BPSpacing.xs)
-                            .background(Capsule().fill(BPColor.signal.opacity(0.15)))
-                            .foregroundStyle(BPColor.signal)
+                VStack(alignment: .leading, spacing: BPSpacing.xs) {
+                    ForEach(option.departures) { bus in
+                        HStack(spacing: BPSpacing.xs) {
+                            Text(displayClock(bus.departure))
+                                .fontWeight(.semibold)
+                            if let arrival = bus.arrival {
+                                Image(systemName: "arrow.right").font(.caption2).foregroundStyle(.tertiary)
+                                Text(displayClock(arrival))
+                                Text("arrive").font(.caption2).foregroundStyle(.tertiary)
+                            }
+                        }
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(BPColor.signal)
                     }
                 }
             }
@@ -420,7 +449,8 @@ struct JourneyPlannerView: View {
         Task {
             do {
                 let plan = try await api.journeyOptions(fromLat: from.latitude, fromLon: from.longitude,
-                                                        toLat: to.latitude, toLon: to.longitude)
+                                                        toLat: to.latitude, toLon: to.longitude,
+                                                        arriveBy: when == .arriveBy ? arriveByTime : nil)
                 direct = plan.direct
                 itineraries = plan.itineraries
                 state = (plan.direct.isEmpty && plan.itineraries.isEmpty) ? .empty : .loaded

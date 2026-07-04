@@ -68,6 +68,32 @@ struct LiveMapView: View {
         }
     }
 
+    /// Explicit recentre — Apple's MapUserLocationButton is unreliable when the
+    /// camera position is externally bound, so drive it ourselves.
+    private var recentreButton: some View {
+        Button {
+            if let coordinate = location.location?.coordinate {
+                withAnimation {
+                    position = .region(MKCoordinateRegion(
+                        center: coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)))
+                }
+            } else {
+                location.requestAccess()
+            }
+        } label: {
+            Image(systemName: "location.fill")
+                .font(.headline)
+                .foregroundStyle(BPColor.signal)
+                .padding(BPSpacing.sm + 2)
+                .background(.ultraThinMaterial, in: Circle())
+                .shadow(radius: 3, y: 1)
+        }
+        .padding(.trailing, BPSpacing.md)
+        .padding(.bottom, 88)
+        .accessibilityLabel("Centre on my location")
+    }
+
     private func centreOnUserOnce() {
         guard mode.isExplore, !didCentreOnUser,
               let coordinate = location.location?.coordinate else { return }
@@ -124,6 +150,7 @@ struct LiveMapView: View {
             handleExploreCamera(context.region)
         }
         .overlay(alignment: .top) { exploreHint }
+        .overlay(alignment: .bottomTrailing) { recentreButton }
         .overlay(alignment: .bottom) { exploreFilterBar }
         .navigationDestination(for: Stop.self) { StopDetailView(stop: $0) }
         .navigationTitle("Live map")
