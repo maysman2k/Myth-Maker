@@ -1071,7 +1071,6 @@ app.use((err, req, res, next) => {
 try {
   openDB();
   console.log("GTFS database:", dbStats());
-  buildRouteSearchIndex(openDB()); // warm the search index off the request path
 } catch (error) {
   console.warn(`⚠ ${error.message}`);
   console.warn("Timetable endpoints will return 503 until the import has run.");
@@ -1083,4 +1082,9 @@ scheduleDailyImport();
 app.listen(config.port, () => {
   console.log(`BusPulse backend listening on :${config.port}`);
   console.log("Attribution: contains public sector information licensed under OGL v3.0 (DfT BODS).");
+  // Warm the route search index off the request path so the first search
+  // isn't slow, without holding up the port opening.
+  setImmediate(() => {
+    try { buildRouteSearchIndex(openDB()); } catch { /* no timetable yet */ }
+  });
 });
