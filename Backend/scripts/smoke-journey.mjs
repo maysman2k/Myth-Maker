@@ -167,11 +167,25 @@ try {
         [x1, x2].every((id) => d.options.some((o) => o.service.id === id)));
   check("nearest stop (100m) ranks first",
         d.options[0]?.from?.atco === "NEAR" && d.options[0]?.from?.walk_meters <= 150);
+  const deps = (o) => (o?.departures ?? []).map((x) => x.departure);
   check("short working not listed as a departure",
-        !(d.options[0]?.departures ?? []).includes(secondsToClock(now + 60)));
+        !deps(d.options[0]).includes(secondsToClock(now + 60)));
   check("yesterday's 24:xx night bus listed, normalised to today's clock",
-        (d.options[0]?.departures ?? []).includes(secondsToClock(now + 1200)));
+        deps(d.options[0]).includes(secondsToClock(now + 1200)));
+  check("each departure carries its arrival time at the destination",
+        d.options[0]?.departures?.[0]?.arrival != null);
   check("live_vehicles field present", typeof d.options[0]?.live_vehicles === "number");
+
+  console.log("arrive-by direct planning:");
+  // Arrive by (now+1900)s: the X1 (dep now+600, arr now+1800) makes it; the
+  // 24:xx night bus (arr now+2400) does not.
+  const byTime = secondsToClock(now + 1900).slice(0, 5);
+  const a = await get(`fromLat=55.0&fromLon=-1.6&toLat=55.02&toLon=-1.62&arriveBy=${byTime}`);
+  const x1opt = a.options?.find((o) => o.service.id === x1);
+  check("arrive-by keeps a bus that lands in time",
+        deps(x1opt).includes(secondsToClock(now + 600)));
+  check("arrive-by drops a bus that would arrive too late",
+        !deps(x1opt).includes(secondsToClock(now + 1200)));
 
   console.log("one-change (origin → Village):");
   const c = await get("fromLat=55.0&fromLon=-1.6&toLat=55.1&toLon=-1.7");

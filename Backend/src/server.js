@@ -198,15 +198,10 @@ app.get("/api/stops/", (req, res) => {
 /// alphabetical soup where every stop appears twice (once per side of the
 /// road). Each direction's order comes from its longest timetabled trip;
 /// stops only served by variant journeys are appended unlabelled.
-function stopsAlongRoute(db, routeID) {
-  const tripStops = db.prepare(
-    `SELECT stops.* FROM stop_times JOIN stops ON stops.atco = stop_times.atco
-     WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 200`,
-  );
-
-  // One representative (longest) trip per direction. Directions come from
-  // trip headsigns where the data has them; where it doesn't, fall back to
-  // the longest trips outright and label each by its final stop.
+/// One representative (longest) trip per direction of a route. Directions come
+/// from trip headsigns where the data has them; where it doesn't, fall back to
+/// the longest trips outright, labelled by each one's final stop.
+function representativeTrips(db, routeID) {
   const representatives = [];
   const headsigns = db
     .prepare(
@@ -246,6 +241,15 @@ function stopsAlongRoute(db, routeID) {
       if (representatives.length === 2) break;
     }
   }
+  return representatives;
+}
+
+function stopsAlongRoute(db, routeID) {
+  const tripStops = db.prepare(
+    `SELECT stops.* FROM stop_times JOIN stops ON stops.atco = stop_times.atco
+     WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 200`,
+  );
+  const representatives = representativeTrips(db, routeID);
 
   const seen = new Set();
   const out = [];
@@ -289,9 +293,15 @@ app.get("/api/services/", (req, res) => {
     // Rank: exact line-name match, then prefix, then contains — and within a
     // tier, NEAREST first when the client says where it is. A national
     // dataset has dozens of "X7"s; without locality the user's own is buried.
-    const candidates = db
-      .prepare("SELECT * FROM routes WHERE line_name LIKE ? OR description LIKE ? LIMIT 300")
-      .all(term, term);
+    // Match line number OR destination. Destinations live in trip headsigns,
+    // not the (usually empty) description column, so a plain SQL LIKE on
+    // routes can't find "Southampton". Search a cached index whose haystack
+    // includes each route's derived description (its headsign termini).
+    const needleRaw = raw.toLowerCase();
+    const candidates = buildRouteSearchIndex(db)
+      .filter((e) => e.haystack.includes(needleRaw))
+      .slice(0, 300)
+      .map((e) => e.route);
     const centroidStmt = db.prepare(
       `SELECT AVG(lat) AS lat, AVG(lon) AS lon
        FROM route_stops JOIN stops ON stops.atco = route_stops.atco
@@ -354,6 +364,26 @@ app.get("/api/services/", (req, res) => {
  * "Salisbury – Southampton" — whereas headsigns describe the actual
  * journeys. The stored name is only a fallback when trips carry no headsign.
  */
+/// Searchable index of every route: line number plus its derived description
+/// (destination termini), so search matches place names as well as numbers.
+/// Cached per database generation; rebuilt after the nightly import swap.
+let routeSearchIndex = [];
+let routeSearchIndexGeneration = -1;
+function buildRouteSearchIndex(db) {
+  if (routeSearchIndexGeneration === dbGeneration() && routeSearchIndex.length) {
+    return routeSearchIndex;
+  }
+  const started = process.hrtime.bigint();
+  routeSearchIndex = db.prepare("SELECT * FROM routes").all().map((route) => ({
+    route,
+    haystack: `${route.line_name} ${describeRoute(db, route)}`.toLowerCase(),
+  }));
+  routeSearchIndexGeneration = dbGeneration();
+  const ms = Number(process.hrtime.bigint() - started) / 1e6;
+  console.log(`Route search index built: ${routeSearchIndex.length} routes in ${ms.toFixed(0)}ms.`);
+  return routeSearchIndex;
+}
+
 const routeDescriptionCache = new Map();
 let routeDescriptionGeneration = -1;
 function describeRoute(db, route) {
@@ -544,28 +574,43 @@ app.get("/api/journey", (req, res) => {
   const activeToday = activeServiceIDs(ukDateString());
   const activeYesterday = activeServiceIDs(ukDateString(-1));
   const nowSeconds = ukSecondsSinceMidnight();
+  // Optional "arrive by" target (HH:MM, UK local) — plan backwards from it.
+  const arriveBy = TimeOfDaySeconds(String(req.query.arriveBy ?? "")) ?? null;
+
   // Only trips that call at BOTH stops, in order — a departure from your stop
   // on a short working that turns back early is not a bus to your destination.
+  // Also carry the arrival time at the destination stop, so we can show when
+  // each bus gets you there (and honour an arrive-by target).
   const departuresStmt = db.prepare(
-    `SELECT trips.service_id AS service_id, st.departure_seconds AS dep
+    `SELECT trips.service_id AS service_id, st.departure_seconds AS dep,
+            COALESCE(st2.arrival_seconds, st2.departure_seconds) AS arr
      FROM trips
      JOIN stop_times st  ON st.trip_id = trips.id AND st.atco = ?
      JOIN stop_times st2 ON st2.trip_id = trips.id AND st2.atco = ? AND st2.seq > st.seq
      WHERE trips.route_id = ? AND st.departure_seconds IS NOT NULL
      ORDER BY st.departure_seconds`,
   );
-  // Upcoming departures across two GTFS service days: today's, plus
-  // yesterday's past-midnight (24:xx+) trips that are still to come — the
-  // night buses a today-only search goes blind to around midnight.
+  // Upcoming buses across two GTFS service days: today's, plus yesterday's
+  // past-midnight (24:xx+) trips still to come. Each carries its departure and
+  // its arrival at the destination. With arriveBy set, we keep the LATEST few
+  // that still arrive in time (leave as late as possible); otherwise the
+  // soonest few. Result is always shown chronologically.
   const nextDepartures = (routeID, fromAtco, toAtco) => {
     const rows = departuresStmt.all(fromAtco, toAtco, routeID);
-    const upcoming = [
-      ...rows.filter((t) => activeToday.has(t.service_id) && t.dep >= nowSeconds)
-        .map((t) => t.dep),
-      ...rows.filter((t) => activeYesterday.has(t.service_id) && t.dep - 86_400 >= nowSeconds)
-        .map((t) => t.dep - 86_400),
-    ];
-    return [...new Set(upcoming)].sort((a, b) => a - b).slice(0, 3).map(secondsToTime);
+    const byDep = new Map();
+    for (const day of [{ off: 0, active: activeToday }, { off: 86_400, active: activeYesterday }]) {
+      for (const t of rows) {
+        if (!day.active.has(t.service_id) || t.arr == null) continue;
+        const dep = t.dep - day.off;
+        const arr = t.arr - day.off;
+        if (dep < nowSeconds) continue;
+        if (arriveBy != null && arr > arriveBy) continue;
+        if (!byDep.has(dep)) byDep.set(dep, { dep, arr });
+      }
+    }
+    const sorted = [...byDep.values()].sort((a, b) => a.dep - b.dep);
+    const chosen = arriveBy != null ? sorted.slice(-3) : sorted.slice(0, 3);
+    return chosen.map((t) => ({ departure: secondsToTime(t.dep), arrival: secondsToTime(t.arr) }));
   };
 
   const stopCoord = new Map([...fromStops, ...toStops].map((s) => [s.atco, s]));
@@ -591,7 +636,7 @@ app.get("/api/journey", (req, res) => {
                                       [stopCoord.get(pair.from_atco), stopCoord.get(pair.to_atco)]),
       totalWalk: pair.walk,
       nextDepartureSeconds: nextDeps.length
-        ? (TimeOfDaySeconds(nextDeps[0]) ?? 99_999) : 99_999,
+        ? (TimeOfDaySeconds(nextDeps[0].departure) ?? 99_999) : 99_999,
     });
   }
 
@@ -605,6 +650,9 @@ app.get("/api/journey", (req, res) => {
       a.nextDepartureSeconds - b.nextDepartureSeconds,
   );
   const direct = options
+    // With an arrive-by target, a route with no qualifying departure doesn't
+    // get you there in time — drop it rather than show an empty card.
+    .filter((o) => arriveBy == null || o.departures.length > 0)
     .slice(0, 15)
     .map(({ totalWalk, nextDepartureSeconds, ...rest }) => rest);
 
@@ -613,7 +661,7 @@ app.get("/api/journey", (req, res) => {
   // "you'll need a change" with the actual route — not just a dead end.
   const interchange = direct.length >= 3
     ? []
-    : oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now: nowSeconds });
+    : oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now: nowSeconds, arriveBy });
 
   res.json({ options: direct, interchange });
 });
@@ -622,7 +670,7 @@ app.get("/api/journey", (req, res) => {
 /// interchange, optionally walk a short way, then catch a second bus that
 /// reaches the destination — with timing checked so the connection is real.
 /// Bounded throughout so one request can't run away on the national dataset.
-function oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now }) {
+function oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterday, now, arriveBy = null }) {
   const LEG1_WINDOW = config.journey.leg1WindowMinutes * 60;
   const LOOKAHEAD = 3 * 3600;    // arrive at destination within 3 h
   const TRANSFER_BUFFER = config.journey.transferBufferSeconds;
@@ -753,7 +801,10 @@ function oneChangeJourneys({ db, fromStops, toStops, activeToday, activeYesterda
   for (const [x, a] of reachArr) {
     const consider = (y, walk) => {
       const readyAt = a.arrive + TRANSFER_BUFFER + walk / WALK_SPEED;
-      const opt = board2.get(y)?.find((o) => o.dep >= readyAt && o.routeId !== a.routeId);
+      const opt = board2.get(y)?.find(
+        (o) => o.dep >= readyAt && o.routeId !== a.routeId
+          && (arriveBy == null || o.arriveD <= arriveBy),
+      );
       if (opt) {
         const totalWalk = a.boardWalk + walk + (toDist.get(opt.alightAtco) ?? 0);
         journeys.push({ x, y, walk, a, opt, totalWalk });
@@ -850,9 +901,23 @@ app.get("/services/:id.json", (req, res) => {
     .map((r) => r.shape_id);
 
   const points = db.prepare("SELECT lat, lon FROM shapes WHERE shape_id = ? ORDER BY seq");
-  const lines = shapeIDs
+  let lines = shapeIDs
     .map((id) => points.all(id).map((p) => [p.lon, p.lat]))
     .filter((line) => line.length > 1);
+
+  // No shapes (e.g. imported with GTFS_IMPORT_SHAPES=false) — draw the line
+  // by joining the stops of a representative trip in each direction. Not
+  // road-accurate, but far better than a bare scatter of stops.
+  if (lines.length === 0) {
+    const tripStops = db.prepare(
+      `SELECT stops.lon AS lon, stops.lat AS lat FROM stop_times
+       JOIN stops ON stops.atco = stop_times.atco
+       WHERE stop_times.trip_id = ? ORDER BY stop_times.seq LIMIT 400`,
+    );
+    lines = representativeTrips(db, Number(req.params.id))
+      .map(({ tripID }) => tripStops.all(tripID).map((p) => [p.lon, p.lat]))
+      .filter((line) => line.length > 1);
+  }
 
   res.json({ geometry: { type: "MultiLineString", coordinates: lines } });
 });
@@ -1006,6 +1071,7 @@ app.use((err, req, res, next) => {
 try {
   openDB();
   console.log("GTFS database:", dbStats());
+  buildRouteSearchIndex(openDB()); // warm the search index off the request path
 } catch (error) {
   console.warn(`⚠ ${error.message}`);
   console.warn("Timetable endpoints will return 503 until the import has run.");
