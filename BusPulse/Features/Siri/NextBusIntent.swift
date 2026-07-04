@@ -96,8 +96,11 @@ struct BusPulseShortcuts: AppShortcutsProvider {
             intent: NextBusIntent(),
             phrases: [
                 "Next \(.applicationName) bus",
-                "When's my next bus with \(.applicationName)",
-                "Ask \(.applicationName) for the next bus",
+                "Next bus on \(.applicationName)",
+                "When's my next bus on \(.applicationName)",
+                "When's the next bus with \(.applicationName)",
+                "Ask \(.applicationName) for my next bus",
+                "\(.applicationName) next bus",
             ],
             shortTitle: "Next bus",
             systemImageName: "bus.fill")

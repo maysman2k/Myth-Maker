@@ -35,5 +35,26 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<!-- Names Siri will accept for App Shortcut phrases, so mis-hearings of
+	     "Wait Less" (commonly heard as "Wallace") still trigger our intent. -->
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Waitless</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Wallace</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Wait Less bus</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Bus Pulse</string>
+		</dict>
+	</array>
 </dict>
 </plist>
