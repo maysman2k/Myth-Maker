@@ -51,13 +51,25 @@ struct NextBusIntent: AppIntent {
         return .result(dialog: "The next \(service.lineName) from \(nearest.name) is at \(times).")
     }
 
-    /// One-shot current location via the iOS 17 async location stream.
+    /// One-shot current location via the iOS 17 async location stream, racing
+    /// against a timeout so the intent can't hang if no fix arrives.
     static func currentLocation() async throws -> CLLocationCoordinate2D {
-        for try await update in CLLocationUpdate.liveUpdates() {
-            if let location = update.location { return location.coordinate }
-            if update.locationUnavailable { break }
+        try await withThrowingTaskGroup(of: CLLocationCoordinate2D?.self) { group in
+            group.addTask {
+                for try await update in CLLocationUpdate.liveUpdates() {
+                    if let location = update.location { return location.coordinate }
+                }
+                return nil
+            }
+            group.addTask {
+                try await Task.sleep(for: .seconds(8))
+                return nil
+            }
+            let first = try await group.next() ?? nil
+            group.cancelAll()
+            guard let coordinate = first else { throw NextBusError.locationUnavailable }
+            return coordinate
         }
-        throw NextBusError.locationUnavailable
     }
 
     /// Seconds since midnight in UK local time (matches timetable clock).
