@@ -244,6 +244,8 @@ struct JourneyPlannerView: View {
                 Text("Sorted by shortest walk / soonest arrival. Direct buses and journeys with a single change — trips needing two or more changes aren't planned yet.")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
+
+                AdBannerSlot()
             }
         }
     }

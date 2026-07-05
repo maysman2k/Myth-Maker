@@ -27,6 +27,7 @@ struct ServiceDetailView: View {
                 routeMap
                 offlineCard
                 stopsSection
+                AdBannerSlot()
             }
             .padding(.horizontal, BPSpacing.screenMargin)
             .padding(.vertical, BPSpacing.md)

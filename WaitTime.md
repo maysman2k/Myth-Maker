@@ -295,7 +295,7 @@ Ship this in the app (Settings → About):
 - **No livery colours / fleet details from BODS** — community data only; route pills fall back to a default colour where unavailable.
 - **`delay` from BODS** — live punctuality where the realtime feed provides it; the app handles it when present.
 - **England-focused** — Scotland/Wales/NI publish via Traveline; add later.
-- **Monetisation** — ads (AdMob + App Tracking Transparency + privacy manifest) noted, not built.
+- **Monetisation** — a single non-personalised AdMob banner on route detail and journey results (never the live map/departures/alarms). Code no-ops until the Google Mobile Ads SPM package is added; test ids in place — swap in real AdMob ids and add the UK/EEA consent flow (UMP) before App Store release.
 - **Siri / App Intents** — discussed, not built.
 - **Nice-to-haves** — Lock Screen Live Activity while following a bus, home-screen widgets for favourite stops, a day-picker for timetable downloads.
 
