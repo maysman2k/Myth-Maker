@@ -1,5 +1,5 @@
-> This repository contains two independent iOS apps:
-> **Planr** (group event planning — below) and **[BusPulse](BusPulse/README.md)** (live UK bus tracking with offline timetables, in `BusPulse/`).
+> This repository contains three independent iOS apps:
+> **Planr** (group event planning — below), **[BusPulse](BusPulse/README.md)** (live UK bus tracking with offline timetables, in `BusPulse/`) and **[Bricks in a Bag Studio](BrickStudio/README.md)** (brick news, reviews, mosaic maker and custom build requests, in `BrickStudio/`).
 
 # Planr 🎉
 
