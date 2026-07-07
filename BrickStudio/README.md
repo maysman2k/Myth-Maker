@@ -39,6 +39,7 @@ Native product cards for Bricks in a Bag builds (stadiums, mosaics, gifts, limit
 
 ### Admin panel (in-app, role-gated)
 - Dashboard stats, **AI Draft Queue** (drafts never publish without editor/admin approval — with relevance scores and risk notes), comment moderation, Brick Bar request management (status changes + sending quotes), and article/product status management.
+- The queue is fed live by the **[AI news scanner](../NewsScanner/README.md)** — a scheduled GitHub Actions worker that checks the approved source list every 6 hours, has Claude write original drafts of relevant stories, and scrapes candidate images. The draft review screen shows the suggested images with a licence warning; the editor picks one (or the branded graphic) at approval, and the chosen image becomes the published article's hero image. Requires the `ANTHROPIC_API_KEY` repo secret — see the scanner README for setup.
 - Demo accounts (password `bricks123`): `admin@bricksinabag.com`, `editor@bricksinabag.com`, `moderator@bricksinabag.com`, `jess@example.com`.
 
 ## Running it

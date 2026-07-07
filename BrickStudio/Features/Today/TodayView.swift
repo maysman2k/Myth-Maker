@@ -173,7 +173,7 @@ struct TodayView: View {
                         ForEach(latest) { article in
                             NavigationLink(value: ContentRoute.article(article.id)) {
                                 VStack(alignment: .leading, spacing: 0) {
-                                    BrickArtView(seed: article.id.artSeed, tint: article.category.artTint, symbol: article.category.symbol)
+                                    ArticleArtwork(article: article)
                                         .frame(height: 100)
                                     VStack(alignment: .leading, spacing: BrickSpacing.xs) {
                                         HStack(spacing: BrickSpacing.xs) {

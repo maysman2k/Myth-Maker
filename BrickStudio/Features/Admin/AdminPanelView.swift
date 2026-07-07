@@ -121,7 +121,7 @@ struct AIDraftQueueView: View {
         ScrollView {
             VStack(spacing: BrickSpacing.m) {
                 if pending.isEmpty {
-                    EmptyStateView(symbol: "sparkles", message: "The queue is clear. New drafts appear here when the scanner finds relevant stories.")
+                    EmptyStateView(symbol: "sparkles", message: "The queue is clear. New drafts appear here when the scanner finds relevant stories — pull down to check now.")
                 } else {
                     ForEach(pending) { draft in
                         NavigationLink {
@@ -137,6 +137,18 @@ struct AIDraftQueueView: View {
         }
         .background(BrickColor.background)
         .navigationTitle("AI Draft Queue")
+        .refreshable { await model.refreshAIDrafts() }
+        .task { await model.refreshAIDrafts() }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task { await model.refreshAIDrafts() }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .accessibilityLabel("Check for new drafts")
+            }
+        }
     }
 
     private func draftCard(_ draft: AIDraft) -> some View {
@@ -171,6 +183,7 @@ struct AIDraftDetailView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     var draftID: UUID
+    @State private var selectedImageURL: String?
 
     private var draft: AIDraft? {
         model.aiDrafts.first { $0.id == draftID }
@@ -226,16 +239,22 @@ struct AIDraftDetailView: View {
                             .font(BrickFont.cardTitle)
                             .foregroundStyle(BrickColor.primaryText)
                         ForEach(draft.sourceLinks) { source in
-                            Label(source.name, systemImage: "link")
-                                .font(BrickFont.meta)
-                                .foregroundStyle(BrickColor.gold)
+                            if let url = URL(string: source.url) {
+                                Link(destination: url) {
+                                    Label(source.name, systemImage: "link")
+                                        .font(BrickFont.meta)
+                                        .foregroundStyle(BrickColor.gold)
+                                }
+                            }
                         }
                     }
                 }
 
+                imagePicker(for: draft)
+
                 HStack(spacing: BrickSpacing.m) {
                     Button {
-                        model.approveAIDraft(draft.id)
+                        model.approveAIDraft(draft.id, heroImageURL: selectedImageURL)
                         dismiss()
                     } label: {
                         Text("Approve & Publish")
@@ -255,6 +274,93 @@ struct AIDraftDetailView: View {
             }
             .padding(BrickSpacing.l)
         }
+    }
+
+    /// Scraped image candidates from the scanner. Selecting one is an
+    /// explicit editorial decision — the licence warning stays in view and
+    /// "no image" (branded graphic) is the default.
+    @ViewBuilder
+    private func imagePicker(for draft: AIDraft) -> some View {
+        if let urls = draft.suggestedImageURLs, !urls.isEmpty {
+            VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                Text("Suggested images")
+                    .font(BrickFont.cardTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                Label("Scraped from the source page — licence unknown. Check rights before publishing with an image; skip it to use the branded graphic.", systemImage: "exclamationmark.triangle")
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.brickRed)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: BrickSpacing.s) {
+                        noImageOption
+                        ForEach(urls, id: \.self) { urlString in
+                            imageOption(urlString)
+                        }
+                    }
+                }
+            }
+            .padding(BrickSpacing.l)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .brickCard()
+        }
+    }
+
+    private var noImageOption: some View {
+        Button {
+            selectedImageURL = nil
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: "circle.grid.3x3.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(BrickColor.gold)
+                Text("Branded\ngraphic")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(width: 110, height: 84)
+            .background(BrickColor.background)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(selectedImageURL == nil ? BrickColor.gold : BrickColor.border, lineWidth: selectedImageURL == nil ? 2 : 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Use branded graphic instead of a photo")
+    }
+
+    private func imageOption(_ urlString: String) -> some View {
+        Button {
+            selectedImageURL = selectedImageURL == urlString ? nil : urlString
+        } label: {
+            AsyncImage(url: URL(string: urlString)) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().scaledToFill()
+                case .failure:
+                    Image(systemName: "photo.badge.exclamationmark")
+                        .foregroundStyle(BrickColor.secondaryText)
+                default:
+                    ProgressView()
+                }
+            }
+            .frame(width: 110, height: 84)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(selectedImageURL == urlString ? BrickColor.gold : BrickColor.border, lineWidth: selectedImageURL == urlString ? 2 : 1)
+            )
+            .overlay(alignment: .topTrailing) {
+                if selectedImageURL == urlString {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(BrickColor.gold)
+                        .background(Circle().fill(.white))
+                        .padding(4)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Select this image")
     }
 }
 

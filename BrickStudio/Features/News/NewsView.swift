@@ -1,5 +1,36 @@
 import SwiftUI
 
+/// Article hero artwork: the editor-approved remote image when one exists,
+/// otherwise the branded procedural graphic. Callers set the frame; this
+/// view fills and clips within it.
+struct ArticleArtwork: View {
+    var article: Article
+
+    var body: some View {
+        if let urlString = article.heroImageURL, let url = URL(string: urlString) {
+            Color.clear
+                .overlay {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().scaledToFill()
+                        default:
+                            fallback
+                        }
+                    }
+                }
+                .clipped()
+                .accessibilityHidden(true)
+        } else {
+            fallback
+        }
+    }
+
+    private var fallback: some View {
+        BrickArtView(seed: article.id.artSeed, tint: article.category.artTint, symbol: article.category.symbol)
+    }
+}
+
 struct NewsView: View {
     @Environment(AppModel.self) private var model
     @State private var selectedCategory: ArticleCategory?
@@ -86,7 +117,7 @@ struct ArticleCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            BrickArtView(seed: article.id.artSeed, tint: article.category.artTint, symbol: article.category.symbol)
+            ArticleArtwork(article: article)
                 .frame(height: 140)
             VStack(alignment: .leading, spacing: BrickSpacing.s) {
                 HStack(spacing: BrickSpacing.s) {

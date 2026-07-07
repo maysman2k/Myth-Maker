@@ -23,7 +23,7 @@ struct ArticleDetailView: View {
     private func content(for article: Article) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                BrickArtView(seed: article.id.artSeed, tint: article.category.artTint, symbol: article.category.symbol)
+                ArticleArtwork(article: article)
                     .frame(height: 190)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
 

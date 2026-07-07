@@ -21,6 +21,10 @@ struct AIDraft: Identifiable, Codable, Hashable {
     var riskNotes: String
     var status: AIDraftStatus
     var foundAt: Date
+    /// Candidate images scraped from the source page by the news scanner.
+    /// Licence is unknown until the editor checks it — an editor explicitly
+    /// picks one (or none) at approval time (§10.8).
+    var suggestedImageURLs: [String]? = nil
 
     /// Relevance banding from §10.4.
     var relevanceBand: String {

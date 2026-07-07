@@ -461,7 +461,25 @@ extension AppModel {
 
     // MARK: Admin actions
 
-    func approveAIDraft(_ draftID: UUID) {
+    /// Pulls new AI drafts from the scanner feed into the review queue.
+    /// Approved/rejected drafts keep their status — only unseen IDs merge in.
+    @MainActor
+    func refreshAIDrafts() async {
+        guard currentUser?.role.canEditContent == true else { return }
+        do {
+            let fetched = try await DraftFeedService.fetchLatest()
+            let knownIDs = Set(aiDrafts.map(\.id))
+            let fresh = fetched.filter { !knownIDs.contains($0.id) }
+            guard !fresh.isEmpty else { return }
+            aiDrafts.append(contentsOf: fresh)
+            showToast("\(fresh.count) new AI draft\(fresh.count == 1 ? "" : "s") in the queue", symbol: "sparkles")
+            persist()
+        } catch {
+            showToast("Couldn't reach the draft feed. Try again in a moment.", symbol: "wifi.exclamationmark")
+        }
+    }
+
+    func approveAIDraft(_ draftID: UUID, heroImageURL: String? = nil) {
         guard currentUser?.role.canEditContent == true,
               let index = aiDrafts.firstIndex(where: { $0.id == draftID }) else { return }
         let draft = aiDrafts[index]
@@ -484,7 +502,8 @@ extension AppModel {
             readTimeMinutes: TextUtilities.readTimeMinutes(for: draft.bodyMarkdown),
             publishedAt: Date(),
             createdAt: Date(),
-            updatedAt: Date()
+            updatedAt: Date(),
+            heroImageURL: heroImageURL
         )
         articles.append(article)
         aiDrafts[index].status = .approved

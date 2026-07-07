@@ -71,4 +71,7 @@ struct Article: Identifiable, Codable, Hashable {
     var publishedAt: Date?
     var createdAt: Date
     var updatedAt: Date
+    /// Remote hero image chosen by an editor at approval time. When nil the
+    /// app shows its branded procedural artwork instead.
+    var heroImageURL: String? = nil
 }
