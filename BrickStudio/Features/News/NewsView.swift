@@ -44,7 +44,6 @@ struct NewsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                    categoryChips
                     if filtered.isEmpty {
                         EmptyStateView(
                             symbol: "newspaper",
@@ -77,8 +76,20 @@ struct NewsView: View {
                     LegalDisclaimerFooter()
                 }
                 .padding(.horizontal, BrickSpacing.l)
+                .padding(.top, BrickSpacing.s)
             }
             .background(BrickColor.background)
+            // Pinned above the scroll content so the chips' tap region can't
+            // collide with the first article's NavigationLink.
+            .safeAreaInset(edge: .top, spacing: 0) {
+                categoryChips
+                    .padding(.leading, BrickSpacing.l)
+                    .padding(.vertical, BrickSpacing.s)
+                    .background(BrickColor.background)
+                    .overlay(alignment: .bottom) {
+                        Divider().opacity(0.5)
+                    }
+            }
             .navigationTitle("News")
             .contentRouteDestinations()
             .toolbar {
