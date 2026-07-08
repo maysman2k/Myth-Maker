@@ -26,5 +26,19 @@
     "notes" : "Parts and techniques. Enable once feed URL is confirmed.",
     "rssUrl" : "https:\/\/www.newelementary.com\/feeds\/posts\/default?alt=rss",
     "sourceType" : "RSS"
+  },
+  {
+    "enabled" : true,
+    "name" : "Lego",
+    "notes" : "",
+    "rssUrl" : "https:\/\/www.lego.com\/en-gb\/discover",
+    "sourceType" : "RSS"
+  },
+  {
+    "enabled" : true,
+    "name" : "Lego ideas",
+    "notes" : "",
+    "rssUrl" : "https:\/\/ideas.lego.com\/blog",
+    "sourceType" : "RSS"
   }
 ]
