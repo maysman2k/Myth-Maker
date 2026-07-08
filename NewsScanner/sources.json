@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Brickset",
+    "rssUrl": "https://brickset.com/feed",
+    "enabled": true,
+    "sourceType": "RSS",
+    "notes": "Set database news and reviews."
+  },
+  {
+    "name": "The Brothers Brick",
+    "rssUrl": "https://www.brothers-brick.com/feed/",
+    "enabled": true,
+    "sourceType": "RSS",
+    "notes": "MOCs, news and reviews."
+  },
+  {
+    "name": "Brick Fanatics",
+    "rssUrl": "https://www.brickfanatics.com/feed/",
+    "enabled": true,
+    "sourceType": "RSS",
+    "notes": "UK-focused news, rumours and deals."
+  },
+  {
+    "name": "New Elementary",
+    "rssUrl": "https://www.newelementary.com/feeds/posts/default?alt=rss",
+    "enabled": false,
+    "sourceType": "RSS",
+    "notes": "Parts and techniques. Enable once feed URL is confirmed."
+  }
+]

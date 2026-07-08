@@ -1,0 +1,42 @@
+name: AI News Scanner
+
+on:
+  schedule:
+    # Every 6 hours, per the spec's default scan frequency (§35.2).
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news-scanner
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run scanner
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python NewsScanner/scanner.py
+
+      - name: Commit updated drafts feed
+        run: |
+          git config user.name "brick-news-scanner"
+          git config user.email "actions@users.noreply.github.com"
+          git add NewsScanner/drafts.json NewsScanner/seen.json
+          if git diff --cached --quiet; then
+            echo "No new drafts this run."
+          else
+            git commit -m "News scanner: update AI draft feed"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          fi
