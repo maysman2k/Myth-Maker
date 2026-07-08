@@ -464,7 +464,7 @@ extension AppModel {
     /// Pulls new AI drafts from the scanner feed into the review queue.
     /// Approved/rejected drafts keep their status — only unseen IDs merge in.
     @MainActor
-    func refreshAIDrafts() async {
+    func refreshAIDrafts(quietErrors: Bool = false) async {
         guard currentUser?.role.canEditContent == true else { return }
         do {
             let fetched = try await DraftFeedService.fetchLatest()
@@ -475,7 +475,9 @@ extension AppModel {
             showToast("\(fresh.count) new AI draft\(fresh.count == 1 ? "" : "s") in the queue", symbol: "sparkles")
             persist()
         } catch {
-            showToast("Couldn't reach the draft feed. Try again in a moment.", symbol: "wifi.exclamationmark")
+            if !quietErrors {
+                showToast("Couldn't reach the draft feed. Try again in a moment.", symbol: "wifi.exclamationmark")
+            }
         }
     }
 
@@ -483,6 +485,30 @@ extension AppModel {
     /// images in display order — the first becomes the hero/banner and the
     /// full list renders as the article's photo gallery. Empty means the
     /// branded graphic.
+    /// Force-runs the news scanner workflow on GitHub, then polls the feed
+    /// until the fresh drafts arrive (a run takes a couple of minutes).
+    @MainActor
+    func runScannerNow() async {
+        guard currentUser?.role.canEditContent == true, !isScannerRunning else { return }
+        guard let token = KeychainStore.load(GitHubWorkflowService.tokenKeychainKey), !token.isEmpty else { return }
+        isScannerRunning = true
+        defer { isScannerRunning = false }
+        do {
+            try await GitHubWorkflowService.runNewsScanner(token: token)
+            showToast("Scanner running — fresh drafts in a few minutes", symbol: "bolt.fill")
+            let countBefore = aiDrafts.count
+            // A run takes ~2-4 minutes; poll the feed until new drafts land.
+            for delay in [90.0, 45, 45, 45, 45, 45] {
+                try? await Task.sleep(for: .seconds(delay))
+                await refreshAIDrafts(quietErrors: true)
+                if aiDrafts.count > countBefore { return }
+            }
+            showToast("No new drafts yet — pull to refresh in a minute", symbol: "clock")
+        } catch {
+            showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+        }
+    }
+
     func approveAIDraft(_ draftID: UUID, imageURLs: [String] = []) {
         guard currentUser?.role.canEditContent == true,
               let index = aiDrafts.firstIndex(where: { $0.id == draftID }) else { return }

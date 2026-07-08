@@ -112,6 +112,7 @@ struct AdminPanelView: View {
 
 struct AIDraftQueueView: View {
     @Environment(AppModel.self) private var model
+    @State private var isShowingTokenSheet = false
 
     private var pending: [AIDraft] {
         model.aiDrafts.filter { $0.status == .needsReview }.sorted { $0.relevanceScore > $1.relevanceScore }
@@ -120,8 +121,31 @@ struct AIDraftQueueView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: BrickSpacing.m) {
+                if model.isScannerRunning {
+                    HStack(spacing: BrickSpacing.m) {
+                        ProgressView()
+                        Text("Scanner running on GitHub — fresh drafts usually land in 2–4 minutes.")
+                            .font(BrickFont.meta)
+                            .foregroundStyle(BrickColor.secondaryText)
+                    }
+                    .padding(BrickSpacing.l)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brickCard()
+                }
                 if pending.isEmpty {
-                    EmptyStateView(symbol: "sparkles", message: "The queue is clear. New drafts appear here when the scanner finds relevant stories — pull down to check now.")
+                    if model.isScannerRunning {
+                        EmptyStateView(
+                            symbol: "sparkles",
+                            message: "The queue is clear — the scanner is out looking for stories right now."
+                        )
+                    } else {
+                        EmptyStateView(
+                            symbol: "sparkles",
+                            message: "The queue is clear. New drafts appear here when the scanner finds relevant stories.",
+                            actionTitle: "Run scanner now",
+                            action: { startScannerRun() }
+                        )
+                    }
                 } else {
                     ForEach(pending) { draft in
                         NavigationLink {
@@ -142,12 +166,40 @@ struct AIDraftQueueView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    startScannerRun()
+                } label: {
+                    if model.isScannerRunning {
+                        ProgressView()
+                    } else {
+                        Image(systemName: "bolt.fill")
+                    }
+                }
+                .disabled(model.isScannerRunning)
+                .accessibilityLabel("Run the news scanner now")
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
                     Task { await model.refreshAIDrafts() }
                 } label: {
                     Image(systemName: "arrow.clockwise")
                 }
                 .accessibilityLabel("Check for new drafts")
             }
+        }
+        .sheet(isPresented: $isShowingTokenSheet) {
+            ScannerTokenSheet {
+                startScannerRun()
+            }
+            .presentationDetents([.medium, .large])
+        }
+    }
+
+    /// Kick off a manual run; prompts for the GitHub token on first use.
+    private func startScannerRun() {
+        if KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false {
+            Task { await model.runScannerNow() }
+        } else {
+            isShowingTokenSheet = true
         }
     }
 
@@ -387,6 +439,85 @@ struct AIDraftDetailView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(isSelected ? "Deselect this image" : "Select this image")
+    }
+}
+
+/// One-time setup for on-demand scanner runs: stores a GitHub personal
+/// access token in the Keychain, then triggers the first run.
+private struct ScannerTokenSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    var onSaved: () -> Void
+    @State private var token = ""
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: BrickSpacing.l) {
+                    Text("Connect GitHub to run the scanner on demand")
+                        .font(BrickFont.sectionTitle)
+                        .foregroundStyle(BrickColor.primaryText)
+                    Text("The scanner runs automatically every 6 hours. To force a run from here, the app needs a GitHub token that's allowed to start workflows on \(GitHubWorkflowService.owner)/\(GitHubWorkflowService.repo).")
+                        .font(BrickFont.body)
+                        .foregroundStyle(BrickColor.secondaryText)
+
+                    VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                        stepRow(1, "On github.com go to Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.")
+                        stepRow(2, "Repository access: only \(GitHubWorkflowService.repo). Permissions: Actions → Read and write.")
+                        stepRow(3, "Copy the token and paste it below. It's stored in the iOS Keychain on this device only.")
+                    }
+                    .padding(BrickSpacing.l)
+                    .brickCard()
+
+                    SecureField("github_pat_…", text: $token)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding(BrickSpacing.m)
+                        .background(BrickColor.card)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+
+                    Button {
+                        KeychainStore.save(token.trimmingCharacters(in: .whitespacesAndNewlines), for: GitHubWorkflowService.tokenKeychainKey)
+                        dismiss()
+                        onSaved()
+                    } label: {
+                        Text("Save & Run Scanner")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(StudButtonStyle())
+                    .disabled(token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+
+                    if KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false {
+                        Button("Remove saved token", role: .destructive) {
+                            KeychainStore.delete(GitHubWorkflowService.tokenKeychainKey)
+                            dismiss()
+                        }
+                        .font(BrickFont.meta)
+                        .foregroundStyle(BrickColor.brickRed)
+                    }
+                }
+                .padding(BrickSpacing.l)
+            }
+            .background(BrickColor.background)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+        }
+    }
+
+    private func stepRow(_ number: Int, _ text: String) -> some View {
+        HStack(alignment: .top, spacing: BrickSpacing.m) {
+            Text("\(number)")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 22, height: 22)
+                .background(Circle().fill(BrickColor.gold))
+            Text(text)
+                .font(BrickFont.meta)
+                .foregroundStyle(BrickColor.secondaryText)
+        }
     }
 }
 

@@ -94,15 +94,24 @@ struct NewsView: View {
         }
     }
 
+    /// Only categories that currently have published articles, with live
+    /// counts — so every chip visibly changes the list and none dead-ends.
+    private var populatedCategories: [(category: ArticleCategory, count: Int)] {
+        ArticleCategory.allCases.compactMap { category in
+            let count = model.publishedArticles.filter { $0.category == category }.count
+            return count > 0 ? (category, count) : nil
+        }
+    }
+
     private var categoryChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: BrickSpacing.s) {
-                FilterChip(title: "All", isSelected: selectedCategory == nil) {
+                FilterChip(title: "All (\(model.publishedArticles.count))", isSelected: selectedCategory == nil) {
                     selectedCategory = nil
                 }
-                ForEach(ArticleCategory.allCases) { category in
-                    FilterChip(title: category.rawValue, isSelected: selectedCategory == category) {
-                        selectedCategory = selectedCategory == category ? nil : category
+                ForEach(populatedCategories, id: \.category) { entry in
+                    FilterChip(title: "\(entry.category.rawValue) (\(entry.count))", isSelected: selectedCategory == entry.category) {
+                        selectedCategory = selectedCategory == entry.category ? nil : entry.category
                     }
                 }
             }

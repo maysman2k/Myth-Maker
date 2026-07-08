@@ -72,6 +72,9 @@ final class AppModel {
     var selectedTab: MainTab = .today
     var toast: Toast?
     var isShowingAuth = false
+    /// True while a manually triggered scanner run is in flight (dispatch +
+    /// waiting for its drafts to land in the feed).
+    var isScannerRunning = false
 
     init(snapshot: AppSnapshot? = nil) {
         let snap = snapshot ?? LocalStore.load() ?? SeedFactory.makeSnapshot()

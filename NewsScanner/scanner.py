@@ -149,15 +149,23 @@ def parse_feed(xml_bytes):
                 return candidate.text.strip()
         return ""
 
-    def feed_image(node):
+    def item_images(node):
+        """Media attachments plus any photos embedded in the item's HTML
+        (description / content:encoded) — feeds often carry the article's
+        full image set."""
+        urls = []
         for candidate in node:
             name = local_name(candidate.tag)
             if name in ("content", "thumbnail", "enclosure"):
                 url = candidate.get("url") or candidate.get("href") or ""
                 mime = candidate.get("type", "")
-                if url and (name != "enclosure" or mime.startswith("image")):
-                    return url
-        return ""
+                if url and (name != "enclosure" or mime.startswith("image")) and url not in urls:
+                    urls.append(url)
+            if name in ("description", "encoded", "content", "summary") and candidate.text:
+                for url in extract_images_from_html(candidate.text):
+                    if url not in urls:
+                        urls.append(url)
+        return urls
 
     for node in root.iter():
         name = local_name(node.tag)
@@ -177,7 +185,7 @@ def parse_feed(xml_bytes):
                 "title": title,
                 "link": link,
                 "summary": summary[:600],
-                "image": feed_image(node),
+                "images": item_images(node),
             })
     return items
 
@@ -187,10 +195,14 @@ META_IMAGE_PATTERNS = [
     r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\']',
 ]
 
-IMG_TAG_PATTERN = r'<img[^>]+src=["\'](https?://[^"\']+)["\']'
+# src plus the common lazy-loading attributes — most news sites defer their
+# photos, so plain src alone misses nearly everything.
+IMG_SRC_PATTERN = r'<img[^>]+?(?:src|data-src|data-lazy-src|data-original)=["\'](https?://[^"\']+)["\']'
+SRCSET_PATTERN = r'<img[^>]+?(?:srcset|data-srcset)=["\']([^"\']+)["\']'
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
 IMAGE_URL_STOPWORDS = ("logo", "icon", "avatar", "badge", "banner-ad", "sprite",
-                       "placeholder", "gravatar", "emoji", "button", "pixel")
+                       "placeholder", "gravatar", "emoji", "button", "pixel",
+                       "spacer", "blank.")
 MAX_IMAGES_PER_DRAFT = 6
 PAGE_TEXT_LIMIT = 6000
 
@@ -201,6 +213,22 @@ def looks_like_content_image(url):
     if not path.endswith(IMAGE_EXTENSIONS):
         return False
     return not any(word in lowered for word in IMAGE_URL_STOPWORDS)
+
+
+def extract_images_from_html(html_text):
+    """Photo URLs from an HTML fragment: src + lazy-load attrs, and the
+    largest candidate from each srcset."""
+    urls = []
+    for match in re.findall(IMG_SRC_PATTERN, html_text, flags=re.I):
+        if looks_like_content_image(match) and match not in urls:
+            urls.append(match)
+    for match in re.findall(SRCSET_PATTERN, html_text, flags=re.I):
+        candidates = [part.strip().split()[0] for part in match.split(",") if part.strip()]
+        if candidates:
+            best = candidates[-1]  # srcset lists smallest→largest by convention
+            if best.startswith("http") and looks_like_content_image(best) and best not in urls:
+                urls.append(best)
+    return urls
 
 
 def scrape_page(url):
@@ -225,8 +253,8 @@ def scrape_page(url):
     # Scope text and inline images to the article body when the page has one.
     article_match = re.search(r"<article[\s\S]*?</article>", raw, flags=re.I)
     content_html = article_match.group(0) if article_match else raw
-    for match in re.findall(IMG_TAG_PATTERN, content_html, flags=re.I):
-        if match not in images and looks_like_content_image(match):
+    for match in extract_images_from_html(content_html):
+        if match not in images:
             images.append(match)
 
     return strip_html(content_html)[:PAGE_TEXT_LIMIT], images[:MAX_IMAGES_PER_DRAFT]
@@ -344,7 +372,7 @@ def main():
 
             page_text, page_images = scrape_page(link)
             images = []
-            for candidate in [story.get("image", "")] + page_images:
+            for candidate in story.get("images", []) + page_images:
                 if candidate and candidate.startswith("http") and candidate not in images:
                     images.append(candidate)
             prompt = PROMPT_TEMPLATE.format(

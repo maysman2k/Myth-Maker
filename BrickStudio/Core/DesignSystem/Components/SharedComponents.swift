@@ -135,8 +135,10 @@ struct FilterChip: View {
                 .foregroundStyle(isSelected ? BrickColor.background : BrickColor.primaryText)
                 .clipShape(Capsule())
                 .overlay(Capsule().strokeBorder(BrickColor.border, lineWidth: isSelected ? 0 : 1))
+                .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
