@@ -21,7 +21,7 @@ enum GitHubWorkflowService {
         var errorDescription: String? {
             switch self {
             case .badToken:
-                return "GitHub rejected the token. Check it has Actions write access to \(owner)/\(repo)."
+                return "GitHub rejected the token — it can read but not run Actions. Set the token's “Actions” permission to “Read and write” (not just “Read”) and try again."
             case .workflowNotFound:
                 return "GitHub couldn't find the scanner workflow on \(ref). Make sure the branch is up to date."
             case .permission(let detail):
@@ -32,34 +32,37 @@ enum GitHubWorkflowService {
         }
     }
 
-    /// Checks the saved token can do everything the admin tools need:
-    /// read Actions (to trigger scans) and read repo contents (to manage
-    /// the source list). Throws a specific, human-readable error when a
-    /// permission is missing so the admin knows exactly what to fix.
+    /// Verifies the token can actually do what the admin tools need —
+    /// crucially, that it has *write* access, not just read. A read-only
+    /// token passes simple GET checks but is then rejected when it tries to
+    /// run the scanner or save sources, which is exactly the confusing case
+    /// this guards against. The repo endpoint's `permissions.push` flag is
+    /// true only when the token has repository write access.
     static func verifyToken(_ token: String) async throws {
-        let actionsURL = URL(string: "https://api.github.com/repos/\(owner)/\(repo)/actions/workflows/\(workflowFile)")!
-        try await check(
-            url: actionsURL,
-            token: token,
-            failureDetail: "Token can't access Actions on \(owner)/\(repo). In the token's permissions set Actions to Read and write, and make sure the resource owner is \(owner) with this repository selected."
-        )
-        let contentsURL = URL(string: "https://api.github.com/repos/\(owner)/\(repo)/contents/NewsScanner/sources.json?ref=\(ref)")!
-        try await check(
-            url: contentsURL,
-            token: token,
-            failureDetail: "Token can't read the repo's files, so source editing won't work. In the token's permissions set Contents to Read and write."
-        )
-    }
-
-    private static func check(url: URL, token: String, failureDetail: String) async throws {
-        var request = URLRequest(url: url)
+        let repoURL = URL(string: "https://api.github.com/repos/\(owner)/\(repo)")!
+        var request = URLRequest(url: repoURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
-        let (_, response) = try await URLSession.shared.data(for: request)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw TriggerError.failed(0) }
-        guard http.statusCode == 200 else {
-            throw TriggerError.permission(failureDetail)
+        switch http.statusCode {
+        case 200:
+            break
+        case 401, 403:
+            throw TriggerError.permission("GitHub rejected this token. Double-check you copied it in full and that the Resource owner is \(owner) with \(repo) selected.")
+        case 404:
+            throw TriggerError.permission("This token can't see \(owner)/\(repo). When creating it, set Resource owner to \(owner) and Repository access to “Only select repositories → \(repo)”.")
+        default:
+            throw TriggerError.failed(http.statusCode)
+        }
+
+        let push = ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])
+            .flatMap { $0["permissions"] as? [String: Any] }
+            .flatMap { $0["push"] as? Bool } ?? false
+        guard push else {
+            throw TriggerError.permission("This token can read \(owner)/\(repo) but not write to it — that's why runs and source edits are rejected. In the token's Repository permissions, set BOTH “Actions” and “Contents” to “Read and write” (not just “Read”), regenerate, and paste the new token.")
         }
     }
 
