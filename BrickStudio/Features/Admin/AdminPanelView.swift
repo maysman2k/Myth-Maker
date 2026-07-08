@@ -5,6 +5,7 @@ import SwiftUI
 /// comments. Never visible to normal users.
 struct AdminPanelView: View {
     @Environment(AppModel.self) private var model
+    @State private var isShowingTokenSheet = false
 
     var body: some View {
         Group {
@@ -42,11 +43,49 @@ struct AdminPanelView: View {
                     }
                 }
                 .brickCard()
+
+                if user.role.canEditContent {
+                    VStack(spacing: 0) {
+                        adminLink("News sources", symbol: "antenna.radiowaves.left.and.right", badge: 0) {
+                            AdminSourcesView()
+                        }
+                        Button {
+                            isShowingTokenSheet = true
+                        } label: {
+                            HStack(spacing: BrickSpacing.m) {
+                                Image(systemName: "key.horizontal")
+                                    .foregroundStyle(BrickColor.gold)
+                                    .frame(width: 28)
+                                Text("GitHub connection")
+                                    .font(BrickFont.body)
+                                    .foregroundStyle(BrickColor.primaryText)
+                                Spacer()
+                                TagBadge(
+                                    text: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? "Token saved" : "Not set up",
+                                    tint: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? BrickColor.stadiumGreen : BrickColor.brickRed
+                                )
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(BrickColor.secondaryText)
+                            }
+                            .padding(BrickSpacing.l)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .brickCard()
+                }
+
                 Text("AI drafts never publish automatically — everything below needs a human decision.")
                     .font(BrickFont.meta)
                     .foregroundStyle(BrickColor.secondaryText)
             }
             .padding(BrickSpacing.l)
+        }
+        .sheet(isPresented: $isShowingTokenSheet) {
+            GitHubTokenSheet(onSaved: nil)
+                .presentationDetents([.large])
         }
     }
 
@@ -187,10 +226,10 @@ struct AIDraftQueueView: View {
             }
         }
         .sheet(isPresented: $isShowingTokenSheet) {
-            ScannerTokenSheet {
+            GitHubTokenSheet(onSaved: {
                 startScannerRun()
-            }
-            .presentationDetents([.medium, .large])
+            })
+            .presentationDetents([.large])
         }
     }
 
@@ -439,85 +478,6 @@ struct AIDraftDetailView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(isSelected ? "Deselect this image" : "Select this image")
-    }
-}
-
-/// One-time setup for on-demand scanner runs: stores a GitHub personal
-/// access token in the Keychain, then triggers the first run.
-private struct ScannerTokenSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    var onSaved: () -> Void
-    @State private var token = ""
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                    Text("Connect GitHub to run the scanner on demand")
-                        .font(BrickFont.sectionTitle)
-                        .foregroundStyle(BrickColor.primaryText)
-                    Text("The scanner runs automatically every 6 hours. To force a run from here, the app needs a GitHub token that's allowed to start workflows on \(GitHubWorkflowService.owner)/\(GitHubWorkflowService.repo).")
-                        .font(BrickFont.body)
-                        .foregroundStyle(BrickColor.secondaryText)
-
-                    VStack(alignment: .leading, spacing: BrickSpacing.s) {
-                        stepRow(1, "On github.com go to Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.")
-                        stepRow(2, "Repository access: only \(GitHubWorkflowService.repo). Permissions: Actions → Read and write.")
-                        stepRow(3, "Copy the token and paste it below. It's stored in the iOS Keychain on this device only.")
-                    }
-                    .padding(BrickSpacing.l)
-                    .brickCard()
-
-                    SecureField("github_pat_…", text: $token)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .padding(BrickSpacing.m)
-                        .background(BrickColor.card)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
-
-                    Button {
-                        KeychainStore.save(token.trimmingCharacters(in: .whitespacesAndNewlines), for: GitHubWorkflowService.tokenKeychainKey)
-                        dismiss()
-                        onSaved()
-                    } label: {
-                        Text("Save & Run Scanner")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(StudButtonStyle())
-                    .disabled(token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-
-                    if KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false {
-                        Button("Remove saved token", role: .destructive) {
-                            KeychainStore.delete(GitHubWorkflowService.tokenKeychainKey)
-                            dismiss()
-                        }
-                        .font(BrickFont.meta)
-                        .foregroundStyle(BrickColor.brickRed)
-                    }
-                }
-                .padding(BrickSpacing.l)
-            }
-            .background(BrickColor.background)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-            }
-        }
-    }
-
-    private func stepRow(_ number: Int, _ text: String) -> some View {
-        HStack(alignment: .top, spacing: BrickSpacing.m) {
-            Text("\(number)")
-                .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(width: 22, height: 22)
-                .background(Circle().fill(BrickColor.gold))
-            Text(text)
-                .font(BrickFont.meta)
-                .foregroundStyle(BrickColor.secondaryText)
-        }
     }
 }
 

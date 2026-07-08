@@ -40,11 +40,18 @@ sources.json ──▶ scanner.py ──▶ Claude API ──▶ drafts.json ─
 
 ## Managing sources
 
-Edit `sources.json` — each entry has `name`, `rssUrl`, `enabled` and
-`notes`. Set `"enabled": false` to pause a source. The bundled feed URLs
-are best-guesses for well-known brick news sites; if one errors in the
-Actions log, correct its URL (the scanner skips broken feeds without
-failing the run).
+The easiest way: in the app, **Admin panel → News Sources** — list, edit,
+pause, add and remove sources; changes commit straight back to this file
+on `main` and apply from the next scan. This needs the in-app GitHub
+token to have **Contents: Read and write** as well as **Actions: Read
+and write** (Admin panel → GitHub connection has step-by-step setup and
+a Test Connection button).
+
+You can also edit `sources.json` by hand — each entry has `name`,
+`rssUrl`, `enabled` and `notes`. Set `"enabled": false` to pause a
+source. The scanner needs an RSS/Atom feed URL, not a homepage; if a
+feed errors in the Actions log, correct its URL (the scanner skips
+broken feeds without failing the run).
 
 ## Running locally
 

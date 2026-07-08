@@ -15,6 +15,7 @@ enum GitHubWorkflowService {
     enum TriggerError: LocalizedError {
         case badToken
         case workflowNotFound
+        case permission(String)
         case failed(Int)
 
         var errorDescription: String? {
@@ -23,9 +24,42 @@ enum GitHubWorkflowService {
                 return "GitHub rejected the token. Check it has Actions write access to \(owner)/\(repo)."
             case .workflowNotFound:
                 return "GitHub couldn't find the scanner workflow on \(ref). Make sure the branch is up to date."
+            case .permission(let detail):
+                return detail
             case .failed(let code):
                 return "GitHub returned an unexpected response (\(code)). Try again in a moment."
             }
+        }
+    }
+
+    /// Checks the saved token can do everything the admin tools need:
+    /// read Actions (to trigger scans) and read repo contents (to manage
+    /// the source list). Throws a specific, human-readable error when a
+    /// permission is missing so the admin knows exactly what to fix.
+    static func verifyToken(_ token: String) async throws {
+        let actionsURL = URL(string: "https://api.github.com/repos/\(owner)/\(repo)/actions/workflows/\(workflowFile)")!
+        try await check(
+            url: actionsURL,
+            token: token,
+            failureDetail: "Token can't access Actions on \(owner)/\(repo). In the token's permissions set Actions to Read and write, and make sure the resource owner is \(owner) with this repository selected."
+        )
+        let contentsURL = URL(string: "https://api.github.com/repos/\(owner)/\(repo)/contents/NewsScanner/sources.json?ref=\(ref)")!
+        try await check(
+            url: contentsURL,
+            token: token,
+            failureDetail: "Token can't read the repo's files, so source editing won't work. In the token's permissions set Contents to Read and write."
+        )
+    }
+
+    private static func check(url: URL, token: String, failureDetail: String) async throws {
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse else { throw TriggerError.failed(0) }
+        guard http.statusCode == 200 else {
+            throw TriggerError.permission(failureDetail)
         }
     }
 
