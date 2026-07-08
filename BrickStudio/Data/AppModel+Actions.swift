@@ -479,7 +479,11 @@ extension AppModel {
         }
     }
 
-    func approveAIDraft(_ draftID: UUID, heroImageURL: String? = nil) {
+    /// Publishes an approved draft. `imageURLs` are the editor-approved
+    /// images in display order — the first becomes the hero/banner and the
+    /// full list renders as the article's photo gallery. Empty means the
+    /// branded graphic.
+    func approveAIDraft(_ draftID: UUID, imageURLs: [String] = []) {
         guard currentUser?.role.canEditContent == true,
               let index = aiDrafts.firstIndex(where: { $0.id == draftID }) else { return }
         let draft = aiDrafts[index]
@@ -503,7 +507,8 @@ extension AppModel {
             publishedAt: Date(),
             createdAt: Date(),
             updatedAt: Date(),
-            heroImageURL: heroImageURL
+            heroImageURL: imageURLs.first,
+            galleryImageURLs: imageURLs.isEmpty ? nil : imageURLs
         )
         articles.append(article)
         aiDrafts[index].status = .approved

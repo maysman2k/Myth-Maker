@@ -58,6 +58,8 @@ struct ArticleDetailView: View {
 
                 MarkdownBody(markdown: article.bodyMarkdown)
 
+                imageGallery(for: article)
+
                 if !article.tags.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: BrickSpacing.s) {
@@ -118,6 +120,45 @@ struct ArticleDetailView: View {
             .padding(.top, BrickSpacing.m)
         }
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// Editor-approved photos beyond the banner, stacked full-width in the
+    /// article body with a source credit.
+    @ViewBuilder
+    private func imageGallery(for article: Article) -> some View {
+        let extras = Array((article.galleryImageURLs ?? []).dropFirst())
+        if !extras.isEmpty {
+            VStack(alignment: .leading, spacing: BrickSpacing.m) {
+                Text("In pictures")
+                    .font(BrickFont.sectionTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                ForEach(extras, id: \.self) { urlString in
+                    if let url = URL(string: urlString) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                            case .failure:
+                                EmptyView()
+                            default:
+                                RoundedRectangle(cornerRadius: 14)
+                                    .fill(BrickColor.border.opacity(0.5))
+                                    .frame(height: 160)
+                                    .overlay(ProgressView())
+                            }
+                        }
+                    }
+                }
+                if let source = article.sources.first {
+                    Text("Images via \(source.name)")
+                        .font(.system(size: 12))
+                        .foregroundStyle(BrickColor.secondaryText)
+                }
+            }
+        }
     }
 
     @ViewBuilder

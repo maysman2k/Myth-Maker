@@ -53,16 +53,17 @@ final class DraftFeedTests: XCTestCase {
         XCTAssertNil(drafts.first?.suggestedImageURLs)
     }
 
-    /// Approving with a chosen image publishes the article with that hero
-    /// image; approving without keeps the branded graphic (nil URL).
-    func testApprovalCarriesChosenHeroImage() {
+    /// Approving with chosen images publishes the article with the first as
+    /// the hero/banner and the full list as the gallery; approving without
+    /// keeps the branded graphic (nil URLs).
+    func testApprovalCarriesChosenImages() {
         var editor = UserAccount.new(displayName: "Sasha", email: "sasha@example.com", passwordHash: "x", role: .editor)
         editor.createdAt = Date().addingTimeInterval(-90 * 86_400)
         let draft = AIDraft(
             id: UUID(), title: "Imaged draft", summary: "S", bodyMarkdown: "B",
             category: .newSets, tags: [], sourceLinks: [], isRumour: false,
             relevanceScore: 90, riskNotes: "", status: .needsReview, foundAt: Date(),
-            suggestedImageURLs: ["https://example.com/a.jpg"]
+            suggestedImageURLs: ["https://example.com/a.jpg", "https://example.com/b.jpg", "https://example.com/c.jpg"]
         )
         var snapshot = AppSnapshot()
         snapshot.accounts = [editor]
@@ -70,9 +71,10 @@ final class DraftFeedTests: XCTestCase {
         let model = AppModel(snapshot: snapshot)
         model.currentUserID = editor.id
 
-        model.approveAIDraft(draft.id, heroImageURL: "https://example.com/a.jpg")
+        model.approveAIDraft(draft.id, imageURLs: ["https://example.com/a.jpg", "https://example.com/c.jpg"])
         let published = model.publishedArticles.first { $0.title == "Imaged draft" }
         XCTAssertEqual(published?.heroImageURL, "https://example.com/a.jpg")
+        XCTAssertEqual(published?.galleryImageURLs, ["https://example.com/a.jpg", "https://example.com/c.jpg"])
     }
 
     func testApprovalWithoutImageLeavesBrandedGraphic() {
@@ -93,5 +95,6 @@ final class DraftFeedTests: XCTestCase {
         let published = model.publishedArticles.first { $0.title == "Plain draft" }
         XCTAssertNotNil(published)
         XCTAssertNil(published?.heroImageURL)
+        XCTAssertNil(published?.galleryImageURLs)
     }
 }

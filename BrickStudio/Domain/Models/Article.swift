@@ -74,4 +74,7 @@ struct Article: Identifiable, Codable, Hashable {
     /// Remote hero image chosen by an editor at approval time. When nil the
     /// app shows its branded procedural artwork instead.
     var heroImageURL: String? = nil
+    /// All editor-approved images for this article (the hero is the first).
+    /// Rendered as an in-article photo gallery.
+    var galleryImageURLs: [String]? = nil
 }

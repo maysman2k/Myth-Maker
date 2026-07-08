@@ -38,6 +38,9 @@ API_VERSION = "2023-06-01"
 MODEL = os.environ.get("SCANNER_MODEL", "claude-sonnet-5")
 MAX_DRAFTS_PER_RUN = int(os.environ.get("SCANNER_MAX_DRAFTS", "5"))
 MIN_RELEVANCE = 61  # spec section 10.4: draft-worthy threshold
+# Bump when the drafting prompt changes materially so re-scanned stories get
+# fresh IDs — the app never re-imports an ID it has already seen.
+DRAFT_ID_VERSION = "v2"
 MAX_STORED_DRAFTS = 50
 MAX_SEEN_ENTRIES = 2000
 MAX_ITEMS_PER_SOURCE = 10
@@ -53,15 +56,22 @@ CATEGORIES = [
 
 PROMPT_TEMPLATE = """You are writing for Bricks in a Bag, an independent brick-building fan and custom model brand.
 
-Write an original, concise mobile-first news article based only on the provided source notes and links.
+Write an original, mobile-first news article based only on the provided source notes and links.
 
-Rules:
+Voice - this matters as much as the facts:
+- Fun, excitable and a little cheeky: write like a builder mate who just heard the news and can't wait to tell you, not like a press office.
+- Short punchy sentences. The odd exclamation. A wry aside or brick pun is welcome (one or two, not a panto script).
+- Talk TO the reader ("you", "your shelf", "your wallet").
+- Never stiff phrases like "It is worth noting" or "This announcement confirms". Never corporate filler.
+- Cheeky is fine; clickbait, sarcasm at fans' expense, or made-up hype is not.
+
+Accuracy rules:
 - Do not copy source wording.
 - Do not invent facts.
+- INCLUDE THE CONCRETE DETAILS FANS ACTUALLY WANT: set names, set numbers, piece counts, prices, minifigure counts and release dates - whenever the source text provides them, list them (a short markdown bullet list is perfect). Only say "details to come" if the source genuinely doesn't have them.
 - Clearly label rumours.
 - Mention when something is official only if the source confirms it.
 - Include a short "Why it matters" section.
-- Keep the tone friendly, clear and useful.
 - Use UK English.
 - Do not imply Bricks in a Bag is affiliated with LEGO Group.
 
@@ -177,27 +187,56 @@ META_IMAGE_PATTERNS = [
     r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\']',
 ]
 
+IMG_TAG_PATTERN = r'<img[^>]+src=["\'](https?://[^"\']+)["\']'
+IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
+IMAGE_URL_STOPWORDS = ("logo", "icon", "avatar", "badge", "banner-ad", "sprite",
+                       "placeholder", "gravatar", "emoji", "button", "pixel")
+MAX_IMAGES_PER_DRAFT = 6
+PAGE_TEXT_LIMIT = 6000
+
+
+def looks_like_content_image(url):
+    lowered = url.lower()
+    path = lowered.split("?", 1)[0]
+    if not path.endswith(IMAGE_EXTENSIONS):
+        return False
+    return not any(word in lowered for word in IMAGE_URL_STOPWORDS)
+
 
 def scrape_page(url):
-    """Return (text_excerpt, image_urls) from the story page."""
+    """Return (text_excerpt, image_urls) from the story page.
+
+    Prefers the <article> element's text so Claude sees the actual story
+    (set numbers, prices, dates) rather than navigation and boilerplate.
+    Collects social-meta images first, then in-content <img> photos.
+    """
     try:
         raw = fetch_bytes(url).decode("utf-8", errors="replace")
     except Exception as error:  # noqa: BLE001 - any fetch failure just means no page data
         log(f"  page fetch failed for {url}: {error}")
         return "", []
+
     images = []
     for pattern in META_IMAGE_PATTERNS:
         for match in re.findall(pattern, raw, flags=re.I):
             if match.startswith("http") and match not in images:
                 images.append(match)
-    return strip_html(raw)[:2500], images[:3]
+
+    # Scope text and inline images to the article body when the page has one.
+    article_match = re.search(r"<article[\s\S]*?</article>", raw, flags=re.I)
+    content_html = article_match.group(0) if article_match else raw
+    for match in re.findall(IMG_TAG_PATTERN, content_html, flags=re.I):
+        if match not in images and looks_like_content_image(match):
+            images.append(match)
+
+    return strip_html(content_html)[:PAGE_TEXT_LIMIT], images[:MAX_IMAGES_PER_DRAFT]
 
 
 def call_claude(prompt):
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     payload = json.dumps({
         "model": MODEL,
-        "max_tokens": 2000,
+        "max_tokens": 2500,
         "messages": [{"role": "user", "content": prompt}],
     }).encode("utf-8")
     request = urllib.request.Request(
@@ -248,7 +287,7 @@ def build_draft(result, story, source, images):
             "check rights before publishing with an image (spec 10.8)."
         )
     return {
-        "id": str(uuid.uuid5(uuid.NAMESPACE_URL, story["link"])),
+        "id": str(uuid.uuid5(uuid.NAMESPACE_URL, story["link"] + "#" + DRAFT_ID_VERSION)),
         "title": str(result.get("title", story["title"]))[:200],
         "summary": str(result.get("summary", ""))[:500],
         "bodyMarkdown": str(result.get("bodyMarkdown", "")),
@@ -298,7 +337,7 @@ def main():
             link = story["link"]
             if link in seen:
                 continue
-            draft_id = str(uuid.uuid5(uuid.NAMESPACE_URL, link))
+            draft_id = str(uuid.uuid5(uuid.NAMESPACE_URL, link + "#" + DRAFT_ID_VERSION))
             if draft_id in existing_ids or is_duplicate_title(story["title"], existing_titles):
                 seen[link] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
                 continue
@@ -328,7 +367,7 @@ def main():
                 log(f"  skipped (relevance {score}): {story['title']}")
                 continue
 
-            draft = build_draft(result, story, source, images[:3])
+            draft = build_draft(result, story, source, images[:MAX_IMAGES_PER_DRAFT])
             drafts.append(draft)
             existing_titles.append(draft["title"])
             existing_ids.add(draft["id"])

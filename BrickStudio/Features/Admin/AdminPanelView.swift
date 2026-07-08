@@ -183,7 +183,8 @@ struct AIDraftDetailView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     var draftID: UUID
-    @State private var selectedImageURL: String?
+    @State private var selectedImageURLs: [String] = []
+    @State private var hasInitialisedSelection = false
 
     private var draft: AIDraft? {
         model.aiDrafts.first { $0.id == draftID }
@@ -254,7 +255,7 @@ struct AIDraftDetailView: View {
 
                 HStack(spacing: BrickSpacing.m) {
                     Button {
-                        model.approveAIDraft(draft.id, heroImageURL: selectedImageURL)
+                        model.approveAIDraft(draft.id, imageURLs: selectedImageURLs)
                         dismiss()
                     } label: {
                         Text("Approve & Publish")
@@ -276,43 +277,51 @@ struct AIDraftDetailView: View {
         }
     }
 
-    /// Scraped image candidates from the scanner. Selecting one is an
-    /// explicit editorial decision — the licence warning stays in view and
-    /// "no image" (branded graphic) is the default.
+    /// Scraped image candidates from the scanner. All are pre-selected —
+    /// the editor unticks anything unwanted or off-brand. The first ticked
+    /// image becomes the banner; the rest fill the in-article gallery.
+    /// The licence warning stays in view (§10.8) since the editor signs
+    /// off image rights as part of approval.
     @ViewBuilder
     private func imagePicker(for draft: AIDraft) -> some View {
         if let urls = draft.suggestedImageURLs, !urls.isEmpty {
             VStack(alignment: .leading, spacing: BrickSpacing.s) {
-                Text("Suggested images")
+                Text("Article images (\(selectedImageURLs.count) of \(urls.count) selected)")
                     .font(BrickFont.cardTitle)
                     .foregroundStyle(BrickColor.primaryText)
-                Label("Scraped from the source page — licence unknown. Check rights before publishing with an image; skip it to use the branded graphic.", systemImage: "exclamationmark.triangle")
+                Label("Scraped from the source page — licence unknown. Untick anything you don't have rights to use. First ticked image is the banner; untick all for the branded graphic.", systemImage: "exclamationmark.triangle")
                     .font(BrickFont.meta)
                     .foregroundStyle(BrickColor.brickRed)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: BrickSpacing.s) {
-                        noImageOption
                         ForEach(urls, id: \.self) { urlString in
-                            imageOption(urlString)
+                            imageOption(urlString, allURLs: urls)
                         }
+                        noImageOption
                     }
                 }
             }
             .padding(BrickSpacing.l)
             .frame(maxWidth: .infinity, alignment: .leading)
             .brickCard()
+            .onAppear {
+                if !hasInitialisedSelection {
+                    hasInitialisedSelection = true
+                    selectedImageURLs = urls
+                }
+            }
         }
     }
 
     private var noImageOption: some View {
         Button {
-            selectedImageURL = nil
+            selectedImageURLs = []
         } label: {
             VStack(spacing: 4) {
                 Image(systemName: "circle.grid.3x3.fill")
                     .font(.system(size: 22))
                     .foregroundStyle(BrickColor.gold)
-                Text("Branded\ngraphic")
+                Text("Branded\ngraphic only")
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(BrickColor.secondaryText)
                     .multilineTextAlignment(.center)
@@ -322,16 +331,23 @@ struct AIDraftDetailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(selectedImageURL == nil ? BrickColor.gold : BrickColor.border, lineWidth: selectedImageURL == nil ? 2 : 1)
+                    .strokeBorder(selectedImageURLs.isEmpty ? BrickColor.gold : BrickColor.border, lineWidth: selectedImageURLs.isEmpty ? 2 : 1)
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Use branded graphic instead of a photo")
+        .accessibilityLabel("Use branded graphic instead of photos")
     }
 
-    private func imageOption(_ urlString: String) -> some View {
-        Button {
-            selectedImageURL = selectedImageURL == urlString ? nil : urlString
+    private func imageOption(_ urlString: String, allURLs: [String]) -> some View {
+        let isSelected = selectedImageURLs.contains(urlString)
+        let isHero = selectedImageURLs.first == urlString
+        return Button {
+            if isSelected {
+                selectedImageURLs.removeAll { $0 == urlString }
+            } else {
+                // Keep suggestion order stable regardless of tap order.
+                selectedImageURLs = allURLs.filter { selectedImageURLs.contains($0) || $0 == urlString }
+            }
         } label: {
             AsyncImage(url: URL(string: urlString)) { phase in
                 switch phase {
@@ -346,21 +362,31 @@ struct AIDraftDetailView: View {
             }
             .frame(width: 110, height: 84)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .opacity(isSelected ? 1 : 0.45)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(selectedImageURL == urlString ? BrickColor.gold : BrickColor.border, lineWidth: selectedImageURL == urlString ? 2 : 1)
+                    .strokeBorder(isSelected ? BrickColor.gold : BrickColor.border, lineWidth: isSelected ? 2 : 1)
             )
             .overlay(alignment: .topTrailing) {
-                if selectedImageURL == urlString {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(BrickColor.gold)
-                        .background(Circle().fill(.white))
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(isSelected ? BrickColor.gold : .white)
+                    .background(Circle().fill(isSelected ? .white : Color.black.opacity(0.3)))
+                    .padding(4)
+            }
+            .overlay(alignment: .bottomLeading) {
+                if isHero {
+                    Text("Banner")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(BrickColor.gold))
                         .padding(4)
                 }
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Select this image")
+        .accessibilityLabel(isSelected ? "Deselect this image" : "Select this image")
     }
 }
 
