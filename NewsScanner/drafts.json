@@ -1,5 +1,63 @@
 [
   {
+    "id": "f9800629-6f8e-59b9-9444-3b68c43f8344",
+    "title": "LEGO's Jokerized Batman minifigure sells out fast after DK book launch",
+    "summary": "The exclusive Jokerized Batman minifigure from DK's new LEGO Batman book is already tricky to find in UK shops, with Amazon and Waterstones stock running low.",
+    "bodyMarkdown": "## What happened\nDK Books' new title, LEGO Batman Adventures in Gotham City, launched on 2 July with an exclusive Jokerized Batman minifigure inside. The figure gives Batman a Joker-style makeover, with a unique torso, cape and cowl not used on any other minifigure so far. LEGO's Super Heroes team is credited with the original design, though it's clearly inspired by McFarlane Toys' existing Jokerized action figure line.\n\nDemand appears to have outpaced supply. In the UK, Amazon currently shows the book as back-ordered until 25 August, while Waterstones has sold out online, with only patchy stock in some physical stores. It's priced at £12.98 on Amazon, cheaper than many DK titles with similar minifigure inclusions.\n\n## Why it matters\nExclusive minifigures packaged with books have become a popular (and often overlooked) way to get hold of unique LEGO characters without buying a full set. This one stands out for its creative design, so if it's already selling through, it's a good sign for collectors that demand for quirky DC crossover figures remains strong — and a warning that hesitating on pre-orders can mean a long wait.\n\n## What to watch next\nKeep an eye on restocks at UK retailers and secondary markets, where the minifigure alone may start appearing separately from the book once collectors who ordered multiples begin reselling spares.",
+    "category": "Collectors",
+    "tags": [
+      "lego-batman",
+      "jokerized-batman",
+      "dc-minifigures",
+      "dk-books",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "534054ba-db48-54d4-8333-dbd483e74d18",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-new-jokerized-batman-minifigure-hard-to-find"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Verify current UK stock levels at Amazon and Waterstones before publishing, as availability may have changed since the source was written; confirm the £12.98 price is still accurate. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-09T10:03:47Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2025/11/LEGO-Batman-Adventures-in-Gotham-City-book-cover-featured.jpg"
+    ]
+  },
+  {
+    "id": "f841e9e1-682b-5917-98f6-9d4110299d22",
+    "title": "Rumours point to a wild LEGO Star Wars 50th anniversary wave for 2027",
+    "summary": "Fresh rumours suggest LEGO Star Wars could be gearing up for a genuinely creative 50th anniversary celebration in 2027, with new minifigure sets and a possible dedicated wave in the works. Nothing here is official yet.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, a fresh batch of rumours is circulating about LEGO Star Wars' plans for 2027, tied to Star Wars' 50th anniversary as a franchise.\n\nThe reports suggest a January 2027 wave that leans on familiar formats — playsets, battle packs, Microfighters, ships and buildable characters — alongside the previously rumoured 75466 Darth Vader Art set. Notably, The Mandalorian and Grogu don't feature in this line-up, despite dominating LEGO Star Wars releases through 2026.\n\nMore interestingly, rumours now point to a wave of celebratory minifigures, similar to previous 20th and 25th anniversary tie-ins, but this time marking 50 years of Star Wars overall rather than the LEGO theme specifically. There's a chance these could appear as early as the January 2027 wave rather than later in the year.\n\nSeparately, two specific LEGO Star Wars 50th anniversary sets are rumoured for April 2027, arriving alongside a previously reported 75477 Minifigure Vignette set. Brick Fanatics suggests this could indicate a dedicated 50th anniversary wave, though exact set contents haven't been detailed yet.\n\n**Rumour status:** All of the above is currently unconfirmed speculation, not an official LEGO Group announcement.\n\n## Why it matters\nAfter a 2026 dominated almost entirely by Mandalorian and Grogu sets, plus a mixed reception to the experimental SMART Play wave, fans have been hoping for LEGO Star Wars to feel fresh again. A proper 50th anniversary celebration — with new minifigure formats and a dedicated set wave — could be exactly the shake-up the theme needs, and it's the kind of moment collectors and display builders tend to get excited about.\n\n## What to watch next\nKeep an eye out for official confirmation from the LEGO Group around the January and April 2027 waves, plus any concrete details on set numbers, contents and pricing once LEGO themselves confirm anything.",
+    "category": "Rumours",
+    "tags": [
+      "lego-star-wars",
+      "50th-anniversary",
+      "2027-sets",
+      "rumours",
+      "minifigures"
+    ],
+    "sourceLinks": [
+      {
+        "id": "70a48c85-3254-52f3-8472-c269542a839b",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-star-wars-50th-anniversary-weird-and-wild"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 82,
+    "riskNotes": "Entirely based on unverified rumours reported by Brick Fanatics; no set numbers, images or LEGO Group confirmation exist yet, so avoid stating any details as fact and verify before publishing further specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-09T10:03:20Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/6f3e1f61-6ae3-4003-b989-c4caa08b83fa.jpg"
+    ]
+  },
+  {
     "id": "d21ada81-0072-5f76-9022-f50d48e0045b",
     "title": "LEGO Star Wars AT-AT Pre-Order Discounted at Amazon UK",
     "summary": "The new 75454 Imperial Remnant AT-AT with INT-4 is up for pre-order at Amazon UK with an 8% discount and a price guarantee before its August launch.",
