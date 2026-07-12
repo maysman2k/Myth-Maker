@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(AppModel.self) private var model
+    @AppStorage("appAppearancePreference") private var appearancePreference = AppAppearancePreference.automatic.rawValue
     @State private var preferences = NotificationPreferences()
 
     var body: some View {
@@ -17,7 +18,14 @@ struct SettingsView: View {
                 }
             }
             Section("Appearance") {
-                Text("The app follows your device's light or dark appearance.")
+                Picker("Theme", selection: $appearancePreference) {
+                    ForEach(AppAppearancePreference.allCases) { option in
+                        Text(option.title).tag(option.rawValue)
+                    }
+                }
+                .pickerStyle(.segmented)
+
+                Text("Auto follows your phone. Light and Dark override the phone setting.")
                     .font(BrickFont.meta)
                     .foregroundStyle(BrickColor.secondaryText)
             }

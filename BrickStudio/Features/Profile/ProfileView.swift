@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
@@ -9,7 +10,7 @@ struct ProfileView: View {
                 if let user = model.currentUser {
                     signedInHeader(for: user)
                     linksSection(for: user)
-                    if user.role.canModerate {
+                    if user.role.isAdmin {
                         adminSection
                     }
                     signOutButton
@@ -28,7 +29,7 @@ struct ProfileView: View {
     private func signedInHeader(for user: UserAccount) -> some View {
         VStack(alignment: .leading, spacing: BrickSpacing.m) {
             HStack(spacing: BrickSpacing.m) {
-                AvatarView(name: user.displayName, size: 64)
+                AvatarView(name: user.displayName, imageReference: user.avatarImageReference, size: 64)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(user.displayName)
                         .font(BrickFont.sectionTitle)
@@ -76,6 +77,7 @@ struct ProfileView: View {
             profileLink("Saved items", symbol: "bookmark") { SavedItemsView() }
             profileLink("My designs", symbol: "square.grid.3x3") { SavedDesignsView() }
             profileLink("My Brick Bar requests", symbol: "wrench.and.screwdriver") { MyRequestsView() }
+            profileLink("My stories", symbol: "square.and.pencil") { SubmittedStoriesView() }
             profileLink("My comments", symbol: "bubble.left") { MyCommentsView() }
             profileLink("Notifications", symbol: "bell") { NotificationsView() }
             profileLink("Settings", symbol: "gearshape") { SettingsView() }
@@ -151,10 +153,27 @@ struct EditProfileView: View {
     @State private var favouriteClub = ""
     @State private var favouriteTopics: Set<String> = []
     @State private var publicProfileEnabled = true
+    @State private var avatarImageReference: String?
+    @State private var selectedAvatarItem: PhotosPickerItem?
 
     var body: some View {
         Form {
             Section("Profile") {
+                HStack(spacing: BrickSpacing.m) {
+                    AvatarView(name: displayName, imageReference: avatarImageReference, size: 72)
+                    VStack(alignment: .leading, spacing: 8) {
+                        PhotosPicker(selection: $selectedAvatarItem, matching: .images) {
+                            Label(avatarImageReference == nil ? "Add profile photo" : "Change profile photo", systemImage: "camera")
+                        }
+                        if avatarImageReference != nil {
+                            Button(role: .destructive) {
+                                avatarImageReference = nil
+                            } label: {
+                                Label("Remove photo", systemImage: "trash")
+                            }
+                        }
+                    }
+                }
                 TextField("Display name", text: $displayName)
                 TextField("Bio", text: $bio, axis: .vertical)
                     .lineLimit(2...4)
@@ -192,11 +211,16 @@ struct EditProfileView: View {
                         bio: bio,
                         favouriteClub: favouriteClub,
                         favouriteTopics: Array(favouriteTopics),
-                        publicProfileEnabled: publicProfileEnabled
+                        publicProfileEnabled: publicProfileEnabled,
+                        avatarImageReference: avatarImageReference
                     )
                     dismiss()
                 }
             }
+        }
+        .onChange(of: selectedAvatarItem) { _, newItem in
+            guard let newItem else { return }
+            Task { await loadAvatar(from: newItem) }
         }
         .onAppear {
             guard let user = model.currentUser else { return }
@@ -205,7 +229,16 @@ struct EditProfileView: View {
             favouriteClub = user.favouriteClub
             favouriteTopics = Set(user.favouriteTopics)
             publicProfileEnabled = user.publicProfileEnabled
+            avatarImageReference = user.avatarImageReference
         }
+    }
+
+    @MainActor
+    private func loadAvatar(from item: PhotosPickerItem) async {
+        guard let data = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: data),
+              let filename = ImageStore.save(image, quality: 0.86) else { return }
+        avatarImageReference = "local-image://\(filename)"
     }
 }
 

@@ -32,4 +32,24 @@ enum ImageStore {
         guard !filename.isEmpty else { return }
         try? FileManager.default.removeItem(at: directory.appendingPathComponent(filename))
     }
+
+    static func saveVideo(from sourceURL: URL) -> String? {
+        let filename = UUID().uuidString + "." + (sourceURL.pathExtension.isEmpty ? "mov" : sourceURL.pathExtension)
+        let destination = directory.appendingPathComponent(filename)
+        do {
+            if FileManager.default.fileExists(atPath: destination.path) {
+                try FileManager.default.removeItem(at: destination)
+            }
+            try FileManager.default.copyItem(at: sourceURL, to: destination)
+            return filename
+        } catch {
+            return nil
+        }
+    }
+
+    static func videoURL(_ filename: String) -> URL? {
+        guard !filename.isEmpty else { return nil }
+        let url = directory.appendingPathComponent(filename)
+        return FileManager.default.fileExists(atPath: url.path) ? url : nil
+    }
 }

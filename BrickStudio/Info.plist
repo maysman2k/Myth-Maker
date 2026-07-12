@@ -4,5 +4,17 @@
 <dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>INSTAGRAM_FEED_URL</key>
+	<string>$(INSTAGRAM_FEED_URL)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BrickStudio uses selected photos and videos for mosaic previews and admin story media.</string>
+	<key>SQUARE_APPLICATION_ID</key>
+	<string>$(SQUARE_APPLICATION_ID)</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>SUPABASE_URL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 </dict>
 </plist>

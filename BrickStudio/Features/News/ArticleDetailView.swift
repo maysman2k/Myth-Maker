@@ -58,7 +58,7 @@ struct ArticleDetailView: View {
 
                 MarkdownBody(markdown: article.bodyMarkdown)
 
-                imageGallery(for: article)
+                mediaGallery(for: article)
 
                 if !article.tags.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -122,38 +122,22 @@ struct ArticleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    /// Editor-approved photos beyond the banner, stacked full-width in the
-    /// article body with a source credit.
+    /// Editor-approved media beyond the banner, stacked full-width in the
+    /// article body with a source credit when one exists.
     @ViewBuilder
-    private func imageGallery(for article: Article) -> some View {
-        let extras = Array((article.galleryImageURLs ?? []).dropFirst())
+    private func mediaGallery(for article: Article) -> some View {
+        let extras = Array((article.galleryImageURLs ?? []).dropFirst()) + (article.mediaURLs ?? [])
         if !extras.isEmpty {
             VStack(alignment: .leading, spacing: BrickSpacing.m) {
-                Text("In pictures")
+                Text("Media")
                     .font(BrickFont.sectionTitle)
                     .foregroundStyle(BrickColor.primaryText)
-                ForEach(extras, id: \.self) { urlString in
-                    if let url = URL(string: urlString) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                            case .failure:
-                                EmptyView()
-                            default:
-                                RoundedRectangle(cornerRadius: 14)
-                                    .fill(BrickColor.border.opacity(0.5))
-                                    .frame(height: 160)
-                                    .overlay(ProgressView())
-                            }
-                        }
-                    }
+                ForEach(extras, id: \.self) { reference in
+                    ArticleMediaView(reference: reference)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
                 if let source = article.sources.first {
-                    Text("Images via \(source.name)")
+                    Text("Media via \(source.name)")
                         .font(.system(size: 12))
                         .foregroundStyle(BrickColor.secondaryText)
                 }

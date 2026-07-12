@@ -1,25 +1,14 @@
+import AVKit
 import SwiftUI
 
-/// Article hero artwork: the editor-approved remote image when one exists,
-/// otherwise the branded procedural graphic. Callers set the frame; this
-/// view fills and clips within it.
+/// Article hero artwork: the editor-approved remote/local image when one
+/// exists, otherwise the branded procedural graphic. Callers set the frame.
 struct ArticleArtwork: View {
     var article: Article
 
     var body: some View {
-        if let urlString = article.heroImageURL, let url = URL(string: urlString) {
-            Color.clear
-                .overlay {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable().scaledToFill()
-                        default:
-                            fallback
-                        }
-                    }
-                }
-                .clipped()
+        if let urlString = article.heroImageURL {
+            ArticleImage(reference: urlString, mode: .fill, fallback: AnyView(fallback))
                 .accessibilityHidden(true)
         } else {
             fallback
@@ -28,6 +17,91 @@ struct ArticleArtwork: View {
 
     private var fallback: some View {
         BrickArtView(seed: article.id.artSeed, tint: article.category.artTint, symbol: article.category.symbol)
+    }
+}
+
+struct ArticleImage: View {
+    enum Mode {
+        case fill
+        case fit
+    }
+
+    var reference: String
+    var mode: Mode
+    var fallback: AnyView? = nil
+
+    var body: some View {
+        if let filename = localFilename(from: reference), let uiImage = ImageStore.load(filename) {
+            imageView(Image(uiImage: uiImage))
+        } else if let url = URL(string: reference), url.scheme != nil {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    imageView(image)
+                case .failure:
+                    fallback
+                default:
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(BrickColor.border.opacity(0.5))
+                        .overlay(ProgressView())
+                }
+            }
+        } else {
+            fallback
+        }
+    }
+
+    @ViewBuilder
+    private func imageView(_ image: Image) -> some View {
+        switch mode {
+        case .fill:
+            image.resizable().scaledToFill().clipped()
+        case .fit:
+            image.resizable().scaledToFit()
+        }
+    }
+
+    private func localFilename(from reference: String) -> String? {
+        let prefix = "local-image://"
+        guard reference.hasPrefix(prefix) else { return nil }
+        return String(reference.dropFirst(prefix.count))
+    }
+}
+
+struct ArticleMediaView: View {
+    var reference: String
+
+    var body: some View {
+        if reference.hasPrefix("local-video://"), let url = localVideoURL(from: reference) {
+            video(url)
+        } else if let url = URL(string: reference), url.scheme != nil, isVideoURL(url) {
+            video(url)
+        } else {
+            ArticleImage(reference: reference, mode: .fit)
+        }
+    }
+
+    private func video(_ url: URL) -> some View {
+        VideoPlayer(player: AVPlayer(url: url))
+            .frame(minHeight: 220)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(alignment: .topTrailing) {
+                Image(systemName: "play.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundStyle(.white)
+                    .shadow(radius: 4)
+                    .padding(BrickSpacing.s)
+            }
+    }
+
+    private func localVideoURL(from reference: String) -> URL? {
+        let prefix = "local-video://"
+        guard reference.hasPrefix(prefix) else { return nil }
+        return ImageStore.videoURL(String(reference.dropFirst(prefix.count)))
+    }
+
+    private func isVideoURL(_ url: URL) -> Bool {
+        ["mov", "mp4", "m4v"].contains(url.pathExtension.lowercased())
     }
 }
 
@@ -40,10 +114,20 @@ struct NewsView: View {
         return model.publishedArticles.filter { $0.category == selectedCategory }
     }
 
+    private var featuredArticle: Article? {
+        filtered.first
+    }
+
+    private var listArticles: [Article] {
+        Array(filtered.dropFirst())
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: BrickSpacing.l) {
+                VStack(alignment: .leading, spacing: BrickSpacing.xl) {
+                    header
+
                     if filtered.isEmpty {
                         EmptyStateView(
                             symbol: "newspaper",
@@ -52,11 +136,21 @@ struct NewsView: View {
                             action: { selectedCategory = nil }
                         )
                     } else {
-                        ForEach(filtered) { article in
-                            NavigationLink(value: ContentRoute.article(article.id)) {
-                                ArticleCard(article: article)
+                        if let featuredArticle {
+                            NavigationLink(value: ContentRoute.article(featuredArticle.id)) {
+                                FeaturedArticleCard(article: featuredArticle)
                             }
                             .buttonStyle(.plain)
+                        }
+
+                        VStack(alignment: .leading, spacing: BrickSpacing.m) {
+                            SectionHeader(title: selectedCategory == nil ? "Latest news" : selectedCategory?.rawValue ?? "Latest news")
+                            ForEach(listArticles) { article in
+                                NavigationLink(value: ContentRoute.article(article.id)) {
+                                    CompactArticleRow(article: article)
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
                     }
                     NavigationLink {
@@ -79,8 +173,6 @@ struct NewsView: View {
                 .padding(.top, BrickSpacing.s)
             }
             .background(BrickColor.background)
-            // Pinned above the scroll content so the chips' tap region can't
-            // collide with the first article's NavigationLink.
             .safeAreaInset(edge: .top, spacing: 0) {
                 categoryChips
                     .padding(.leading, BrickSpacing.l)
@@ -90,7 +182,8 @@ struct NewsView: View {
                         Divider().opacity(0.5)
                     }
             }
-            .navigationTitle("News")
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .contentRouteDestinations()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -102,6 +195,21 @@ struct NewsView: View {
                     .accessibilityLabel("Search")
                 }
             }
+        }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+            Text("BIAB NEWS")
+                .font(.system(size: 11, weight: .bold))
+                .tracking(2)
+                .foregroundStyle(BrickColor.gold)
+            Text("Latest from the studio")
+                .font(BrickFont.pageTitle)
+                .foregroundStyle(BrickColor.primaryText)
+            Text("Build reveals, Brick Bar updates and mosaic stories.")
+                .font(BrickFont.body)
+                .foregroundStyle(BrickColor.secondaryText)
         }
     }
 
@@ -117,17 +225,124 @@ struct NewsView: View {
     private var categoryChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: BrickSpacing.s) {
-                FilterChip(title: "All (\(model.publishedArticles.count))", isSelected: selectedCategory == nil) {
+                FilterTab(title: "All", count: model.publishedArticles.count, isSelected: selectedCategory == nil) {
                     selectedCategory = nil
                 }
                 ForEach(populatedCategories, id: \.category) { entry in
-                    FilterChip(title: "\(entry.category.rawValue) (\(entry.count))", isSelected: selectedCategory == entry.category) {
+                    FilterTab(title: entry.category.rawValue, count: entry.count, isSelected: selectedCategory == entry.category) {
                         selectedCategory = selectedCategory == entry.category ? nil : entry.category
                     }
                 }
             }
             .padding(.vertical, BrickSpacing.xs)
         }
+    }
+}
+
+private struct FilterTab: View {
+    var title: String
+    var count: Int
+    var isSelected: Bool
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 5) {
+                Text("\(title) \(count)")
+                    .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(isSelected ? BrickColor.primaryText : BrickColor.secondaryText)
+                Capsule()
+                    .fill(isSelected ? BrickColor.gold : Color.clear)
+                    .frame(height: 3)
+            }
+            .padding(.horizontal, BrickSpacing.xs)
+            .frame(minHeight: 36)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+struct FeaturedArticleCard: View {
+    @Environment(AppModel.self) private var model
+    var article: Article
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            ArticleArtwork(article: article)
+                .frame(height: 238)
+            LinearGradient(
+                colors: [.black.opacity(0.05), .black.opacity(0.78)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                HStack(spacing: BrickSpacing.s) {
+                    TagBadge(text: article.category.rawValue, tint: BrickColor.gold)
+                    if article.isRumour { RumourBadge() }
+                    Spacer()
+                    Image(systemName: model.isBookmarked(.article, article.id) ? "bookmark.fill" : "bookmark")
+                        .foregroundStyle(BrickColor.gold)
+                }
+                Text(article.title)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(.white)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+                HStack(spacing: BrickSpacing.l) {
+                    Label(AppDate.relative(article.publishedAt ?? article.createdAt), systemImage: "clock")
+                    Label("\(model.commentCount(for: .article, contentID: article.id))", systemImage: "bubble.left")
+                }
+                .font(BrickFont.meta)
+                .foregroundStyle(.white.opacity(0.82))
+            }
+            .padding(BrickSpacing.l)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct CompactArticleRow: View {
+    @Environment(AppModel.self) private var model
+    var article: Article
+
+    var body: some View {
+        HStack(spacing: BrickSpacing.m) {
+            ArticleArtwork(article: article)
+                .frame(width: 92, height: 82)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                HStack(spacing: BrickSpacing.xs) {
+                    Text(article.category.rawValue)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(BrickColor.gold)
+                    if article.isRumour {
+                        Text("Rumour")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(BrickColor.brickRed)
+                    }
+                }
+                Text(article.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                HStack(spacing: BrickSpacing.m) {
+                    MetaLabel(symbol: "clock", text: "\(article.readTimeMinutes) min")
+                    MetaLabel(symbol: "bubble.left", text: "\(model.commentCount(for: .article, contentID: article.id))")
+                }
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(BrickSpacing.m)
+        .background(BrickColor.card)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
     }
 }
 

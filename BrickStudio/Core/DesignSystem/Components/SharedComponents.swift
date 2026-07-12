@@ -159,21 +159,60 @@ struct MetaLabel: View {
 
 struct AvatarView: View {
     var name: String
+    var imageReference: String?
     var size: CGFloat = 36
 
     var body: some View {
-        Text(initials)
-            .font(.system(size: size * 0.4, weight: .semibold))
-            .foregroundStyle(.white)
-            .frame(width: size, height: size)
-            .background(Circle().fill(BrickColor.gold))
-            .accessibilityLabel(name)
+        Group {
+            if let uiImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+            } else if let remoteURL {
+                AsyncImage(url: remoteURL) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        initialsView
+                    }
+                }
+            } else {
+                initialsView
+            }
+        }
+        .frame(width: size, height: size)
+        .clipShape(Circle())
+        .overlay(Circle().strokeBorder(BrickColor.border, lineWidth: 1))
+        .accessibilityLabel(name)
     }
 
     private var initials: String {
         let parts = name.split(separator: " ").prefix(2)
         let letters = parts.compactMap { $0.first.map(String.init) }.joined()
         return letters.isEmpty ? "?" : letters.uppercased()
+    }
+
+    private var initialsView: some View {
+        Text(initials)
+            .font(.system(size: size * 0.4, weight: .semibold))
+            .foregroundStyle(.white)
+            .frame(width: size, height: size)
+            .background(Circle().fill(BrickColor.gold))
+    }
+
+    private var uiImage: UIImage? {
+        guard let imageReference else { return nil }
+        if imageReference.hasPrefix("local-image://") {
+            return ImageStore.load(String(imageReference.dropFirst("local-image://".count)))
+        }
+        return ImageStore.load(imageReference)
+    }
+
+    private var remoteURL: URL? {
+        guard let imageReference, imageReference.hasPrefix("http") else { return nil }
+        return URL(string: imageReference)
     }
 }
 

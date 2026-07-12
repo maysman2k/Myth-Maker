@@ -22,6 +22,61 @@ enum AuthError: LocalizedError {
 }
 
 extension AppModel {
+    // MARK: Supabase sync
+
+    @MainActor
+    func refreshSupabaseContent(quietErrors: Bool = false) async {
+        guard SupabaseService.isConfigured else { return }
+        do {
+            let remoteArticles = try await SupabaseService.fetchPublishedArticles()
+            mergeArticles(remoteArticles)
+
+            if let currentUserID {
+                let admin = currentUser?.role.isAdmin == true
+                let remoteSubmissions = try await SupabaseService.fetchSubmittedStories(adminOnly: admin, userID: admin ? nil : currentUserID)
+                let pendingBefore = Set(pendingSubmittedStories.map(\.id))
+                mergeSubmittedStories(remoteSubmissions)
+                if admin {
+                    let newPending = pendingSubmittedStories.filter { !pendingBefore.contains($0.id) }
+                    for submission in newPending {
+                        notify(
+                            userID: currentUserID,
+                            kind: .general,
+                            title: "Story waiting for review",
+                            body: "\(displayName(for: submission.userID)) submitted “\(submission.title)” for approval."
+                        )
+                    }
+                }
+            }
+            persist()
+        } catch {
+            if !quietErrors {
+                showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+            }
+        }
+    }
+
+    private func mergeArticles(_ remoteArticles: [Article]) {
+        guard !remoteArticles.isEmpty else { return }
+        for article in remoteArticles {
+            if let index = articles.firstIndex(where: { $0.id == article.id }) {
+                articles[index] = article
+            } else {
+                articles.append(article)
+            }
+        }
+    }
+
+    private func mergeSubmittedStories(_ remoteSubmissions: [SubmittedStory]) {
+        for submission in remoteSubmissions {
+            if let index = submittedStories.firstIndex(where: { $0.id == submission.id }) {
+                submittedStories[index] = submission
+            } else {
+                submittedStories.append(submission)
+            }
+        }
+    }
+
     // MARK: Toast
 
     func showToast(_ message: String, symbol: String = "checkmark.circle.fill") {
@@ -71,6 +126,26 @@ extension AppModel {
         persist()
     }
 
+    @MainActor
+    func signUpWithBackend(displayName: String, email: String, password: String) async throws {
+        guard SupabaseService.isConfigured else {
+            try signUp(displayName: displayName, email: email, password: password)
+            return
+        }
+        let trimmedName = displayName.trimmingCharacters(in: .whitespaces)
+        let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
+        guard RequestValidator.isValidEmail(normalisedEmail) else { throw AuthError.invalidEmail }
+        guard !trimmedName.isEmpty else { throw AuthError.missingName }
+        guard password.count >= 8 else { throw AuthError.weakPassword }
+        let (_, account) = try await SupabaseService.signUp(email: normalisedEmail, password: password, displayName: trimmedName)
+        upsertAccount(account)
+        currentUserID = account.id
+        isShowingAuth = false
+        showToast("Welcome, \(account.displayName)")
+        persist()
+        await refreshSupabaseContent(quietErrors: true)
+    }
+
     func signIn(email: String, password: String) throws {
         let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
         guard let index = accounts.firstIndex(where: { $0.email == normalisedEmail }) else {
@@ -84,6 +159,22 @@ extension AppModel {
         isShowingAuth = false
         showToast("Signed in as \(accounts[index].displayName)")
         persist()
+    }
+
+    @MainActor
+    func signInWithBackend(email: String, password: String) async throws {
+        guard SupabaseService.isConfigured else {
+            try signIn(email: email, password: password)
+            return
+        }
+        let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
+        let (_, account) = try await SupabaseService.signIn(email: normalisedEmail, password: password)
+        upsertAccount(account)
+        currentUserID = account.id
+        isShowingAuth = false
+        showToast("Signed in as \(account.displayName)")
+        persist()
+        await refreshSupabaseContent(quietErrors: true)
     }
 
     /// Demo stand-in for magic-link auth: signs straight in when the email
@@ -101,16 +192,35 @@ extension AppModel {
     }
 
     func signOut() {
+        SupabaseService.clearSession()
         currentUserID = nil
         selectedTab = .today
         showToast("Signed out", symbol: "hand.wave")
         persist()
     }
 
-    func updateProfile(displayName: String, bio: String, favouriteClub: String, favouriteTopics: [String], publicProfileEnabled: Bool) {
+    private func upsertAccount(_ account: UserAccount) {
+        if let index = accounts.firstIndex(where: { $0.id == account.id }) {
+            var merged = account
+            merged.avatarImageReference = account.avatarImageReference ?? accounts[index].avatarImageReference
+            accounts[index] = merged
+        } else {
+            accounts.append(account)
+        }
+    }
+
+    func updateProfile(
+        displayName: String,
+        bio: String,
+        favouriteClub: String,
+        favouriteTopics: [String],
+        publicProfileEnabled: Bool,
+        avatarImageReference: String?
+    ) {
         guard let index = accounts.firstIndex(where: { $0.id == currentUserID }) else { return }
         let trimmedName = displayName.trimmingCharacters(in: .whitespaces)
         if !trimmedName.isEmpty { accounts[index].displayName = trimmedName }
+        accounts[index].avatarImageReference = avatarImageReference
         accounts[index].bio = bio
         accounts[index].favouriteClub = favouriteClub
         accounts[index].favouriteTopics = favouriteTopics
@@ -542,6 +652,258 @@ extension AppModel {
         persist()
     }
 
+    func createArticle(
+        title: String,
+        summary: String,
+        bodyMarkdown: String,
+        category: ArticleCategory,
+        tags: [String],
+        imageReferences: [String],
+        mediaReferences: [String],
+        links: [ArticleSource],
+        status: PublishStatus,
+        aiAssisted: Bool,
+        isRumour: Bool
+    ) {
+        guard currentUser?.role.canEditContent == true else { return }
+        let now = Date()
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let article = Article(
+            id: UUID(),
+            title: trimmedTitle,
+            slug: TextUtilities.slugify(trimmedTitle),
+            summary: summary.trimmingCharacters(in: .whitespacesAndNewlines),
+            bodyMarkdown: bodyMarkdown.trimmingCharacters(in: .whitespacesAndNewlines),
+            category: category,
+            tags: tags.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty },
+            authorName: currentUser?.displayName ?? "Bricks in a Bag Team",
+            sources: links,
+            isRumour: isRumour,
+            aiAssisted: aiAssisted,
+            commentsEnabled: true,
+            status: status,
+            likeCount: 0,
+            viewCount: 0,
+            readTimeMinutes: TextUtilities.readTimeMinutes(for: bodyMarkdown),
+            publishedAt: status == .published ? now : nil,
+            createdAt: now,
+            updatedAt: now,
+            heroImageURL: imageReferences.first,
+            galleryImageURLs: imageReferences.isEmpty ? nil : imageReferences,
+            mediaURLs: mediaReferences.isEmpty ? nil : mediaReferences
+        )
+        articles.append(article)
+        showToast(status == .published ? "Story published" : "Story saved as \(status.displayName.lowercased())", symbol: "newspaper.fill")
+        persist()
+    }
+
+    func submitStory(
+        existingID: UUID?,
+        title: String,
+        summary: String,
+        bodyMarkdown: String,
+        category: ArticleCategory,
+        tags: [String],
+        imageReferences: [String],
+        mediaReferences: [String],
+        links: [ArticleSource],
+        isRumour: Bool
+    ) {
+        guard let user = currentUser else { return }
+        let now = Date()
+        let cleanedTags = tags.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+        var changedSubmission: SubmittedStory?
+        if let existingID, let index = submittedStories.firstIndex(where: { $0.id == existingID && $0.userID == user.id }) {
+            guard submittedStories[index].status != .published,
+                  submittedStories[index].declineCount < 3 else { return }
+            submittedStories[index].title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+            submittedStories[index].summary = summary.trimmingCharacters(in: .whitespacesAndNewlines)
+            submittedStories[index].bodyMarkdown = bodyMarkdown.trimmingCharacters(in: .whitespacesAndNewlines)
+            submittedStories[index].category = category
+            submittedStories[index].tags = cleanedTags
+            submittedStories[index].imageReferences = imageReferences
+            submittedStories[index].mediaReferences = mediaReferences
+            submittedStories[index].links = links
+            submittedStories[index].isRumour = isRumour
+            submittedStories[index].status = .pendingReview
+            submittedStories[index].latestFeedback = nil
+            submittedStories[index].updatedAt = now
+            submittedStories[index].submittedAt = now
+            changedSubmission = submittedStories[index]
+        } else {
+            let submission = SubmittedStory(
+                id: UUID(),
+                userID: user.id,
+                title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                summary: summary.trimmingCharacters(in: .whitespacesAndNewlines),
+                bodyMarkdown: bodyMarkdown.trimmingCharacters(in: .whitespacesAndNewlines),
+                category: category,
+                tags: cleanedTags,
+                imageReferences: imageReferences,
+                mediaReferences: mediaReferences,
+                links: links,
+                isRumour: isRumour,
+                aiAssisted: false,
+                status: .pendingReview,
+                declineCount: 0,
+                latestFeedback: nil,
+                publishedArticleID: nil,
+                createdAt: now,
+                updatedAt: now,
+                submittedAt: now
+            )
+            submittedStories.append(submission)
+            changedSubmission = submission
+        }
+        notifyAdmins(title: "Story waiting for review", body: "\(user.displayName) submitted “\(title)” for approval.")
+        showToast("Story submitted for review", symbol: "paperplane.fill")
+        persist()
+        if let changedSubmission, SupabaseService.isConfigured {
+            Task {
+                do {
+                    var remoteSubmission = changedSubmission
+                    remoteSubmission.imageReferences = try await SupabaseService.uploadStoryMediaReferences(changedSubmission.imageReferences)
+                    remoteSubmission.mediaReferences = try await SupabaseService.uploadStoryMediaReferences(changedSubmission.mediaReferences)
+                    try await SupabaseService.upsertSubmittedStory(remoteSubmission)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
+    }
+
+    func publishSubmittedStory(_ submissionID: UUID) {
+        guard currentUser?.role.isAdmin == true,
+              let index = submittedStories.firstIndex(where: { $0.id == submissionID }) else { return }
+        let submission = submittedStories[index]
+        let now = Date()
+        let article = Article(
+            id: UUID(),
+            title: submission.title,
+            slug: TextUtilities.slugify(submission.title),
+            summary: submission.summary,
+            bodyMarkdown: submission.bodyMarkdown,
+            category: submission.category,
+            tags: submission.tags,
+            authorName: account(id: submission.userID)?.displayName ?? "Community member",
+            sources: submission.links,
+            isRumour: submission.isRumour,
+            aiAssisted: submission.aiAssisted,
+            commentsEnabled: true,
+            status: .published,
+            likeCount: 0,
+            viewCount: 0,
+            readTimeMinutes: TextUtilities.readTimeMinutes(for: submission.bodyMarkdown),
+            publishedAt: now,
+            createdAt: now,
+            updatedAt: now,
+            heroImageURL: submission.imageReferences.first,
+            galleryImageURLs: submission.imageReferences.isEmpty ? nil : submission.imageReferences,
+            mediaURLs: submission.mediaReferences.isEmpty ? nil : submission.mediaReferences
+        )
+        articles.append(article)
+        submittedStories[index].status = .published
+        submittedStories[index].publishedArticleID = article.id
+        submittedStories[index].updatedAt = now
+        notify(
+            userID: submission.userID,
+            kind: .news,
+            title: "Your story is live",
+            body: "“\(submission.title)” has been approved and published.",
+            targetType: .article,
+            targetID: article.id
+        )
+        showToast("Submission published", symbol: "checkmark.seal.fill")
+        persist()
+        if SupabaseService.isConfigured {
+            let updatedSubmission = submittedStories[index]
+            Task {
+                do {
+                    try await SupabaseService.upsertArticle(article)
+                    try await SupabaseService.updateSubmittedStoryStatus(updatedSubmission)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    func tidySubmittedStoryWithAI(_ submissionID: UUID) async {
+        guard currentUser?.role.isAdmin == true,
+              let index = submittedStories.firstIndex(where: { $0.id == submissionID }) else { return }
+        let submission = submittedStories[index]
+        do {
+            let draft = try await OpenAIStoryService.generateStory(from: """
+            Tidy this community submission for publication. Preserve the user's facts and tone, but improve spelling, grammar, structure and clarity.
+
+            Title: \(submission.title)
+            Summary: \(submission.summary)
+            Category: \(submission.category.rawValue)
+            Tags: \(submission.tags.joined(separator: ", "))
+            Body:
+            \(submission.bodyMarkdown)
+            """)
+            submittedStories[index].title = draft.title
+            submittedStories[index].summary = draft.summary
+            submittedStories[index].bodyMarkdown = draft.bodyMarkdown
+            submittedStories[index].category = draft.category
+            submittedStories[index].tags = draft.tags
+            submittedStories[index].isRumour = draft.isRumour
+            submittedStories[index].aiAssisted = true
+            submittedStories[index].updatedAt = Date()
+            showToast("Submission tidied with AI", symbol: "sparkles")
+            persist()
+            if SupabaseService.isConfigured {
+                try await SupabaseService.updateSubmittedStoryStatus(submittedStories[index])
+            }
+        } catch {
+            showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+        }
+    }
+
+    func declineSubmittedStory(_ submissionID: UUID, feedback: String) {
+        guard currentUser?.role.isAdmin == true,
+              let index = submittedStories.firstIndex(where: { $0.id == submissionID }) else { return }
+        let trimmedFeedback = feedback.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedFeedback.isEmpty else { return }
+        submittedStories[index].declineCount += 1
+        submittedStories[index].latestFeedback = trimmedFeedback
+        submittedStories[index].status = submittedStories[index].declineCount >= 3 ? .locked : .changesRequested
+        submittedStories[index].updatedAt = Date()
+        let submission = submittedStories[index]
+        notify(
+            userID: submission.userID,
+            kind: .general,
+            title: submission.status == .locked ? "Story submission locked" : "Changes requested",
+            body: trimmedFeedback
+        )
+        showToast("Feedback sent", symbol: "text.bubble.fill")
+        persist()
+        if SupabaseService.isConfigured {
+            let updatedSubmission = submittedStories[index]
+            Task {
+                do {
+                    try await SupabaseService.updateSubmittedStoryStatus(updatedSubmission)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
+    }
+
+    private func notifyAdmins(title: String, body: String) {
+        for admin in accounts where admin.role.isAdmin {
+            notify(userID: admin.id, kind: .general, title: title, body: body)
+        }
+    }
+
     func rejectAIDraft(_ draftID: UUID) {
         guard currentUser?.role.canEditContent == true,
               let index = aiDrafts.firstIndex(where: { $0.id == draftID }) else { return }
@@ -604,6 +966,15 @@ extension AppModel {
             articles[index].publishedAt = Date()
         }
         showToast("Article \(status.displayName.lowercased())")
+        persist()
+    }
+
+    func removeArticleFromApp(_ articleID: UUID) {
+        guard currentUser?.role.isAdmin == true,
+              let index = articles.firstIndex(where: { $0.id == articleID }) else { return }
+        articles[index].status = .archived
+        articles[index].updatedAt = Date()
+        showToast("Story removed from the app", symbol: "archivebox.fill")
         persist()
     }
 

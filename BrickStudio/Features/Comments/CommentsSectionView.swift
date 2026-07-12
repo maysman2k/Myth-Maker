@@ -179,7 +179,7 @@ private struct CommentRow: View {
         let author = model.account(id: comment.userID)
         VStack(alignment: .leading, spacing: BrickSpacing.xs) {
             HStack(spacing: BrickSpacing.s) {
-                AvatarView(name: author?.displayName ?? "?", size: 28)
+                AvatarView(name: author?.displayName ?? "?", imageReference: author?.avatarImageReference, size: 28)
                 Text(author?.displayName ?? "Former member")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(BrickColor.primaryText)

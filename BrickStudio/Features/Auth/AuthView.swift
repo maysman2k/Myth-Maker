@@ -15,6 +15,7 @@ struct AuthView: View {
     @State private var displayName = ""
     @State private var errorMessage: String?
     @State private var isSendingMagicLink = false
+    @State private var isSubmitting = false
 
     var body: some View {
         NavigationStack {
@@ -53,10 +54,14 @@ struct AuthView: View {
                     Button {
                         submit()
                     } label: {
-                        Text(mode == .signIn ? "Continue" : "Create Account")
-                            .frame(maxWidth: .infinity)
+                        HStack {
+                            if isSubmitting { ProgressView().padding(.trailing, 4) }
+                            Text(isSubmitting ? "Working..." : (mode == .signIn ? "Continue" : "Create Account"))
+                        }
+                        .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(StudButtonStyle())
+                    .disabled(isSubmitting)
 
                     if mode == .signIn {
                         Button {
@@ -132,16 +137,20 @@ struct AuthView: View {
 
     private func submit() {
         errorMessage = nil
-        do {
-            switch mode {
-            case .signIn:
-                try model.signIn(email: email, password: password)
-            case .create:
-                try model.signUp(displayName: displayName, email: email, password: password)
+        isSubmitting = true
+        Task {
+            do {
+                switch mode {
+                case .signIn:
+                    try await model.signInWithBackend(email: email, password: password)
+                case .create:
+                    try await model.signUpWithBackend(displayName: displayName, email: email, password: password)
+                }
+                dismiss()
+            } catch {
+                errorMessage = error.localizedDescription
             }
-            dismiss()
-        } catch {
-            errorMessage = error.localizedDescription
+            isSubmitting = false
         }
     }
 

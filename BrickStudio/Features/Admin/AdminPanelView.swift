@@ -9,7 +9,7 @@ struct AdminPanelView: View {
 
     var body: some View {
         Group {
-            if let user = model.currentUser, user.role.canModerate {
+            if let user = model.currentUser, user.role.isAdmin {
                 content(for: user)
             } else {
                 EmptyStateView(symbol: "lock", message: "This area is for the Bricks in a Bag team.")
@@ -24,16 +24,20 @@ struct AdminPanelView: View {
             VStack(alignment: .leading, spacing: BrickSpacing.l) {
                 statsGrid
                 VStack(spacing: 0) {
-                    if user.role.canEditContent {
-                        adminLink("AI Draft Queue", symbol: "sparkles", badge: model.adminStats.pendingDrafts) {
-                            AIDraftQueueView()
-                        }
-                        adminLink("Articles", symbol: "newspaper", badge: 0) {
-                            AdminArticlesView()
-                        }
-                        adminLink("Products", symbol: "bag", badge: 0) {
-                            AdminProductsView()
-                        }
+                    adminLink("Create Story", symbol: "square.and.pencil", badge: 0) {
+                        AdminStoryEditorView()
+                    }
+                    adminLink("AI Draft Queue", symbol: "sparkles", badge: model.adminStats.pendingDrafts) {
+                        AIDraftQueueView()
+                    }
+                    adminLink("Articles", symbol: "newspaper", badge: 0) {
+                        AdminArticlesView()
+                    }
+                    adminLink("Submitted Stories", symbol: "tray.and.arrow.down", badge: model.pendingSubmittedStories.count) {
+                        AdminSubmittedStoriesView()
+                    }
+                    adminLink("Products", symbol: "bag", badge: 0) {
+                        AdminProductsView()
                     }
                     adminLink("Comment moderation", symbol: "bubble.left.and.exclamationmark.bubble.right", badge: model.adminStats.pendingComments) {
                         AdminCommentsView()
@@ -44,38 +48,60 @@ struct AdminPanelView: View {
                 }
                 .brickCard()
 
-                if user.role.canEditContent {
-                    VStack(spacing: 0) {
-                        adminLink("News sources", symbol: "antenna.radiowaves.left.and.right", badge: 0) {
-                            AdminSourcesView()
-                        }
-                        Button {
-                            isShowingTokenSheet = true
-                        } label: {
-                            HStack(spacing: BrickSpacing.m) {
-                                Image(systemName: "key.horizontal")
-                                    .foregroundStyle(BrickColor.gold)
-                                    .frame(width: 28)
-                                Text("GitHub connection")
-                                    .font(BrickFont.body)
-                                    .foregroundStyle(BrickColor.primaryText)
-                                Spacer()
-                                TagBadge(
-                                    text: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? "Token saved" : "Not set up",
-                                    tint: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? BrickColor.stadiumGreen : BrickColor.brickRed
-                                )
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 13))
-                                    .foregroundStyle(BrickColor.secondaryText)
-                            }
-                            .padding(BrickSpacing.l)
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
+                VStack(spacing: 0) {
+                    adminLink("News sources", symbol: "antenna.radiowaves.left.and.right", badge: 0) {
+                        AdminSourcesView()
                     }
-                    .brickCard()
+                    Button {
+                        isShowingTokenSheet = true
+                    } label: {
+                        HStack(spacing: BrickSpacing.m) {
+                            Image(systemName: "key.horizontal")
+                                .foregroundStyle(BrickColor.gold)
+                                .frame(width: 28)
+                            Text("GitHub connection")
+                                .font(BrickFont.body)
+                                .foregroundStyle(BrickColor.primaryText)
+                            Spacer()
+                            TagBadge(
+                                text: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? "Token saved" : "Not set up",
+                                tint: KeychainStore.load(GitHubWorkflowService.tokenKeychainKey)?.isEmpty == false ? BrickColor.stadiumGreen : BrickColor.brickRed
+                            )
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13))
+                                .foregroundStyle(BrickColor.secondaryText)
+                        }
+                        .padding(BrickSpacing.l)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    NavigationLink {
+                        OpenAIKeySheet()
+                    } label: {
+                        HStack(spacing: BrickSpacing.m) {
+                            Image(systemName: "sparkles")
+                                .foregroundStyle(BrickColor.gold)
+                                .frame(width: 28)
+                            Text("OpenAI connection")
+                                .font(BrickFont.body)
+                                .foregroundStyle(BrickColor.primaryText)
+                            Spacer()
+                            TagBadge(
+                                text: KeychainStore.load(OpenAIStoryService.apiKeychainKey)?.isEmpty == false ? "Key saved" : "Not set up",
+                                tint: KeychainStore.load(OpenAIStoryService.apiKeychainKey)?.isEmpty == false ? BrickColor.stadiumGreen : BrickColor.brickRed
+                            )
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13))
+                                .foregroundStyle(BrickColor.secondaryText)
+                        }
+                        .padding(BrickSpacing.l)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
                 }
+                .brickCard()
 
                 Text("AI drafts never publish automatically — everything below needs a human decision.")
                     .font(BrickFont.meta)
@@ -512,7 +538,7 @@ struct AdminCommentsView: View {
     private func moderationCard(for comment: Comment) -> some View {
         VStack(alignment: .leading, spacing: BrickSpacing.s) {
             HStack {
-                AvatarView(name: model.displayName(for: comment.userID), size: 26)
+                AvatarView(name: model.displayName(for: comment.userID), imageReference: model.account(id: comment.userID)?.avatarImageReference, size: 26)
                 Text(model.displayName(for: comment.userID))
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(BrickColor.primaryText)
@@ -673,6 +699,7 @@ private struct SendQuoteSheet: View {
 
 struct AdminArticlesView: View {
     @Environment(AppModel.self) private var model
+    @State private var removalTarget: Article?
 
     var body: some View {
         List {
@@ -690,6 +717,12 @@ struct AdminArticlesView: View {
                                     model.setArticleStatus(article.id, status: status)
                                 }
                             }
+                            Divider()
+                            Button(role: .destructive) {
+                                removalTarget = article
+                            } label: {
+                                Label("Remove from app", systemImage: "archivebox")
+                            }
                         }
                         .font(BrickFont.meta)
                     }
@@ -698,6 +731,161 @@ struct AdminArticlesView: View {
             }
         }
         .navigationTitle("Articles")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    AdminStoryEditorView()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .confirmationDialog(
+            "Remove this story from the app?",
+            isPresented: Binding(
+                get: { removalTarget != nil },
+                set: { if !$0 { removalTarget = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            if let removalTarget {
+                Button("Remove from app", role: .destructive) {
+                    model.removeArticleFromApp(removalTarget.id)
+                    self.removalTarget = nil
+                }
+            }
+        } message: {
+            Text("This story will be archived and no longer appear in News, Today, search, or related stories.")
+        }
+    }
+}
+
+struct AdminSubmittedStoriesView: View {
+    @Environment(AppModel.self) private var model
+    @State private var declineTarget: SubmittedStory?
+    @State private var feedback = ""
+    @State private var tidyingID: UUID?
+
+    var body: some View {
+        List {
+            if model.pendingSubmittedStories.isEmpty {
+                Text("No community stories are waiting for review.")
+                    .foregroundStyle(BrickColor.secondaryText)
+            } else {
+                ForEach(model.pendingSubmittedStories) { submission in
+                    VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                        Text(submission.title)
+                            .font(.system(size: 15, weight: .semibold))
+                        Text("By \(model.displayName(for: submission.userID)) • \(AppDate.relative(submission.submittedAt))")
+                            .font(BrickFont.meta)
+                            .foregroundStyle(BrickColor.secondaryText)
+                        Text(submission.summary)
+                            .font(BrickFont.meta)
+                            .foregroundStyle(BrickColor.secondaryText)
+                            .lineLimit(3)
+                        HStack {
+                            TagBadge(text: submission.category.rawValue)
+                            if submission.aiAssisted { TagBadge(text: "AI tidied") }
+                            if submission.declineCount > 0 {
+                                TagBadge(text: "\(submission.declineCount)/3 declines", tint: BrickColor.brickRed)
+                            }
+                        }
+                        mediaPreview(for: submission)
+                        HStack {
+                            Button("Publish") {
+                                model.publishSubmittedStory(submission.id)
+                            }
+                            .buttonStyle(StudButtonStyle(tint: BrickColor.stadiumGreen, prominent: false))
+
+                            Button {
+                                tidy(submission)
+                            } label: {
+                                if tidyingID == submission.id {
+                                    ProgressView()
+                                } else {
+                                    Text("AI Tidy")
+                                }
+                            }
+                            .buttonStyle(StudButtonStyle(prominent: false))
+                            .disabled(tidyingID != nil)
+
+                            Button("Decline", role: .destructive) {
+                                declineTarget = submission
+                                feedback = ""
+                            }
+                            .buttonStyle(StudButtonStyle(tint: BrickColor.brickRed, prominent: false))
+                        }
+                    }
+                    .padding(.vertical, 6)
+                }
+            }
+        }
+        .navigationTitle("Submitted Stories")
+        .refreshable {
+            await model.refreshSupabaseContent()
+        }
+        .task {
+            await model.refreshSupabaseContent(quietErrors: true)
+        }
+        .sheet(item: $declineTarget) { submission in
+            NavigationStack {
+                VStack(alignment: .leading, spacing: BrickSpacing.l) {
+                    Text(submission.title)
+                        .font(BrickFont.sectionTitle)
+                        .foregroundStyle(BrickColor.primaryText)
+                    Text("Tell the member what needs changing. Feedback is required.")
+                        .font(BrickFont.body)
+                        .foregroundStyle(BrickColor.secondaryText)
+                    TextEditor(text: $feedback)
+                        .frame(minHeight: 180)
+                        .scrollContentBackground(.hidden)
+                        .padding(BrickSpacing.s)
+                        .background(BrickColor.card)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+                    Spacer()
+                }
+                .padding(BrickSpacing.l)
+                .background(BrickColor.background)
+                .navigationTitle("Decline Story")
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { declineTarget = nil }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Send Feedback") {
+                            model.declineSubmittedStory(submission.id, feedback: feedback)
+                            declineTarget = nil
+                        }
+                        .disabled(feedback.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func mediaPreview(for submission: SubmittedStory) -> some View {
+        let media = submission.imageReferences + submission.mediaReferences
+        if !media.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: BrickSpacing.s) {
+                    ForEach(media.prefix(6), id: \.self) { reference in
+                        ArticleMediaView(reference: reference)
+                            .frame(width: 96, height: 72)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+                }
+            }
+        }
+    }
+
+    private func tidy(_ submission: SubmittedStory) {
+        tidyingID = submission.id
+        Task {
+            await model.tidySubmittedStoryWithAI(submission.id)
+            tidyingID = nil
+        }
     }
 }
 

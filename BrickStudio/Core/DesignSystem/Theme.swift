@@ -26,14 +26,40 @@ extension Color {
 
 /// "The Brick Studio" palette from the product spec (§5.2).
 enum BrickColor {
-    static let background = Color.brickAdaptive(light: 0xF7F5F0, dark: 0x101010)
-    static let card = Color.brickAdaptive(light: 0xFFFFFF, dark: 0x1B1B1B)
-    static let primaryText = Color.brickAdaptive(light: 0x111111, dark: 0xF4F4F4)
-    static let secondaryText = Color.brickAdaptive(light: 0x6D6D6D, dark: 0x9C9C9C)
-    static let gold = Color(hex: 0xC8A45D)
+    static let background = Color.brickAdaptive(light: 0xF7F5F0, dark: 0x121212)
+    static let card = Color.brickAdaptive(light: 0xFFFFFF, dark: 0x202020)
+    static let elevatedCard = Color.brickAdaptive(light: 0xFFFFFF, dark: 0x2A2A2A)
+    static let primaryText = Color.brickAdaptive(light: 0x111111, dark: 0xF7F3E8)
+    static let secondaryText = Color.brickAdaptive(light: 0x6D6D6D, dark: 0xA7A7A7)
+    static let gold = Color(hex: 0xF4C430)
     static let brickRed = Color(hex: 0x9E3D22)
     static let stadiumGreen = Color(hex: 0x2E7D4F)
-    static let border = Color.brickAdaptive(light: 0xE7E1D7, dark: 0x2C2C2C)
+    static let border = Color.brickAdaptive(light: 0xE7E1D7, dark: 0x363636)
+    static let accentText = Color(hex: 0x111111)
+}
+
+enum AppAppearancePreference: String, CaseIterable, Identifiable {
+    case automatic
+    case light
+    case dark
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .automatic: return "Auto"
+        case .light: return "Light"
+        case .dark: return "Dark"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .automatic: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
+    }
 }
 
 enum BrickFont {
@@ -57,12 +83,12 @@ struct BrickCardStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(BrickColor.card)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .strokeBorder(BrickColor.border, lineWidth: 1)
             )
-            .shadow(color: Color.black.opacity(0.06), radius: 8, y: 3)
+            .shadow(color: Color.black.opacity(0.18), radius: 10, y: 4)
     }
 }
 
@@ -81,7 +107,7 @@ struct StudButtonStyle: ButtonStyle {
             .padding(.horizontal, BrickSpacing.l)
             .frame(minHeight: 44)
             .background(prominent ? tint : tint.opacity(0.14))
-            .foregroundStyle(prominent ? Color.white : tint)
+            .foregroundStyle(prominent ? BrickColor.accentText : tint)
             .clipShape(Capsule())
             .opacity(configuration.isPressed ? 0.75 : 1)
             .scaleEffect(configuration.isPressed ? 0.98 : 1)

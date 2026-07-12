@@ -7,6 +7,7 @@ enum MainTab: String, CaseIterable, Identifiable {
     case create
     case shop
     case brickBar
+    case games
 
     var id: String { rawValue }
 
@@ -14,9 +15,10 @@ enum MainTab: String, CaseIterable, Identifiable {
         switch self {
         case .today: return "Today"
         case .news: return "News"
-        case .create: return "Create"
+        case .create: return "Mosiac Maker"
         case .shop: return "Shop"
         case .brickBar: return "Brick Bar"
+        case .games: return "Games"
         }
     }
 
@@ -24,9 +26,10 @@ enum MainTab: String, CaseIterable, Identifiable {
         switch self {
         case .today: return "sun.max"
         case .news: return "newspaper"
-        case .create: return "paintbrush.pointed"
+        case .create: return "square.grid.3x3"
         case .shop: return "bag"
         case .brickBar: return "wrench.and.screwdriver"
+        case .games: return "gamecontroller"
         }
     }
 }
@@ -65,6 +68,7 @@ final class AppModel {
     var mosaics: [MosaicProject]
     var brickBarRequests: [BrickBarRequest]
     var aiDrafts: [AIDraft]
+    var submittedStories: [SubmittedStory]
     var recentSearches: [String]
     var hasCompletedOnboarding: Bool
 
@@ -93,6 +97,7 @@ final class AppModel {
         mosaics = snap.mosaics
         brickBarRequests = snap.brickBarRequests
         aiDrafts = snap.aiDrafts
+        submittedStories = snap.submittedStories
         recentSearches = snap.recentSearches
         hasCompletedOnboarding = snap.hasCompletedOnboarding
     }
@@ -114,6 +119,7 @@ final class AppModel {
             mosaics: mosaics,
             brickBarRequests: brickBarRequests,
             aiDrafts: aiDrafts,
+            submittedStories: submittedStories,
             recentSearches: recentSearches,
             hasCompletedOnboarding: hasCompletedOnboarding
         )
@@ -234,6 +240,19 @@ final class AppModel {
 
     var unreadNotificationCount: Int {
         myNotifications.filter { $0.readAt == nil }.count
+    }
+
+    var mySubmittedStories: [SubmittedStory] {
+        guard let currentUserID else { return [] }
+        return submittedStories
+            .filter { $0.userID == currentUserID }
+            .sorted { $0.updatedAt > $1.updatedAt }
+    }
+
+    var pendingSubmittedStories: [SubmittedStory] {
+        submittedStories
+            .filter { $0.status == .pendingReview }
+            .sorted { $0.submittedAt < $1.submittedAt }
     }
 
     var myMosaics: [MosaicProject] {

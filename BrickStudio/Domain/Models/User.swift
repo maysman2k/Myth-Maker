@@ -35,6 +35,7 @@ struct UserAccount: Identifiable, Codable, Hashable {
     var email: String
     var passwordHash: String
     var role: UserRole
+    var avatarImageReference: String?
     var bio: String
     var favouriteTopics: [String]
     var favouriteClub: String
@@ -56,6 +57,7 @@ struct UserAccount: Identifiable, Codable, Hashable {
             email: email.lowercased(),
             passwordHash: passwordHash,
             role: role,
+            avatarImageReference: nil,
             bio: "",
             favouriteTopics: [],
             favouriteClub: "",
@@ -65,6 +67,60 @@ struct UserAccount: Identifiable, Codable, Hashable {
             createdAt: Date(),
             lastActiveAt: Date()
         )
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, displayName, email, passwordHash, role, avatarImageReference, bio, favouriteTopics, favouriteClub, publicProfileEnabled, notificationPreferences, completedLessonIDs, createdAt, lastActiveAt
+    }
+
+    init(
+        id: UUID,
+        displayName: String,
+        email: String,
+        passwordHash: String,
+        role: UserRole,
+        avatarImageReference: String? = nil,
+        bio: String,
+        favouriteTopics: [String],
+        favouriteClub: String,
+        publicProfileEnabled: Bool,
+        notificationPreferences: NotificationPreferences,
+        completedLessonIDs: Set<UUID>,
+        createdAt: Date,
+        lastActiveAt: Date
+    ) {
+        self.id = id
+        self.displayName = displayName
+        self.email = email
+        self.passwordHash = passwordHash
+        self.role = role
+        self.avatarImageReference = avatarImageReference
+        self.bio = bio
+        self.favouriteTopics = favouriteTopics
+        self.favouriteClub = favouriteClub
+        self.publicProfileEnabled = publicProfileEnabled
+        self.notificationPreferences = notificationPreferences
+        self.completedLessonIDs = completedLessonIDs
+        self.createdAt = createdAt
+        self.lastActiveAt = lastActiveAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        email = try container.decode(String.self, forKey: .email)
+        passwordHash = try container.decode(String.self, forKey: .passwordHash)
+        role = try container.decode(UserRole.self, forKey: .role)
+        avatarImageReference = try container.decodeIfPresent(String.self, forKey: .avatarImageReference)
+        bio = try container.decode(String.self, forKey: .bio)
+        favouriteTopics = try container.decode([String].self, forKey: .favouriteTopics)
+        favouriteClub = try container.decode(String.self, forKey: .favouriteClub)
+        publicProfileEnabled = try container.decode(Bool.self, forKey: .publicProfileEnabled)
+        notificationPreferences = try container.decode(NotificationPreferences.self, forKey: .notificationPreferences)
+        completedLessonIDs = try container.decode(Set<UUID>.self, forKey: .completedLessonIDs)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        lastActiveAt = try container.decode(Date.self, forKey: .lastActiveAt)
     }
 }
 

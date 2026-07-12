@@ -3,95 +3,409 @@ import SwiftUI
 /// The app's home screen (§8) — routes users into every key feature.
 struct TodayView: View {
     @Environment(AppModel.self) private var model
+    @AppStorage("brickStackBestScore") private var brickStackBestScore = 0
+    @AppStorage("studMatchBestScore") private var studMatchBestScore = 0
+    @AppStorage("buildSprintBestScore") private var buildSprintBestScore = 0
+    @AppStorage("revealStadiumBestScore") private var revealStadiumBestScore = 0
+    @State private var instagramPosts: [InstagramPost] = []
+    @State private var instagramError: String?
+    @State private var instagramLoading = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: BrickSpacing.xl) {
-                    header
-                    heroCard
-                    quickActions
-                    latestNews
-                    featuredReview
-                    featuredProduct
-                    mosaicPrompt
-                    brickBarPrompt
-                    lessonCard
-                    trendingDiscussions
+                VStack(alignment: .leading, spacing: BrickSpacing.l) {
+                    storyStrip
+                    feedActionBar
+                    newsTiles
+                    instagramCarousel
+                    communityPostFeed
                     LegalDisclaimerFooter()
                 }
                 .padding(.horizontal, BrickSpacing.l)
-                .padding(.top, BrickSpacing.s)
+                .padding(.top, BrickSpacing.l)
             }
-            .background(BrickColor.background)
+            .background(TodayFeedBackground())
             .toolbar(.hidden, for: .navigationBar)
             .contentRouteDestinations()
+            .task {
+                await loadInstagramPosts()
+            }
         }
     }
 
     // MARK: Header (§8.3)
 
     private var header: some View {
-        HStack(spacing: BrickSpacing.m) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("BRICKS IN A BAG")
-                    .font(.system(size: 11, weight: .bold))
-                    .tracking(2)
-                    .foregroundStyle(BrickColor.gold)
-                Text(greeting)
-                    .font(BrickFont.pageTitle)
-                    .foregroundStyle(BrickColor.primaryText)
-            }
-            Spacer()
-            NavigationLink {
-                SearchView()
-            } label: {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 18))
-                    .foregroundStyle(BrickColor.primaryText)
-                    .frame(width: 44, height: 44)
-            }
-            .accessibilityLabel("Search")
-            NavigationLink {
-                NotificationsView()
-            } label: {
-                Image(systemName: "bell")
-                    .font(.system(size: 18))
-                    .foregroundStyle(BrickColor.primaryText)
-                    .frame(width: 44, height: 44)
-                    .overlay(alignment: .topTrailing) {
-                        if model.unreadNotificationCount > 0 {
-                            Text("\(model.unreadNotificationCount)")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundStyle(.white)
-                                .padding(4)
-                                .background(Circle().fill(BrickColor.brickRed))
-                                .offset(x: 2, y: 4)
-                        }
-                    }
-            }
-            .accessibilityLabel("Notifications")
-            NavigationLink {
-                ProfileView()
-            } label: {
-                if let user = model.currentUser {
-                    AvatarView(name: user.displayName, size: 38)
-                } else {
-                    Image(systemName: "person.crop.circle")
-                        .font(.system(size: 26))
-                        .foregroundStyle(BrickColor.secondaryText)
-                        .frame(width: 44, height: 44)
+        VStack(spacing: BrickSpacing.l) {
+            HStack(spacing: BrickSpacing.s) {
+                Spacer()
+                NavigationLink {
+                    SearchView()
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(BrickColor.primaryText)
+                        .frame(width: 42, height: 42)
                 }
+                .accessibilityLabel("Search")
+
+                NavigationLink {
+                    NotificationsView()
+                } label: {
+                    Image(systemName: "bell")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(BrickColor.primaryText)
+                        .frame(width: 42, height: 42)
+                        .overlay(alignment: .topTrailing) {
+                            if model.unreadNotificationCount > 0 {
+                                Text("\(model.unreadNotificationCount)")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding(4)
+                                    .background(Circle().fill(BrickColor.brickRed))
+                                    .offset(x: 2, y: 4)
+                            }
+                        }
+                }
+                .accessibilityLabel("Notifications")
+
+                NavigationLink {
+                    ProfileView()
+                } label: {
+                    if let user = model.currentUser {
+                        AvatarView(name: user.displayName, imageReference: user.avatarImageReference, size: 36)
+                    } else {
+                        Image(systemName: "person.crop.circle")
+                            .font(.system(size: 25))
+                            .foregroundStyle(BrickColor.secondaryText)
+                            .frame(width: 42, height: 42)
+                    }
+                }
+                .accessibilityLabel("Profile")
             }
-            .accessibilityLabel("Profile")
+
+            VStack(spacing: BrickSpacing.s) {
+                Image("BIABLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 104)
+                    .accessibilityLabel("Bricks in a Bag")
+
+                Text(greeting)
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(BrickColor.primaryText)
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 
     private var greeting: String {
         if let name = model.currentUser?.displayName.split(separator: " ").first {
-            return "\(AppDate.greeting()), \(name)"
+            return "Hello \(name)"
         }
-        return "Welcome to Bricks in a Bag"
+        return "Hello!"
+    }
+
+    // MARK: Live Feed
+
+    private var communityComposer: some View {
+        HStack(spacing: BrickSpacing.m) {
+            Group {
+                if let user = model.currentUser {
+                    AvatarView(name: user.displayName, imageReference: user.avatarImageReference, size: 44)
+                } else {
+                    Image(systemName: "person.crop.circle")
+                        .font(.system(size: 34))
+                        .foregroundStyle(BrickColor.secondaryText)
+                        .frame(width: 44, height: 44)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Share a build")
+                    .font(BrickFont.cardTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                Text("Photos, videos, links and write-ups go to review before publishing.")
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .lineLimit(2)
+            }
+
+            Spacer()
+
+            if model.isSignedIn {
+                NavigationLink {
+                    SubmitStoryEditorView()
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 17, weight: .black))
+                        .foregroundStyle(.black)
+                        .frame(width: 38, height: 38)
+                        .background(BrickColor.gold)
+                        .clipShape(Circle())
+                }
+                .accessibilityLabel("Create community post")
+            } else {
+                Button {
+                    model.isShowingAuth = true
+                } label: {
+                    Text("Sign in")
+                        .font(.system(size: 13, weight: .black))
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, 13)
+                        .frame(height: 38)
+                        .background(BrickColor.gold)
+                        .clipShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(BrickSpacing.l)
+        .brickCard()
+    }
+
+    private var liveFeedItems: [TodayFeedItem] {
+        var items: [TodayFeedItem] = []
+
+        for article in model.publishedArticles.prefix(8) {
+            items.append(.article(article, isCommunity: isCommunityArticle(article)))
+        }
+
+        if let review = model.publishedReviews.first {
+            items.append(.review(review))
+        }
+
+        if let product = model.activeProducts.first(where: { $0.status == .active }) {
+            items.append(.advert(product))
+        }
+
+        if let lesson = model.publishedLessons.first {
+            items.append(.lesson(lesson))
+        }
+
+        if let gameScore = bestGameScore {
+            items.append(.gameScore(gameScore))
+        }
+
+        return items
+            .sorted { $0.date > $1.date }
+            .prefix(12)
+            .map { $0 }
+    }
+
+    @ViewBuilder
+    private var liveFeed: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.m) {
+            SectionHeader(title: "Live Feed")
+
+            ForEach(liveFeedItems) { item in
+                switch item {
+                case .article(let article, let isCommunity):
+                    NavigationLink(value: ContentRoute.article(article.id)) {
+                        TodayArticleFeedCard(article: article, isCommunity: isCommunity)
+                    }
+                    .buttonStyle(.plain)
+                case .review(let review):
+                    NavigationLink(value: ContentRoute.review(review.id)) {
+                        TodayReviewFeedCard(review: review)
+                    }
+                    .buttonStyle(.plain)
+                case .advert(let product):
+                    NavigationLink(value: ContentRoute.product(product.id)) {
+                        TodayAdvertFeedCard(product: product)
+                    }
+                    .buttonStyle(.plain)
+                case .lesson(let lesson):
+                    NavigationLink(value: ContentRoute.lesson(lesson.id)) {
+                        TodayLessonFeedCard(lesson: lesson)
+                    }
+                    .buttonStyle(.plain)
+                case .gameScore(let score):
+                    Button {
+                        model.selectedTab = .games
+                    } label: {
+                        TodayGameScoreFeedCard(score: score)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var bestGameScore: TodayGameScore? {
+        let scores = [
+            TodayGameScore(title: "Brick Stack", score: brickStackBestScore, symbol: "square.stack.3d.up.fill"),
+            TodayGameScore(title: "Stud Match", score: studMatchBestScore, symbol: "circle.grid.3x3.fill"),
+            TodayGameScore(title: "Build Sprint", score: buildSprintBestScore, symbol: "timer"),
+            TodayGameScore(title: "Reveal Stadium", score: revealStadiumBestScore, symbol: "sportscourt.fill")
+        ]
+        return scores.filter { $0.score > 0 }.max { $0.score < $1.score }
+    }
+
+    private func isCommunityArticle(_ article: Article) -> Bool {
+        let officialAuthors = ["Bricks in a Bag Team", "Sasha", "Pete"]
+        return !officialAuthors.contains(article.authorName)
+    }
+
+    private var officialArticles: [Article] {
+        model.publishedArticles.filter { !isCommunityArticle($0) }
+    }
+
+    private var communityArticles: [Article] {
+        model.publishedArticles.filter { isCommunityArticle($0) }
+    }
+
+    private var storyArticles: [Article] {
+        Array(model.publishedArticles.prefix(8))
+    }
+
+    private var mixedPostArticles: [Article] {
+        let community = communityArticles
+        return community.isEmpty ? Array(model.publishedArticles.dropFirst(2).prefix(6)) : Array(community.prefix(8))
+    }
+
+    private var storyStrip: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                NavigationLink {
+                    if model.isSignedIn {
+                        SubmitStoryEditorView()
+                    } else {
+                        AuthView()
+                    }
+                } label: {
+                    VStack(spacing: 6) {
+                        ZStack(alignment: .bottomTrailing) {
+                            if let user = model.currentUser {
+                                AvatarView(name: user.displayName, imageReference: user.avatarImageReference, size: 64)
+                            } else {
+                                Circle()
+                                    .fill(.white.opacity(0.86))
+                                    .frame(width: 64, height: 64)
+                                    .overlay(Image(systemName: "person").foregroundStyle(BrickColor.secondaryText))
+                            }
+                            Image(systemName: "plus")
+                                .font(.system(size: 16, weight: .black))
+                                .foregroundStyle(.black)
+                                .frame(width: 27, height: 27)
+                                .background(BrickColor.gold)
+                                .clipShape(Circle())
+                                .overlay(Circle().strokeBorder(.white, lineWidth: 2))
+                        }
+                        Text("Your Story")
+                            .font(.system(size: 12, weight: .black))
+                            .foregroundStyle(.black)
+                    }
+                    .frame(width: 84, height: 116)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 18))
+                    .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.7), lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+
+                ForEach(storyArticles) { article in
+                    NavigationLink(value: ContentRoute.article(article.id)) {
+                        TodayStoryTile(article: article, isCommunity: isCommunityArticle(article))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.vertical, 4)
+        }
+    }
+
+    private var feedActionBar: some View {
+        HStack(spacing: 10) {
+            feedActionButton("plus") {
+                if model.isSignedIn {
+                    model.showToast("Tap Your Story to create a post.", symbol: "plus.circle")
+                } else {
+                    model.isShowingAuth = true
+                }
+            }
+            feedActionButton("bookmark") {
+                model.showToast("Saved posts are in your profile.", symbol: "bookmark")
+            }
+            feedActionButton("heart") {
+                model.showToast("Notifications live in the bell.", symbol: "bell")
+            }
+            NavigationLink {
+                SearchView()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                    Spacer()
+                }
+                .font(.system(size: 15, weight: .bold))
+                .foregroundStyle(BrickColor.secondaryText)
+                .padding(.horizontal, 12)
+                .frame(height: 40)
+                .background(.ultraThinMaterial)
+                .clipShape(Capsule())
+                .overlay(Capsule().strokeBorder(.white.opacity(0.52), lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func feedActionButton(_ symbol: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 18, weight: .black))
+                .foregroundStyle(.black)
+                .frame(width: 40, height: 40)
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
+                .overlay(Circle().strokeBorder(.white.opacity(0.55), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private var newsTiles: some View {
+        let articles = Array(officialArticles.prefix(2))
+        if !articles.isEmpty {
+            VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                Text("News")
+                    .font(.system(size: 20, weight: .black))
+                    .foregroundStyle(.black)
+
+                HStack(spacing: BrickSpacing.m) {
+                    ForEach(articles) { article in
+                        NavigationLink(value: ContentRoute.article(article.id)) {
+                            TodayNewsTile(article: article)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    if articles.count == 1 {
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var communityPostFeed: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.l) {
+            ForEach(Array(mixedPostArticles.enumerated()), id: \.element.id) { index, article in
+                NavigationLink(value: ContentRoute.article(article.id)) {
+                    TodayLargePostCard(article: article, isCommunity: isCommunityArticle(article))
+                }
+                .buttonStyle(.plain)
+
+                if (index + 1) % 4 == 0, let product = model.activeProducts.first(where: { $0.status == .active }) {
+                    NavigationLink(value: ContentRoute.product(product.id)) {
+                        TodaySmallAdvertCard(product: product)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
     }
 
     // MARK: Hero (§8.4) — rotates daily between featured content
@@ -133,6 +447,72 @@ struct TodayView: View {
 
     private enum HeroDestination { case brickBar, mosaic, shop }
 
+    // MARK: Instagram
+
+    @ViewBuilder
+    private var instagramCarousel: some View {
+        if InstagramFeedService.isConfigured {
+            VStack(alignment: .leading, spacing: BrickSpacing.m) {
+                SectionHeader(title: "Latest on Instagram")
+
+                if instagramLoading && instagramPosts.isEmpty {
+                    HStack(spacing: BrickSpacing.m) {
+                        ProgressView()
+                            .tint(BrickColor.gold)
+                        Text("Loading posts")
+                            .font(BrickFont.meta)
+                            .foregroundStyle(BrickColor.secondaryText)
+                    }
+                    .padding(BrickSpacing.l)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brickCard()
+                } else if let instagramError, instagramPosts.isEmpty {
+                    VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                        Label("Instagram feed unavailable", systemImage: "camera")
+                            .font(BrickFont.cardTitle)
+                            .foregroundStyle(BrickColor.primaryText)
+                        Text(instagramError)
+                            .font(BrickFont.meta)
+                            .foregroundStyle(BrickColor.secondaryText)
+                            .lineLimit(3)
+                        Button("Retry") {
+                            Task { await loadInstagramPosts(force: true) }
+                        }
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(BrickColor.gold)
+                    }
+                    .padding(BrickSpacing.l)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brickCard()
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: BrickSpacing.m) {
+                            ForEach(instagramPosts) { post in
+                                InstagramPostCard(post: post)
+                            }
+                        }
+                        .scrollTargetLayout()
+                    }
+                    .scrollTargetBehavior(.viewAligned)
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func loadInstagramPosts(force: Bool = false) async {
+        guard InstagramFeedService.isConfigured else { return }
+        guard force || instagramPosts.isEmpty else { return }
+        instagramLoading = true
+        instagramError = nil
+        do {
+            instagramPosts = try await InstagramFeedService.fetchLatest(limit: 5)
+        } catch {
+            instagramError = error.localizedDescription
+        }
+        instagramLoading = false
+    }
+
     // MARK: Quick actions (§8.5)
 
     private var quickActions: some View {
@@ -168,37 +548,21 @@ struct TodayView: View {
         if !latest.isEmpty {
             VStack(alignment: .leading, spacing: BrickSpacing.m) {
                 SectionHeader(title: "Latest news", actionTitle: "See all") { model.selectedTab = .news }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: BrickSpacing.m) {
-                        ForEach(latest) { article in
-                            NavigationLink(value: ContentRoute.article(article.id)) {
-                                VStack(alignment: .leading, spacing: 0) {
-                                    ArticleArtwork(article: article)
-                                        .frame(height: 100)
-                                    VStack(alignment: .leading, spacing: BrickSpacing.xs) {
-                                        HStack(spacing: BrickSpacing.xs) {
-                                            TagBadge(text: article.category.rawValue)
-                                            if article.isRumour { RumourBadge() }
-                                        }
-                                        Text(article.title)
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundStyle(BrickColor.primaryText)
-                                            .lineLimit(3)
-                                            .multilineTextAlignment(.leading)
-                                        HStack {
-                                            MetaLabel(symbol: "clock", text: "\(article.readTimeMinutes) min")
-                                            MetaLabel(symbol: "bubble.left", text: "\(model.commentCount(for: .article, contentID: article.id))")
-                                        }
-                                    }
-                                    .padding(BrickSpacing.m)
-                                }
-                                .frame(width: 230, alignment: .leading)
-                                .brickCard()
-                            }
-                            .buttonStyle(.plain)
-                        }
+
+                if let lead = latest.first {
+                    NavigationLink(value: ContentRoute.article(lead.id)) {
+                        FeaturedArticleCard(article: lead)
                     }
-                    .padding(.vertical, 2)
+                    .buttonStyle(.plain)
+                }
+
+                VStack(spacing: BrickSpacing.s) {
+                    ForEach(Array(latest.dropFirst())) { article in
+                        NavigationLink(value: ContentRoute.article(article.id)) {
+                            CompactArticleRow(article: article)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
         }
@@ -357,5 +721,524 @@ struct TodayView: View {
                 }
             }
         }
+    }
+}
+
+private struct InstagramPostCard: View {
+    var post: InstagramPost
+
+    var body: some View {
+        Group {
+            if let permalink = post.permalink {
+                Link(destination: permalink) {
+                    content
+                }
+            } else {
+                content
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(width: 214)
+        .brickCard()
+    }
+
+    private var content: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.s) {
+            ZStack(alignment: .topTrailing) {
+                media
+                    .frame(width: 214, height: 214)
+                    .clipped()
+
+                if post.mediaType.uppercased().contains("VIDEO") {
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(.black)
+                        .frame(width: 30, height: 30)
+                        .background(Circle().fill(BrickColor.gold))
+                        .padding(8)
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(post.caption?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty ?? "View this post on Instagram")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+
+                HStack(spacing: 6) {
+                    Image(systemName: "camera")
+                    Text(post.timestamp.map { AppDate.relative($0) } ?? "Instagram")
+                }
+                .font(BrickFont.meta)
+                .foregroundStyle(BrickColor.secondaryText)
+            }
+            .padding([.horizontal, .bottom], BrickSpacing.m)
+        }
+    }
+
+    @ViewBuilder
+    private var media: some View {
+        if let url = post.displayImageURL {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                case .failure:
+                    placeholder
+                default:
+                    ZStack {
+                        placeholder
+                        ProgressView()
+                            .tint(BrickColor.gold)
+                    }
+                }
+            }
+        } else {
+            placeholder
+        }
+    }
+
+    private var placeholder: some View {
+        ZStack {
+            BrickColor.card
+            Image(systemName: "camera")
+                .font(.system(size: 32, weight: .semibold))
+                .foregroundStyle(BrickColor.gold)
+        }
+    }
+}
+
+private struct TodayFeedBackground: View {
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [Color(hex: 0xFFE45C), Color(hex: 0xF4C430), Color(hex: 0xE9A81E)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+
+            GeometryReader { proxy in
+                Canvas { context, size in
+                    let dot = Path(ellipseIn: CGRect(x: 0, y: 0, width: 2.2, height: 2.2))
+                    for x in stride(from: 0, through: size.width, by: 8) {
+                        for y in stride(from: 0, through: size.height, by: 8) {
+                            context.translateBy(x: x, y: y)
+                            context.fill(dot, with: .color(.black.opacity(0.055)))
+                            context.translateBy(x: -x, y: -y)
+                        }
+                    }
+                }
+                .frame(width: proxy.size.width, height: proxy.size.height)
+            }
+        }
+        .ignoresSafeArea()
+    }
+}
+
+private struct TodayStoryTile: View {
+    var article: Article
+    var isCommunity: Bool
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            ArticleArtwork(article: article)
+                .frame(width: 94, height: 116)
+                .clipped()
+
+            LinearGradient(colors: [.black.opacity(0.25), .clear], startPoint: .top, endPoint: .center)
+
+            AvatarView(name: article.authorName, imageReference: nil, size: 28)
+                .padding(7)
+
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Image("BIABLogoStamp")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.white.opacity(0.78))
+                        .frame(width: 22, height: 22)
+                        .padding(7)
+                }
+            }
+        }
+        .frame(width: 94, height: 116)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.72), lineWidth: 1.4))
+        .shadow(color: .black.opacity(0.16), radius: 8, y: 4)
+    }
+}
+
+private struct TodayNewsTile: View {
+    var article: Article
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.s) {
+            GeometryReader { proxy in
+                ArticleArtwork(article: article)
+                    .frame(width: proxy.size.width, height: proxy.size.width)
+                    .clipped()
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(article.title)
+                    .font(.system(size: 15, weight: .black))
+                    .foregroundStyle(.black)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                Text(article.summary)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.black.opacity(0.72))
+                    .lineLimit(4)
+                    .multilineTextAlignment(.leading)
+            }
+        }
+        .padding(8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.62), lineWidth: 1))
+        .shadow(color: .black.opacity(0.13), radius: 9, y: 5)
+    }
+}
+
+private struct TodayLargePostCard: View {
+    @Environment(AppModel.self) private var model
+    var article: Article
+    var isCommunity: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.s) {
+            ZStack(alignment: .topLeading) {
+                GeometryReader { proxy in
+                    ArticleArtwork(article: article)
+                        .frame(width: proxy.size.width, height: 235)
+                        .clipped()
+                }
+                .frame(height: 235)
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+
+                HStack(spacing: 8) {
+                    AvatarView(name: article.authorName, imageReference: nil, size: 34)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(article.authorName)
+                            .font(.system(size: 12, weight: .black))
+                            .foregroundStyle(.black)
+                        Text(AppDate.relative(article.publishedAt ?? article.createdAt))
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.black.opacity(0.65))
+                    }
+                    Spacer()
+                }
+                .padding(8)
+                .background(.ultraThinMaterial)
+                .clipShape(Capsule())
+                .padding(10)
+            }
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                HStack(spacing: 7) {
+                    Circle()
+                        .fill(isCommunity ? BrickColor.stadiumGreen : BrickColor.gold)
+                        .frame(width: 8, height: 8)
+                    Text(article.title)
+                        .font(.system(size: 18, weight: .black))
+                        .foregroundStyle(.black)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+
+                Text(article.summary)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(.black.opacity(0.72))
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                HStack(spacing: 10) {
+                    metric("shippingbox", article.likeCount)
+                    metric("bubble.left", model.commentCount(for: .article, contentID: article.id))
+                    metric("bookmark", article.viewCount)
+                    Spacer()
+                }
+                .padding(.top, 4)
+            }
+            .padding(.horizontal, BrickSpacing.m)
+            .padding(.bottom, BrickSpacing.m)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 24))
+        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(.white.opacity(0.62), lineWidth: 1))
+        .shadow(color: .black.opacity(0.15), radius: 12, y: 7)
+    }
+
+    private func metric(_ symbol: String, _ value: Int) -> some View {
+        Label("\(value)", systemImage: symbol)
+            .font(.system(size: 13, weight: .black))
+            .foregroundStyle(.black.opacity(0.82))
+            .padding(.horizontal, 10)
+            .frame(height: 30)
+            .background(.white.opacity(0.46))
+            .clipShape(Capsule())
+    }
+}
+
+private struct TodaySmallAdvertCard: View {
+    var product: Product
+
+    var body: some View {
+        HStack(spacing: BrickSpacing.m) {
+            BrickArtView(seed: product.id.artSeed, tint: BrickColor.stadiumGreen, symbol: "tag.fill")
+                .frame(width: 104, height: 74)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Sponsored")
+                    .font(.system(size: 11, weight: .black))
+                    .foregroundStyle(.red)
+                Text(product.name)
+                    .font(.system(size: 16, weight: .black))
+                    .foregroundStyle(.black)
+                    .lineLimit(2)
+                Text(product.priceLabel)
+                    .font(.system(size: 13, weight: .black))
+                    .foregroundStyle(.black.opacity(0.72))
+            }
+            Spacer()
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.white.opacity(0.82))
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.65), lineWidth: 1))
+        .shadow(color: .black.opacity(0.12), radius: 9, y: 5)
+    }
+}
+
+private enum TodayFeedItem: Identifiable {
+    case article(Article, isCommunity: Bool)
+    case review(Review)
+    case advert(Product)
+    case lesson(Lesson)
+    case gameScore(TodayGameScore)
+
+    var id: String {
+        switch self {
+        case .article(let article, let isCommunity): return "article-\(article.id)-\(isCommunity)"
+        case .review(let review): return "review-\(review.id)"
+        case .advert(let product): return "advert-\(product.id)"
+        case .lesson(let lesson): return "lesson-\(lesson.id)"
+        case .gameScore(let score): return "game-\(score.title)"
+        }
+    }
+
+    var date: Date {
+        switch self {
+        case .article(let article, _): return article.publishedAt ?? article.createdAt
+        case .review(let review): return review.publishedAt ?? review.createdAt
+        case .advert(let product): return product.updatedAt
+        case .lesson(let lesson): return lesson.publishedAt ?? lesson.createdAt
+        case .gameScore: return Date()
+        }
+    }
+}
+
+private struct TodayGameScore {
+    var title: String
+    var score: Int
+    var symbol: String
+}
+
+private struct TodayArticleFeedCard: View {
+    @Environment(AppModel.self) private var model
+    var article: Article
+    var isCommunity: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: BrickSpacing.m) {
+            HStack(spacing: BrickSpacing.s) {
+                TagBadge(text: isCommunity ? "Community Build" : "Official News", tint: isCommunity ? BrickColor.stadiumGreen : BrickColor.gold)
+                if article.aiAssisted {
+                    TagBadge(text: "AI assisted", tint: BrickColor.secondaryText)
+                }
+                Spacer()
+                Text(AppDate.relative(article.publishedAt ?? article.createdAt))
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+            }
+
+            GeometryReader { proxy in
+                ArticleArtwork(article: article)
+                    .frame(width: proxy.size.width, height: 190)
+                    .clipped()
+            }
+            .frame(height: 190)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                Text(article.title)
+                    .font(.system(size: 20, weight: .black))
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                Text(article.summary)
+                    .font(BrickFont.body)
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+            }
+
+            HStack(spacing: BrickSpacing.l) {
+                Label(article.authorName, systemImage: isCommunity ? "person.crop.circle" : "checkmark.seal")
+                Label("\(model.commentCount(for: .article, contentID: article.id))", systemImage: "bubble.left")
+                Label("\(article.likeCount)", systemImage: "heart")
+            }
+            .font(BrickFont.meta)
+            .foregroundStyle(BrickColor.secondaryText)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(BrickSpacing.l)
+        .brickCard()
+    }
+}
+
+private struct TodayReviewFeedCard: View {
+    var review: Review
+
+    var body: some View {
+        HStack(spacing: BrickSpacing.m) {
+            BrickArtView(seed: review.id.artSeed, tint: BrickColor.gold, symbol: "star.bubble")
+                .frame(width: 82, height: 82)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                TagBadge(text: "Review", tint: BrickColor.gold)
+                Text(review.setName)
+                    .font(BrickFont.cardTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                StarRatingView(rating: review.ratingOverall)
+                Text(review.summary)
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .lineLimit(2)
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(BrickSpacing.l)
+        .brickCard()
+    }
+}
+
+private struct TodayAdvertFeedCard: View {
+    var product: Product
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            BrickArtView(seed: product.id.artSeed, tint: BrickColor.stadiumGreen, symbol: "bag")
+                .frame(maxWidth: .infinity)
+                .frame(height: 176)
+            LinearGradient(colors: [.clear, .black.opacity(0.78)], startPoint: .top, endPoint: .bottom)
+
+            VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                TagBadge(text: "Promoted", tint: BrickColor.gold)
+                Text(product.name)
+                    .font(.system(size: 22, weight: .black))
+                    .foregroundStyle(.white)
+                    .lineLimit(2)
+                Text(product.shortDescription)
+                    .font(BrickFont.meta)
+                    .foregroundStyle(.white.opacity(0.84))
+                    .lineLimit(2)
+                Text(product.priceLabel)
+                    .font(.system(size: 15, weight: .black))
+                    .foregroundStyle(BrickColor.gold)
+            }
+            .padding(BrickSpacing.l)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+    }
+}
+
+private struct TodayLessonFeedCard: View {
+    var lesson: Lesson
+
+    var body: some View {
+        HStack(spacing: BrickSpacing.m) {
+            Image(systemName: "lightbulb.fill")
+                .font(.system(size: 25, weight: .black))
+                .foregroundStyle(BrickColor.gold)
+                .frame(width: 54, height: 54)
+                .background(BrickColor.gold.opacity(0.14))
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                TagBadge(text: "Studio Lesson", tint: BrickColor.gold)
+                Text(lesson.title)
+                    .font(BrickFont.cardTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(2)
+                Text(lesson.summary)
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .lineLimit(2)
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(BrickSpacing.l)
+        .brickCard()
+    }
+}
+
+private struct TodayGameScoreFeedCard: View {
+    var score: TodayGameScore
+
+    var body: some View {
+        HStack(spacing: BrickSpacing.m) {
+            Image(systemName: score.symbol)
+                .font(.system(size: 26, weight: .black))
+                .foregroundStyle(.black)
+                .frame(width: 58, height: 58)
+                .background(BrickColor.gold)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+
+            VStack(alignment: .leading, spacing: BrickSpacing.xs) {
+                TagBadge(text: "Games", tint: BrickColor.gold)
+                Text("Your best \(score.title) score is \(score.score)")
+                    .font(BrickFont.cardTitle)
+                    .foregroundStyle(BrickColor.primaryText)
+                    .lineLimit(2)
+                Text("Leaderboards can become live once scores are stored in Supabase.")
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+                    .lineLimit(2)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .foregroundStyle(BrickColor.secondaryText)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(BrickSpacing.l)
+        .brickCard()
+    }
+}
+
+private extension String {
+    var nilIfEmpty: String? {
+        isEmpty ? nil : self
     }
 }

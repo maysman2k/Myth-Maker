@@ -1,55 +1,45 @@
 import SwiftUI
 
 struct ShopView: View {
-    @Environment(AppModel.self) private var model
-    @State private var categoryFilter: ProductCategory?
-
-    private var filtered: [Product] {
-        guard let categoryFilter else { return model.activeProducts }
-        return model.activeProducts.filter { $0.category == categoryFilter }
-    }
+    @State private var isLoading = true
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                    Text("Hand-built stadiums, mosaics and display models from Bricks in a Bag.")
-                        .font(BrickFont.body)
-                        .foregroundStyle(BrickColor.secondaryText)
+            ZStack {
+                SecureShopWebView(
+                    isLoading: $isLoading,
+                    errorMessage: $errorMessage
+                )
+                .ignoresSafeArea(edges: .bottom)
 
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: BrickSpacing.s) {
-                            FilterChip(title: "All", isSelected: categoryFilter == nil) { categoryFilter = nil }
-                            ForEach(ProductCategory.allCases) { category in
-                                FilterChip(title: category.rawValue, isSelected: categoryFilter == category) {
-                                    categoryFilter = categoryFilter == category ? nil : category
-                                }
-                            }
-                        }
-                    }
-
-                    if filtered.isEmpty {
-                        EmptyStateView(
-                            symbol: "bag",
-                            message: "Nothing in this category yet. New builds land regularly.",
-                            actionTitle: "Show everything",
-                            action: { categoryFilter = nil }
-                        )
-                    } else {
-                        ForEach(filtered) { product in
-                            NavigationLink(value: ContentRoute.product(product.id)) {
-                                ProductCard(product: product)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                    LegalDisclaimerFooter()
+                if isLoading {
+                    ProgressView()
+                        .padding(BrickSpacing.l)
+                        .background(BrickColor.card)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
                 }
-                .padding(.horizontal, BrickSpacing.l)
+
+                if let errorMessage {
+                    VStack(spacing: BrickSpacing.m) {
+                        EmptyStateView(
+                            symbol: "wifi.exclamationmark",
+                            message: errorMessage,
+                            actionTitle: "Try Again",
+                            action: {
+                                self.errorMessage = nil
+                                isLoading = true
+                                ShopWebViewStore.shared.reload()
+                            }
+                        )
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(BrickColor.background)
+                }
             }
             .background(BrickColor.background)
-            .navigationTitle("Shop")
-            .contentRouteDestinations()
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 }

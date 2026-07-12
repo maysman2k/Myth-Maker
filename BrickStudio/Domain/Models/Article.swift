@@ -77,4 +77,6 @@ struct Article: Identifiable, Codable, Hashable {
     /// All editor-approved images for this article (the hero is the first).
     /// Rendered as an in-article photo gallery.
     var galleryImageURLs: [String]? = nil
+    /// Extra editor-approved media, such as local or remote videos.
+    var mediaURLs: [String]? = nil
 }
