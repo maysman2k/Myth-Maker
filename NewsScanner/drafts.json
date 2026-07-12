@@ -1,5 +1,34 @@
 [
   {
+    "id": "c182a874-c22b-51ea-913f-b2fccf28e806",
+    "title": "LEGO One Piece 75642 Showdown with Captain Smoker: Brick Fanatics review round-up",
+    "summary": "Brick Fanatics has reviewed the new LEGO One Piece Season 2 set 75642 Showdown with Captain Smoker, giving it 7/10 and flagging a small Loguetown build alongside strong minifigures.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has published its review of 75642 Showdown with Captain Smoker, one of the new mid-range LEGO One Piece Season 2 sets. According to the review, the set depicts a slice of Loguetown through two connected buildings and a market stall, plus a detailed motorcycle and a Captain Smoker smoke-form build. The reviewer praised the exclusive minifigure lineup and the stickered Easter egg references, but felt the buildings were too small for the price and that Ipponmatsu's shop was missing a couple of extra minifigures. Brick Fanatics scored it 7/10 overall, with 8/10 for design and minifigures, 6/10 for playability and 8/10 for value.\n\n## Why it matters\nOne Piece is one of LEGO's higher-profile licensed themes right now, so how well Season 2 sets translate the anime's locations matters for collectors deciding whether to buy in. This review gives UK fans an early, independent read on quality and value before committing to a purchase.\n\n## What to watch next\nKeep an eye out for reviews of the other LEGO One Piece Season 2 sets, including the flagship Loguetown build, to see how they compare on detail and value for money.",
+    "category": "New Sets",
+    "tags": [
+      "lego-one-piece",
+      "set-review",
+      "loguetown",
+      "minifigures",
+      "brick-fanatics"
+    ],
+    "sourceLinks": [
+      {
+        "id": "6e55dd81-e44a-5d69-ba97-38d15db209c6",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-one-piece-showdown-with-captain-smoker-review"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm official set number, name and release date/price with LEGO before publishing, as the excerpt is a third-party review rather than an official LEGO announcement. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-12T03:39:16Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/de537f53-73d3-49d5-9c60-0fe0fac46fcc.png"
+    ]
+  },
+  {
     "id": "3f77a1e3-585e-5bbb-9b8b-2beaa9101db2",
     "title": "Rumoured LEGO Star Wars cinema set has a long line of LEGO movie theatres before it",
     "summary": "Chatter about a possible LEGO Star Wars cinema set for 2027 has us looking back at the LEGO cinemas that have already graced our shelves, from 2008's Town Plan to the beloved Palace Cinema modular.",
@@ -1409,35 +1438,6 @@
     "foundAt": "2026-07-08T13:30:17Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133037?52206"
-    ]
-  },
-  {
-    "id": "4bdd1f30-6568-546f-b7aa-3d3e0e26dad5",
-    "title": "LEGO Pokémon range grows with first-ever minifigures",
-    "summary": "The LEGO Group and The Pokémon Company International have officially confirmed five new LEGO Pokémon sets, including a Poké Ball set that introduces the first LEGO Pokémon minifigures.",
-    "bodyMarkdown": "## What happened\nThe LEGO Group and The Pokémon Company International have officially announced five new additions to the LEGO Pokémon range, which launched in March with a series of large-scale buildable creatures. According to the confirmed press release, the new wave includes further creature-style builds alongside a Poké Ball set that, for the first time, features LEGO Pokémon minifigures and Pokémon figures.\n\nExact set numbers, pricing and full contents haven't been detailed in the excerpt available, but the announcement confirms this is an expansion of the existing LEGO Pokémon build-and-display line rather than a rumoured concept.\n\n## Why it matters\nMinifigures are a huge part of what makes LEGO collectable and displayable, so their arrival in the Pokémon range is a significant step for the theme. It signals LEGO and The Pokémon Company International see long-term potential here, likely opening the door to more sets, characters and trainer-style builds down the line — good news for collectors and display builders alike.\n\n## What to watch next\nKeep an eye out for official set numbers, images and pricing as LEGO typically follows these press announcements with retailer listings. It's also worth watching whether more minifigures or trainer characters get added to future waves.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-pokemon",
-      "minifigures",
-      "new-sets",
-      "official-reveal",
-      "pokemon-company"
-    ],
-    "sourceLinks": [
-      {
-        "id": "3723a096-c1ab-5dc9-97b9-b49af235a84c",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133046"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 88,
-    "riskNotes": "Source excerpt is cut off before full set details, numbers and pricing are given — confirm exact set names, piece counts and release dates from Brickset or LEGO.com before publishing further specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-08T13:30:06Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133046?52192"
     ]
   }
 ]
