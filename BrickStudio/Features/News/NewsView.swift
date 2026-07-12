@@ -55,9 +55,17 @@ struct ArticleImage: View {
     private func imageView(_ image: Image) -> some View {
         switch mode {
         case .fill:
-            image.resizable().scaledToFill().clipped()
+            // Fill inside an overlay so the photo can never dictate layout
+            // width — a bare scaledToFill() with only a height frame adopts
+            // the image's native width and pushes the whole page off-screen.
+            Color.clear
+                .overlay { image.resizable().scaledToFill() }
+                .clipped()
         case .fit:
-            image.resizable().scaledToFit()
+            image
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
         }
     }
 
