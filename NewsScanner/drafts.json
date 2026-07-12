@@ -1,5 +1,34 @@
 [
   {
+    "id": "3c901f44-8944-56f3-84e1-b7df0ba0da7b",
+    "title": "LEGO One Piece's Battle at Drum Castle wins praise as a must-have Castle set",
+    "summary": "Brick Fanatics has given the upcoming 75645 Battle at Drum Castle a glowing review, calling it one of the best castle builds currently on shelves. The set launches later this summer.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has published a review of LEGO's upcoming One Piece set, 75645 Battle at Drum Castle, awarding it 9/10 overall. The set is confirmed to be launching later this summer as part of the LEGO One Piece range.\n\nAccording to the review, the model comes in at 1,038 pieces and stands 35cm tall, featuring an inner courtyard and a mostly complete set of walls (the facade interior is left open, a design choice the reviewer notes is becoming common in LEGO Castle sets outside the BrickLink Designer Program).\n\nInside, the build reportedly includes a three-storey interior with a throne room, a hospital room complete with lab equipment, a bedroom, and a basement featuring a hippo-shaped fireplace. The reviewer suggests this detail may be a nod to a character from the source material. The set also includes exclusive minifigures, which the review highlights as a strong point, though it notes that Wapol's mutated soldiers weren't included and would have been a welcome addition.\n\nBrick Fanatics scored the set 9/10 for design, value and minifigures, and 8/10 for playability.\n\n## Why it matters\nLEGO Castle fans have been asking for more sets in the theme, and it's interesting to see a licensed line like One Piece step in to fill that gap with a build that reviewers say holds its own against dedicated Castle releases. For collectors and display builders, a detailed multi-storey interior alongside a striking exterior makes this a strong candidate for both play and display shelves.\n\n## What to watch next\nKeep an eye out for the official LEGO listing and price once 75645 Battle at Drum Castle goes live later this summer, plus any further coverage of the included minifigures.",
+    "category": "New Sets",
+    "tags": [
+      "lego-one-piece",
+      "castle-sets",
+      "set-review",
+      "75645-battle-at-drum-castle",
+      "brick-fanatics"
+    ],
+    "sourceLinks": [
+      {
+        "id": "79ff1c4e-7b9e-5e53-a32f-4c9f70612ae2",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-one-piece-set-need-your-next-castle-purchase"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "No confirmed price or exact release date was given in the source excerpt; verify these details plus full minifigure list before publishing, and confirm this is a genuine review rather than a preview since only an excerpt was provided. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-12T08:28:20Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/92262305-f024-4b24-9750-8b5f657217f9.png"
+    ]
+  },
+  {
     "id": "c182a874-c22b-51ea-913f-b2fccf28e806",
     "title": "LEGO One Piece 75642 Showdown with Captain Smoker: Brick Fanatics review round-up",
     "summary": "Brick Fanatics has reviewed the new LEGO One Piece Season 2 set 75642 Showdown with Captain Smoker, giving it 7/10 and flagging a small Loguetown build alongside strong minifigures.",
@@ -1409,35 +1438,6 @@
     "foundAt": "2026-07-08T13:30:52Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133007?52235"
-    ]
-  },
-  {
-    "id": "0c7cb5b0-7702-52dc-90d4-59c752516e5b",
-    "title": "LEGO Insiders Days promotions now live, including free Sea Serpent set",
-    "summary": "LEGO's annual Insiders Days event has kicked off on LEGO.com, bringing gifts-with-purchase, double points on selected themes and regional discounts.",
-    "bodyMarkdown": "## What happened\nLEGO's yearly Insiders Days promotions are now running on LEGO.com. UK shoppers spending over £160 can add 40912 Sea Serpent to their basket as a free gift, while a £90 spend on Creator, City or Friends sets unlocks the 5010033 Airplane – Special Edition as a bonus build.\n\nOn top of the gifts-with-purchase, several themes are earning double Insiders points for the duration of the promotion, including Sonic the Hedgehog, Jurassic World, Speed Champions, Harry Potter, Marvel, Disney, Wicked and Education sets.\n\nDiscounts are also part of the event, though these vary by region. European examples flagged so far include 20% off 10323 PAC-MAN Arcade and a discount on 10337 Lamborghini, with more reductions likely to appear as the promotion continues.\n\n## Why it matters\nInsiders Days is one of the bigger recurring promotional windows on LEGO.com, and free GWP sets like the Sea Serpent tend to be popular with collectors who like completing themed extras. Double points events are also a handy way to boost your Insiders rewards balance ahead of future redemptions.\n\n## What to watch next\nExact discount lists and thresholds can differ between the UK, US and EU stores, so it's worth checking LEGO.com directly for your region's current offers, and keeping an eye out for further set-specific discounts as the promotion rolls on.",
-    "category": "Deals",
-    "tags": [
-      "lego-insiders",
-      "gift-with-purchase",
-      "lego-deals",
-      "sea-serpent",
-      "lego-com"
-    ],
-    "sourceLinks": [
-      {
-        "id": "5600dfe1-597a-5bef-9ed9-19fa042666be",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133037"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 72,
-    "riskNotes": "Confirm current UK spend thresholds and discount list directly on LEGO.com, as regional pricing and available discounts may change during the promotion; also verify the promotion's end date, which wasn't specified in the source. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-08T13:30:17Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133037?52206"
     ]
   }
 ]
