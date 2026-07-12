@@ -17,3 +17,9 @@ xcuserdata/
 # macOS
 .DS_Store
 __pycache__/
+
+# Supabase CLI local state
+supabase/.temp/
+
+# Accidental nested clone
+/Myth-Maker/
