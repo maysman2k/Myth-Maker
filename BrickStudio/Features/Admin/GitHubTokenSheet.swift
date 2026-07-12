@@ -35,7 +35,7 @@ struct GitHubTokenSheet: View {
                     VStack(alignment: .leading, spacing: BrickSpacing.s) {
                         stepRow(1, "On github.com: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.")
                         stepRow(2, "Resource owner: \(GitHubWorkflowService.owner). Repository access: Only select repositories → \(GitHubWorkflowService.repo).")
-                        stepRow(3, "Permissions → Repository permissions: set BOTH “Actions” and “Contents” to Read and write.")
+                        stepRow(3, "Permissions → Repository permissions: set BOTH “Actions” and “Contents” to Read and write — NOT just Read, or runs and source edits get rejected.")
                         stepRow(4, "Generate, copy the token (starts github_pat_…), and paste it below.")
                     }
                     .padding(BrickSpacing.l)
@@ -114,7 +114,7 @@ struct GitHubTokenSheet: View {
         Task {
             do {
                 try await GitHubWorkflowService.verifyToken(candidate)
-                testResult = "Token works — Actions and repo access confirmed."
+                testResult = "Token works — write access confirmed. You can run scans and edit sources."
                 testPassed = true
             } catch {
                 testResult = error.localizedDescription

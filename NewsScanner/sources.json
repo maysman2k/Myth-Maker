@@ -1,30 +1,44 @@
 [
   {
-    "name": "Brickset",
-    "rssUrl": "https://brickset.com/feed",
-    "enabled": true,
-    "sourceType": "RSS",
-    "notes": "Set database news and reviews."
+    "enabled" : true,
+    "name" : "Brickset",
+    "notes" : "Set database news and reviews.",
+    "rssUrl" : "https:\/\/brickset.com\/feed",
+    "sourceType" : "RSS"
   },
   {
-    "name": "The Brothers Brick",
-    "rssUrl": "https://www.brothers-brick.com/feed/",
-    "enabled": true,
-    "sourceType": "RSS",
-    "notes": "MOCs, news and reviews."
+    "enabled" : true,
+    "name" : "The Brothers Brick",
+    "notes" : "MOCs, news and reviews.",
+    "rssUrl" : "https:\/\/www.brothers-brick.com\/feed\/",
+    "sourceType" : "RSS"
   },
   {
-    "name": "Brick Fanatics",
-    "rssUrl": "https://www.brickfanatics.com/feed/",
-    "enabled": true,
-    "sourceType": "RSS",
-    "notes": "UK-focused news, rumours and deals."
+    "enabled" : true,
+    "name" : "Brick Fanatics",
+    "notes" : "UK-focused news, rumours and deals.",
+    "rssUrl" : "https:\/\/www.brickfanatics.com\/feed\/",
+    "sourceType" : "RSS"
   },
   {
-    "name": "New Elementary",
-    "rssUrl": "https://www.newelementary.com/feeds/posts/default?alt=rss",
-    "enabled": false,
-    "sourceType": "RSS",
-    "notes": "Parts and techniques. Enable once feed URL is confirmed."
+    "enabled" : true,
+    "name" : "New Elementary",
+    "notes" : "Parts and techniques. Enable once feed URL is confirmed.",
+    "rssUrl" : "https:\/\/www.newelementary.com\/feeds\/posts\/default?alt=rss",
+    "sourceType" : "RSS"
+  },
+  {
+    "enabled" : true,
+    "name" : "Lego",
+    "notes" : "",
+    "rssUrl" : "https:\/\/www.lego.com\/en-gb\/discover",
+    "sourceType" : "RSS"
+  },
+  {
+    "enabled" : true,
+    "name" : "Lego ideas",
+    "notes" : "",
+    "rssUrl" : "https:\/\/ideas.lego.com\/blog",
+    "sourceType" : "RSS"
   }
 ]
