@@ -9,7 +9,9 @@ struct AdminPanelView: View {
 
     var body: some View {
         Group {
-            if let user = model.currentUser, user.role.isAdmin {
+            // Tiered access (§7.5–7.7): moderators handle comments, editors
+            // manage content and the AI queue, admins see everything.
+            if let user = model.currentUser, user.role.canModerate {
                 content(for: user)
             } else {
                 EmptyStateView(symbol: "lock", message: "This area is for the Bricks in a Bag team.")
@@ -24,31 +26,54 @@ struct AdminPanelView: View {
             VStack(alignment: .leading, spacing: BrickSpacing.l) {
                 statsGrid
                 VStack(spacing: 0) {
-                    adminLink("Create Story", symbol: "square.and.pencil", badge: 0) {
-                        AdminStoryEditorView()
-                    }
-                    adminLink("AI Draft Queue", symbol: "sparkles", badge: model.adminStats.pendingDrafts) {
-                        AIDraftQueueView()
-                    }
-                    adminLink("Articles", symbol: "newspaper", badge: 0) {
-                        AdminArticlesView()
-                    }
-                    adminLink("Submitted Stories", symbol: "tray.and.arrow.down", badge: model.pendingSubmittedStories.count) {
-                        AdminSubmittedStoriesView()
-                    }
-                    adminLink("Products", symbol: "bag", badge: 0) {
-                        AdminProductsView()
+                    if user.role.canEditContent {
+                        adminLink("Create Story", symbol: "square.and.pencil", badge: 0) {
+                            AdminStoryEditorView()
+                        }
+                        adminLink("AI Draft Queue", symbol: "sparkles", badge: model.adminStats.pendingDrafts) {
+                            AIDraftQueueView()
+                        }
+                        adminLink("Articles", symbol: "newspaper", badge: 0) {
+                            AdminArticlesView()
+                        }
+                        adminLink("Submitted Stories", symbol: "tray.and.arrow.down", badge: model.pendingSubmittedStories.count) {
+                            AdminSubmittedStoriesView()
+                        }
+                        adminLink("Products", symbol: "bag", badge: 0) {
+                            AdminProductsView()
+                        }
                     }
                     adminLink("Comment moderation", symbol: "bubble.left.and.exclamationmark.bubble.right", badge: model.adminStats.pendingComments) {
                         AdminCommentsView()
                     }
-                    adminLink("Brick Bar requests", symbol: "wrench.and.screwdriver", badge: model.adminStats.openRequests) {
-                        AdminRequestsView()
+                    if user.role.isAdmin {
+                        adminLink("Brick Bar requests", symbol: "wrench.and.screwdriver", badge: model.adminStats.openRequests) {
+                            AdminRequestsView()
+                        }
                     }
                 }
                 .brickCard()
 
-                VStack(spacing: 0) {
+                if user.role.isAdmin {
+                    integrationsCard
+                }
+
+                Text("AI drafts never publish automatically — everything below needs a human decision.")
+                    .font(BrickFont.meta)
+                    .foregroundStyle(BrickColor.secondaryText)
+            }
+            .padding(BrickSpacing.l)
+        }
+        .sheet(isPresented: $isShowingTokenSheet) {
+            GitHubTokenSheet(onSaved: nil)
+                .presentationDetents([.large])
+        }
+    }
+
+    /// Integration settings (news sources, GitHub, OpenAI) — admin only,
+    /// per §7.7 (admins manage the AI source list and system settings).
+    private var integrationsCard: some View {
+        VStack(spacing: 0) {
                     adminLink("News sources", symbol: "antenna.radiowaves.left.and.right", badge: 0) {
                         AdminSourcesView()
                     }
@@ -100,19 +125,8 @@ struct AdminPanelView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                }
-                .brickCard()
-
-                Text("AI drafts never publish automatically — everything below needs a human decision.")
-                    .font(BrickFont.meta)
-                    .foregroundStyle(BrickColor.secondaryText)
-            }
-            .padding(BrickSpacing.l)
         }
-        .sheet(isPresented: $isShowingTokenSheet) {
-            GitHubTokenSheet(onSaved: nil)
-                .presentationDetents([.large])
-        }
+        .brickCard()
     }
 
     private var statsGrid: some View {

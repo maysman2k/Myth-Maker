@@ -650,6 +650,19 @@ extension AppModel {
         aiDrafts[index].status = .approved
         showToast("Draft approved and published")
         persist()
+        // Keep the backend in step — without this, AI-approved articles
+        // exist only on this device and never reach other users.
+        if SupabaseService.isConfigured {
+            Task {
+                do {
+                    try await SupabaseService.upsertArticle(article)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
     }
 
     func createArticle(
@@ -695,6 +708,20 @@ extension AppModel {
         articles.append(article)
         showToast(status == .published ? "Story published" : "Story saved as \(status.displayName.lowercased())", symbol: "newspaper.fill")
         persist()
+        // Sync published stories to the backend; drafts stay local until
+        // they're published so unfinished work never leaks to readers.
+        if status == .published, SupabaseService.isConfigured {
+            let publishedArticle = article
+            Task {
+                do {
+                    try await SupabaseService.upsertArticle(publishedArticle)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
     }
 
     func submitStory(
@@ -967,6 +994,20 @@ extension AppModel {
         }
         showToast("Article \(status.displayName.lowercased())")
         persist()
+        // Status changes (publish/archive) must reach the backend too, or
+        // an article archived here stays live for remote users.
+        if SupabaseService.isConfigured {
+            let updatedArticle = articles[index]
+            Task {
+                do {
+                    try await SupabaseService.upsertArticle(updatedArticle)
+                } catch {
+                    await MainActor.run {
+                        showToast(error.localizedDescription, symbol: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
     }
 
     func removeArticleFromApp(_ articleID: UUID) {
