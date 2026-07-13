@@ -10,6 +10,8 @@ struct TodayView: View {
     @State private var instagramPosts: [InstagramPost] = []
     @State private var instagramError: String?
     @State private var instagramLoading = false
+    @State private var isPickingPostType = false
+    @State private var composerKind: CommunityPostKind?
 
     var body: some View {
         NavigationStack {
@@ -32,6 +34,14 @@ struct TodayView: View {
             .background(TodayFeedBackground())
             .toolbar(.hidden, for: .navigationBar)
             .contentRouteDestinations()
+            .sheet(isPresented: $isPickingPostType) {
+                PostTypePickerSheet { kind in
+                    composerKind = kind
+                }
+            }
+            .sheet(item: $composerKind) { kind in
+                CommunityComposerSheet(kind: kind)
+            }
             .task {
                 await loadInstagramPosts()
                 submitStoredBests()
@@ -153,8 +163,8 @@ struct TodayView: View {
             Spacer()
 
             if model.isSignedIn {
-                NavigationLink {
-                    SubmitStoryEditorView()
+                Button {
+                    isPickingPostType = true
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 17, weight: .black))
@@ -163,7 +173,8 @@ struct TodayView: View {
                         .background(BrickColor.gold)
                         .clipShape(Circle())
                 }
-                .accessibilityLabel("Create community post")
+                .buttonStyle(.plain)
+                .accessibilityLabel("Create a post")
             } else {
                 Button {
                     model.isShowingAuth = true
@@ -339,7 +350,7 @@ struct TodayView: View {
         HStack(spacing: 10) {
             feedActionButton("plus") {
                 if model.isSignedIn {
-                    model.showToast("Tap Your Story to create a post.", symbol: "plus.circle")
+                    isPickingPostType = true
                 } else {
                     model.isShowingAuth = true
                 }

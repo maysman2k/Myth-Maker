@@ -363,6 +363,7 @@ enum ShelfShareRenderer {
 struct CommunityBuildsSection: View {
     @Environment(AppModel.self) private var model
     @State private var isComposing = false
+    @State private var composerKind: CommunityPostKind?
     @State private var showFollowedOnly = false
 
     var body: some View {
@@ -406,7 +407,12 @@ struct CommunityBuildsSection: View {
             }
         }
         .sheet(isPresented: $isComposing) {
-            CommunityComposerSheet()
+            PostTypePickerSheet { kind in
+                composerKind = kind
+            }
+        }
+        .sheet(item: $composerKind) { kind in
+            CommunityComposerSheet(kind: kind)
         }
     }
 }

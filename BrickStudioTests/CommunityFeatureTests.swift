@@ -158,6 +158,69 @@ final class CommunityFeatureTests: XCTestCase {
         XCTAssertEqual(model.threadPosts(for: day1).count, 2)
     }
 
+    // MARK: Post types — events and LEGO® Ideas
+
+    func testEventPostCarriesDateAndLocation() throws {
+        model.currentUserID = jess.id
+        let when = Date().addingTimeInterval(5 * 86_400)
+        let post = try XCTUnwrap(model.createCommunityPost(
+            title: "Brick Show", caption: "Come along!", imageReferences: [],
+            kind: .event, eventDate: when, eventLocation: "Leeds"
+        ))
+        XCTAssertEqual(post.kind, .event)
+        XCTAssertEqual(post.title, "Brick Show")
+        XCTAssertEqual(post.eventDate, when)
+        XCTAssertEqual(post.eventLocation, "Leeds")
+        XCTAssertNil(post.backerCount, "Event posts must not carry Ideas fields")
+        XCTAssertTrue(model.upcomingEvents.contains { $0.id == post.id })
+    }
+
+    func testIdeasPostBackersEditableByCreatorOnly() throws {
+        model.currentUserID = jess.id
+        let post = try XCTUnwrap(model.createCommunityPost(
+            title: "Pier Arcade", caption: "Back it!", imageReferences: [],
+            kind: .ideas, ideasEndDate: Date().addingTimeInterval(30 * 86_400), backerCount: 100
+        ))
+        XCTAssertEqual(post.backerCount, 100)
+
+        // Someone else can't touch the counter.
+        model.currentUserID = tom.id
+        model.updateBackerCount(post.id, to: 999)
+        XCTAssertEqual(model.communityPost(post.id)?.backerCount, 100)
+
+        // The creator can, and it never goes negative.
+        model.currentUserID = jess.id
+        model.updateBackerCount(post.id, to: 2500)
+        XCTAssertEqual(model.communityPost(post.id)?.backerCount, 2500)
+        model.updateBackerCount(post.id, to: -5)
+        XCTAssertEqual(model.communityPost(post.id)?.backerCount, 0)
+    }
+
+    func testStandardFieldsStrippedFromMismatchedKinds() throws {
+        model.currentUserID = jess.id
+        // Ideas fields passed to a standard post are discarded.
+        let post = try XCTUnwrap(model.createCommunityPost(
+            title: "Just a build", caption: "Nice", imageReferences: [],
+            kind: .standard, ideasEndDate: Date(), backerCount: 50
+        ))
+        XCTAssertNil(post.ideasEndDate)
+        XCTAssertNil(post.backerCount)
+    }
+
+    func testOldPostJSONStillDecodes() throws {
+        // Posts saved before titles/kinds existed must decode with defaults.
+        let json = """
+        {"id":"6639460f-3425-5329-8097-a58f06127860",
+         "userID":"6639460f-3425-5329-8097-a58f06127861",
+         "caption":"Old post","imageReferences":[],"status":"visible",
+         "reportCount":0,"createdAt":700000000,"updatedAt":700000000}
+        """
+        let post = try JSONDecoder().decode(CommunityPost.self, from: Data(json.utf8))
+        XCTAssertEqual(post.title, "")
+        XCTAssertEqual(post.kind, .standard)
+        XCTAssertNil(post.eventDate)
+    }
+
     // MARK: Reports hide posts at the threshold
 
     func testPostReportsTriggerReview() throws {

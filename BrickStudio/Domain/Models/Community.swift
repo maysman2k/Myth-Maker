@@ -46,7 +46,49 @@ enum CommunityPostStatus: String, Codable {
     case removed
 }
 
-struct CommunityPost: Identifiable, Codable, Hashable {
+/// What a feed post is: a standard build post, an event, or a LEGO® Ideas
+/// campaign the community can track.
+enum CommunityPostKind: String, Codable, CaseIterable, Identifiable {
+    case standard
+    case event
+    case ideas = "lego_ideas"
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .standard: return "Post"
+        case .event: return "Event"
+        case .ideas: return "LEGO® Ideas"
+        }
+    }
+
+    var pickerTitle: String {
+        switch self {
+        case .standard: return "Standard post"
+        case .event: return "Event"
+        case .ideas: return "LEGO® Ideas post"
+        }
+    }
+
+    var pickerDetail: String {
+        switch self {
+        case .standard: return "A build, a thought, a photo — share it with the community."
+        case .event: return "A show, meet-up or launch with a date people can plan around."
+        case .ideas: return "Track a LEGO® Ideas campaign: end date and live backer count."
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .standard: return "hammer"
+        case .event: return "calendar"
+        case .ideas: return "lightbulb"
+        }
+    }
+}
+
+struct CommunityPost: Identifiable, Hashable {
     var id: UUID
     var userID: UUID
     var caption: String
@@ -61,6 +103,66 @@ struct CommunityPost: Identifiable, Codable, Hashable {
     var reportCount: Int
     var createdAt: Date
     var updatedAt: Date
+    // Post types (kept optional/defaulted so existing data still decodes).
+    var title: String = ""
+    var kind: CommunityPostKind = .standard
+    /// Event posts: when it happens (and optionally where).
+    var eventDate: Date? = nil
+    var eventLocation: String? = nil
+    /// LEGO® Ideas posts: campaign end date and the creator-maintained
+    /// backer counter.
+    var ideasEndDate: Date? = nil
+    var backerCount: Int? = nil
+}
+
+extension CommunityPost: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id, userID, caption, imageReferences, challengeID, threadID,
+             threadDay, status, reportCount, createdAt, updatedAt,
+             title, kind, eventDate, eventLocation, ideasEndDate, backerCount
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        userID = try container.decode(UUID.self, forKey: .userID)
+        caption = try container.decode(String.self, forKey: .caption)
+        imageReferences = try container.decode([String].self, forKey: .imageReferences)
+        challengeID = try container.decodeIfPresent(UUID.self, forKey: .challengeID)
+        threadID = try container.decodeIfPresent(UUID.self, forKey: .threadID)
+        threadDay = try container.decodeIfPresent(Int.self, forKey: .threadDay)
+        status = try container.decode(CommunityPostStatus.self, forKey: .status)
+        reportCount = try container.decode(Int.self, forKey: .reportCount)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        kind = try container.decodeIfPresent(CommunityPostKind.self, forKey: .kind) ?? .standard
+        eventDate = try container.decodeIfPresent(Date.self, forKey: .eventDate)
+        eventLocation = try container.decodeIfPresent(String.self, forKey: .eventLocation)
+        ideasEndDate = try container.decodeIfPresent(Date.self, forKey: .ideasEndDate)
+        backerCount = try container.decodeIfPresent(Int.self, forKey: .backerCount)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(caption, forKey: .caption)
+        try container.encode(imageReferences, forKey: .imageReferences)
+        try container.encodeIfPresent(challengeID, forKey: .challengeID)
+        try container.encodeIfPresent(threadID, forKey: .threadID)
+        try container.encodeIfPresent(threadDay, forKey: .threadDay)
+        try container.encode(status, forKey: .status)
+        try container.encode(reportCount, forKey: .reportCount)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
+        try container.encode(title, forKey: .title)
+        try container.encode(kind, forKey: .kind)
+        try container.encodeIfPresent(eventDate, forKey: .eventDate)
+        try container.encodeIfPresent(eventLocation, forKey: .eventLocation)
+        try container.encodeIfPresent(ideasEndDate, forKey: .ideasEndDate)
+        try container.encodeIfPresent(backerCount, forKey: .backerCount)
+    }
 }
 
 // MARK: - Follows & blocking (App Store UGC requirements: report + block)

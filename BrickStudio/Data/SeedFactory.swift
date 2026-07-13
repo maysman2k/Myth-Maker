@@ -817,7 +817,7 @@ enum SeedFactory {
             createdAt: now.addingTimeInterval(-1 * 86_400)
         )
 
-        func post(_ user: UserAccount, _ caption: String, hoursAgo: Double, challengeID: UUID? = nil, threadID: UUID? = nil, threadDay: Int? = nil) -> CommunityPost {
+        func post(_ user: UserAccount, _ caption: String, hoursAgo: Double, challengeID: UUID? = nil, threadID: UUID? = nil, threadDay: Int? = nil, title: String = "") -> CommunityPost {
             CommunityPost(
                 id: UUID(),
                 userID: user.id,
@@ -829,22 +829,33 @@ enum SeedFactory {
                 status: .visible,
                 reportCount: 0,
                 createdAt: now.addingTimeInterval(-hoursAgo * 3600),
-                updatedAt: now.addingTimeInterval(-hoursAgo * 3600)
+                updatedAt: now.addingTimeInterval(-hoursAgo * 3600),
+                title: title
             )
         }
 
         let wipThread = UUID()
-        let post1 = post(member2, "Day 1 of the Elland Road build. Pitch down, 3,000 studs to go. Send tea.", hoursAgo: 30, threadID: wipThread, threadDay: 1)
-        let post2 = post(member2, "Day 3: East Stand roof finally stopped fighting back. Cantilevers are no joke at this scale.", hoursAgo: 6, threadID: wipThread, threadDay: 3)
-        let post3 = post(member1, "Finished the corner café from last month's modular kick. First MOC I'm actually proud of!", hoursAgo: 12)
-        let entry1 = post(member3, "My pie stall entry — complete with a 1x1 tile pie that took longer than the stall.", hoursAgo: 8, challengeID: thisWeekChallenge.id)
-        let entry2 = post(member1, "Terrace scarf in brick form. 43 pieces of pure nostalgia.", hoursAgo: 4, challengeID: thisWeekChallenge.id)
-        let winnerPost = post(member3, "Micro milk float — 28 pieces, one very small delivery round.", hoursAgo: 200, challengeID: lastWeekChallenge.id)
+        let post1 = post(member2, "Day 1 of the Elland Road build. Pitch down, 3,000 studs to go. Send tea.", hoursAgo: 30, threadID: wipThread, threadDay: 1, title: "Elland Road build diary")
+        let post2 = post(member2, "Day 3: East Stand roof finally stopped fighting back. Cantilevers are no joke at this scale.", hoursAgo: 6, threadID: wipThread, threadDay: 3, title: "Elland Road build diary")
+        let post3 = post(member1, "Finished the corner café from last month's modular kick. First MOC I'm actually proud of!", hoursAgo: 12, title: "Corner café, done!")
+        let entry1 = post(member3, "My pie stall entry — complete with a 1x1 tile pie that took longer than the stall.", hoursAgo: 8, challengeID: thisWeekChallenge.id, title: "The Pie Stand")
+        let entry2 = post(member1, "Terrace scarf in brick form. 43 pieces of pure nostalgia.", hoursAgo: 4, challengeID: thisWeekChallenge.id, title: "Brick scarf")
+        let winnerPost = post(member3, "Micro milk float — 28 pieces, one very small delivery round.", hoursAgo: 200, challengeID: lastWeekChallenge.id, title: "Micro milk float")
+
+        var eventPost = post(member2, "Yorkshire's biggest brick show is back — MOC displays, traders and a build zone for the kids. BIAB will have a stand, come say hello!", hoursAgo: 20, title: "Yorkshire Brick Show 2026")
+        eventPost.kind = .event
+        eventPost.eventDate = now.addingTimeInterval(12 * 86_400)
+        eventPost.eventLocation = "Leeds Town Hall"
+
+        var ideasPost = post(member1, "My working pier arcade is live on LEGO® Ideas — penny pusher, grabber and all. Every vote counts, back it if you fancy seeing it on shelves!", hoursAgo: 10, title: "Seaside Pier Arcade — back it on Ideas!")
+        ideasPost.kind = .ideas
+        ideasPost.ideasEndDate = now.addingTimeInterval(45 * 86_400)
+        ideasPost.backerCount = 2847
 
         var finishedChallenge = lastWeekChallenge
         finishedChallenge.winnerPostID = winnerPost.id
         snapshot.challenges = [finishedChallenge, thisWeekChallenge]
-        snapshot.communityPosts = [post1, post2, post3, entry1, entry2, winnerPost]
+        snapshot.communityPosts = [post1, post2, post3, entry1, entry2, winnerPost, eventPost, ideasPost]
 
         func react(_ user: UserAccount, _ target: CommunityPost, _ reaction: BrickReaction, hoursAgo: Double) -> ReactionRecord {
             ReactionRecord(id: UUID(), userID: user.id, postID: target.id, reaction: reaction, createdAt: now.addingTimeInterval(-hoursAgo * 3600))

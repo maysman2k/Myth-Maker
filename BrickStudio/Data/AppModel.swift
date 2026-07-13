@@ -13,7 +13,7 @@ enum MainTab: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .today: return "Today"
+        case .today: return "Feed"
         case .news: return "News"
         case .create: return "Mosiac Maker"
         case .shop: return "Shop"

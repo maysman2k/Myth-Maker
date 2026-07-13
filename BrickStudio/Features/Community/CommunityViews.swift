@@ -10,6 +10,8 @@ struct CommunityPostCard: View {
     var showsThreadContext = true
 
     @State private var isReporting = false
+    @State private var isEditingBackers = false
+    @State private var backerText = ""
 
     private var author: UserAccount? { model.account(id: post.userID) }
 
@@ -18,6 +20,9 @@ struct CommunityPostCard: View {
             header
             if post.status == .pendingReview {
                 TagBadge(text: "Awaiting review", tint: BrickColor.brickRed)
+            }
+            if post.kind != .standard {
+                TagBadge(text: post.kind.label, tint: post.kind == .event ? BrickColor.stadiumGreen : BrickColor.gold)
             }
             if let challengeID = post.challengeID, let challenge = model.challenge(challengeID) {
                 NavigationLink(value: ContentRoute.challenge(challengeID)) {
@@ -28,12 +33,19 @@ struct CommunityPostCard: View {
             if showsThreadContext, let day = post.threadDay {
                 TagBadge(text: "WIP · Day \(day)", tint: BrickColor.stadiumGreen)
             }
+            if !post.title.isEmpty {
+                Text(post.title)
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundStyle(BrickColor.primaryText)
+                    .multilineTextAlignment(.leading)
+            }
             if !post.caption.isEmpty {
                 Text(post.caption)
                     .font(BrickFont.body)
                     .foregroundStyle(BrickColor.primaryText)
                     .multilineTextAlignment(.leading)
             }
+            kindDetails
             imageStrip
             ReactionBar(post: post)
             HStack {
@@ -51,6 +63,76 @@ struct CommunityPostCard: View {
         .sheet(isPresented: $isReporting) {
             ReportUserSheet(userID: post.userID, postID: post.id)
                 .presentationDetents([.medium])
+        }
+        .alert("Update backer count", isPresented: $isEditingBackers) {
+            TextField("Backers", text: $backerText)
+                .keyboardType(.numberPad)
+            Button("Save") {
+                if let count = Int(backerText) {
+                    model.updateBackerCount(post.id, to: count)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("How many backers does the campaign have now?")
+        }
+    }
+
+    /// Event and LEGO® Ideas posts carry extra structured info.
+    @ViewBuilder
+    private var kindDetails: some View {
+        switch post.kind {
+        case .standard:
+            EmptyView()
+        case .event:
+            VStack(alignment: .leading, spacing: 4) {
+                if let date = post.eventDate {
+                    Label(date.formatted(date: .abbreviated, time: .shortened), systemImage: "calendar")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(BrickColor.stadiumGreen)
+                }
+                if let location = post.eventLocation, !location.isEmpty {
+                    Label(location, systemImage: "mappin.and.ellipse")
+                        .font(BrickFont.meta)
+                        .foregroundStyle(BrickColor.secondaryText)
+                }
+            }
+            .padding(BrickSpacing.m)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(BrickColor.stadiumGreen.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+        case .ideas:
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Label("\((post.backerCount ?? 0).formatted()) backers", systemImage: "person.3.fill")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(BrickColor.gold)
+                    Spacer()
+                    if let endDate = post.ideasEndDate {
+                        let days = max(0, Int(endDate.timeIntervalSince(Date()) / 86_400))
+                        TagBadge(
+                            text: endDate < Date() ? "Campaign ended" : (days == 0 ? "Ends today!" : "\(days) day\(days == 1 ? "" : "s") left"),
+                            tint: endDate < Date() ? BrickColor.secondaryText : BrickColor.brickRed
+                        )
+                    }
+                }
+                if post.userID == model.currentUserID {
+                    Button {
+                        backerText = "\(post.backerCount ?? 0)"
+                        isEditingBackers = true
+                    } label: {
+                        Label("Update backers", systemImage: "plus.forwardslash.minus")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(BrickColor.gold)
+                            .frame(minHeight: 32)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(BrickSpacing.m)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(BrickColor.gold.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
 
@@ -194,23 +276,86 @@ struct CommunityPostDetailView: View {
     }
 }
 
+// MARK: - Post type picker ("what do you want to put on?")
+
+struct PostTypePickerSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    var onPick: (CommunityPostKind) -> Void
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: BrickSpacing.m) {
+                ForEach(CommunityPostKind.allCases) { kind in
+                    Button {
+                        dismiss()
+                        onPick(kind)
+                    } label: {
+                        HStack(spacing: BrickSpacing.m) {
+                            Image(systemName: kind.symbol)
+                                .font(.system(size: 22))
+                                .foregroundStyle(BrickColor.gold)
+                                .frame(width: 46, height: 46)
+                                .background(Circle().fill(BrickColor.gold.opacity(0.12)))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(kind.pickerTitle)
+                                    .font(BrickFont.cardTitle)
+                                    .foregroundStyle(BrickColor.primaryText)
+                                Text(kind.pickerDetail)
+                                    .font(BrickFont.meta)
+                                    .foregroundStyle(BrickColor.secondaryText)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundStyle(BrickColor.secondaryText)
+                        }
+                        .padding(BrickSpacing.l)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
+                        .brickCard()
+                    }
+                    .buttonStyle(.plain)
+                }
+                Spacer()
+            }
+            .padding(BrickSpacing.l)
+            .background(BrickColor.background)
+            .navigationTitle("Create a Post")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium])
+    }
+}
+
 // MARK: - Composer
 
 struct CommunityComposerSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
 
+    var kind: CommunityPostKind
     /// Pre-selects the active challenge when opened from a challenge screen.
     var challengeID: UUID?
 
+    @State private var title = ""
     @State private var caption = ""
     @State private var pickedItems: [PhotosPickerItem] = []
     @State private var images: [UIImage] = []
     @State private var enterChallenge: Bool
     @State private var threadChoice: UUID?
     @State private var startNewThread = false
+    @State private var eventDate = Date().addingTimeInterval(7 * 86_400)
+    @State private var eventLocation = ""
+    @State private var ideasEndDate = Date().addingTimeInterval(30 * 86_400)
+    @State private var backerText = ""
 
-    init(challengeID: UUID? = nil) {
+    init(kind: CommunityPostKind = .standard, challengeID: UUID? = nil) {
+        self.kind = kind
         self.challengeID = challengeID
         _enterChallenge = State(initialValue: challengeID != nil)
     }
@@ -219,12 +364,54 @@ struct CommunityComposerSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                    TextField("What did you build?", text: $caption, axis: .vertical)
-                        .lineLimit(3...8)
+                    TextField(titlePlaceholder, text: $title)
+                        .font(.system(size: 18, weight: .semibold))
                         .padding(BrickSpacing.m)
                         .background(BrickColor.card)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+
+                    TextField(captionPlaceholder, text: $caption, axis: .vertical)
+                        .lineLimit(4...10)
+                        .padding(BrickSpacing.m)
+                        .background(BrickColor.card)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(BrickColor.border, lineWidth: 1))
+
+                    if kind == .event {
+                        VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                            DatePicker("When is it?", selection: $eventDate, in: Date()...)
+                            TextField("Where? (optional)", text: $eventLocation)
+                                .padding(BrickSpacing.m)
+                                .background(BrickColor.background)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        .padding(BrickSpacing.m)
+                        .brickCard()
+                    }
+
+                    if kind == .ideas {
+                        VStack(alignment: .leading, spacing: BrickSpacing.s) {
+                            DatePicker("Campaign ends", selection: $ideasEndDate, in: Date()..., displayedComponents: .date)
+                            HStack {
+                                Text("Current backers")
+                                    .foregroundStyle(BrickColor.primaryText)
+                                Spacer()
+                                TextField("0", text: $backerText)
+                                    .keyboardType(.numberPad)
+                                    .multilineTextAlignment(.trailing)
+                                    .frame(width: 110)
+                                    .padding(8)
+                                    .background(BrickColor.background)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            Text("You can update the backer count from the post any time it changes.")
+                                .font(.system(size: 12))
+                                .foregroundStyle(BrickColor.secondaryText)
+                        }
+                        .padding(BrickSpacing.m)
+                        .brickCard()
+                    }
 
                     PhotosPicker(selection: $pickedItems, maxSelectionCount: 4, matching: .images) {
                         Label(images.isEmpty ? "Add photos" : "Photos (\(images.count))", systemImage: "photo.on.rectangle.angled")
@@ -246,17 +433,19 @@ struct CommunityComposerSheet: View {
                         }
                     }
 
-                    if let challengeID, let challenge = model.challenge(challengeID), challenge.status == .open {
-                        Toggle("Enter \"\(challenge.title)\" challenge 🏆", isOn: $enterChallenge)
-                            .padding(BrickSpacing.m)
-                            .brickCard()
-                    } else if let active = model.activeChallenge {
-                        Toggle("Enter \"\(active.title)\" challenge 🏆", isOn: $enterChallenge)
-                            .padding(BrickSpacing.m)
-                            .brickCard()
-                    }
+                    if kind == .standard {
+                        if let challengeID, let challenge = model.challenge(challengeID), challenge.status == .open {
+                            Toggle("Enter \"\(challenge.title)\" challenge 🏆", isOn: $enterChallenge)
+                                .padding(BrickSpacing.m)
+                                .brickCard()
+                        } else if let active = model.activeChallenge {
+                            Toggle("Enter \"\(active.title)\" challenge 🏆", isOn: $enterChallenge)
+                                .padding(BrickSpacing.m)
+                                .brickCard()
+                        }
 
-                    threadSection
+                        threadSection
+                    }
 
                     Text("Be kind and keep it brick-related — posts that break the community rules get removed.")
                         .font(.system(size: 12))
@@ -265,12 +454,12 @@ struct CommunityComposerSheet: View {
                 .padding(BrickSpacing.l)
             }
             .background(BrickColor.background)
-            .navigationTitle("Share a Build")
+            .navigationTitle(kind == .standard ? "Share a Build" : (kind == .event ? "Add an Event" : "LEGO® Ideas Post"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Post") { submit() }
-                        .disabled(caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && images.isEmpty)
+                        .disabled(!canSubmit)
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
@@ -325,15 +514,48 @@ struct CommunityComposerSheet: View {
         .brickCard()
     }
 
+    private var titlePlaceholder: String {
+        switch kind {
+        case .standard: return "Title (e.g. Elland Road, Day 3)"
+        case .event: return "Event name (e.g. Yorkshire Brick Show)"
+        case .ideas: return "Ideas project name"
+        }
+    }
+
+    private var captionPlaceholder: String {
+        switch kind {
+        case .standard: return "The write-up — what did you build?"
+        case .event: return "What's happening, who's it for, tickets…"
+        case .ideas: return "Tell everyone about the project and why they should back it"
+        }
+    }
+
+    private var canSubmit: Bool {
+        let hasContent = !title.trimmingCharacters(in: .whitespaces).isEmpty ||
+            !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            !images.isEmpty
+        switch kind {
+        case .standard: return hasContent
+        // Events and Ideas posts need a name so the feed cards read properly.
+        case .event, .ideas: return !title.trimmingCharacters(in: .whitespaces).isEmpty
+        }
+    }
+
     private func submit() {
         let references = images.compactMap { ImageStore.save($0) }.map { "local-image://\($0)" }
-        let selectedChallenge = enterChallenge ? (challengeID ?? model.activeChallenge?.id) : nil
+        let selectedChallenge = (kind == .standard && enterChallenge) ? (challengeID ?? model.activeChallenge?.id) : nil
         model.createCommunityPost(
+            title: title,
             caption: caption,
             imageReferences: references,
+            kind: kind,
+            eventDate: eventDate,
+            eventLocation: eventLocation.isEmpty ? nil : eventLocation,
+            ideasEndDate: ideasEndDate,
+            backerCount: Int(backerText) ?? 0,
             challengeID: selectedChallenge,
-            continueThread: threadChoice,
-            startThread: startNewThread
+            continueThread: kind == .standard ? threadChoice : nil,
+            startThread: kind == .standard && startNewThread
         )
         dismiss()
     }

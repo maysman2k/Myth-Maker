@@ -133,10 +133,23 @@ extension AppModel {
     }
 
     @discardableResult
-    func createCommunityPost(caption: String, imageReferences: [String], challengeID: UUID? = nil, continueThread existingThreadID: UUID? = nil, startThread: Bool = false) -> CommunityPost? {
+    func createCommunityPost(
+        title: String = "",
+        caption: String,
+        imageReferences: [String],
+        kind: CommunityPostKind = .standard,
+        eventDate: Date? = nil,
+        eventLocation: String? = nil,
+        ideasEndDate: Date? = nil,
+        backerCount: Int? = nil,
+        challengeID: UUID? = nil,
+        continueThread existingThreadID: UUID? = nil,
+        startThread: Bool = false
+    ) -> CommunityPost? {
         guard requireAccount(), let user = currentUser else { return nil }
         let trimmed = caption.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty || !imageReferences.isEmpty else { return nil }
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty || !imageReferences.isEmpty || !trimmedTitle.isEmpty else { return nil }
 
         var threadID: UUID?
         var threadDay: Int?
@@ -152,7 +165,7 @@ extension AppModel {
         }
 
         // Same pre-check as comments: flagged wording goes to the queue.
-        let flagged = CommentPolicy.initialStatus(for: trimmed, accountCreatedAt: user.createdAt) == .pendingReview
+        let flagged = CommentPolicy.initialStatus(for: trimmedTitle + " " + trimmed, accountCreatedAt: user.createdAt) == .pendingReview
         let post = CommunityPost(
             id: UUID(),
             userID: user.id,
@@ -164,13 +177,38 @@ extension AppModel {
             status: flagged ? .pendingReview : .visible,
             reportCount: 0,
             createdAt: Date(),
-            updatedAt: Date()
+            updatedAt: Date(),
+            title: trimmedTitle,
+            kind: kind,
+            eventDate: kind == .event ? eventDate : nil,
+            eventLocation: kind == .event ? eventLocation?.trimmingCharacters(in: .whitespaces) : nil,
+            ideasEndDate: kind == .ideas ? ideasEndDate : nil,
+            backerCount: kind == .ideas ? max(0, backerCount ?? 0) : nil
         )
         communityPosts.append(post)
         showToast(flagged ? "Post sent for review" : (challengeID != nil ? "You're in the challenge!" : "Posted"), symbol: challengeID != nil ? "trophy.fill" : "checkmark.circle.fill")
         persist()
         syncCommunityPost(post)
         return post
+    }
+
+    /// LEGO® Ideas posts carry a backer counter only the creator can move.
+    func updateBackerCount(_ postID: UUID, to count: Int) {
+        guard let index = communityPosts.firstIndex(where: { $0.id == postID }),
+              communityPosts[index].userID == currentUserID,
+              communityPosts[index].kind == .ideas else { return }
+        communityPosts[index].backerCount = max(0, count)
+        communityPosts[index].updatedAt = Date()
+        showToast("Backer count updated", symbol: "person.3.fill")
+        persist()
+        syncCommunityPost(communityPosts[index])
+    }
+
+    /// Upcoming events for the feed, soonest first.
+    var upcomingEvents: [CommunityPost] {
+        visibleCommunityPosts
+            .filter { $0.kind == .event && ($0.eventDate ?? .distantPast) >= Date() }
+            .sorted { ($0.eventDate ?? .distantFuture) < ($1.eventDate ?? .distantFuture) }
     }
 
     func deleteCommunityPost(_ postID: UUID) {

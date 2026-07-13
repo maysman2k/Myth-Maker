@@ -675,9 +675,15 @@ private struct CommunityPostRow: Codable {
     var reportCount: Int
     var createdAt: Date
     var updatedAt: Date
+    var title: String?
+    var kind: String?
+    var eventDate: Date?
+    var eventLocation: String?
+    var ideasEndDate: Date?
+    var backerCount: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id, caption, status
+        case id, caption, status, title, kind
         case userId = "user_id"
         case imageReferences = "image_references"
         case challengeId = "challenge_id"
@@ -686,6 +692,10 @@ private struct CommunityPostRow: Codable {
         case reportCount = "report_count"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case eventDate = "event_date"
+        case eventLocation = "event_location"
+        case ideasEndDate = "ideas_end_date"
+        case backerCount = "backer_count"
     }
 
     init(post: CommunityPost) {
@@ -700,6 +710,12 @@ private struct CommunityPostRow: Codable {
         reportCount = post.reportCount
         createdAt = post.createdAt
         updatedAt = post.updatedAt
+        title = post.title
+        kind = post.kind.rawValue
+        eventDate = post.eventDate
+        eventLocation = post.eventLocation
+        ideasEndDate = post.ideasEndDate
+        backerCount = post.backerCount
     }
 
     var post: CommunityPost {
@@ -714,7 +730,13 @@ private struct CommunityPostRow: Codable {
             status: CommunityPostStatus(rawValue: status) ?? .visible,
             reportCount: reportCount,
             createdAt: createdAt,
-            updatedAt: updatedAt
+            updatedAt: updatedAt,
+            title: title ?? "",
+            kind: kind.flatMap(CommunityPostKind.init(rawValue:)) ?? .standard,
+            eventDate: eventDate,
+            eventLocation: eventLocation,
+            ideasEndDate: ideasEndDate,
+            backerCount: backerCount
         )
     }
 }

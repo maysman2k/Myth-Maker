@@ -185,3 +185,11 @@ create policy "users write own scores" on game_scores
   for insert with check (auth.uid() = user_id);
 create policy "users update own scores" on game_scores
   for update using (auth.uid() = user_id);
+
+-- Post types: titles, events and LEGO(R) Ideas campaign tracking ------------
+alter table community_posts add column if not exists title text not null default '';
+alter table community_posts add column if not exists kind text not null default 'standard';
+alter table community_posts add column if not exists event_date timestamptz;
+alter table community_posts add column if not exists event_location text;
+alter table community_posts add column if not exists ideas_end_date timestamptz;
+alter table community_posts add column if not exists backer_count int;
