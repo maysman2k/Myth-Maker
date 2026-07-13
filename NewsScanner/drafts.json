@@ -1,5 +1,34 @@
 [
   {
+    "id": "8f9e1060-4dc7-5a6e-ae84-ba5a070e339b",
+    "title": "LEGO Ideas 21372 La Catrina officially revealed",
+    "summary": "LEGO has confirmed 21372 La Catrina, a new 18+ LEGO Ideas set celebrating Day of the Dead, arriving on LEGO.com from 1 August.",
+    "bodyMarkdown": "## What happened\nLEGO has officially revealed 21372 La Catrina, a new LEGO Ideas set built around the iconic Day of the Dead figure from Mexican culture. Confirmed via a LEGO press release shared by Brickset, the set contains 1,212 pieces and is aimed at adult builders (18+).\n\nPricing has been confirmed as $139.99 / £109.99 / €119.99, with availability on LEGO.com from 1 August. LEGO describes it as a display piece designed for desks or shelves, suitable for year-round decor as well as Day of the Dead celebrations, and positions it as a gift set for adult fans.\n\nAccording to Brickset, this is considered one of the more unusual LEGO Ideas projects to be greenlit for production, standing out from the more typical vehicle or building themes the line usually features.\n\n## Why it matters\nLEGO Ideas sets are chosen through fan submissions, so seeing a culturally themed figurine like this reach production is notable for the community. It's a good example of the Ideas platform pushing into new subject matter beyond its usual pop-culture or architecture leanings, and it adds another 18+ display piece to LEGO's growing adult-focused catalogue.\n\n## What to watch next\nExpect more detailed images, colour breakdowns and full box art to surface closer to the 1 August release date, along with early reviews once builders get their hands on it.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-ideas",
+      "la-catrina",
+      "21372",
+      "adult-sets",
+      "new-set-reveal"
+    ],
+    "sourceLinks": [
+      {
+        "id": "9e7b1cd3-03e8-506b-86a0-afccac44ecf3",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133180"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 82,
+    "riskNotes": "Confirm final piece count and price consistency across all official LEGO regional pages before publishing, as press release figures can occasionally be updated closer to release. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-13T14:51:57Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133180?57104"
+    ]
+  },
+  {
     "id": "4cbb06f1-4edc-5910-8506-9211abb39a08",
     "title": "Fan-built Star Wars freighter is designed to swallow the LEGO Millennium Falcon whole",
     "summary": "Builder Sentinel_Brix has created an original Star Wars-style ship, the Savareena, big enough to fit LEGO's 75375 Millennium Falcon inside it — a fan creation, not an official LEGO set.",
@@ -1413,35 +1442,6 @@
     "foundAt": "2026-07-08T19:45:48Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/132927?74733"
-    ]
-  },
-  {
-    "id": "93234ec1-309e-569e-8e70-82c19b68b05d",
-    "title": "LEGO Ideas Sea Serpent GWP sells out in hours in Australia",
-    "summary": "The free-with-purchase 40912 Sea Serpent vanished from LEGO.com in Australia and New Zealand just 10 hours into a planned six-day run, sparking questions over whether the UK and other regions will run out too.",
-    "bodyMarkdown": "## What happened\nLEGO Ideas 40912 Sea Serpent, the gift-with-purchase remake of the 1992 Black Knights set 6057 Sea Serpent, sold out on LEGO.com in Australia and New Zealand roughly 10 hours after launch, despite the promotion being scheduled to run for six days. It's a timed GWP tied to LEGO Insiders Days, which continues until 12 July.\n\nAs of writing, the set is still officially available in the UK, US and Europe, where it's included free with qualifying orders over £160 / $180 / €180. That spend threshold covers sets already discounted for Insiders Days, plus double-points themes such as Marvel, Harry Potter, Speed Champions, Jurassic World, Disney, Sonic the Hedgehog, Wicked and LEGO Education.\n\nWhether other regions will follow Australia and sell out early is not confirmed - this is speculation rather than official news, so UK fans should treat any prediction of an early UK sellout as a rumour for now.\n\n## Why it matters\nLEGO Castle fans have had slim pickings outside the BrickLink Designer Program lately, so 40912 Sea Serpent has generated strong demand. If you're hoping to grab it in the UK, acting sooner rather than later during Insiders Days seems sensible given how quickly Australian stock disappeared.\n\n## What to watch next\nMost of the build can be recreated using your own parts, Pick a Brick or BrickLink if you miss out - the only genuinely exclusive pieces are two new Black Knights shields and the fabric sail, the latter being trickier to substitute convincingly.",
-    "category": "Ideas",
-    "tags": [
-      "lego-ideas",
-      "gift-with-purchase",
-      "sea-serpent",
-      "castle-theme",
-      "insiders-days"
-    ],
-    "sourceLinks": [
-      {
-        "id": "ea10e46c-19dd-5960-b392-760f8f84c30e",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-ideas-sea-serpent-sells-out-in-hours-in-australia"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm current UK/US/EU stock status before publishing, as availability may change quickly; the suggestion that other regions will sell out is speculative and should be flagged as such if repeated. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-08T14:05:47Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/86d51f7e-a1b8-4cf3-bc52-e9b710933411.png"
     ]
   }
 ]
