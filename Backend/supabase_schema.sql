@@ -142,3 +142,46 @@ create policy "Authenticated users upload story media"
 on storage.objects for insert
 to authenticated
 with check (bucket_id = 'story-media' and auth.uid()::text = (storage.foldername(name))[1]);
+
+-- Community layer: build posts + weekly game leaderboard ---------------------
+
+create table if not exists community_posts (
+  id uuid primary key,
+  user_id uuid not null references profiles(id) on delete cascade,
+  caption text not null default '',
+  image_references text[] not null default '{}',
+  challenge_id uuid,
+  thread_id uuid,
+  thread_day int,
+  status text not null default 'visible',
+  report_count int not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table community_posts enable row level security;
+create policy "community posts are readable" on community_posts
+  for select using (status <> 'removed');
+create policy "users insert own posts" on community_posts
+  for insert with check (auth.uid() = user_id);
+create policy "users update own posts" on community_posts
+  for update using (auth.uid() = user_id);
+
+create table if not exists game_scores (
+  id uuid primary key,
+  user_id uuid not null references profiles(id) on delete cascade,
+  display_name text not null,
+  game text not null,
+  score int not null,
+  week_key text not null,
+  updated_at timestamptz not null default now(),
+  unique (user_id, game, week_key)
+);
+
+alter table game_scores enable row level security;
+create policy "scores are readable" on game_scores
+  for select using (true);
+create policy "users write own scores" on game_scores
+  for insert with check (auth.uid() = user_id);
+create policy "users update own scores" on game_scores
+  for update using (auth.uid() = user_id);

@@ -618,3 +618,136 @@ private extension ISO8601DateFormatter {
         return formatter
     }()
 }
+
+// MARK: - Community sync (build posts + game leaderboard)
+
+extension SupabaseService {
+    static func fetchCommunityPosts() async throws -> [CommunityPost] {
+        let rows: [CommunityPostRow] = try await request(
+            path: "/rest/v1/community_posts?status=neq.removed&order=created_at.desc&limit=100",
+            method: "GET",
+            token: loadSession()?.accessToken
+        )
+        return rows.map { $0.post }
+    }
+
+    static func upsertCommunityPost(_ post: CommunityPost) async throws {
+        let _: [CommunityPostRow] = try await request(
+            path: "/rest/v1/community_posts?on_conflict=id",
+            method: "POST",
+            body: CommunityPostRow(post: post),
+            token: loadSession()?.accessToken,
+            preferRepresentation: true,
+            extraHeaders: ["Prefer": "resolution=merge-duplicates,return=representation"]
+        )
+    }
+
+    static func fetchGameScores(weekKey: String) async throws -> [GameScoreEntry] {
+        let rows: [GameScoreRow] = try await request(
+            path: "/rest/v1/game_scores?week_key=eq.\(weekKey)&order=score.desc&limit=200",
+            method: "GET",
+            token: loadSession()?.accessToken
+        )
+        return rows.compactMap { $0.entry }
+    }
+
+    static func upsertGameScore(_ entry: GameScoreEntry) async throws {
+        let _: [GameScoreRow] = try await request(
+            path: "/rest/v1/game_scores?on_conflict=id",
+            method: "POST",
+            body: GameScoreRow(entry: entry),
+            token: loadSession()?.accessToken,
+            preferRepresentation: true,
+            extraHeaders: ["Prefer": "resolution=merge-duplicates,return=representation"]
+        )
+    }
+}
+
+private struct CommunityPostRow: Codable {
+    var id: UUID
+    var userId: UUID
+    var caption: String
+    var imageReferences: [String]
+    var challengeId: UUID?
+    var threadId: UUID?
+    var threadDay: Int?
+    var status: String
+    var reportCount: Int
+    var createdAt: Date
+    var updatedAt: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id, caption, status
+        case userId = "user_id"
+        case imageReferences = "image_references"
+        case challengeId = "challenge_id"
+        case threadId = "thread_id"
+        case threadDay = "thread_day"
+        case reportCount = "report_count"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+    }
+
+    init(post: CommunityPost) {
+        id = post.id
+        userId = post.userID
+        caption = post.caption
+        imageReferences = post.imageReferences
+        challengeId = post.challengeID
+        threadId = post.threadID
+        threadDay = post.threadDay
+        status = post.status.rawValue
+        reportCount = post.reportCount
+        createdAt = post.createdAt
+        updatedAt = post.updatedAt
+    }
+
+    var post: CommunityPost {
+        CommunityPost(
+            id: id,
+            userID: userId,
+            caption: caption,
+            imageReferences: imageReferences,
+            challengeID: challengeId,
+            threadID: threadId,
+            threadDay: threadDay,
+            status: CommunityPostStatus(rawValue: status) ?? .visible,
+            reportCount: reportCount,
+            createdAt: createdAt,
+            updatedAt: updatedAt
+        )
+    }
+}
+
+private struct GameScoreRow: Codable {
+    var id: UUID
+    var userId: UUID
+    var displayName: String
+    var game: String
+    var score: Int
+    var weekKey: String
+    var updatedAt: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id, game, score
+        case userId = "user_id"
+        case displayName = "display_name"
+        case weekKey = "week_key"
+        case updatedAt = "updated_at"
+    }
+
+    init(entry: GameScoreEntry) {
+        id = entry.id
+        userId = entry.userID
+        displayName = entry.displayName
+        game = entry.game.rawValue
+        score = entry.score
+        weekKey = entry.weekKey
+        updatedAt = entry.updatedAt
+    }
+
+    var entry: GameScoreEntry? {
+        guard let kind = GameKind(rawValue: game) else { return nil }
+        return GameScoreEntry(id: id, userID: userId, displayName: displayName, game: kind, score: score, weekKey: weekKey, updatedAt: updatedAt)
+    }
+}

@@ -8,6 +8,9 @@ enum ContentRoute: Hashable {
     case product(UUID)
     case lesson(UUID)
     case brickBarRequest(UUID)
+    case communityPost(UUID)
+    case challenge(UUID)
+    case builder(UUID)
 
     init?(type: ContentType, id: UUID) {
         switch type {
@@ -16,6 +19,7 @@ enum ContentRoute: Hashable {
         case .product: self = .product(id)
         case .lesson: self = .lesson(id)
         case .brickBarRequest: self = .brickBarRequest(id)
+        case .communityPost: self = .communityPost(id)
         default: return nil
         }
     }
@@ -30,6 +34,9 @@ struct ContentRouteDestinations: ViewModifier {
             case .product(let id): ProductDetailView(productID: id)
             case .lesson(let id): LessonDetailView(lessonID: id)
             case .brickBarRequest(let id): RequestDetailView(requestID: id)
+            case .communityPost(let id): CommunityPostDetailView(postID: id)
+            case .challenge(let id): ChallengeDetailView(challengeID: id)
+            case .builder(let id): BuilderProfileView(userID: id)
             }
         }
     }

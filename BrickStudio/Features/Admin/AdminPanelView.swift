@@ -43,8 +43,19 @@ struct AdminPanelView: View {
                             AdminProductsView()
                         }
                     }
+                    if user.role.canEditContent {
+                        adminLink("Build challenges", symbol: "trophy", badge: 0) {
+                            AdminChallengeView()
+                        }
+                        adminLink("Polls", symbol: "chart.bar", badge: 0) {
+                            AdminPollView()
+                        }
+                    }
                     adminLink("Comment moderation", symbol: "bubble.left.and.exclamationmark.bubble.right", badge: model.adminStats.pendingComments) {
                         AdminCommentsView()
+                    }
+                    adminLink("Community posts", symbol: "hammer", badge: model.postsAwaitingModeration.count) {
+                        AdminCommunityPostsView()
                     }
                     if user.role.isAdmin {
                         adminLink("Brick Bar requests", symbol: "wrench.and.screwdriver", badge: model.adminStats.openRequests) {

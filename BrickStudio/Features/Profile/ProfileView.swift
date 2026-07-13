@@ -75,6 +75,7 @@ struct ProfileView: View {
         VStack(spacing: 0) {
             profileLink("Edit profile", symbol: "pencil") { EditProfileView() }
             profileLink("Saved items", symbol: "bookmark") { SavedItemsView() }
+            profileLink("My Shelf", symbol: "square.grid.2x2") { MyShelfView() }
             profileLink("My designs", symbol: "square.grid.3x3") { SavedDesignsView() }
             profileLink("My Brick Bar requests", symbol: "wrench.and.screwdriver") { MyRequestsView() }
             profileLink("My stories", symbol: "square.and.pencil") { SubmittedStoriesView() }

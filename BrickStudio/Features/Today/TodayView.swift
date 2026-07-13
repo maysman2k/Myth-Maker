@@ -17,8 +17,12 @@ struct TodayView: View {
                 VStack(alignment: .leading, spacing: BrickSpacing.l) {
                     storyStrip
                     feedActionBar
+                    ChallengeCard()
                     newsTiles
+                    PollHighlightCard()
                     instagramCarousel
+                    LeaderboardHighlightCard()
+                    CommunityBuildsSection()
                     communityPostFeed
                     LegalDisclaimerFooter()
                 }
@@ -30,8 +34,22 @@ struct TodayView: View {
             .contentRouteDestinations()
             .task {
                 await loadInstagramPosts()
+                submitStoredBests()
+                await model.refreshCommunityContent()
             }
+            .onChange(of: brickStackBestScore) { _, score in model.submitGameScore(.brickStack, score: score) }
+            .onChange(of: studMatchBestScore) { _, score in model.submitGameScore(.studMatch, score: score) }
+            .onChange(of: buildSprintBestScore) { _, score in model.submitGameScore(.buildSprint, score: score) }
+            .onChange(of: revealStadiumBestScore) { _, score in model.submitGameScore(.revealStadium, score: score) }
         }
+    }
+
+    /// Feeds the signed-in player's stored bests onto this week's board.
+    private func submitStoredBests() {
+        model.submitGameScore(.brickStack, score: brickStackBestScore)
+        model.submitGameScore(.studMatch, score: studMatchBestScore)
+        model.submitGameScore(.buildSprint, score: buildSprintBestScore)
+        model.submitGameScore(.revealStadium, score: revealStadiumBestScore)
     }
 
     // MARK: Header (§8.3)

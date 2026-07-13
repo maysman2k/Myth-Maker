@@ -792,6 +792,106 @@ enum SeedFactory {
         let c8 = comment(moderator, on: .review, reviewBlueBrixx.id, "Good to see compatible brands covered honestly rather than dismissed.", hoursAgo: 80, likes: 7)
         snapshot.comments = [c1, c2, c3, c4, c5, c6, c7, c8]
 
+        // MARK: Community layer — challenge, posts, reactions, poll, scores
+
+        let lastWeekChallenge = BuildChallenge(
+            id: UUID(),
+            title: "Micro Motors",
+            prompt: "Build any vehicle in 30 pieces or fewer.",
+            status: .finished,
+            startsAt: now.addingTimeInterval(-14 * 86_400),
+            votingAt: now.addingTimeInterval(-9 * 86_400),
+            endsAt: now.addingTimeInterval(-7 * 86_400),
+            winnerPostID: nil,
+            createdAt: now.addingTimeInterval(-14 * 86_400)
+        )
+        let thisWeekChallenge = BuildChallenge(
+            id: UUID(),
+            title: "Terrace Heroes",
+            prompt: "Build a matchday moment — a stand, a scarf, a pie stall, anything terrace — in under 100 pieces.",
+            status: .open,
+            startsAt: now.addingTimeInterval(-1 * 86_400),
+            votingAt: now.addingTimeInterval(4 * 86_400),
+            endsAt: now.addingTimeInterval(6 * 86_400),
+            winnerPostID: nil,
+            createdAt: now.addingTimeInterval(-1 * 86_400)
+        )
+
+        func post(_ user: UserAccount, _ caption: String, hoursAgo: Double, challengeID: UUID? = nil, threadID: UUID? = nil, threadDay: Int? = nil) -> CommunityPost {
+            CommunityPost(
+                id: UUID(),
+                userID: user.id,
+                caption: caption,
+                imageReferences: [],
+                challengeID: challengeID,
+                threadID: threadID,
+                threadDay: threadDay,
+                status: .visible,
+                reportCount: 0,
+                createdAt: now.addingTimeInterval(-hoursAgo * 3600),
+                updatedAt: now.addingTimeInterval(-hoursAgo * 3600)
+            )
+        }
+
+        let wipThread = UUID()
+        let post1 = post(member2, "Day 1 of the Elland Road build. Pitch down, 3,000 studs to go. Send tea.", hoursAgo: 30, threadID: wipThread, threadDay: 1)
+        let post2 = post(member2, "Day 3: East Stand roof finally stopped fighting back. Cantilevers are no joke at this scale.", hoursAgo: 6, threadID: wipThread, threadDay: 3)
+        let post3 = post(member1, "Finished the corner café from last month's modular kick. First MOC I'm actually proud of!", hoursAgo: 12)
+        let entry1 = post(member3, "My pie stall entry — complete with a 1x1 tile pie that took longer than the stall.", hoursAgo: 8, challengeID: thisWeekChallenge.id)
+        let entry2 = post(member1, "Terrace scarf in brick form. 43 pieces of pure nostalgia.", hoursAgo: 4, challengeID: thisWeekChallenge.id)
+        let winnerPost = post(member3, "Micro milk float — 28 pieces, one very small delivery round.", hoursAgo: 200, challengeID: lastWeekChallenge.id)
+
+        var finishedChallenge = lastWeekChallenge
+        finishedChallenge.winnerPostID = winnerPost.id
+        snapshot.challenges = [finishedChallenge, thisWeekChallenge]
+        snapshot.communityPosts = [post1, post2, post3, entry1, entry2, winnerPost]
+
+        func react(_ user: UserAccount, _ target: CommunityPost, _ reaction: BrickReaction, hoursAgo: Double) -> ReactionRecord {
+            ReactionRecord(id: UUID(), userID: user.id, postID: target.id, reaction: reaction, createdAt: now.addingTimeInterval(-hoursAgo * 3600))
+        }
+        snapshot.reactions = [
+            react(member1, post1, .niceBuild, hoursAgo: 28),
+            react(member3, post1, .how, hoursAgo: 26),
+            react(member2, post3, .niceBuild, hoursAgo: 11),
+            react(member3, post3, .instructionsPlease, hoursAgo: 10),
+            react(admin, post3, .niceBuild, hoursAgo: 9),
+            react(member1, entry1, .niceBuild, hoursAgo: 7),
+            react(member2, entry1, .wantThis, hoursAgo: 5),
+            react(member2, winnerPost, .niceBuild, hoursAgo: 190)
+        ]
+
+        snapshot.follows = [
+            Follow(id: UUID(), followerID: member1.id, followedID: member2.id, createdAt: now.addingTimeInterval(-20 * 86_400)),
+            Follow(id: UUID(), followerID: member3.id, followedID: member2.id, createdAt: now.addingTimeInterval(-10 * 86_400)),
+            Follow(id: UUID(), followerID: member2.id, followedID: member3.id, createdAt: now.addingTimeInterval(-9 * 86_400))
+        ]
+
+        let stadiumPoll = Poll(
+            id: UUID(),
+            question: "Which stadium should Bricks in a Bag build next?",
+            options: [
+                PollOption(id: UUID(), label: "Anfield"),
+                PollOption(id: UUID(), label: "St James' Park"),
+                PollOption(id: UUID(), label: "Villa Park"),
+                PollOption(id: UUID(), label: "Celtic Park")
+            ],
+            status: .open,
+            createdAt: now.addingTimeInterval(-2 * 86_400)
+        )
+        snapshot.polls = [stadiumPoll]
+        snapshot.pollVotes = [
+            PollVote(id: UUID(), pollID: stadiumPoll.id, optionID: stadiumPoll.options[1].id, userID: member2.id, createdAt: now.addingTimeInterval(-86_400)),
+            PollVote(id: UUID(), pollID: stadiumPoll.id, optionID: stadiumPoll.options[0].id, userID: member1.id, createdAt: now.addingTimeInterval(-80_000)),
+            PollVote(id: UUID(), pollID: stadiumPoll.id, optionID: stadiumPoll.options[1].id, userID: member3.id, createdAt: now.addingTimeInterval(-40_000))
+        ]
+
+        let weekKey = GameScoreEntry.currentWeekKey(for: now)
+        snapshot.gameScores = [
+            GameScoreEntry(id: UUID(), userID: member2.id, displayName: member2.displayName, game: .brickStack, score: 34, weekKey: weekKey, updatedAt: now.addingTimeInterval(-3600)),
+            GameScoreEntry(id: UUID(), userID: member1.id, displayName: member1.displayName, game: .brickStack, score: 27, weekKey: weekKey, updatedAt: now.addingTimeInterval(-7200)),
+            GameScoreEntry(id: UUID(), userID: member3.id, displayName: member3.displayName, game: .studMatch, score: 18, weekKey: weekKey, updatedAt: now.addingTimeInterval(-5400))
+        ]
+
         return snapshot
     }
 }

@@ -8,6 +8,7 @@ enum ContentType: String, Codable, CaseIterable {
     case comment
     case mosaic
     case brickBarRequest
+    case communityPost = "community_post"
 
     var displayName: String {
         switch self {
@@ -18,6 +19,7 @@ enum ContentType: String, Codable, CaseIterable {
         case .comment: return "Comment"
         case .mosaic: return "Design"
         case .brickBarRequest: return "Brick Bar"
+        case .communityPost: return "Build"
         }
     }
 }

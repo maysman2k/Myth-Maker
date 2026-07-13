@@ -71,6 +71,18 @@ final class AppModel {
     var submittedStories: [SubmittedStory]
     var recentSearches: [String]
     var hasCompletedOnboarding: Bool
+    // Community layer
+    var communityPosts: [CommunityPost]
+    var reactions: [ReactionRecord]
+    var follows: [Follow]
+    var blocks: [BlockRecord]
+    var userReports: [UserReport]
+    var shelfItems: [ShelfItem]
+    var challenges: [BuildChallenge]
+    var challengeVotes: [ChallengeVote]
+    var polls: [Poll]
+    var pollVotes: [PollVote]
+    var gameScores: [GameScoreEntry]
 
     // MARK: Session-only UI state
     var selectedTab: MainTab = .today
@@ -100,6 +112,17 @@ final class AppModel {
         submittedStories = snap.submittedStories
         recentSearches = snap.recentSearches
         hasCompletedOnboarding = snap.hasCompletedOnboarding
+        communityPosts = snap.communityPosts
+        reactions = snap.reactions
+        follows = snap.follows
+        blocks = snap.blocks
+        userReports = snap.userReports
+        shelfItems = snap.shelfItems
+        challenges = snap.challenges
+        challengeVotes = snap.challengeVotes
+        polls = snap.polls
+        pollVotes = snap.pollVotes
+        gameScores = snap.gameScores
     }
 
     var snapshot: AppSnapshot {
@@ -121,7 +144,18 @@ final class AppModel {
             aiDrafts: aiDrafts,
             submittedStories: submittedStories,
             recentSearches: recentSearches,
-            hasCompletedOnboarding: hasCompletedOnboarding
+            hasCompletedOnboarding: hasCompletedOnboarding,
+            communityPosts: communityPosts,
+            reactions: reactions,
+            follows: follows,
+            blocks: blocks,
+            userReports: userReports,
+            shelfItems: shelfItems,
+            challenges: challenges,
+            challengeVotes: challengeVotes,
+            polls: polls,
+            pollVotes: pollVotes,
+            gameScores: gameScores
         )
     }
 
@@ -174,10 +208,12 @@ final class AppModel {
     // MARK: Comments
 
     /// Comments a given viewer should see: everything visible, plus their own
-    /// posts that are awaiting moderation.
+    /// posts that are awaiting moderation — and never anyone they've blocked.
     func viewableComments(for type: ContentType, contentID: UUID) -> [Comment] {
-        comments.filter {
+        let blocked = myBlockedUserIDs
+        return comments.filter {
             $0.contentType == type && $0.contentID == contentID &&
+            !blocked.contains($0.userID) &&
             ($0.status == .visible || ($0.status == .pendingReview && $0.userID == currentUserID))
         }
     }

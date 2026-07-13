@@ -30,6 +30,9 @@ struct SettingsView: View {
                     .foregroundStyle(BrickColor.secondaryText)
             }
             Section("Community") {
+                if model.isSignedIn {
+                    NavigationLink("Blocked users") { BlockedUsersView() }
+                }
                 NavigationLink("Community rules") { CommunityRulesView() }
                 NavigationLink("Legal & about") { LegalView() }
             }
