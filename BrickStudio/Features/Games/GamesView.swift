@@ -5,19 +5,45 @@ import SwiftUI
 import UIKit
 
 struct GamesView: View {
+    @Environment(AppModel.self) private var model
     @State private var presentedGame: BrickGame?
+    @AppStorage("brickStackBestScore") private var brickStackBest = 0
+    @AppStorage("studMatchBestScore") private var studMatchBest = 0
+    @AppStorage("buildSprintBestScore") private var buildSprintBest = 0
+    @AppStorage("revealStadiumBestScore") private var revealStadiumBest = 0
+    @AppStorage("gamesStreakCount") private var streakCount = 0
+    @AppStorage("gamesLastPlayedDay") private var lastPlayedDay = ""
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Games")
-                        .font(BrickFont.pageTitle)
-                        .foregroundStyle(BrickColor.primaryText)
-                    Text("Quick brick-sized challenges")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundStyle(BrickColor.secondaryText)
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Games")
+                            .font(BrickFont.pageTitle)
+                            .foregroundStyle(BrickColor.primaryText)
+                        Text("Quick brick-sized challenges")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundStyle(BrickColor.secondaryText)
+                    }
+                    Spacer()
+                    if streakCount > 0 {
+                        VStack(spacing: 0) {
+                            Text("🔥")
+                                .font(.system(size: 22))
+                            Text("\(streakCount) day\(streakCount == 1 ? "" : "s")")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundStyle(BrickColor.gold)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .accessibilityLabel("Play streak: \(streakCount) days")
+                    }
                 }
+
+                leaderboardStrip
 
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
@@ -51,8 +77,68 @@ struct GamesView: View {
         }
     }
 
+    /// Weekly champion banner + link to the full boards.
+    @ViewBuilder
+    private var leaderboardStrip: some View {
+        NavigationLink {
+            LeaderboardView()
+        } label: {
+            HStack(spacing: 10) {
+                Text("🏆")
+                    .font(.system(size: 20))
+                if let champion = model.weeklyChampion {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("\(champion.displayName) leads \(champion.game.displayName) with \(champion.score)")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundStyle(BrickColor.primaryText)
+                            .lineLimit(1)
+                        Text("Weekly leaderboards — resets Monday")
+                            .font(.system(size: 11))
+                            .foregroundStyle(BrickColor.secondaryText)
+                    }
+                } else {
+                    Text("Weekly leaderboards — be the first on the board")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(BrickColor.primaryText)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(BrickColor.secondaryText)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(BrickColor.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func bestScore(for game: BrickGame) -> Int {
+        switch game {
+        case .brickStack: return brickStackBest
+        case .studMatch: return studMatchBest
+        case .buildSprint: return buildSprintBest
+        case .revealTheStadium: return revealStadiumBest
+        }
+    }
+
+    /// Consecutive-day play streak — ticked whenever a game is launched.
+    private func recordStreak() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = formatter.string(from: Date())
+        guard lastPlayedDay != today else { return }
+        let yesterday = formatter.string(from: Date().addingTimeInterval(-86_400))
+        streakCount = lastPlayedDay == yesterday ? streakCount + 1 : 1
+        lastPlayedDay = today
+    }
+
     private func gameTile(_ game: BrickGame) -> some View {
         Button {
+            recordStreak()
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             presentedGame = game
         } label: {
             ZStack(alignment: .bottomLeading) {
@@ -74,12 +160,23 @@ struct GamesView: View {
                             .font(.system(size: 25, weight: .black))
                             .foregroundStyle(game.iconColor)
                         Spacer()
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 12, weight: .black))
-                            .foregroundStyle(.black)
-                            .frame(width: 30, height: 30)
-                            .background(BrickColor.gold)
-                            .clipShape(Circle())
+                        if bestScore(for: game) > 0 {
+                            Text("★ \(bestScore(for: game))")
+                                .font(.system(size: 11, weight: .black, design: .rounded))
+                                .foregroundStyle(.black)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(BrickColor.gold)
+                                .clipShape(Capsule())
+                                .accessibilityLabel("Best score \(bestScore(for: game))")
+                        } else {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 12, weight: .black))
+                                .foregroundStyle(.black)
+                                .frame(width: 30, height: 30)
+                                .background(BrickColor.gold)
+                                .clipShape(Circle())
+                        }
                     }
 
                     Spacer(minLength: 0)
@@ -115,13 +212,27 @@ struct GamesView: View {
             }
             .shadow(color: .black.opacity(0.24), radius: 12, x: 0, y: 8)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(GameTilePressStyle())
+    }
+}
+
+/// Springy scale-down on press — makes the tiles feel like physical bricks.
+private struct GameTilePressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.96 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }
 
 private struct FullScreenGameContainer: View {
     var game: BrickGame
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppModel.self) private var model
+    @AppStorage("brickStackBestScore") private var brickStackBest = 0
+    @AppStorage("studMatchBestScore") private var studMatchBest = 0
+    @AppStorage("buildSprintBestScore") private var buildSprintBest = 0
+    @AppStorage("revealStadiumBestScore") private var revealStadiumBest = 0
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -145,6 +256,15 @@ private struct FullScreenGameContainer: View {
             }
         }
         .background(BrickColor.background)
+        // Every exit path (game over, quit mid-game, swipe down) pushes the
+        // stored bests onto the weekly leaderboard. The Today-tab onChange
+        // hooks never fire while this tab is open, so sync must happen here.
+        .onDisappear {
+            model.submitGameScore(.brickStack, score: brickStackBest)
+            model.submitGameScore(.studMatch, score: studMatchBest)
+            model.submitGameScore(.buildSprint, score: buildSprintBest)
+            model.submitGameScore(.revealStadium, score: revealStadiumBest)
+        }
     }
 
     @ViewBuilder
@@ -660,9 +780,11 @@ private struct BrickStackGameView: View {
     private func endGame() {
         phase = .gameOver
         status = "Missed the stack"
+        let isNewBest = score > 0 && score >= bestScore
         bestScore = max(bestScore, score)
         audio.stopMusic()
-        UINotificationFeedbackGenerator().notificationOccurred(.error)
+        // A record run deserves a win buzz, not the failure thud.
+        UINotificationFeedbackGenerator().notificationOccurred(isNewBest ? .success : .error)
     }
 
     private func reset() {
