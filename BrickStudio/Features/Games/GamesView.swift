@@ -344,6 +344,27 @@ private enum BrickGame: CaseIterable, Identifiable {
 
 // MARK: - Shared
 
+/// Frosted glass surface for in-game chrome (score pills, badges, menus):
+/// a real blur with a dark tint layered between the blur and the content,
+/// so white HUD text stays legible over bright, moving playfields.
+private struct GameGlassStyle<S: InsettableShape>: ViewModifier {
+    var shape: S
+    var darken: Double
+
+    func body(content: Content) -> some View {
+        content
+            .background(shape.fill(.black.opacity(darken)))
+            .background(.ultraThinMaterial, in: shape)
+            .overlay(shape.strokeBorder(.white.opacity(0.2), lineWidth: 0.75))
+    }
+}
+
+private extension View {
+    func gameGlass<S: InsettableShape>(in shape: S, darken: Double = 0.2) -> some View {
+        modifier(GameGlassStyle(shape: shape, darken: darken))
+    }
+}
+
 private enum GameStudColor: String, CaseIterable {
     case yellow, red, green, blue, white
 
@@ -490,10 +511,9 @@ private struct BrickStackGameView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
-                    .background(.black.opacity(0.28))
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(.white.opacity(0.22), lineWidth: 1))
+                    .gameGlass(in: Circle(), darken: 0.2)
             }
+            .buttonStyle(PressableStyle(scale: 0.88))
             .accessibilityLabel("Pause")
             .disabled(phase != .playing)
             .opacity(phase == .playing ? 1 : 0.46)
@@ -508,8 +528,7 @@ private struct BrickStackGameView: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
-            .background(.black.opacity(0.3))
-            .clipShape(Capsule())
+            .gameGlass(in: Capsule(), darken: 0.22)
     }
 
     private func scorePill(value: Int, label: String) -> some View {
@@ -523,9 +542,7 @@ private struct BrickStackGameView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(.black.opacity(0.26))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.16), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.18)
     }
 
     private var playfield: some View {
@@ -556,9 +573,8 @@ private struct BrickStackGameView: View {
                     .padding(.horizontal, 32)
             }
             .padding(22)
-            .background(.black.opacity(0.42))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+            .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.3)
+            .cardAppear(0)
             .padding(.horizontal, 24)
             .padding(.bottom, 112)
         }
@@ -632,9 +648,8 @@ private struct BrickStackGameView: View {
             }
             .padding(24)
             .frame(maxWidth: 320)
-            .background(.black.opacity(0.54))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+            .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.38)
+            .cardAppear(0)
             .padding(.bottom, 104)
         }
     }
@@ -1452,10 +1467,9 @@ private struct StudMatchGameView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
-                    .background(.black.opacity(0.28))
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(.white.opacity(0.22), lineWidth: 1))
+                    .gameGlass(in: Circle(), darken: 0.2)
             }
+            .buttonStyle(PressableStyle(scale: 0.88))
             .accessibilityLabel("Pause")
             .disabled(phase != .playing)
             .opacity(phase == .playing ? 1 : 0.46)
@@ -1475,9 +1489,7 @@ private struct StudMatchGameView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(.black.opacity(0.26))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.16), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.18)
     }
 
     private var moveWindowStatus: some View {
@@ -1487,9 +1499,7 @@ private struct StudMatchGameView: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(.black.opacity(0.3))
-                .clipShape(Capsule())
-                .overlay(Capsule().strokeBorder(.white.opacity(0.16), lineWidth: 1))
+                .gameGlass(in: Capsule(), darken: 0.22)
 
             GeometryReader { proxy in
                 ZStack(alignment: .leading) {
@@ -1553,9 +1563,8 @@ private struct StudMatchGameView: View {
             }
             .padding(24)
             .frame(maxWidth: 320)
-            .background(.black.opacity(0.54))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+            .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.38)
+            .cardAppear(0)
             .padding(.bottom, 104)
         }
     }
@@ -2133,10 +2142,9 @@ private struct BuildSprintGameView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
-                    .background(.black.opacity(0.28))
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(.white.opacity(0.22), lineWidth: 1))
+                    .gameGlass(in: Circle(), darken: 0.2)
             }
+            .buttonStyle(PressableStyle(scale: 0.88))
             .accessibilityLabel("Pause")
             .disabled(phase == .setup || phase == .paused || phase == .gameOver)
             .opacity(phase == .setup || phase == .gameOver ? 0.46 : 1)
@@ -2156,9 +2164,7 @@ private struct BuildSprintGameView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(.black.opacity(0.26))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.16), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.18)
     }
 
     private var setupView: some View {
@@ -2198,9 +2204,8 @@ private struct BuildSprintGameView: View {
             .padding(.top, 6)
         }
         .padding(22)
-        .background(.black.opacity(0.42))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.3)
+        .cardAppear(0)
     }
 
     private func optionSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
@@ -2221,11 +2226,16 @@ private struct BuildSprintGameView: View {
                 .foregroundStyle(isSelected ? .black : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 11)
-                .background(isSelected ? BrickColor.gold : .black.opacity(0.26))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.16), lineWidth: 1))
+                .background {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(BrickGradient.sunrise)
+                    }
+                }
+                .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: isSelected ? 0 : 0.2)
+                .brickGlow(BrickColor.amber, radius: isSelected ? 10 : 0, strength: isSelected ? 0.4 : 0)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableStyle())
     }
 
     private var memorizeView: some View {
@@ -2319,8 +2329,10 @@ private struct BuildSprintGameView: View {
                         .frame(width: 42, height: 42)
                         .overlay(Circle().strokeBorder(selectedColor == color ? .white : .black.opacity(0.22), lineWidth: selectedColor == color ? 4 : 2))
                         .shadow(color: .black.opacity(0.18), radius: 5, x: 0, y: 3)
+                        .scaleEffect(selectedColor == color ? 1.12 : 1)
+                        .animation(BrickMotion.bouncy, value: selectedColor)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableStyle(scale: 0.85))
             }
         }
         .padding(.vertical, 4)
@@ -2410,9 +2422,8 @@ private struct BuildSprintGameView: View {
             }
             .padding(24)
             .frame(maxWidth: 320)
-            .background(.black.opacity(0.54))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+            .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.38)
+            .cardAppear(0)
             .padding(.bottom, 104)
         }
     }
@@ -2522,9 +2533,7 @@ private struct BuildSprintBoard: View {
             }
         }
         .padding(8)
-        .background(.black.opacity(0.24))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 18, style: .continuous), darken: 0.18)
     }
 }
 
@@ -2846,10 +2855,9 @@ private struct RevealTheStadiumGameView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
-                    .background(.black.opacity(0.28))
-                    .clipShape(Circle())
-                    .overlay(Circle().strokeBorder(.white.opacity(0.22), lineWidth: 1))
+                    .gameGlass(in: Circle(), darken: 0.2)
             }
+            .buttonStyle(PressableStyle(scale: 0.88))
             .accessibilityLabel("Pause")
             .disabled(phase != .playing)
             .opacity(phase == .playing ? 1 : 0.46)
@@ -2870,15 +2878,14 @@ private struct RevealTheStadiumGameView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(.black.opacity(0.3))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.16), lineWidth: 1))
+        .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.22)
     }
 
     @ViewBuilder
     private var content: some View {
         if phase == .roundResult, let roundResult {
             resultView(roundResult)
+                .cardAppear(0)
         } else {
             VStack(spacing: 16) {
                 VStack(spacing: 8) {
@@ -2941,11 +2948,9 @@ private struct RevealTheStadiumGameView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 13)
                                 .padding(.horizontal, 8)
-                                .background(.black.opacity(0.34))
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(.white.opacity(0.15), lineWidth: 1))
+                                .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.24)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableStyle())
                         .disabled(phase != .playing)
                     }
                 }
@@ -3027,9 +3032,8 @@ private struct RevealTheStadiumGameView: View {
             }
             .padding(24)
             .frame(maxWidth: 330)
-            .background(.black.opacity(0.58))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.18), lineWidth: 1))
+            .gameGlass(in: RoundedRectangle(cornerRadius: 28, style: .continuous), darken: 0.4)
+            .cardAppear(0)
             .padding(.horizontal, 24)
         }
     }
