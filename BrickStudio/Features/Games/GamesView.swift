@@ -365,6 +365,125 @@ private extension View {
     }
 }
 
+// MARK: Game feel — confetti, score pops, new-best badge
+
+private let confettiBrickPalette: [Color] = [
+    Color(hex: 0xFFD23F), Color(hex: 0xF57C1F), Color(hex: 0xD62828),
+    Color(hex: 0x009B48), Color(hex: 0x0055BF), Color(hex: 0xF2F3F2)
+]
+
+/// A celebratory burst of falling LEGO-style bricks. Purely decorative;
+/// renders nothing when Reduce Motion is on.
+private struct BrickConfettiView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    struct Piece: Identifiable {
+        let id: Int
+        let x: CGFloat
+        let delay: Double
+        let duration: Double
+        let spin: Double
+        let size: CGFloat
+        let color: Color
+    }
+
+    private let pieces: [Piece] = (0..<26).map { index in
+        Piece(
+            id: index,
+            x: CGFloat.random(in: 0.04...0.96),
+            delay: Double.random(in: 0...0.4),
+            duration: Double.random(in: 1.1...2.0),
+            spin: Double.random(in: -540...540),
+            size: CGFloat.random(in: 12...20),
+            color: confettiBrickPalette[index % confettiBrickPalette.count]
+        )
+    }
+
+    var body: some View {
+        if !reduceMotion {
+            GeometryReader { proxy in
+                ForEach(pieces) { piece in
+                    FallingBrick(piece: piece, width: proxy.size.width, height: proxy.size.height)
+                }
+            }
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+    }
+}
+
+/// One tumbling 2×1 brick with studs, animating its own fall.
+private struct FallingBrick: View {
+    var piece: BrickConfettiView.Piece
+    var width: CGFloat
+    var height: CGFloat
+    @State private var fallen = false
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: 2.5)
+            .fill(piece.color)
+            .overlay(alignment: .top) {
+                HStack(spacing: piece.size * 0.16) {
+                    Circle().fill(.white.opacity(0.4))
+                        .frame(width: piece.size * 0.2, height: piece.size * 0.2)
+                    Circle().fill(.white.opacity(0.4))
+                        .frame(width: piece.size * 0.2, height: piece.size * 0.2)
+                }
+                .padding(.top, piece.size * 0.08)
+            }
+            .frame(width: piece.size, height: piece.size * 0.62)
+            .rotationEffect(.degrees(fallen ? piece.spin : 0))
+            .position(x: piece.x * width, y: fallen ? height + 40 : -40)
+            .opacity(fallen ? 0.85 : 1)
+            .onAppear {
+                withAnimation(.easeIn(duration: piece.duration).delay(piece.delay)) {
+                    fallen = true
+                }
+            }
+    }
+}
+
+/// A floating "+120"-style score pop that rises and fades near the action.
+private struct GameScorePop: Identifiable {
+    let id = UUID()
+    var text: String
+    var tint: Color = BrickColor.gold
+}
+
+private struct GameScorePopView: View {
+    var pop: GameScorePop
+    @State private var risen = false
+
+    var body: some View {
+        Text(pop.text)
+            .font(.system(size: 30, weight: .black, design: .rounded))
+            .foregroundStyle(pop.tint)
+            .shadow(color: .black.opacity(0.4), radius: 6, x: 0, y: 3)
+            .scaleEffect(risen ? 1.05 : 0.6)
+            .offset(y: risen ? -74 : 0)
+            .opacity(risen ? 0 : 1)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.9)) { risen = true }
+            }
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+    }
+}
+
+/// "NEW BEST!" capsule shown on record-run game-over panels.
+private struct NewBestBadge: View {
+    var body: some View {
+        Text("NEW BEST!")
+            .font(.system(size: 13, weight: .black, design: .rounded))
+            .tracking(1.4)
+            .foregroundStyle(BrickColor.accentText)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 7)
+            .background(Capsule().fill(BrickGradient.sunrise))
+            .brickGlow(BrickColor.amber, radius: 14, strength: 0.55)
+    }
+}
+
 private enum GameStudColor: String, CaseIterable {
     case yellow, red, green, blue, white
 
@@ -448,6 +567,8 @@ private struct BrickStackGameView: View {
     @State private var countdownStartedAt: Date?
     @State private var countdownNumber = 3
     @State private var pulse: StackPulse?
+    @State private var scorePop: GameScorePop?
+    @State private var newBestRun = false
     @StateObject private var audio = BrickStackAudioController()
 
     private let timer = Timer.publish(every: 0.018, on: .main, in: .common).autoconnect()
@@ -476,6 +597,17 @@ private struct BrickStackGameView: View {
                 pauseOverlay
             } else if phase == .gameOver {
                 gameOverOverlay
+            }
+
+            if let scorePop {
+                GameScorePopView(pop: scorePop)
+                    .id(scorePop.id)
+                    .offset(y: -50)
+            }
+
+            if phase == .gameOver, newBestRun {
+                BrickConfettiView()
+                    .ignoresSafeArea()
             }
         }
         .contentShape(Rectangle())
@@ -536,6 +668,8 @@ private struct BrickStackGameView: View {
             Text("\(value)")
                 .font(.system(size: 22, weight: .black))
                 .foregroundStyle(label == "score" ? BrickColor.gold : BrickColor.primaryText)
+                .contentTransition(.numericText(value: Double(value)))
+                .animation(.snappy(duration: 0.25), value: value)
             Text(label)
                 .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(BrickColor.secondaryText)
@@ -607,14 +741,14 @@ private struct BrickStackGameView: View {
     }
 
     private var gameOverOverlay: some View {
-        menuOverlay(title: "Stack Dropped", subtitle: "Score \(score)", primaryTitle: "Play Again", primaryAction: {
+        menuOverlay(title: "Stack Dropped", subtitle: "Height \(max(0, layers.count - 1)) · Score \(score)", primaryTitle: "Play Again", primaryAction: {
             reset()
             startCountdown()
         }, secondaryTitle: "Reset", secondaryAction: {
             reset()
         }, quitAction: {
             dismiss()
-        })
+        }, isNewBest: newBestRun)
     }
 
     private func menuOverlay(
@@ -624,11 +758,15 @@ private struct BrickStackGameView: View {
         primaryAction: @escaping () -> Void,
         secondaryTitle: String,
         secondaryAction: @escaping () -> Void,
-        quitAction: @escaping () -> Void
+        quitAction: @escaping () -> Void,
+        isNewBest: Bool = false
     ) -> some View {
         VStack(spacing: 18) {
             Spacer()
             VStack(spacing: 14) {
+                if isNewBest {
+                    NewBestBadge()
+                }
                 Text(title)
                     .font(.system(size: 31, weight: .black))
                     .foregroundStyle(.white)
@@ -756,29 +894,42 @@ private struct BrickStackGameView: View {
             )
         }
 
+        var placedLayer = newLayer
         if missedStuds == 0 {
             combo += 1
-            score += 2 + combo
-            status = "Perfect"
+            let gained = 2 + combo
+            score += gained
+            status = combo > 1 ? "Perfect ×\(combo)" : "Perfect"
+            scorePop = GameScorePop(text: "+\(gained)")
             audio.playClick()
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            UIImpactFeedbackGenerator(style: combo >= 5 ? .heavy : .medium).impactOccurred()
+
+            // Streak reward: every 5 perfects in a row regrows the plate by
+            // one stud each way — the run gets easier as a prize for skill.
+            if combo.isMultiple(of: 5) {
+                placedLayer.studsX = min(startingStuds, placedLayer.studsX + 1)
+                placedLayer.studsZ = min(startingStuds, placedLayer.studsZ + 1)
+                status = "Combo ×\(combo) — plate regrown!"
+                scorePop = GameScorePop(text: "PLATE +1", tint: BrickColor.stadiumGreen)
+            }
         } else {
             combo = 0
             score += 1
             status = "-\(missedStuds) stud\(missedStuds == 1 ? "" : "s")"
+            scorePop = GameScorePop(text: "-\(missedStuds) stud\(missedStuds == 1 ? "" : "s")", tint: .white)
             audio.playClick()
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
 
         pulse = StackPulse(
             id: UUID(),
-            centerX: newLayer.centerX,
-            centerZ: newLayer.centerZ,
-            studsX: newLayer.studsX,
-            studsZ: newLayer.studsZ,
+            centerX: placedLayer.centerX,
+            centerZ: placedLayer.centerZ,
+            studsX: placedLayer.studsX,
+            studsZ: placedLayer.studsZ,
             y: CGFloat(layers.count)
         )
-        layers.append(newLayer)
+        layers.append(placedLayer)
         bestScore = max(bestScore, score)
         movingAxis.toggle()
         direction *= -1
@@ -789,6 +940,7 @@ private struct BrickStackGameView: View {
         phase = .gameOver
         status = "Missed the stack"
         let isNewBest = score > 0 && score >= bestScore
+        newBestRun = isNewBest
         bestScore = max(bestScore, score)
         audio.stopMusic()
         // A record run deserves a win buzz, not the failure thud.
@@ -809,6 +961,8 @@ private struct BrickStackGameView: View {
         countdownStartedAt = nil
         countdownNumber = 3
         pulse = nil
+        scorePop = nil
+        newBestRun = false
     }
 }
 
@@ -1386,6 +1540,9 @@ private struct StudMatchGameView: View {
     @State private var wrongTapIndices: Set<Int> = []
     @State private var countdownNumber = 3
     @State private var roundProgress: CGFloat = 0
+    @State private var chain = 0
+    @State private var scorePop: GameScorePop?
+    @State private var newBestRun = false
     @StateObject private var audio = StudMatchAudioController()
 
     private let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
@@ -1434,7 +1591,18 @@ private struct StudMatchGameView: View {
                     reset()
                 }, quitAction: {
                     dismiss()
-                })
+                }, isNewBest: newBestRun)
+            }
+
+            if let scorePop {
+                GameScorePopView(pop: scorePop)
+                    .id(scorePop.id)
+                    .offset(y: -50)
+            }
+
+            if phase == .gameOver, newBestRun {
+                BrickConfettiView()
+                    .ignoresSafeArea()
             }
         }
         .onAppear {
@@ -1483,6 +1651,8 @@ private struct StudMatchGameView: View {
             Text("\(value)")
                 .font(.system(size: 22, weight: .black))
                 .foregroundStyle(label == "score" ? BrickColor.gold : BrickColor.primaryText)
+                .contentTransition(.numericText(value: Double(value)))
+                .animation(.snappy(duration: 0.25), value: value)
             Text(label)
                 .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(BrickColor.secondaryText)
@@ -1538,11 +1708,15 @@ private struct StudMatchGameView: View {
         primaryAction: @escaping () -> Void,
         secondaryTitle: String,
         secondaryAction: @escaping () -> Void,
-        quitAction: @escaping () -> Void
+        quitAction: @escaping () -> Void,
+        isNewBest: Bool = false
     ) -> some View {
         VStack(spacing: 18) {
             Spacer()
             VStack(spacing: 14) {
+                if isNewBest {
+                    NewBestBadge()
+                }
                 Text(title)
                     .font(.system(size: 31, weight: .black))
                     .foregroundStyle(.white)
@@ -1629,17 +1803,24 @@ private struct StudMatchGameView: View {
         for item in selected {
             board[item] = Self.randomColor(excluding: board[item])
         }
-        score += matched * matched * 10
+        // Consecutive clears build a chain that multiplies the haul (×5 cap).
+        chain += 1
+        let multiplier = min(chain, 5)
+        let gained = matched * matched * 10 * multiplier
+        score += gained
         bestScore = max(bestScore, score)
         moves -= 1
         selected.removeAll()
         matchPulseCount += 1
         roundStartedAt = nil
         roundProgress = 0
-        message = "+\(matched * matched * 10)"
+        message = multiplier > 1 ? "+\(gained) · Chain ×\(multiplier)" : "+\(gained)"
+        scorePop = GameScorePop(text: multiplier > 1 ? "+\(gained) ×\(multiplier)" : "+\(gained)")
         audio.playClick()
+        UIImpactFeedbackGenerator(style: multiplier >= 3 ? .heavy : .medium).impactOccurred()
 
         if moves <= 0 {
+            newBestRun = score > 0 && score >= bestScore
             phase = .gameOver
             message = "No moves left"
         }
@@ -1648,17 +1829,20 @@ private struct StudMatchGameView: View {
     private func failMove() {
         guard phase == .playing else { return }
         let failedSelection = selected
+        let lostChain = chain
+        chain = 0
         moves -= 1
         selected.removeAll()
         roundStartedAt = nil
         roundProgress = 0
         wrongTapIndices = failedSelection
         wrongTapFlashCount += 1
-        message = "Missed. Keep it clean."
+        message = lostChain > 1 ? "Chain broken. Keep it clean." : "Missed. Keep it clean."
         audio.playClick()
         UINotificationFeedbackGenerator().notificationOccurred(.warning)
 
         if moves <= 0 {
+            newBestRun = score > 0 && score >= bestScore
             phase = .gameOver
             message = "No moves left"
         }
@@ -1678,6 +1862,9 @@ private struct StudMatchGameView: View {
         wrongTapIndices = []
         countdownNumber = 3
         roundProgress = 0
+        chain = 0
+        scorePop = nil
+        newBestRun = false
     }
 
     private static func makeBoard() -> [GameStudColor] {
@@ -2050,6 +2237,9 @@ private struct BuildSprintGameView: View {
     @State private var lastRoundScore = 0
     @State private var memorizeStartedAt: Date?
     @State private var memorizeProgress: CGFloat = 1
+    @State private var wrongTiles: Set<Int> = []
+    @State private var perfectRound = false
+    @State private var newBestRun = false
     @StateObject private var audio = BuildSprintAudioController()
 
     private let totalRounds = 10
@@ -2093,8 +2283,14 @@ private struct BuildSprintGameView: View {
                     primaryAction: { resetToSetup() },
                     secondaryTitle: "Restart",
                     secondaryAction: { resetToSetup() },
-                    quitAction: { dismiss() }
+                    quitAction: { dismiss() },
+                    isNewBest: newBestRun
                 )
+            }
+
+            if (phase == .review && perfectRound) || (phase == .gameOver && newBestRun) {
+                BrickConfettiView()
+                    .ignoresSafeArea()
             }
         }
         .onAppear {
@@ -2158,6 +2354,8 @@ private struct BuildSprintGameView: View {
             Text("\(value)")
                 .font(.system(size: 22, weight: .black))
                 .foregroundStyle(label == "score" ? BrickColor.gold : BrickColor.primaryText)
+                .contentTransition(.numericText(value: Double(value)))
+                .animation(.snappy(duration: 0.25), value: value)
             Text(label)
                 .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(BrickColor.secondaryText)
@@ -2295,9 +2493,19 @@ private struct BuildSprintGameView: View {
 
     private var reviewView: some View {
         VStack(spacing: 14) {
-            reviewBoard(title: "Your Board", colors: answer)
+            reviewBoard(title: "Your Board", colors: answer, wrongIndices: wrongTiles)
 
             VStack(spacing: 4) {
+                if perfectRound {
+                    Text("PERFECT BOARD!")
+                        .font(.system(size: 15, weight: .black, design: .rounded))
+                        .tracking(1.4)
+                        .foregroundStyle(BrickColor.accentText)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 6)
+                        .background(Capsule().fill(BrickGradient.sunrise))
+                        .brickGlow(BrickColor.amber, radius: 12, strength: 0.5)
+                }
                 Text("\(lastCorrect) / \(target.count) right")
                     .font(.system(size: 26, weight: .black))
                     .foregroundStyle(.white)
@@ -2338,7 +2546,7 @@ private struct BuildSprintGameView: View {
         .padding(.vertical, 4)
     }
 
-    private func reviewBoard(title: String, colors: [BuildSprintTileColor?]) -> some View {
+    private func reviewBoard(title: String, colors: [BuildSprintTileColor?], wrongIndices: Set<Int> = []) -> some View {
         VStack(spacing: 6) {
             Text(title)
                 .font(.system(size: 13, weight: .black))
@@ -2347,6 +2555,7 @@ private struct BuildSprintGameView: View {
                 colors: colors,
                 gridSize: difficulty.gridSize,
                 isInteractive: false,
+                wrongIndices: wrongIndices,
                 tap: { _ in }
             )
             .frame(maxWidth: reviewBoardSize, maxHeight: reviewBoardSize)
@@ -2397,11 +2606,15 @@ private struct BuildSprintGameView: View {
         primaryAction: @escaping () -> Void,
         secondaryTitle: String,
         secondaryAction: @escaping () -> Void,
-        quitAction: @escaping () -> Void
+        quitAction: @escaping () -> Void,
+        isNewBest: Bool = false
     ) -> some View {
         VStack(spacing: 18) {
             Spacer()
             VStack(spacing: 14) {
+                if isNewBest {
+                    NewBestBadge()
+                }
                 Text(title)
                     .font(.system(size: 31, weight: .black))
                     .foregroundStyle(.white)
@@ -2443,6 +2656,8 @@ private struct BuildSprintGameView: View {
         selectedColor = pickerColors.contains(selectedColor) ? selectedColor : pickerColors[0]
         target = (0..<difficulty.tileCount).map { _ in roundColors.randomElement() ?? roundColors[0] }
         answer = Array(repeating: nil, count: difficulty.tileCount)
+        wrongTiles = []
+        perfectRound = false
         memorizeProgress = 1
         if mode == .quickSmart {
             memorizeStartedAt = Date()
@@ -2477,15 +2692,19 @@ private struct BuildSprintGameView: View {
 
     private func checkBoard() {
         lastCorrect = answer.enumerated().filter { index, color in color == target[index] }.count
+        wrongTiles = Set(answer.indices.filter { answer[$0] != target[$0] })
+        perfectRound = lastCorrect == target.count
         totalCorrect += lastCorrect
-        lastRoundScore = lastCorrect * 30 + (lastCorrect == target.count ? target.count * 15 : 0)
+        lastRoundScore = lastCorrect * 30 + (perfectRound ? target.count * 15 : 0)
         score += lastRoundScore
         bestScore = max(bestScore, score)
+        UINotificationFeedbackGenerator().notificationOccurred(perfectRound ? .success : .warning)
         phase = .review
     }
 
     private func advanceFromReview() {
         if round >= totalRounds {
+            newBestRun = score > 0 && score >= bestScore
             phase = .gameOver
         } else {
             round += 1
@@ -2505,6 +2724,9 @@ private struct BuildSprintGameView: View {
         selectedColor = pickerColors[0]
         memorizeStartedAt = nil
         memorizeProgress = 1
+        wrongTiles = []
+        perfectRound = false
+        newBestRun = false
         phase = .setup
         pausedFrom = .setup
     }
@@ -2514,6 +2736,7 @@ private struct BuildSprintBoard: View {
     var colors: [BuildSprintTileColor?]
     var gridSize: Int
     var isInteractive: Bool
+    var wrongIndices: Set<Int> = []
     var tap: (Int) -> Void
 
     private var columns: [GridItem] {
@@ -2527,6 +2750,14 @@ private struct BuildSprintBoard: View {
                     tap(index)
                 } label: {
                     BuildSprintTile(color: colors[index])
+                        .overlay {
+                            if wrongIndices.contains(index) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 22, weight: .black))
+                                    .foregroundStyle(.white, Color(hex: 0xD62828))
+                                    .shadow(color: .black.opacity(0.4), radius: 3, x: 0, y: 2)
+                            }
+                        }
                 }
                 .buttonStyle(.plain)
                 .disabled(!isInteractive)
@@ -2781,6 +3012,8 @@ private struct RevealTheStadiumGameView: View {
     @State private var phase: StadiumRevealPhase = .ready
     @State private var roundResult: StadiumRoundResult?
     @State private var timeRemaining: TimeInterval = 24
+    @State private var wrongFlash: String?
+    @State private var newBestRun = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 2), count: 6)
     private let totalRounds = 10
@@ -2824,8 +3057,14 @@ private struct RevealTheStadiumGameView: View {
                     primaryAction: { startGame() },
                     secondaryTitle: "Reset",
                     secondaryAction: { startGame() },
-                    quitAction: { dismiss() }
+                    quitAction: { dismiss() },
+                    isNewBest: newBestRun
                 )
+            }
+
+            if (phase == .roundResult && roundResult?.correct == true) || (phase == .gameOver && newBestRun) {
+                BrickConfettiView()
+                    .ignoresSafeArea()
             }
         }
         .onAppear {
@@ -2871,7 +3110,8 @@ private struct RevealTheStadiumGameView: View {
             Text("\(value)")
                 .font(.system(size: 21, weight: .black))
                 .foregroundStyle(label == "score" || label == "time" ? BrickColor.gold : BrickColor.primaryText)
-                .contentTransition(.numericText())
+                .contentTransition(.numericText(value: Double(value)))
+                .animation(.snappy(duration: 0.25), value: value)
             Text(label)
                 .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(BrickColor.secondaryText)
@@ -2896,7 +3136,17 @@ private struct RevealTheStadiumGameView: View {
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(BrickColor.gold)
                         .multilineTextAlignment(.center)
+                    if combo >= 2 {
+                        Text("🔥 Streak ×\(combo)")
+                            .font(.system(size: 12, weight: .black, design: .rounded))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .gameGlass(in: Capsule(), darken: 0.2)
+                            .transition(.scale.combined(with: .opacity))
+                    }
                 }
+                .animation(BrickMotion.bouncy, value: combo)
 
                 ZStack {
                     StadiumArtwork(stadium: stadium, hidePrintedName: true)
@@ -2948,7 +3198,15 @@ private struct RevealTheStadiumGameView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 13)
                                 .padding(.horizontal, 8)
+                                .background {
+                                    // Brief red flash on a wrong guess.
+                                    if wrongFlash == option {
+                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                            .fill(Color(hex: 0xD62828).opacity(0.55))
+                                    }
+                                }
                                 .gameGlass(in: RoundedRectangle(cornerRadius: 12, style: .continuous), darken: 0.24)
+                                .animation(.easeOut(duration: 0.3), value: wrongFlash)
                         }
                         .buttonStyle(PressableStyle())
                         .disabled(phase != .playing)
@@ -3006,12 +3264,16 @@ private struct RevealTheStadiumGameView: View {
         primaryAction: @escaping () -> Void,
         secondaryTitle: String,
         secondaryAction: @escaping () -> Void,
-        quitAction: @escaping () -> Void
+        quitAction: @escaping () -> Void,
+        isNewBest: Bool = false
     ) -> some View {
         ZStack {
             Color.black.opacity(0.62)
                 .ignoresSafeArea()
             VStack(spacing: 14) {
+                if isNewBest {
+                    NewBestBadge()
+                }
                 Text(title)
                     .font(.system(size: 31, weight: .black))
                     .foregroundStyle(.white)
@@ -3055,11 +3317,18 @@ private struct RevealTheStadiumGameView: View {
             score += roundScore
             bestScore = max(bestScore, score)
             roundResult = StadiumRoundResult(correct: true, summary: "+\(roundScore) points - \(revealed.count) tiles - \(Int(ceil(timeRemaining)))s left")
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
             phase = .roundResult
         } else {
             combo = 0
             timeRemaining = max(0, timeRemaining - 4)
             message = "Wrong guess. 4 second penalty."
+            wrongFlash = option
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(500))
+                wrongFlash = nil
+            }
             if timeRemaining <= 0 {
                 failRound()
             }
@@ -3071,6 +3340,8 @@ private struct RevealTheStadiumGameView: View {
         round = 1
         score = 0
         combo = 0
+        wrongFlash = nil
+        newBestRun = false
         prepareRound()
         phase = .playing
     }
@@ -3089,6 +3360,7 @@ private struct RevealTheStadiumGameView: View {
 
     private func advanceRound() {
         if round >= totalRounds {
+            newBestRun = score > 0 && score >= bestScore
             bestScore = max(bestScore, score)
             phase = .gameOver
         } else {
@@ -3101,6 +3373,7 @@ private struct RevealTheStadiumGameView: View {
     private func failRound() {
         combo = 0
         roundResult = StadiumRoundResult(correct: false, summary: "No points this round. The clock wins.")
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
         phase = .roundResult
     }
 
