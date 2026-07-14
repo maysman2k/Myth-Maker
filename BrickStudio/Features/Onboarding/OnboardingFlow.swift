@@ -56,7 +56,7 @@ struct OnboardingFlow: View {
             .padding(.horizontal, BrickSpacing.xl)
             .padding(.bottom, BrickSpacing.xl)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
     }
 
     private func finish() {

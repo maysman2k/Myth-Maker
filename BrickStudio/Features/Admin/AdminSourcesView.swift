@@ -78,7 +78,7 @@ struct AdminSourcesView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("News Sources")
         .refreshable { await load() }
         .task {

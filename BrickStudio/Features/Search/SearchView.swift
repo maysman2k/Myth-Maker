@@ -45,7 +45,7 @@ struct SearchView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "News, reviews, builds, lessons…")

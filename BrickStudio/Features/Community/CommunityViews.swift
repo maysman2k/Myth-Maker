@@ -249,7 +249,7 @@ struct CommunityPostDetailView: View {
                 EmptyStateView(symbol: "hammer", message: "This post isn't available.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Build")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -262,8 +262,9 @@ struct CommunityPostDetailView: View {
                     Text("Build diary — \(thread.count) updates")
                         .font(BrickFont.sectionTitle)
                         .foregroundStyle(BrickColor.primaryText)
-                    ForEach(thread) { entry in
+                    ForEach(Array(thread.enumerated()), id: \.element.id) { index, entry in
                         CommunityPostCard(post: entry)
+                            .cardAppear(index)
                     }
                 } else {
                     CommunityPostCard(post: post)
@@ -285,7 +286,7 @@ struct PostTypePickerSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: BrickSpacing.m) {
-                ForEach(CommunityPostKind.allCases) { kind in
+                ForEach(Array(CommunityPostKind.allCases.enumerated()), id: \.element) { index, kind in
                     Button {
                         dismiss()
                         onPick(kind)
@@ -314,12 +315,12 @@ struct PostTypePickerSheet: View {
                         .contentShape(Rectangle())
                         .brickCard()
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle())
+                    .cardAppear(index)
                 }
                 Spacer()
             }
             .padding(BrickSpacing.l)
-            .background(BrickColor.background)
             .navigationTitle("Create a Post")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -329,6 +330,8 @@ struct PostTypePickerSheet: View {
             }
         }
         .presentationDetents([.medium])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(28)
     }
 }
 
@@ -453,7 +456,7 @@ struct CommunityComposerSheet: View {
                 }
                 .padding(BrickSpacing.l)
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .navigationTitle(kind == .standard ? "Share a Build" : (kind == .event ? "Add an Event" : "LEGO® Ideas Post"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

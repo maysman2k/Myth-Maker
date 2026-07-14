@@ -21,7 +21,7 @@ struct ProfileView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -280,7 +280,7 @@ struct SavedItemsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Saved Items")
     }
 
@@ -345,7 +345,7 @@ struct MyCommentsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("My Comments")
     }
 

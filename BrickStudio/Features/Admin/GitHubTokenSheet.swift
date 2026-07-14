@@ -90,7 +90,7 @@ struct GitHubTokenSheet: View {
                 }
                 .padding(BrickSpacing.l)
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }

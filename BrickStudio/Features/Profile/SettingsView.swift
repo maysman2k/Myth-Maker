@@ -93,7 +93,7 @@ struct CommunityRulesView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Community Rules")
     }
 }
@@ -110,7 +110,7 @@ struct LegalView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Legal & About")
     }
 

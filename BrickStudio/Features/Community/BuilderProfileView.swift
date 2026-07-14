@@ -20,7 +20,7 @@ struct BuilderProfileView: View {
                 EmptyStateView(symbol: "person.crop.circle.badge.questionmark", message: "This profile is private.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Builder")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isReporting) {

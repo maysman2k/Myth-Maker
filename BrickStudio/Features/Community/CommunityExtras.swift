@@ -207,7 +207,7 @@ struct LeaderboardView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Leaderboards")
         .contentRouteDestinations()
     }
@@ -276,7 +276,7 @@ struct MyShelfView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("My Shelf")
         .onChange(of: pickedItem) { _, newItem in
             guard let newItem else { return }

@@ -148,16 +148,18 @@ struct NewsView: View {
                             NavigationLink(value: ContentRoute.article(featuredArticle.id)) {
                                 FeaturedArticleCard(article: featuredArticle)
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(PressableStyle())
+                            .cardAppear(0)
                         }
 
                         VStack(alignment: .leading, spacing: BrickSpacing.m) {
                             SectionHeader(title: selectedCategory == nil ? "Latest news" : selectedCategory?.rawValue ?? "Latest news")
-                            ForEach(listArticles) { article in
+                            ForEach(Array(listArticles.enumerated()), id: \.element.id) { index, article in
                                 NavigationLink(value: ContentRoute.article(article.id)) {
                                     CompactArticleRow(article: article)
                                 }
-                                .buttonStyle(.plain)
+                                .buttonStyle(PressableStyle())
+                                .cardAppear(index + 1)
                             }
                         }
                     }
@@ -180,12 +182,13 @@ struct NewsView: View {
                 .padding(.horizontal, BrickSpacing.l)
                 .padding(.top, BrickSpacing.s)
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .safeAreaInset(edge: .top, spacing: 0) {
+                // Pinned chip bar floats on glass so content blurs beneath it.
                 categoryChips
                     .padding(.leading, BrickSpacing.l)
                     .padding(.vertical, BrickSpacing.s)
-                    .background(BrickColor.background)
+                    .background(.ultraThinMaterial)
                     .overlay(alignment: .bottom) {
                         Divider().opacity(0.5)
                     }

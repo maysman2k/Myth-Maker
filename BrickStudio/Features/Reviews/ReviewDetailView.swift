@@ -17,7 +17,7 @@ struct ReviewDetailView: View {
                 EmptyStateView(symbol: "star.bubble", message: "Something went wrong loading this review. Try again in a moment.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .onAppear { model.incrementView(.review, reviewID) }
     }
 

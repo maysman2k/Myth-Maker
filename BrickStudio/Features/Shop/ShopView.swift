@@ -38,7 +38,7 @@ struct ShopView: View {
                     .background(BrickColor.background)
                 }
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .toolbar(.hidden, for: .navigationBar)
         }
     }

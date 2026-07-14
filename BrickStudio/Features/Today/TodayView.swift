@@ -229,36 +229,39 @@ struct TodayView: View {
         VStack(alignment: .leading, spacing: BrickSpacing.m) {
             SectionHeader(title: "Live Feed")
 
-            ForEach(liveFeedItems) { item in
-                switch item {
-                case .article(let article, let isCommunity):
-                    NavigationLink(value: ContentRoute.article(article.id)) {
-                        TodayArticleFeedCard(article: article, isCommunity: isCommunity)
+            ForEach(Array(liveFeedItems.enumerated()), id: \.element.id) { index, item in
+                Group {
+                    switch item {
+                    case .article(let article, let isCommunity):
+                        NavigationLink(value: ContentRoute.article(article.id)) {
+                            TodayArticleFeedCard(article: article, isCommunity: isCommunity)
+                        }
+                        .buttonStyle(PressableStyle())
+                    case .review(let review):
+                        NavigationLink(value: ContentRoute.review(review.id)) {
+                            TodayReviewFeedCard(review: review)
+                        }
+                        .buttonStyle(PressableStyle())
+                    case .advert(let product):
+                        NavigationLink(value: ContentRoute.product(product.id)) {
+                            TodayAdvertFeedCard(product: product)
+                        }
+                        .buttonStyle(PressableStyle())
+                    case .lesson(let lesson):
+                        NavigationLink(value: ContentRoute.lesson(lesson.id)) {
+                            TodayLessonFeedCard(lesson: lesson)
+                        }
+                        .buttonStyle(PressableStyle())
+                    case .gameScore(let score):
+                        Button {
+                            model.selectedTab = .games
+                        } label: {
+                            TodayGameScoreFeedCard(score: score)
+                        }
+                        .buttonStyle(PressableStyle())
                     }
-                    .buttonStyle(.plain)
-                case .review(let review):
-                    NavigationLink(value: ContentRoute.review(review.id)) {
-                        TodayReviewFeedCard(review: review)
-                    }
-                    .buttonStyle(.plain)
-                case .advert(let product):
-                    NavigationLink(value: ContentRoute.product(product.id)) {
-                        TodayAdvertFeedCard(product: product)
-                    }
-                    .buttonStyle(.plain)
-                case .lesson(let lesson):
-                    NavigationLink(value: ContentRoute.lesson(lesson.id)) {
-                        TodayLessonFeedCard(lesson: lesson)
-                    }
-                    .buttonStyle(.plain)
-                case .gameScore(let score):
-                    Button {
-                        model.selectedTab = .games
-                    } label: {
-                        TodayGameScoreFeedCard(score: score)
-                    }
-                    .buttonStyle(.plain)
                 }
+                .cardAppear(index)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -425,13 +428,14 @@ struct TodayView: View {
                 NavigationLink(value: ContentRoute.article(article.id)) {
                     TodayLargePostCard(article: article, isCommunity: isCommunityArticle(article))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableStyle())
+                .cardAppear(index)
 
                 if (index + 1) % 4 == 0, let product = model.activeProducts.first(where: { $0.status == .active }) {
                     NavigationLink(value: ContentRoute.product(product.id)) {
                         TodaySmallAdvertCard(product: product)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle())
                 }
             }
         }

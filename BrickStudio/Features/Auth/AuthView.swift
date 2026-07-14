@@ -87,7 +87,7 @@ struct AuthView: View {
                 }
                 .padding(BrickSpacing.l)
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Not now") { dismiss() }

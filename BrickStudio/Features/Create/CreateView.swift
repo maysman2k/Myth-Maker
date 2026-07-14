@@ -29,7 +29,7 @@ struct SavedDesignsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Saved Designs")
     }
 }

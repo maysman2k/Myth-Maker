@@ -19,14 +19,15 @@ struct NotificationsView: View {
                         message: "Nothing yet. Replies to your comments and Brick Bar updates will appear here."
                     )
                 } else {
-                    ForEach(model.myNotifications) { notification in
+                    ForEach(Array(model.myNotifications.enumerated()), id: \.element.id) { index, notification in
                         row(for: notification)
+                            .cardAppear(index)
                     }
                 }
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

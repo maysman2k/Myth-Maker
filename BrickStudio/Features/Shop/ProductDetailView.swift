@@ -16,7 +16,7 @@ struct ProductDetailView: View {
                 EmptyStateView(symbol: "bag", message: "Something went wrong loading this build. Try again in a moment.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .onAppear { model.incrementView(.product, productID) }
     }
 

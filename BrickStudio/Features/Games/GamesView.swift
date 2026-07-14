@@ -47,14 +47,14 @@ struct GamesView: View {
 
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
-                        gameTile(.brickStack)
-                        gameTile(.studMatch)
+                        gameTile(.brickStack).cardAppear(0)
+                        gameTile(.studMatch).cardAppear(1)
                     }
                     .frame(maxHeight: .infinity)
 
                     HStack(spacing: 12) {
-                        gameTile(.buildSprint)
-                        gameTile(.revealTheStadium)
+                        gameTile(.buildSprint).cardAppear(2)
+                        gameTile(.revealTheStadium).cardAppear(3)
                     }
                     .frame(maxHeight: .infinity)
                 }
@@ -62,14 +62,7 @@ struct GamesView: View {
             .padding(.horizontal, 18)
             .padding(.top, 18)
             .padding(.bottom, 12)
-            .background(
-                LinearGradient(
-                    colors: [BrickColor.background, Color.brickAdaptive(light: 0xFFFFFF, dark: 0x17171A)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
-            )
+            .background { BrickScreenBackground() }
             .toolbar(.hidden, for: .navigationBar)
             .fullScreenCover(item: $presentedGame) { game in
                 FullScreenGameContainer(game: game)

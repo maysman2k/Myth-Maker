@@ -28,18 +28,19 @@ struct ReviewsView: View {
                         action: { brandFilter = nil; categoryFilter = nil }
                     )
                 } else {
-                    ForEach(filtered) { review in
+                    ForEach(Array(filtered.enumerated()), id: \.element.id) { index, review in
                         NavigationLink(value: ContentRoute.review(review.id)) {
                             ReviewCard(review: review)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableStyle())
+                        .cardAppear(index)
                     }
                 }
                 LegalDisclaimerFooter()
             }
             .padding(.horizontal, BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Reviews")
         .contentRouteDestinations()
     }

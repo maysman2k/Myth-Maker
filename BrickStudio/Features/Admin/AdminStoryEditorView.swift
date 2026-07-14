@@ -56,7 +56,7 @@ struct AdminStoryEditorView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Create Story")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -415,7 +415,7 @@ struct OpenAIKeySheet: View {
                 Spacer()
             }
             .padding(BrickSpacing.l)
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }

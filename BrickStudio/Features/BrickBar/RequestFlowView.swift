@@ -65,7 +65,7 @@ struct RequestFlowView: View {
                 formView
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Custom Request")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {

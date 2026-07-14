@@ -37,7 +37,7 @@ struct BrickBarView: View {
                 .padding(.top, BrickSpacing.l)
                 .padding(.bottom, BrickSpacing.xxl)
             }
-            .background(BrickColor.background)
+            .background { BrickScreenBackground() }
             .toolbar(.hidden, for: .navigationBar)
         }
         .fullScreenCover(item: $selectedGalleryImage) { image in

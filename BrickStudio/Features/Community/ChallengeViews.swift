@@ -70,7 +70,7 @@ struct ChallengeDetailView: View {
                 EmptyStateView(symbol: "trophy", message: "This challenge isn't available.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Build Challenge")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isComposing) {
@@ -162,7 +162,7 @@ struct ChallengeDetailView: View {
                     .font(BrickFont.meta)
                     .foregroundStyle(BrickColor.secondaryText)
             }
-            ForEach(entries) { entry in
+            ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
                 VStack(alignment: .leading, spacing: BrickSpacing.s) {
                     NavigationLink(value: ContentRoute.communityPost(entry.id)) {
                         CommunityPostCard(post: entry, showsThreadContext: false)
@@ -174,6 +174,7 @@ struct ChallengeDetailView: View {
                         MetaLabel(symbol: "checkmark.seal", text: "\(model.voteCount(for: entry.id, in: challenge.id)) vote\(model.voteCount(for: entry.id, in: challenge.id) == 1 ? "" : "s")")
                     }
                 }
+                .cardAppear(index)
             }
         }
     }

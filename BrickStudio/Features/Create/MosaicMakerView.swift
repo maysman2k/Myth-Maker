@@ -51,7 +51,7 @@ struct MosaicMakerView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Mosaic Maker")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: pickedItem) { _, newItem in

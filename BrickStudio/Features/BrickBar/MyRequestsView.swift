@@ -22,7 +22,7 @@ struct MyRequestsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("My Requests")
     }
 }
@@ -83,7 +83,7 @@ struct RequestDetailView: View {
                 EmptyStateView(symbol: "tray", message: "This request isn't available.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Request")
         .navigationBarTitleDisplayMode(.inline)
     }

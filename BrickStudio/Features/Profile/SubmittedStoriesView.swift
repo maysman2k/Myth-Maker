@@ -117,7 +117,7 @@ struct SubmitStoryEditorView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle(submissionID == nil ? "Submit Story" : "Edit Story")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

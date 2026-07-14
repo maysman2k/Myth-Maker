@@ -17,7 +17,7 @@ struct AdminPanelView: View {
                 EmptyStateView(symbol: "lock", message: "This area is for the Bricks in a Bag team.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Admin")
     }
 
@@ -249,7 +249,7 @@ struct AIDraftQueueView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("AI Draft Queue")
         .refreshable { await model.refreshAIDrafts() }
         .task { await model.refreshAIDrafts() }
@@ -340,7 +340,7 @@ struct AIDraftDetailView: View {
                 EmptyStateView(symbol: "sparkles", message: "This draft is no longer in the queue.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Review Draft")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -556,7 +556,7 @@ struct AdminCommentsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Moderation")
     }
 
@@ -623,7 +623,7 @@ struct AdminRequestsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Brick Bar Requests")
         .sheet(item: $quoteTarget) { request in
             SendQuoteSheet(request: request)

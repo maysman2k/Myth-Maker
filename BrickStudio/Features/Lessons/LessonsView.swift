@@ -33,17 +33,18 @@ struct LessonsView: View {
                         action: { difficultyFilter = nil }
                     )
                 } else {
-                    ForEach(filtered) { lesson in
+                    ForEach(Array(filtered.enumerated()), id: \.element.id) { index, lesson in
                         NavigationLink(value: ContentRoute.lesson(lesson.id)) {
                             LessonCard(lesson: lesson)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableStyle())
+                        .cardAppear(index)
                     }
                 }
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Studio Lessons")
     }
 }
@@ -101,7 +102,7 @@ struct LessonDetailView: View {
                 EmptyStateView(symbol: "graduationcap", message: "Something went wrong loading this lesson. Try again in a moment.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .onAppear { model.incrementView(.lesson, lessonID) }
     }
 

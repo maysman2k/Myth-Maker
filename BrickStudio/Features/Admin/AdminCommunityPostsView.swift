@@ -19,7 +19,7 @@ struct AdminCommunityPostsView: View {
             }
             .padding(BrickSpacing.l)
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .navigationTitle("Community Posts")
         .contentRouteDestinations()
     }

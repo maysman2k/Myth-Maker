@@ -16,7 +16,7 @@ struct ArticleDetailView: View {
                 EmptyStateView(symbol: "newspaper", message: "Something went wrong loading this article. Try again in a moment.")
             }
         }
-        .background(BrickColor.background)
+        .background { BrickScreenBackground() }
         .onAppear { model.incrementView(.article, articleID) }
     }
 
