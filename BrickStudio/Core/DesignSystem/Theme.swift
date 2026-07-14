@@ -152,23 +152,34 @@ struct LiquidGlassBackground<S: Shape>: ViewModifier {
 
     @ViewBuilder
     func body(content: Content) -> some View {
+        // `glassEffect` only exists in the iOS 26 SDK (Xcode 26 / Swift 6.2).
+        // Gate it at COMPILE time so older Xcode never sees the symbol; a
+        // runtime #available alone can't hide a symbol missing from the SDK.
+        #if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             content.glassEffect(.regular, in: shape)
         } else {
-            content
-                .background(.ultraThinMaterial, in: shape)
-                .overlay(
-                    shape.strokeBorder(
-                        LinearGradient(
-                            colors: [.white.opacity(0.35), .white.opacity(0.05)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 0.75
-                    )
-                )
-                .overlay(shape.fill(tinted ? BrickColor.gold.opacity(0.10) : Color.clear))
+            materialFallback(content)
         }
+        #else
+        materialFallback(content)
+        #endif
+    }
+
+    private func materialFallback(_ content: Content) -> some View {
+        content
+            .background(.ultraThinMaterial, in: shape)
+            .overlay(
+                shape.strokeBorder(
+                    LinearGradient(
+                        colors: [.white.opacity(0.35), .white.opacity(0.05)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 0.75
+                )
+            )
+            .overlay(shape.fill(tinted ? BrickColor.gold.opacity(0.10) : Color.clear))
     }
 }
 
