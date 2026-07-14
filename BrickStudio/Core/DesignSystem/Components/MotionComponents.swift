@@ -54,13 +54,14 @@ struct CardAppearModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .opacity(hasAppeared ? 1 : 0)
-            .offset(y: hasAppeared || reduceMotion ? 0 : 18)
+            .offset(y: hasAppeared || reduceMotion ? 0 : 22)
+            .scaleEffect(hasAppeared || reduceMotion ? 1 : 0.97)
             .onAppear {
                 guard !hasAppeared else { return }
                 if reduceMotion {
                     hasAppeared = true
                 } else {
-                    withAnimation(BrickMotion.spring.delay(Double(min(index, 8)) * 0.05)) {
+                    withAnimation(BrickMotion.spring.delay(Double(min(index, 8)) * 0.06)) {
                         hasAppeared = true
                     }
                 }

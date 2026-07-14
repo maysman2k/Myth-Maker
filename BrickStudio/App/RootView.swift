@@ -55,7 +55,14 @@ struct RootView: View {
                     GamesView()
                 }
             }
-            .padding(.bottom, 78)
+            // Reserve space for the floating tab bar as a safe-area inset
+            // (not padding) so each screen's background and scroll content
+            // extend underneath it — that's what the glass blurs/reflects.
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Color.clear
+                    .frame(height: 74)
+                    .allowsHitTesting(false)
+            }
             // Cross-fade with a gentle lift when switching tabs.
             .transition(.opacity.combined(with: .scale(scale: 0.98)))
             .id(model.selectedTab)

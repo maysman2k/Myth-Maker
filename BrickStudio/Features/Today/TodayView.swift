@@ -17,14 +17,15 @@ struct TodayView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                    storyStrip
-                    feedActionBar
-                    ChallengeCard()
-                    newsTiles
-                    PollHighlightCard()
-                    instagramCarousel
-                    LeaderboardHighlightCard()
-                    CommunityBuildsSection()
+                    // Each section cascades in as the feed appears.
+                    storyStrip.cardAppear(0)
+                    feedActionBar.cardAppear(1)
+                    ChallengeCard().cardAppear(2)
+                    newsTiles.cardAppear(3)
+                    PollHighlightCard().cardAppear(4)
+                    instagramCarousel.cardAppear(5)
+                    LeaderboardHighlightCard().cardAppear(6)
+                    CommunityBuildsSection().cardAppear(7)
                     communityPostFeed
                     LegalDisclaimerFooter()
                 }
@@ -336,13 +337,13 @@ struct TodayView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 18))
                     .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.7), lineWidth: 1))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PressableStyle(scale: 0.94))
 
                 ForEach(storyArticles) { article in
                     NavigationLink(value: ContentRoute.article(article.id)) {
                         TodayStoryTile(article: article, isCommunity: isCommunityArticle(article))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PressableStyle(scale: 0.94))
                 }
             }
             .padding(.vertical, 4)
@@ -411,7 +412,7 @@ struct TodayView: View {
                         NavigationLink(value: ContentRoute.article(article.id)) {
                             TodayNewsTile(article: article)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressableStyle())
                     }
                     if articles.count == 1 {
                         Spacer()
