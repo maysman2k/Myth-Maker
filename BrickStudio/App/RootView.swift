@@ -56,6 +56,10 @@ struct RootView: View {
                 }
             }
             .padding(.bottom, 78)
+            // Cross-fade with a gentle lift when switching tabs.
+            .transition(.opacity.combined(with: .scale(scale: 0.98)))
+            .id(model.selectedTab)
+            .animation(BrickMotion.smooth, value: model.selectedTab)
 
             CustomMainTabBar(selection: $model.selectedTab)
                 .padding(.horizontal, 10)
@@ -67,37 +71,49 @@ struct RootView: View {
 
 private struct CustomMainTabBar: View {
     @Binding var selection: MainTab
+    @Namespace private var pill
 
     var body: some View {
         HStack(spacing: 2) {
             ForEach(MainTab.allCases) { tab in
+                let isSelected = selection == tab
                 Button {
-                    selection = tab
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    withAnimation(BrickMotion.bouncy) { selection = tab }
                 } label: {
                     VStack(spacing: 3) {
                         tabIcon(tab)
                             .font(.system(size: 20, weight: .semibold))
                             .frame(height: 23)
+                            .symbolEffect(.bounce, value: isSelected)
                         Text(tab.title)
-                            .font(.system(size: 10, weight: .semibold))
+                            .font(.system(size: 10, weight: .semibold, design: .rounded))
                             .lineLimit(1)
                             .minimumScaleFactor(0.58)
                     }
-                    .foregroundStyle(selection == tab ? .black : BrickColor.primaryText)
+                    .foregroundStyle(isSelected ? BrickColor.accentText : BrickColor.secondaryText)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(selection == tab ? BrickColor.gold : .clear)
-                    .clipShape(RoundedRectangle(cornerRadius: 18))
+                    .background {
+                        if isSelected {
+                            // The moving sunrise pill slides between tabs.
+                            Capsule()
+                                .fill(BrickGradient.sunrise)
+                                .brickGlow(BrickColor.amber, radius: 12, strength: 0.5)
+                                .matchedGeometryEffect(id: "selectedPill", in: pill)
+                        }
+                    }
+                    .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(tab.title)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
         .padding(6)
-        .background(.ultraThinMaterial)
-        .clipShape(Capsule())
-        .overlay(Capsule().strokeBorder(BrickColor.border, lineWidth: 1))
-        .shadow(color: .black.opacity(0.18), radius: 18, y: 8)
+        .liquidGlass(in: Capsule())
+        .overlay(Capsule().strokeBorder(.white.opacity(0.12), lineWidth: 0.75))
+        .shadow(color: .black.opacity(0.16), radius: 20, y: 10)
     }
 
     @ViewBuilder

@@ -65,10 +65,9 @@ struct ToastView: View {
         }
         .padding(.horizontal, BrickSpacing.l)
         .padding(.vertical, BrickSpacing.m)
-        .background(BrickColor.card)
-        .clipShape(Capsule())
-        .overlay(Capsule().strokeBorder(BrickColor.border, lineWidth: 1))
-        .shadow(color: .black.opacity(0.15), radius: 10, y: 4)
+        .liquidGlass(in: Capsule())
+        .overlay(Capsule().strokeBorder(.white.opacity(0.12), lineWidth: 0.75))
+        .softShadow()
     }
 }
 
@@ -126,18 +125,27 @@ struct FilterChip: View {
     var action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            withAnimation(BrickMotion.bouncy) { action() }
+        } label: {
             Text(title)
-                .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
-                .padding(.horizontal, 14)
-                .frame(minHeight: 34)
-                .background(isSelected ? BrickColor.primaryText : BrickColor.card)
-                .foregroundStyle(isSelected ? BrickColor.background : BrickColor.primaryText)
+                .font(.system(size: 14, weight: isSelected ? .bold : .regular, design: .rounded))
+                .padding(.horizontal, 15)
+                .frame(minHeight: 36)
+                .background {
+                    if isSelected {
+                        Capsule().fill(BrickGradient.sunrise)
+                    } else {
+                        Capsule().fill(BrickColor.card)
+                    }
+                }
+                .foregroundStyle(isSelected ? BrickColor.accentText : BrickColor.primaryText)
                 .clipShape(Capsule())
                 .overlay(Capsule().strokeBorder(BrickColor.border, lineWidth: isSelected ? 0 : 1))
+                .brickGlow(BrickColor.amber, radius: isSelected ? 10 : 0, strength: isSelected ? 0.4 : 0)
                 .contentShape(Capsule())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableStyle())
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
