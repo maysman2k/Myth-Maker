@@ -150,6 +150,7 @@ struct LiquidGlassBackground<S: Shape>: ViewModifier {
     var shape: S
     var tinted: Bool
 
+    @ViewBuilder
     func body(content: Content) -> some View {
         if #available(iOS 26.0, *) {
             content.glassEffect(.regular, in: shape)
