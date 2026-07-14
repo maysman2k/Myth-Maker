@@ -1,5 +1,34 @@
 [
   {
+    "id": "b5f19d7d-2eb6-5cea-b913-bdb79d66541b",
+    "title": "Previous LEGO GWPs return at LEGO.com this week",
+    "summary": "Several past Gift-with-Purchase sets are back on LEGO.com for a limited time, including Classic Animation Scenes for UK/EU Insiders. Here's what's on offer and when it ends.",
+    "bodyMarkdown": "## What happened\nA batch of previously-seen LEGO Gift-with-Purchase (GWP) sets have reappeared on LEGO.com this week, according to Brickset. These aren't new sets, just returning promotions with limited windows:\n\n- **UK/EU Insiders**: 40774 Classic Animation Scenes free when you spend over £115 / €130, until 16 July.\n- **US/CA Insiders**: 40906 Restaurants of the World: Japan free when you spend over $180 / $235 CAD, until 23 July.\n- **AU/NZ customers**: 40916 Floral Picture Frame free when you spend over $245 AUD / $265 NZD, until 23 July.\n- **All customers**: 30731 Tom Nook and Flying Present free when you spend over £35 / $40 / €40 on selected themes such as Animal Crossing, Fortnite, Sonic the Hedgehog and Super Mario (theme list may extend further, per source).\n\nSpending thresholds and set availability appear to be region-specific, so check your local LEGO.com store to confirm what's showing for you.\n\n## Why it matters\nGWPs are a popular way to bag exclusive or hard-to-find sets without extra cost, and these are sets some fans may have missed the first time round. For UK shoppers, the Classic Animation Scenes threshold is a UK/EU Insiders-only offer with a short window, so it's worth checking your basket before 16 July if you're eligible.\n\n## What to watch next\nKeep an eye on LEGO.com for these offers disappearing again once their windows close, and watch for further GWP rotations later in the year. As always, confirm current pricing and eligibility directly with LEGO.com, as thresholds and set availability can change by region without much notice.",
+    "category": "Deals",
+    "tags": [
+      "gift-with-purchase",
+      "lego-com",
+      "lego-insiders",
+      "promotions",
+      "uk-deals"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e0b5aea4-4408-5ad4-8ad2-59ffe7f97500",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133197"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Verify current spend thresholds and end dates directly on LEGO.com as promotions can change quickly; confirm the full list of qualifying themes for the Tom Nook GWP, as the source text was cut off. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-14T08:21:28Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/set/40774-1"
+    ]
+  },
+  {
     "id": "8f9e1060-4dc7-5a6e-ae84-ba5a070e339b",
     "title": "LEGO Ideas 21372 La Catrina officially revealed",
     "summary": "LEGO has confirmed 21372 La Catrina, a new 18+ LEGO Ideas set celebrating Day of the Dead, arriving on LEGO.com from 1 August.",
@@ -1413,35 +1442,6 @@
     "foundAt": "2026-07-08T19:45:59Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2023/06/San-Diego-Comic-Con-2023-featured.jpg"
-    ]
-  },
-  {
-    "id": "34c55e03-cd66-519c-9c8b-6c1d730dc586",
-    "title": "Brickset Reviews LEGO Creator 31393 Forest Animals: Grey Wolf",
-    "summary": "Brickset has published its review of the new LEGO Creator 3-in-1 set, 31393 Forest Animals: Grey Wolf, praising it as another strong entry in the growing brick-built animal line-up.",
-    "bodyMarkdown": "## What happened\nBrickset has posted a review of 31393 Forest Animals: Grey Wolf, the latest LEGO Creator 3-in-1 set. The set contains 657 pieces and retails at £44.99 / $49.99 / €49.99, working out at roughly 6.8p per piece in the UK. Like other Creator 3-in-1 animal sets, it can be rebuilt into three different models—this time a grey wolf, a falcon, or a raccoon, giving the set a North American wildlife theme. It follows on from 31154 Forest Animals: Red Fox, released two years earlier, which offered a fox, squirrel, and owl.\n\nAccording to the review, this continues a strong run of animal-based builds in the Creator range, with Brickset calling 31393 an excellent addition to that lineup.\n\n## Why it matters\nCreator 3-in-1 animal sets have become a real highlight for builders who enjoy nature-themed models and display pieces, offering good value and rebuild variety. A positive review from Brickset adds to the set's profile among collectors and display builders looking for their next project.\n\n## What to watch next\nKeep an eye out for how this set performs alongside other recent Creator animal releases, and whether LEGO continues expanding this \"theme-within-a-theme\" with future regional wildlife sets.",
-    "category": "New Sets",
-    "tags": [
-      "lego-creator",
-      "forest-animals",
-      "set-review",
-      "3-in-1",
-      "brickset"
-    ],
-    "sourceLinks": [
-      {
-        "id": "892473d2-8e7f-56c7-8d25-8fe0a9744c8d",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/132927"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 65,
-    "riskNotes": "Confirm exact release date and availability status of 31393, as the excerpt does not specify whether it is currently available for purchase or upcoming. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-08T19:45:48Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/132927?74733"
     ]
   }
 ]
