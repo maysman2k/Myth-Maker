@@ -989,14 +989,20 @@ private struct CartoonSkyBackground: View {
         TimelineView(.animation) { timeline in
             let time = timeline.date.timeIntervalSinceReferenceDate
             ZStack {
+                // Day: deep azure fading to a warm horizon (no cartoon lime).
                 LinearGradient(
-                    colors: [Color(hex: 0x26B8FF), Color(hex: 0x8DE8FF), Color(hex: 0xD7F56D)],
+                    stops: [
+                        .init(color: Color(hex: 0x2E86D9), location: 0),
+                        .init(color: Color(hex: 0x6FBBEE), location: 0.45),
+                        .init(color: Color(hex: 0xBFE3F7), location: 0.78),
+                        .init(color: Color(hex: 0xFFE9C2), location: 1)
+                    ],
                     startPoint: .top,
                     endPoint: .bottom
                 )
 
                 LinearGradient(
-                    colors: [Color(hex: 0x29307A), Color(hex: 0x4453A3), Color(hex: 0x72B1D6)],
+                    colors: [Color(hex: 0x1D2455), Color(hex: 0x3A4787), Color(hex: 0x8A6E9E)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -1009,11 +1015,41 @@ private struct CartoonSkyBackground: View {
                 )
                 .opacity(spaceOpacity)
 
+                // Low sun with a layered warm glow; fades out as night falls.
+                ZStack {
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [Color(hex: 0xFFF3C4).opacity(0.85), .clear],
+                                center: .center,
+                                startRadius: 0,
+                                endRadius: 190
+                            )
+                        )
+                        .frame(width: 380, height: 380)
+                    Circle()
+                        .fill(Color(hex: 0xFFF7D6))
+                        .frame(width: 74, height: 74)
+                        .blur(radius: 2)
+                }
+                .offset(x: -120, y: -210)
+                .opacity(cloudOpacity)
+
+                // Distant, soft clouds — blurred so they read as atmosphere.
                 clouds(time: time)
-                    .opacity(cloudOpacity)
+                    .blur(radius: 14)
+                    .opacity(cloudOpacity * 0.8)
 
                 stars
                     .opacity(starOpacity)
+
+                // Gentle edge vignette pulls focus onto the playfield.
+                RadialGradient(
+                    colors: [.clear, .black.opacity(0.2)],
+                    center: .center,
+                    startRadius: 210,
+                    endRadius: 560
+                )
             }
         }
     }
@@ -1236,17 +1272,32 @@ private struct BrickStackSceneView: UIViewRepresentable {
         lookAt.isGimbalLockEnabled = true
         cameraNode.constraints = [lookAt]
 
+        // Directional "sun" with soft shadows so plates shade each other —
+        // real form instead of the old flat omni + heavy ambient wash.
         let keyLight = SCNNode()
         keyLight.light = SCNLight()
-        keyLight.light?.type = .omni
-        keyLight.light?.intensity = 760
-        keyLight.position = SCNVector3(-5, 10, 8)
+        keyLight.light?.type = .directional
+        keyLight.light?.intensity = 950
+        keyLight.light?.castsShadow = true
+        keyLight.light?.shadowMode = .deferred
+        keyLight.light?.shadowColor = UIColor.black.withAlphaComponent(0.3)
+        keyLight.light?.shadowRadius = 7
+        keyLight.light?.shadowSampleCount = 16
+        keyLight.eulerAngles = SCNVector3(-Float.pi / 3.1, -Float.pi / 5.5, 0)
         scene.rootNode.addChildNode(keyLight)
+
+        let rimLight = SCNNode()
+        rimLight.light = SCNLight()
+        rimLight.light?.type = .omni
+        rimLight.light?.intensity = 260
+        rimLight.light?.color = UIColor(hex: 0xFFE1B0)
+        rimLight.position = SCNVector3(7, 6, -7)
+        scene.rootNode.addChildNode(rimLight)
 
         let fillLight = SCNNode()
         fillLight.light = SCNLight()
         fillLight.light?.type = .ambient
-        fillLight.light?.intensity = 620
+        fillLight.light?.intensity = 380
         scene.rootNode.addChildNode(fillLight)
 
         let root = SCNNode()
@@ -1437,39 +1488,24 @@ private struct BrickStackSceneView: UIViewRepresentable {
         let node = SCNNode()
         node.position = platePosition(centerX: centerX, centerZ: centerZ, y: y)
 
-        let outline = SCNBox(width: width + 0.08, height: height + 0.055, length: depth + 0.08, chamferRadius: 0.045)
-        outline.materials = [outlineMaterial()]
-        let outlineNode = SCNNode(geometry: outline)
-        outlineNode.position = SCNVector3(0, -0.014, 0)
-        node.addChildNode(outlineNode)
-
-        let body = SCNBox(width: width, height: height, length: depth, chamferRadius: 0.035)
+        // No toon outline shells — form comes from lighting and shadows now.
+        let body = SCNBox(width: width, height: height, length: depth, chamferRadius: 0.03)
         body.materials = [material(color)]
         let bodyNode = SCNNode(geometry: body)
         bodyNode.position = SCNVector3(0, 0.018, 0)
         node.addChildNode(bodyNode)
 
         if showStuds {
+            let studMaterial = material(color)
             for studX in 0..<studsX {
                 for studZ in 0..<studsZ {
-                    let studOutlineGeometry = SCNCylinder(radius: 0.15, height: 0.086)
-                    studOutlineGeometry.radialSegmentCount = 8
-                    studOutlineGeometry.materials = [outlineMaterial()]
-                    let studOutlineNode = SCNNode(geometry: studOutlineGeometry)
-                    studOutlineNode.position = SCNVector3(
-                        Float((CGFloat(studX) - CGFloat(studsX - 1) / 2) * unit),
-                        Float(height / 2 + 0.047),
-                        Float((CGFloat(studZ) - CGFloat(studsZ - 1) / 2) * unit)
-                    )
-                    node.addChildNode(studOutlineNode)
-
-                    let studGeometry = SCNCylinder(radius: 0.13, height: 0.08)
-                    studGeometry.radialSegmentCount = 8
-                    studGeometry.materials = [material(color)]
+                    let studGeometry = SCNCylinder(radius: 0.135, height: 0.09)
+                    studGeometry.radialSegmentCount = 24
+                    studGeometry.materials = [studMaterial]
                     let studNode = SCNNode(geometry: studGeometry)
                     studNode.position = SCNVector3(
                         Float((CGFloat(studX) - CGFloat(studsX - 1) / 2) * unit),
-                        Float(height / 2 + 0.065),
+                        Float(height / 2 + 0.06),
                         Float((CGFloat(studZ) - CGFloat(studsZ - 1) / 2) * unit)
                     )
                     node.addChildNode(studNode)
@@ -1494,21 +1530,14 @@ private struct BrickStackSceneView: UIViewRepresentable {
     }
 
     private func material(_ color: UIColor) -> SCNMaterial {
+        // Glossy ABS plastic: strong white specular highlight over the
+        // diffuse colour, shaded by the directional key light.
         let material = SCNMaterial()
-        material.lightingModel = .lambert
+        material.lightingModel = .blinn
         material.diffuse.contents = color
         material.ambient.contents = color
-        material.emission.contents = color.withAlphaComponent(0.08)
-        material.specular.contents = UIColor.white.withAlphaComponent(0.08)
-        material.shininess = 0.18
-        return material
-    }
-
-    private func outlineMaterial() -> SCNMaterial {
-        let material = SCNMaterial()
-        material.lightingModel = .constant
-        material.diffuse.contents = UIColor(hex: 0x1F2B34)
-        material.emission.contents = UIColor(hex: 0x1F2B34)
+        material.specular.contents = UIColor(white: 1, alpha: 0.85)
+        material.shininess = 0.55
         return material
     }
 
@@ -2010,17 +2039,31 @@ private struct StudMatchSceneView: UIViewRepresentable {
         lookAt.isGimbalLockEnabled = true
         cameraNode.constraints = [lookAt]
 
+        // Directional "sun" with soft shadows; matches the Brick Stack rig.
         let keyLight = SCNNode()
         keyLight.light = SCNLight()
-        keyLight.light?.type = .omni
-        keyLight.light?.intensity = 760
-        keyLight.position = SCNVector3(-5, 8, 7)
+        keyLight.light?.type = .directional
+        keyLight.light?.intensity = 950
+        keyLight.light?.castsShadow = true
+        keyLight.light?.shadowMode = .deferred
+        keyLight.light?.shadowColor = UIColor.black.withAlphaComponent(0.28)
+        keyLight.light?.shadowRadius = 6
+        keyLight.light?.shadowSampleCount = 16
+        keyLight.eulerAngles = SCNVector3(-Float.pi / 2.6, -Float.pi / 6, 0)
         scene.rootNode.addChildNode(keyLight)
+
+        let rimLight = SCNNode()
+        rimLight.light = SCNLight()
+        rimLight.light?.type = .omni
+        rimLight.light?.intensity = 240
+        rimLight.light?.color = UIColor(hex: 0xFFE1B0)
+        rimLight.position = SCNVector3(6, 5, -6)
+        scene.rootNode.addChildNode(rimLight)
 
         let ambient = SCNNode()
         ambient.light = SCNLight()
         ambient.light?.type = .ambient
-        ambient.light?.intensity = 650
+        ambient.light?.intensity = 400
         scene.rootNode.addChildNode(ambient)
 
         let root = SCNNode()
@@ -2103,32 +2146,21 @@ private struct StudMatchSceneView: UIViewRepresentable {
         node.position = SCNVector3(Float(col - 2) * 0.98, 0, Float(row - 2) * 0.98)
         node.setValue(index, forKey: "studMatchIndex")
 
-        let outline = SCNBox(width: 0.96, height: 0.44, length: 0.96, chamferRadius: 0.055)
-        outline.materials = [outlineMaterial()]
-        let outlineNode = SCNNode(geometry: outline)
-        outlineNode.position = SCNVector3(0, -0.02, 0)
-        node.addChildNode(outlineNode)
-
-        let body = SCNBox(width: 0.88, height: 0.38, length: 0.88, chamferRadius: 0.05)
-        body.materials = [material(color)]
+        // Clean 2×2 brick — no toon outlines, smooth studs, shared material.
+        let brickMaterial = material(color)
+        let body = SCNBox(width: 0.9, height: 0.4, length: 0.9, chamferRadius: 0.04)
+        body.materials = [brickMaterial]
         let bodyNode = SCNNode(geometry: body)
         bodyNode.position = SCNVector3(0, 0.02, 0)
         node.addChildNode(bodyNode)
 
         for x in [-0.215, 0.215] {
             for z in [-0.215, 0.215] {
-                let studOutline = SCNCylinder(radius: 0.155, height: 0.115)
-                studOutline.radialSegmentCount = 10
-                studOutline.materials = [outlineMaterial()]
-                let studOutlineNode = SCNNode(geometry: studOutline)
-                studOutlineNode.position = SCNVector3(Float(x), 0.24, Float(z))
-                node.addChildNode(studOutlineNode)
-
-                let stud = SCNCylinder(radius: 0.135, height: 0.105)
-                stud.radialSegmentCount = 10
-                stud.materials = [material(color)]
+                let stud = SCNCylinder(radius: 0.14, height: 0.11)
+                stud.radialSegmentCount = 24
+                stud.materials = [brickMaterial]
                 let studNode = SCNNode(geometry: stud)
-                studNode.position = SCNVector3(Float(x), 0.275, Float(z))
+                studNode.position = SCNVector3(Float(x), 0.27, Float(z))
                 node.addChildNode(studNode)
             }
         }
@@ -2189,21 +2221,13 @@ private struct StudMatchSceneView: UIViewRepresentable {
     }
 
     private func material(_ color: UIColor) -> SCNMaterial {
+        // Glossy ABS plastic, matching the Brick Stack material.
         let material = SCNMaterial()
-        material.lightingModel = .lambert
+        material.lightingModel = .blinn
         material.diffuse.contents = color
         material.ambient.contents = color
-        material.emission.contents = color.withAlphaComponent(0.08)
-        material.specular.contents = UIColor.white.withAlphaComponent(0.08)
-        material.shininess = 0.18
-        return material
-    }
-
-    private func outlineMaterial() -> SCNMaterial {
-        let material = SCNMaterial()
-        material.lightingModel = .constant
-        material.diffuse.contents = UIColor(hex: 0x1F2B34)
-        material.emission.contents = UIColor(hex: 0x1F2B34)
+        material.specular.contents = UIColor(white: 1, alpha: 0.85)
+        material.shininess = 0.55
         return material
     }
 
@@ -2247,12 +2271,27 @@ private struct BuildSprintGameView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color(hex: 0x2B2B2F), Color(hex: 0x19191C)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-                .ignoresSafeArea()
+            ZStack {
+                LinearGradient(
+                    colors: [Color(hex: 0x2E3138), Color(hex: 0x17181C)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                // Cool table-top spotlight over the board, vignetted edges.
+                RadialGradient(
+                    colors: [Color(hex: 0x5CC8FF).opacity(0.12), .clear],
+                    center: .init(x: 0.5, y: 0.32),
+                    startRadius: 20,
+                    endRadius: 420
+                )
+                RadialGradient(
+                    colors: [.clear, .black.opacity(0.32)],
+                    center: .center,
+                    startRadius: 220,
+                    endRadius: 600
+                )
+            }
+            .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 header
@@ -2772,31 +2811,60 @@ private struct BuildSprintTile: View {
     var color: BuildSprintTileColor?
 
     var body: some View {
-        let tileColor = color?.color ?? .black.opacity(0.28)
-        RoundedRectangle(cornerRadius: 8)
+        let tileColor = color?.color ?? Color(hex: 0x24272E)
+        RoundedRectangle(cornerRadius: 8, style: .continuous)
             .fill(tileColor)
             .aspectRatio(1, contentMode: .fit)
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(.black.opacity(0.24), lineWidth: 3)
+                // Moulded-plastic form: lit from the top, shaded at the base.
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                .white.opacity(color == nil ? 0.05 : 0.32),
+                                .white.opacity(0),
+                                .black.opacity(color == nil ? 0.3 : 0.18)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
             }
             .overlay {
-                Image("BIABLogoStamp")
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(color?.logoColor ?? .white.opacity(0.24))
-                    .padding(6)
-                    .opacity(color == nil ? 0.3 : 0.5)
+                // A real stud instead of the printed logo stamp.
+                GeometryReader { proxy in
+                    let stud = proxy.size.width * 0.46
+                    ZStack {
+                        if color != nil {
+                            Circle()
+                                .fill(tileColor)
+                                .overlay(
+                                    Circle().fill(
+                                        LinearGradient(
+                                            colors: [.white.opacity(0.38), .clear, .black.opacity(0.22)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                )
+                                .overlay(Circle().strokeBorder(.black.opacity(0.14), lineWidth: 1))
+                                .shadow(color: .black.opacity(0.28), radius: 2, x: 0, y: 2)
+                        } else {
+                            // Empty socket: a recessed anti-stud ring.
+                            Circle()
+                                .strokeBorder(.black.opacity(0.4), lineWidth: 2)
+                                .background(Circle().fill(.black.opacity(0.16)))
+                        }
+                    }
+                    .frame(width: stud, height: stud)
+                    .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                }
             }
-            .overlay(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 7)
-                    .fill(.white.opacity(color == nil ? 0.04 : 0.16))
-                    .frame(height: 8)
-                    .padding(.horizontal, 8)
-                    .padding(.top, 8)
+            .overlay {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .strokeBorder(.black.opacity(0.22), lineWidth: 1)
             }
-            .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 4)
+            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 4)
     }
 }
 
@@ -3022,11 +3090,26 @@ private struct RevealTheStadiumGameView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color(hex: 0x151519), Color(hex: 0x25252B)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            ZStack {
+                LinearGradient(
+                    colors: [Color(hex: 0x17171C), Color(hex: 0x27272E)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                // Floodlit-pitch glow behind the artwork, vignetted edges.
+                RadialGradient(
+                    colors: [Color(hex: 0xF7B733).opacity(0.1), .clear],
+                    center: .init(x: 0.5, y: 0.38),
+                    startRadius: 30,
+                    endRadius: 430
+                )
+                RadialGradient(
+                    colors: [.clear, .black.opacity(0.32)],
+                    center: .center,
+                    startRadius: 220,
+                    endRadius: 600
+                )
+            }
             .ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -3159,17 +3242,40 @@ private struct RevealTheStadiumGameView: View {
                             Button {
                                 reveal(index)
                             } label: {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(revealed.contains(index) || phase != .playing ? .clear : tileColor(for: index))
+                                let covered = !revealed.contains(index) && phase == .playing
+                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                    .fill(covered ? tileColor(for: index) : .clear)
                                     .aspectRatio(1, contentMode: .fit)
                                     .overlay {
-                                        if !revealed.contains(index), phase == .playing {
-                                            Image("BIABLogoStamp")
-                                                .renderingMode(.template)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .foregroundStyle(BrickColor.gold.opacity(0.52))
-                                                .padding(9)
+                                        if covered {
+                                            // Moulded plate: top-lit form + a small stud.
+                                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                                .fill(
+                                                    LinearGradient(
+                                                        colors: [.white.opacity(0.14), .clear, .black.opacity(0.28)],
+                                                        startPoint: .top,
+                                                        endPoint: .bottom
+                                                    )
+                                                )
+                                            GeometryReader { proxy in
+                                                let stud = proxy.size.width * 0.44
+                                                Circle()
+                                                    .fill(tileColor(for: index))
+                                                    .overlay(
+                                                        Circle().fill(
+                                                            LinearGradient(
+                                                                colors: [.white.opacity(0.22), .clear, .black.opacity(0.26)],
+                                                                startPoint: .topLeading,
+                                                                endPoint: .bottomTrailing
+                                                            )
+                                                        )
+                                                    )
+                                                    .overlay(Circle().strokeBorder(.white.opacity(0.08), lineWidth: 1))
+                                                    .frame(width: stud, height: stud)
+                                                    .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                                            }
+                                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                                .strokeBorder(.black.opacity(0.35), lineWidth: 1)
                                         }
                                     }
                             }
