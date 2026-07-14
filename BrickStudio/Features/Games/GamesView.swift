@@ -1002,9 +1002,14 @@ private final class BrickStackAudioController: ObservableObject {
     }
 
     private func configureSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.ambient, options: [.mixWithOthers])
-        try? session.setActive(true)
+        // AVAudioSession activation can block, so keep it off the main
+        // thread (the session API is thread-safe for these calls). Fixes
+        // the "AVAudioSession Hang Risk" runtime warnings.
+        DispatchQueue.global(qos: .userInitiated).async {
+            let session = AVAudioSession.sharedInstance()
+            try? session.setCategory(.ambient, options: [.mixWithOthers])
+            try? session.setActive(true)
+        }
     }
 
     private func makePlayer(named name: String, extension fileExtension: String, volume: Float, loops: Int) -> AVAudioPlayer? {
@@ -1726,9 +1731,14 @@ private final class StudMatchAudioController: ObservableObject {
     }
 
     private func configureSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.ambient, options: [.mixWithOthers])
-        try? session.setActive(true)
+        // AVAudioSession activation can block, so keep it off the main
+        // thread (the session API is thread-safe for these calls). Fixes
+        // the "AVAudioSession Hang Risk" runtime warnings.
+        DispatchQueue.global(qos: .userInitiated).async {
+            let session = AVAudioSession.sharedInstance()
+            try? session.setCategory(.ambient, options: [.mixWithOthers])
+            try? session.setActive(true)
+        }
     }
 
     private func makePlayer(named name: String, extension fileExtension: String, volume: Float, loops: Int) -> AVAudioPlayer? {
@@ -2728,9 +2738,14 @@ private final class BuildSprintAudioController: ObservableObject {
     }
 
     private func configureSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.ambient, options: [.mixWithOthers])
-        try? session.setActive(true)
+        // AVAudioSession activation can block, so keep it off the main
+        // thread (the session API is thread-safe for these calls). Fixes
+        // the "AVAudioSession Hang Risk" runtime warnings.
+        DispatchQueue.global(qos: .userInitiated).async {
+            let session = AVAudioSession.sharedInstance()
+            try? session.setCategory(.ambient, options: [.mixWithOthers])
+            try? session.setActive(true)
+        }
     }
 
     private func makePlayer(named name: String, extension fileExtension: String, volume: Float, loops: Int) -> AVAudioPlayer? {

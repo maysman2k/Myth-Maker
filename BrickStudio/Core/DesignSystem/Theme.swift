@@ -146,7 +146,7 @@ extension View {
 
 /// Applies iOS 26 Liquid Glass when available, with a tasteful blurred
 /// material fallback on earlier systems so the look is consistent.
-struct LiquidGlassBackground<S: Shape>: ViewModifier {
+struct LiquidGlassBackground<S: InsettableShape>: ViewModifier {
     var shape: S
     var tinted: Bool
 
@@ -167,24 +167,21 @@ struct LiquidGlassBackground<S: Shape>: ViewModifier {
     }
 
     private func materialFallback(_ content: Content) -> some View {
-        content
+        let highlight = LinearGradient(
+            colors: [Color.white.opacity(0.35), Color.white.opacity(0.05)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        let tintColor: Color = tinted ? BrickColor.gold.opacity(0.10) : Color.clear
+        return content
             .background(.ultraThinMaterial, in: shape)
-            .overlay(
-                shape.strokeBorder(
-                    LinearGradient(
-                        colors: [.white.opacity(0.35), .white.opacity(0.05)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    lineWidth: 0.75
-                )
-            )
-            .overlay(shape.fill(tinted ? BrickColor.gold.opacity(0.10) : Color.clear))
+            .overlay(shape.fill(tintColor).allowsHitTesting(false))
+            .overlay(shape.strokeBorder(highlight, lineWidth: 0.75))
     }
 }
 
 extension View {
-    func liquidGlass<S: Shape>(in shape: S = Capsule(), tinted: Bool = false) -> some View {
+    func liquidGlass<S: InsettableShape>(in shape: S = Capsule(), tinted: Bool = false) -> some View {
         modifier(LiquidGlassBackground(shape: shape, tinted: tinted))
     }
 }
