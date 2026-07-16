@@ -28,9 +28,6 @@ struct RootView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: model.toast)
-        .onAppear {
-            ShopWebViewStore.shared.preload()
-        }
         .task {
             await model.refreshSupabaseContent(quietErrors: true)
         }
@@ -47,8 +44,6 @@ struct RootView: View {
                     NewsView()
                 case .create:
                     CreateView()
-                case .shop:
-                    ShopView()
                 case .brickBar:
                     BrickBarView()
                 case .games:
@@ -125,11 +120,6 @@ private struct CustomMainTabBar: View {
 
     @ViewBuilder
     private func tabIcon(_ tab: MainTab) -> some View {
-        if tab == .shop, UIImage(named: "ShopTabIcon") != nil {
-            Image("ShopTabIcon")
-                .renderingMode(.template)
-        } else {
-            Image(systemName: tab.symbol)
-        }
+        Image(systemName: tab.symbol)
     }
 }

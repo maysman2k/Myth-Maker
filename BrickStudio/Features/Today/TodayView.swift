@@ -448,7 +448,7 @@ struct TodayView: View {
         let heroes: [(label: String, title: String, subtitle: String, symbol: String, tint: Color, destination: HeroDestination)] = [
             ("Custom builds", "The Brick Bar is open", "Send us your build idea and we'll turn it into bricks.", "wrench.and.screwdriver", BrickColor.brickRed, .brickBar),
             ("Create", "Turn a photo into a brick mosaic", "Preview your photo in studs before we build it.", "square.grid.3x3", BrickColor.gold, .mosaic),
-            ("Shop", "Stadium builds, made to order", "Your club's ground, hand-built to display scale.", "sportscourt", BrickColor.stadiumGreen, .shop)
+            ("Games", "Quick brick-sized challenges", "Stack, match and race the clock — climb this week's board.", "gamecontroller", BrickColor.stadiumGreen, .games)
         ]
         let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: Date()) ?? 0
         let hero = heroes[dayIndex % heroes.count]
@@ -456,7 +456,8 @@ struct TodayView: View {
         return Button {
             switch hero.destination {
             case .brickBar: model.selectedTab = .brickBar
-            case .mosaic, .shop: model.selectedTab = hero.destination == .mosaic ? .create : .shop
+            case .mosaic: model.selectedTab = .create
+            case .games: model.selectedTab = .games
             }
         } label: {
             ZStack(alignment: .bottomLeading) {
@@ -479,7 +480,7 @@ struct TodayView: View {
         .buttonStyle(.plain)
     }
 
-    private enum HeroDestination { case brickBar, mosaic, shop }
+    private enum HeroDestination { case brickBar, mosaic, games }
 
     // MARK: Instagram
 
@@ -553,7 +554,7 @@ struct TodayView: View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: BrickSpacing.m) {
             quickAction("Read News", symbol: "newspaper") { model.selectedTab = .news }
             quickAction("Make Mosaic", symbol: "square.grid.3x3") { model.selectedTab = .create }
-            quickAction("Shop Stadiums", symbol: "sportscourt") { model.selectedTab = .shop }
+            quickAction("Play Games", symbol: "gamecontroller") { model.selectedTab = .games }
             quickAction("Request Build", symbol: "wrench.and.screwdriver") { model.selectedTab = .brickBar }
         }
     }
@@ -645,7 +646,7 @@ struct TodayView: View {
     private var featuredProduct: some View {
         if let product = model.activeProducts.first(where: { $0.status == .active }) {
             VStack(alignment: .leading, spacing: BrickSpacing.m) {
-                SectionHeader(title: "From the shop", actionTitle: "Shop all") { model.selectedTab = .shop }
+                SectionHeader(title: "Featured build")
                 NavigationLink(value: ContentRoute.product(product.id)) {
                     ProductCard(product: product)
                 }

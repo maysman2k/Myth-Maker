@@ -5,7 +5,6 @@ enum MainTab: String, CaseIterable, Identifiable {
     case today
     case news
     case create
-    case shop
     case brickBar
     case games
 
@@ -16,7 +15,6 @@ enum MainTab: String, CaseIterable, Identifiable {
         case .today: return "Feed"
         case .news: return "News"
         case .create: return "Mosiac Maker"
-        case .shop: return "Shop"
         case .brickBar: return "Brick Bar"
         case .games: return "Games"
         }
@@ -27,7 +25,6 @@ enum MainTab: String, CaseIterable, Identifiable {
         case .today: return "sun.max"
         case .news: return "newspaper"
         case .create: return "square.grid.3x3"
-        case .shop: return "bag"
         case .brickBar: return "wrench.and.screwdriver"
         case .games: return "gamecontroller"
         }

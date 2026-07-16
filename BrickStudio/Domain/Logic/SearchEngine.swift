@@ -4,7 +4,7 @@ enum SearchScope: String, CaseIterable, Identifiable {
     case all = "All"
     case news = "News"
     case reviews = "Reviews"
-    case shop = "Shop"
+    case shop = "Builds"
     case lessons = "Lessons"
 
     var id: String { rawValue }
