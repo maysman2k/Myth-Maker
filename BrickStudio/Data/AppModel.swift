@@ -85,6 +85,9 @@ final class AppModel {
     var selectedTab: MainTab = .today
     var toast: Toast?
     var isShowingAuth = false
+    /// Set when the user swipes away profile setup; stops the sheet
+    /// re-presenting until the next launch (setup is offered again then).
+    var profileSetupDismissed = false
     /// True while a manually triggered scanner run is in flight (dispatch +
     /// waiting for its drafts to land in the feed).
     var isScannerRunning = false

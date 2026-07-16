@@ -63,7 +63,14 @@ enum SupabaseService {
         KeychainStore.delete(sessionKeychainKey)
     }
 
-    static func signUp(email: String, password: String, displayName: String) async throws -> (SupabaseSession, UserAccount) {
+    enum SignUpOutcome {
+        case signedIn(UserAccount)
+        /// Account created; Supabase sent a confirmation email and will not
+        /// issue a session until the address is verified.
+        case needsEmailConfirmation
+    }
+
+    static func signUp(email: String, password: String, displayName: String) async throws -> SignUpOutcome {
         let response: AuthResponse = try await request(
             path: "/auth/v1/signup",
             method: "POST",
@@ -71,23 +78,137 @@ enum SupabaseService {
             token: nil,
             preferRepresentation: false
         )
-        let session: SupabaseSession
-        if let returnedSession = response.sessionValue {
-            session = returnedSession
-        } else {
-            session = try await authenticate(email: email, password: password)
+        guard let session = response.sessionValue else {
+            return .needsEmailConfirmation
         }
-        try await upsertProfile(userID: session.userID, displayName: displayName, email: email, role: .user, token: session.accessToken)
-        let account = try await fetchProfile(userID: session.userID, token: session.accessToken)
         saveSession(session)
-        return (session, account)
+        let account = try await ensureProfile(session: session, fallbackName: displayName, email: email)
+        return .signedIn(account)
     }
 
     static func signIn(email: String, password: String) async throws -> (SupabaseSession, UserAccount) {
         let session = try await authenticate(email: email, password: password)
-        let account = try await fetchProfile(userID: session.userID, token: session.accessToken)
         saveSession(session)
+        let account = try await ensureProfile(session: session, fallbackName: nil, email: email)
         return (session, account)
+    }
+
+    /// Exchanges a Sign in with Apple identity token for a Supabase session.
+    static func signInWithApple(idToken: String, nonce: String, fullName: String?) async throws -> (SupabaseSession, UserAccount) {
+        let response: AuthResponse = try await request(
+            path: "/auth/v1/token?grant_type=id_token",
+            method: "POST",
+            body: IDTokenBody(provider: "apple", idToken: idToken, nonce: nonce),
+            token: nil,
+            preferRepresentation: false
+        )
+        guard let session = response.sessionValue else {
+            throw ServiceError.invalidResponse("Apple sign-in didn't return a session. Check the Apple provider is enabled in Supabase Authentication → Providers.")
+        }
+        saveSession(session)
+        let email = response.user?.email ?? ""
+        let account = try await ensureProfile(session: session, fallbackName: fullName, email: email)
+        return (session, account)
+    }
+
+    /// The profile row is created on first authenticated visit (signup with
+    /// confirmation on can't write it — there's no token until verification).
+    private static func ensureProfile(session: SupabaseSession, fallbackName: String?, email: String) async throws -> UserAccount {
+        if let existing = try? await fetchProfile(userID: session.userID, token: session.accessToken) {
+            return existing
+        }
+        let trimmed = fallbackName?.trimmingCharacters(in: .whitespaces) ?? ""
+        let name = trimmed.isEmpty ? String(email.split(separator: "@").first.map(String.init) ?? "Builder") : trimmed
+        try await upsertProfile(userID: session.userID, displayName: name, email: email, role: .user, token: session.accessToken)
+        return try await fetchProfile(userID: session.userID, token: session.accessToken)
+    }
+
+    @discardableResult
+    static func refreshSession() async throws -> SupabaseSession {
+        guard let current = loadSession(), let refreshToken = current.refreshToken else {
+            throw ServiceError.invalidResponse("No stored session to refresh.")
+        }
+        let response: AuthResponse = try await request(
+            path: "/auth/v1/token?grant_type=refresh_token",
+            method: "POST",
+            body: RefreshBody(refreshToken: refreshToken),
+            token: nil,
+            preferRepresentation: false
+        )
+        guard var session = response.sessionValue else {
+            throw ServiceError.invalidResponse("Your session expired. Please sign in again.")
+        }
+        if session.refreshToken == nil { session.refreshToken = refreshToken }
+        saveSession(session)
+        return session
+    }
+
+    /// Restores the Keychain session at launch (refreshing tokens) and
+    /// returns the profile — or nil when no valid session exists.
+    static func restoreSession() async -> UserAccount? {
+        guard isConfigured, loadSession() != nil else { return nil }
+        do {
+            let session = try await refreshSession()
+            return try await ensureProfile(session: session, fallbackName: nil, email: "")
+        } catch {
+            clearSession()
+            return nil
+        }
+    }
+
+    /// Revokes the session server-side, then clears the local copy.
+    static func signOutRemote() async {
+        guard let session = loadSession() else { return }
+        clearSession()
+        let _: EmptyResponse? = try? await request(
+            path: "/auth/v1/logout",
+            method: "POST",
+            bodyData: nil,
+            token: session.accessToken,
+            preferRepresentation: false,
+            extraHeaders: [:]
+        )
+    }
+
+    static func sendPasswordReset(email: String) async throws {
+        let _: EmptyResponse = try await request(
+            path: "/auth/v1/recover",
+            method: "POST",
+            body: EmailBody(email: email),
+            token: nil,
+            preferRepresentation: false
+        )
+    }
+
+    static func resendConfirmationEmail(email: String) async throws {
+        let _: EmptyResponse = try await request(
+            path: "/auth/v1/resend",
+            method: "POST",
+            body: ResendBody(type: "signup", email: email),
+            token: nil,
+            preferRepresentation: false
+        )
+    }
+
+    // MARK: Handles
+
+    static func isHandleAvailable(_ handle: String) async throws -> Bool {
+        let rows: [HandleRow] = try await request(
+            path: "/rest/v1/profiles?handle=eq.\(handle.lowercased())&select=id&limit=1",
+            method: "GET",
+            token: loadSession()?.accessToken
+        )
+        return rows.isEmpty
+    }
+
+    static func setHandle(_ handle: String, userID: UUID) async throws {
+        let _: [HandleRow] = try await request(
+            path: "/rest/v1/profiles?id=eq.\(userID.uuidString.lowercased())",
+            method: "PATCH",
+            body: ["handle": handle.lowercased()],
+            token: loadSession()?.accessToken,
+            preferRepresentation: true
+        )
     }
 
     private static func authenticate(email: String, password: String) async throws -> SupabaseSession {
@@ -327,6 +448,38 @@ private struct SignInBody: Encodable {
     var password: String
 }
 
+private struct IDTokenBody: Encodable {
+    var provider: String
+    var idToken: String
+    var nonce: String
+
+    enum CodingKeys: String, CodingKey {
+        case provider, nonce
+        case idToken = "id_token"
+    }
+}
+
+private struct RefreshBody: Encodable {
+    var refreshToken: String
+
+    enum CodingKeys: String, CodingKey {
+        case refreshToken = "refresh_token"
+    }
+}
+
+private struct EmailBody: Encodable {
+    var email: String
+}
+
+private struct ResendBody: Encodable {
+    var type: String
+    var email: String
+}
+
+private struct HandleRow: Codable {
+    var id: UUID
+}
+
 private struct AuthResponse: Decodable {
     struct User: Decodable {
         var id: UUID
@@ -373,13 +526,15 @@ private struct ProfileRow: Codable {
     var role: String
     var createdAt: Date
     var updatedAt: Date
+    var handle: String? = nil
 
     var account: UserAccount {
         UserAccount(
             id: id,
             displayName: displayName,
             email: email,
-            passwordHash: "supabase",
+            handle: handle,
+            passwordHash: "",
             role: UserRole(rawValue: role) ?? .user,
             bio: "",
             favouriteTopics: [],
@@ -393,7 +548,7 @@ private struct ProfileRow: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, email, role
+        case id, email, role, handle
         case displayName = "display_name"
         case createdAt = "created_at"
         case updatedAt = "updated_at"

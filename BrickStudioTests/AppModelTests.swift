@@ -12,7 +12,7 @@ final class AppModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        user = UserAccount.new(displayName: "Jess", email: "jess@example.com", passwordHash: AppModel.hashPassword("password123", email: "jess@example.com"))
+        user = UserAccount.new(displayName: "Jess", email: "jess@example.com", passwordHash: "")
         user.createdAt = Date().addingTimeInterval(-90 * 86_400)
         secondUser = UserAccount.new(displayName: "Tom", email: "tom@example.com", passwordHash: "x")
         thirdUser = UserAccount.new(displayName: "Mags", email: "mags@example.com", passwordHash: "x")
@@ -131,18 +131,25 @@ final class AppModelTests: XCTestCase {
     }
 
     // MARK: Auth
+    // Credential flows live in Supabase Auth now; what's testable locally is
+    // the validation logic that gates them.
 
-    func testSignUpRejectsDuplicateEmail() {
-        XCTAssertThrowsError(try model.signUp(displayName: "Copycat", email: "jess@example.com", password: "password123")) { error in
-            XCTAssertEqual(error as? AuthError, .emailInUse)
-        }
+    func testHandleValidation() {
+        XCTAssertTrue(AppModel.isValidHandle("brick_builder99"))
+        XCTAssertTrue(AppModel.isValidHandle("abc"))
+        XCTAssertFalse(AppModel.isValidHandle("ab"), "Too short")
+        XCTAssertFalse(AppModel.isValidHandle("9starts_with_digit"))
+        XCTAssertFalse(AppModel.isValidHandle("Has_Capitals"))
+        XCTAssertFalse(AppModel.isValidHandle("way_too_long_for_a_handle_here"))
+        XCTAssertFalse(AppModel.isValidHandle("admin"), "Reserved")
+        XCTAssertFalse(AppModel.isValidHandle("with space"))
     }
 
-    func testSignInWithCorrectAndWrongPassword() {
-        model.currentUserID = nil
-        XCTAssertThrowsError(try model.signIn(email: "jess@example.com", password: "wrong-password"))
-        XCTAssertNoThrow(try model.signIn(email: "jess@example.com", password: "password123"))
-        XCTAssertEqual(model.currentUserID, user.id)
+    func testSignOutClearsCurrentUser() {
+        model.currentUserID = user.id
+        model.signOut()
+        XCTAssertNil(model.currentUserID)
+        XCTAssertFalse(model.isSignedIn)
     }
 
     // MARK: Bookmarks stay private per user

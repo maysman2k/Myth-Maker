@@ -16,6 +16,16 @@ struct RootView: View {
         .sheet(isPresented: $model.isShowingAuth) {
             AuthView()
         }
+        // Offered after sign-up until a handle exists; swiping it away
+        // defers it to the next launch.
+        .sheet(isPresented: Binding(
+            get: { model.needsProfileSetup && !model.profileSetupDismissed && !model.isShowingAuth },
+            set: { presented in
+                if !presented { model.profileSetupDismissed = true }
+            }
+        )) {
+            ProfileSetupView()
+        }
         .overlay(alignment: .bottom) {
             if let toast = model.toast {
                 ToastView(toast: toast)
@@ -29,6 +39,7 @@ struct RootView: View {
         }
         .animation(.easeOut(duration: 0.2), value: model.toast)
         .task {
+            await model.restoreSessionOnLaunch()
             await model.refreshSupabaseContent(quietErrors: true)
         }
     }

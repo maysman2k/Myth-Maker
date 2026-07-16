@@ -211,7 +211,7 @@ struct NewsView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: BrickSpacing.xs) {
-            Text("BIAB NEWS")
+            Text("BRICK STUDIO NEWS")
                 .font(.system(size: 11, weight: .bold))
                 .tracking(2)
                 .foregroundStyle(BrickColor.gold)

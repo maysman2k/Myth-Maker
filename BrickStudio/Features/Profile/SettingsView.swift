@@ -102,11 +102,11 @@ struct LegalView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BrickSpacing.l) {
-                section("About this app", "Bricks in a Bag Studio is the official app of Bricks in a Bag — an independent brick-building fan and custom model brand.")
+                section("About this app", "Brick Studio is an independent social app for brick builders — share your builds, join challenges, and follow the hobby. It grew out of the Bricks in a Bag community.")
                 section("Trademark notice", "LEGO® is a trademark of the LEGO Group, which does not sponsor, authorise or endorse this app. \"LEGO®\" is used only as a descriptive reference. References to compatible brick-building brands do not imply official compatibility unless confirmed by the manufacturer.")
                 section("Your content", "You keep the rights to photos you upload. Uploaded photos are used only for the feature you requested — for example, generating a mosaic preview — and are never used for public content or AI training without your explicit permission.")
                 section("Privacy", "Account data is used to run your account: comments, saved items, designs and Brick Bar requests. Your saved items and Brick Bar requests are always private. You can request account deletion at any time from Settings.")
-                section("AI-assisted content", "Some articles are drafted with AI assistance. Every AI-assisted article is reviewed and approved by the Bricks in a Bag team before publishing, and is labelled as such.")
+                section("AI-assisted content", "Some articles are drafted with AI assistance. Every AI-assisted article is reviewed and approved by the Brick Studio team before publishing, and is labelled as such.")
             }
             .padding(BrickSpacing.l)
         }

@@ -33,6 +33,8 @@ struct UserAccount: Identifiable, Codable, Hashable {
     var id: UUID
     var displayName: String
     var email: String
+    /// Unique @username chosen during profile setup (server-enforced).
+    var handle: String?
     var passwordHash: String
     var role: UserRole
     var avatarImageReference: String?
@@ -70,13 +72,14 @@ struct UserAccount: Identifiable, Codable, Hashable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, displayName, email, passwordHash, role, avatarImageReference, bio, favouriteTopics, favouriteClub, publicProfileEnabled, notificationPreferences, completedLessonIDs, createdAt, lastActiveAt
+        case id, displayName, email, handle, passwordHash, role, avatarImageReference, bio, favouriteTopics, favouriteClub, publicProfileEnabled, notificationPreferences, completedLessonIDs, createdAt, lastActiveAt
     }
 
     init(
         id: UUID,
         displayName: String,
         email: String,
+        handle: String? = nil,
         passwordHash: String,
         role: UserRole,
         avatarImageReference: String? = nil,
@@ -92,6 +95,7 @@ struct UserAccount: Identifiable, Codable, Hashable {
         self.id = id
         self.displayName = displayName
         self.email = email
+        self.handle = handle
         self.passwordHash = passwordHash
         self.role = role
         self.avatarImageReference = avatarImageReference
@@ -110,7 +114,8 @@ struct UserAccount: Identifiable, Codable, Hashable {
         id = try container.decode(UUID.self, forKey: .id)
         displayName = try container.decode(String.self, forKey: .displayName)
         email = try container.decode(String.self, forKey: .email)
-        passwordHash = try container.decode(String.self, forKey: .passwordHash)
+        handle = try container.decodeIfPresent(String.self, forKey: .handle)
+        passwordHash = (try? container.decode(String.self, forKey: .passwordHash)) ?? ""
         role = try container.decode(UserRole.self, forKey: .role)
         avatarImageReference = try container.decodeIfPresent(String.self, forKey: .avatarImageReference)
         bio = try container.decode(String.self, forKey: .bio)

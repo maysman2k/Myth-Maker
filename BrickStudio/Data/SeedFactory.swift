@@ -3,17 +3,17 @@ import Foundation
 /// Builds the first-launch dataset. All sample content lives here (§40.6 —
 /// no hardcoded sample data outside seed files).
 enum SeedFactory {
-    static let demoPassword = "bricks123"
-
     static func makeSnapshot(now: Date = Date()) -> AppSnapshot {
         var snapshot = AppSnapshot()
 
         // MARK: Accounts
+        // Seed personas exist only to author the sample content — they carry
+        // no credentials and cannot be signed into (auth is Supabase-only).
         func account(_ name: String, _ email: String, role: UserRole, bio: String = "", daysOld: Double = 200) -> UserAccount {
             var user = UserAccount.new(
                 displayName: name,
                 email: email,
-                passwordHash: AppModel.hashPassword(demoPassword, email: email),
+                passwordHash: "",
                 role: role
             )
             user.bio = bio

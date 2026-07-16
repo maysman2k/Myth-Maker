@@ -1,5 +1,4 @@
 import Foundation
-import CryptoKit
 
 enum AuthError: LocalizedError {
     case invalidEmail
@@ -8,6 +7,11 @@ enum AuthError: LocalizedError {
     case emailInUse
     case invalidCredentials
     case noAccountForEmail
+    case backendUnavailable
+    case emailNotConfirmed
+    case underage
+    case invalidHandle
+    case handleTaken
 
     var errorDescription: String? {
         switch self {
@@ -17,6 +21,11 @@ enum AuthError: LocalizedError {
         case .emailInUse: return "There's already an account with that email. Try signing in instead."
         case .invalidCredentials: return "Email or password didn't match. Try again."
         case .noAccountForEmail: return "We couldn't find an account with that email."
+        case .backendUnavailable: return "This build isn't connected to the Brick Studio backend, so accounts are unavailable."
+        case .emailNotConfirmed: return "Your email isn't verified yet. Check your inbox for the confirmation link, then sign in."
+        case .underage: return "You need to be at least 13 to join Brick Studio."
+        case .invalidHandle: return "Handles are 3–20 characters: lowercase letters, numbers and underscores."
+        case .handleTaken: return "That handle is already taken. Try another."
         }
     }
 }
@@ -92,111 +101,160 @@ extension AppModel {
     }
 
     // MARK: Auth
+    //
+    // All identity lives in Supabase Auth. There is deliberately no local
+    // account fallback: without a configured backend, accounts are off.
 
-    static func hashPassword(_ password: String, email: String) -> String {
-        let seasoned = "brickstudio:\(email.lowercased()):\(password)"
-        let digest = SHA256.hash(data: Data(seasoned.utf8))
-        return digest.map { String(format: "%02x", $0) }.joined()
+    static let minimumSignUpAge = 13
+
+    /// Handle rules: 3–20 chars, lowercase letters / digits / underscores,
+    /// must start with a letter, and not a reserved word.
+    static let reservedHandles: Set<String> = [
+        "admin", "administrator", "moderator", "mod", "support", "help",
+        "brickstudio", "brick_studio", "official", "staff", "team", "root",
+        "system", "about", "settings", "lego"
+    ]
+
+    static func isValidHandle(_ handle: String) -> Bool {
+        let pattern = "^[a-z][a-z0-9_]{2,19}$"
+        guard handle.range(of: pattern, options: .regularExpression) != nil else { return false }
+        return !reservedHandles.contains(handle)
     }
 
-    func signUp(displayName: String, email: String, password: String) throws {
-        let trimmedName = displayName.trimmingCharacters(in: .whitespaces)
-        let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
-        guard RequestValidator.isValidEmail(normalisedEmail) else { throw AuthError.invalidEmail }
-        guard !trimmedName.isEmpty else { throw AuthError.missingName }
-        guard password.count >= 8 else { throw AuthError.weakPassword }
-        guard !accounts.contains(where: { $0.email == normalisedEmail }) else { throw AuthError.emailInUse }
-
-        var account = UserAccount.new(
-            displayName: trimmedName,
-            email: normalisedEmail,
-            passwordHash: Self.hashPassword(password, email: normalisedEmail)
-        )
-        account.lastActiveAt = Date()
-        accounts.append(account)
-        currentUserID = account.id
-        notify(
-            userID: account.id,
-            kind: .general,
-            title: "Welcome to Bricks in a Bag Studio",
-            body: "Save what you love, join the conversation, and send us your build ideas."
-        )
-        isShowingAuth = false
-        showToast("Welcome, \(trimmedName)")
-        persist()
+    /// True once someone is signed in but hasn't finished profile setup.
+    var needsProfileSetup: Bool {
+        SupabaseService.isConfigured && isSignedIn && (currentUser?.handle ?? "").isEmpty
     }
 
+    /// Creates the account. Returns true when Supabase sent a confirmation
+    /// email and the user must verify before signing in.
     @MainActor
-    func signUpWithBackend(displayName: String, email: String, password: String) async throws {
-        guard SupabaseService.isConfigured else {
-            try signUp(displayName: displayName, email: email, password: password)
-            return
-        }
+    @discardableResult
+    func signUpWithBackend(displayName: String, email: String, password: String, dateOfBirth: Date) async throws -> Bool {
+        guard SupabaseService.isConfigured else { throw AuthError.backendUnavailable }
         let trimmedName = displayName.trimmingCharacters(in: .whitespaces)
         let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
         guard RequestValidator.isValidEmail(normalisedEmail) else { throw AuthError.invalidEmail }
         guard !trimmedName.isEmpty else { throw AuthError.missingName }
         guard password.count >= 8 else { throw AuthError.weakPassword }
-        let (_, account) = try await SupabaseService.signUp(email: normalisedEmail, password: password, displayName: trimmedName)
-        upsertAccount(account)
-        currentUserID = account.id
-        isShowingAuth = false
-        showToast("Welcome, \(account.displayName)")
-        persist()
-        await refreshSupabaseContent(quietErrors: true)
-    }
+        let age = Calendar.current.dateComponents([.year], from: dateOfBirth, to: Date()).year ?? 0
+        guard age >= Self.minimumSignUpAge else { throw AuthError.underage }
 
-    func signIn(email: String, password: String) throws {
-        let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
-        guard let index = accounts.firstIndex(where: { $0.email == normalisedEmail }) else {
-            throw AuthError.invalidCredentials
+        switch try await SupabaseService.signUp(email: normalisedEmail, password: password, displayName: trimmedName) {
+        case .signedIn(let account):
+            completeSignIn(with: account, greeting: "Welcome, \(account.displayName)")
+            await refreshSupabaseContent(quietErrors: true)
+            return false
+        case .needsEmailConfirmation:
+            return true
         }
-        guard accounts[index].passwordHash == Self.hashPassword(password, email: normalisedEmail) else {
-            throw AuthError.invalidCredentials
-        }
-        accounts[index].lastActiveAt = Date()
-        currentUserID = accounts[index].id
-        isShowingAuth = false
-        showToast("Signed in as \(accounts[index].displayName)")
-        persist()
     }
 
     @MainActor
     func signInWithBackend(email: String, password: String) async throws {
-        guard SupabaseService.isConfigured else {
-            try signIn(email: email, password: password)
-            return
-        }
+        guard SupabaseService.isConfigured else { throw AuthError.backendUnavailable }
         let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
-        let (_, account) = try await SupabaseService.signIn(email: normalisedEmail, password: password)
-        upsertAccount(account)
-        currentUserID = account.id
-        isShowingAuth = false
-        showToast("Signed in as \(account.displayName)")
-        persist()
+        do {
+            let (_, account) = try await SupabaseService.signIn(email: normalisedEmail, password: password)
+            completeSignIn(with: account, greeting: "Signed in as \(account.displayName)")
+            await refreshSupabaseContent(quietErrors: true)
+        } catch let error as SupabaseService.ServiceError {
+            throw Self.mapAuthServiceError(error)
+        }
+    }
+
+    @MainActor
+    func signInWithApple(idToken: String, nonce: String, fullName: String?) async throws {
+        guard SupabaseService.isConfigured else { throw AuthError.backendUnavailable }
+        let (_, account) = try await SupabaseService.signInWithApple(idToken: idToken, nonce: nonce, fullName: fullName)
+        completeSignIn(with: account, greeting: "Welcome, \(account.displayName)")
         await refreshSupabaseContent(quietErrors: true)
     }
 
-    /// Demo stand-in for magic-link auth: signs straight in when the email
-    /// matches an existing account. A real build sends an email link.
-    func signInWithMagicLink(email: String) throws {
+    @MainActor
+    func sendPasswordReset(email: String) async throws {
+        guard SupabaseService.isConfigured else { throw AuthError.backendUnavailable }
         let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
-        guard let index = accounts.firstIndex(where: { $0.email == normalisedEmail }) else {
-            throw AuthError.noAccountForEmail
+        guard RequestValidator.isValidEmail(normalisedEmail) else { throw AuthError.invalidEmail }
+        try await SupabaseService.sendPasswordReset(email: normalisedEmail)
+    }
+
+    @MainActor
+    func resendConfirmationEmail(email: String) async throws {
+        guard SupabaseService.isConfigured else { throw AuthError.backendUnavailable }
+        let normalisedEmail = email.trimmingCharacters(in: .whitespaces).lowercased()
+        guard RequestValidator.isValidEmail(normalisedEmail) else { throw AuthError.invalidEmail }
+        try await SupabaseService.resendConfirmationEmail(email: normalisedEmail)
+    }
+
+    /// Restores the Keychain session on launch; quietly signs out locally
+    /// when the server no longer honours it.
+    @MainActor
+    func restoreSessionOnLaunch() async {
+        guard SupabaseService.isConfigured else { return }
+        if let account = await SupabaseService.restoreSession() {
+            upsertAccount(account)
+            currentUserID = account.id
+            persist()
+        } else if currentUserID != nil {
+            currentUserID = nil
+            persist()
         }
-        accounts[index].lastActiveAt = Date()
-        currentUserID = accounts[index].id
-        isShowingAuth = false
-        showToast("Signed in via magic link (demo)")
+    }
+
+    /// Finishes onboarding: claims the unique handle server-side, then
+    /// stores the profile choices locally.
+    @MainActor
+    func completeProfileSetup(handle: String, interests: [String], avatarImageReference: String?) async throws {
+        guard let user = currentUser else { return }
+        let normalised = handle.trimmingCharacters(in: .whitespaces).lowercased()
+        guard Self.isValidHandle(normalised) else { throw AuthError.invalidHandle }
+
+        if SupabaseService.isConfigured {
+            guard (try? await SupabaseService.isHandleAvailable(normalised)) ?? true else {
+                throw AuthError.handleTaken
+            }
+            do {
+                try await SupabaseService.setHandle(normalised, userID: user.id)
+            } catch let error as SupabaseService.ServiceError {
+                // Unique-index race: someone claimed it between check and set.
+                if case .failed(let code, _) = error, code == 409 { throw AuthError.handleTaken }
+                throw error
+            }
+        }
+
+        guard let index = accounts.firstIndex(where: { $0.id == user.id }) else { return }
+        accounts[index].handle = normalised
+        if !interests.isEmpty { accounts[index].favouriteTopics = interests }
+        if let avatarImageReference { accounts[index].avatarImageReference = avatarImageReference }
+        showToast("You're all set, @\(normalised)")
         persist()
     }
 
     func signOut() {
-        SupabaseService.clearSession()
+        Task { await SupabaseService.signOutRemote() }
         currentUserID = nil
         selectedTab = .today
         showToast("Signed out", symbol: "hand.wave")
         persist()
+    }
+
+    @MainActor
+    private func completeSignIn(with account: UserAccount, greeting: String) {
+        upsertAccount(account)
+        currentUserID = account.id
+        isShowingAuth = false
+        showToast(greeting)
+        persist()
+    }
+
+    private static func mapAuthServiceError(_ error: SupabaseService.ServiceError) -> Error {
+        if case .failed(let code, let message) = error {
+            let lowered = message.lowercased()
+            if lowered.contains("not confirmed") { return AuthError.emailNotConfirmed }
+            if code == 400, lowered.contains("invalid") { return AuthError.invalidCredentials }
+        }
+        return error
     }
 
     private func upsertAccount(_ account: UserAccount) {

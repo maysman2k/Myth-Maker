@@ -14,7 +14,7 @@ struct AdminPanelView: View {
             if let user = model.currentUser, user.role.canModerate {
                 content(for: user)
             } else {
-                EmptyStateView(symbol: "lock", message: "This area is for the Bricks in a Bag team.")
+                EmptyStateView(symbol: "lock", message: "This area is for the Brick Studio team.")
             }
         }
         .background { BrickScreenBackground() }
