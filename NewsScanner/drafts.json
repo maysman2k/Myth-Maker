@@ -1,5 +1,34 @@
 [
   {
+    "id": "6c264353-30b1-5ebc-8802-e6fea7920f1e",
+    "title": "Fan builder pays tribute to classic LEGO Adventurers set",
+    "summary": "Builder Joeri Ridder has recreated the spirit of 2879 Desert Expedition, the beloved 1998 Adventurers set, using modern parts and techniques.",
+    "bodyMarkdown": "## What happened\nFan builder Joeri Ridder has created a tribute MOC (my own creation) inspired by 2879 Desert Expedition, a fan-favourite set from LEGO's classic Adventurers theme, which first launched in the late 1990s. The build was featured by The Brothers Brick, who praised how modern parts—many only released in the years since the original set—allow for fresh takes on old-school building techniques, singling out a nicely built sarcophagus as a highlight.\n\nAdventurers, starring the recurring character Johnny Thunder, remains a popular theme for fan reduxes, with builders regularly revisiting its Egyptian, jungle and desert expedition sets using contemporary parts and colours.\n\n## Why it matters\nAdventurers is one of LEGO's most nostalgic themes, and tribute builds like this show how the fan community keeps classic sets alive long after they've been retired. For collectors and MOC fans, it's a good reminder of how much new parts have expanded what's possible when reimagining old favourites—and it might spark inspiration for your own redux projects.\n\n## What to watch next\nAs The Brothers Brick note, part availability keeps improving, so don't be surprised if this very redux gets reimagined again down the line. Worth keeping an eye on Joeri Ridder's future builds and other Adventurers-themed reduxes from the wider fan community.",
+    "category": "Brick Culture",
+    "tags": [
+      "lego-adventurers",
+      "fan-moc",
+      "classic-lego",
+      "redux-build",
+      "johnny-thunder"
+    ],
+    "sourceLinks": [
+      {
+        "id": "f52b9c87-4f05-5680-923b-742b5f23bfe2",
+        "name": "The Brothers Brick",
+        "url": "https://www.brothers-brick.com/2026/07/16/lets-adventure-like-its-1998/"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "This is fan-created content (a MOC), not an official LEGO product—already reflected in the article, but editors should confirm no official LEGO involvement is implied. Builder name and set number should be double-checked against the original source for spelling accuracy. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-17T19:21:09Z",
+    "suggestedImageURLs": [
+      "https://live.staticflickr.com/65535/55388032677_e77257be11_z.jpg"
+    ]
+  },
+  {
     "id": "4c7e3f43-c416-5e8d-9c92-4b620f7bd366",
     "title": "LEGO Botanicals meets pop culture in Olivia Rodrigo Flower Bouquet set",
     "summary": "Brickset has reviewed 11507 Olivia Rodrigo's Flower Bouquet, a 400-piece set that's part of the new Editions line but also carries the Botanicals label — reportedly the first licensed Botanicals set.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-07-11T19:15:57Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/052a2271-f375-427e-a801-1e53ced1ed7d.png"
-    ]
-  },
-  {
-    "id": "b3e52976-a50d-5347-9ed6-eceef69d9835",
-    "title": "LEGO City's Police Train Heist drops to its lowest price yet",
-    "summary": "The 1,313-piece 60508 Police Train Heist has been discounted to £129.99 at Amazon UK, £50 off its £179.99 RRP and the biggest price cut the set has seen.",
-    "bodyMarkdown": "## What happened\nLEGO City 60508 Police Train Heist, one of the more unusual train sets in the current lineup, has been reduced to £129.99 at Amazon UK, down from its £179.99 RRP. According to Brick Fanatics, this is the lowest price the set has reached since launch, beating previous discounts by some margin.\n\nThe 1,313-piece set includes several electronic elements and has been praised for its functionality, though its original price was seen as high compared with other LEGO City train sets. Brick Fanatics also notes the model can be retrofitted into a standard cargo train if you're not fussed about the police theme.\n\n## Why it matters\nLEGO train sets don't get discounted this heavily very often, so a £50 saving on a feature-packed model is worth knowing about for train collectors, City fans and anyone building a layout on a budget.\n\n## What to watch next\nDeals like this can be time-limited or stock-dependent, so it's worth checking current pricing before buying, and keeping an eye out for whether other retailers match the offer.",
-    "category": "Deals",
-    "tags": [
-      "lego-city",
-      "police-train-heist",
-      "lego-trains",
-      "amazon-deals",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "ab65f8b0-7d40-5aaa-8129-e5c88f8482e1",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lowest-price-ever-on-lego-city-s-most-unique-train"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "Confirm the £129.99 Amazon UK price is still live before publishing, as retailer deals can change quickly; also verify this is an Amazon-specific promotion rather than an official LEGO price change. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T19:15:34Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2026/02/LEGO-City-60508-Police-Train-Heist-featured.jpg"
     ]
   }
 ]
