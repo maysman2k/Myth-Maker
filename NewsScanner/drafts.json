@@ -1,5 +1,34 @@
 [
   {
+    "id": "4c7e3f43-c416-5e8d-9c92-4b620f7bd366",
+    "title": "LEGO Botanicals meets pop culture in Olivia Rodrigo Flower Bouquet set",
+    "summary": "Brickset has reviewed 11507 Olivia Rodrigo's Flower Bouquet, a 400-piece set that's part of the new Editions line but also carries the Botanicals label — reportedly the first licensed Botanicals set.",
+    "bodyMarkdown": "## What happened\nBrickset has published a review of 11507 Olivia Rodrigo's Flower Bouquet, one of five newly announced Editions sets themed around the singer Olivia Rodrigo. Unusually, this particular set is also classified under LEGO's Botanicals theme, blending two distinct lines on one box. It comes in at 400 pieces — not the smallest set in the Olivia Rodrigo lineup, but the flower subject matter makes it feel more compact.\n\nAccording to Brickset, the box artwork gives prominence to both the Editions and Botanicals branding, though the overall look leans towards the white Editions aesthetic rather than Botanicals' usual darker packaging style. Brickset notes this appears to be the first Botanicals set built around a licensed property, marking a notable first for the theme.\n\n## Why it matters\nBotanicals sets have built a loyal following among adult builders and display fans for their realistic flower and plant designs. Seeing the theme cross over into licensed territory — alongside a chart-topping music artist, no less — signals LEGO may be testing whether Botanicals' appeal can extend beyond generic nature-inspired sets. For collectors, it's a set that ticks two boxes at once: fans of the artist and fans of botanical builds.\n\n## What to watch next\nIt's worth watching whether other Editions or licensed themes get similar Botanicals crossover treatment in future, and how well this hybrid set is received by both music fans and plant-set collectors. Full pricing, exact release date and UK/EU availability should be checked against official LEGO channels before purchase.",
+    "category": "New Sets",
+    "tags": [
+      "lego-botanicals",
+      "olivia-rodrigo",
+      "editions-theme",
+      "licensed-lego-sets",
+      "brickset-review"
+    ],
+    "sourceLinks": [
+      {
+        "id": "eb771dbb-63cc-5ae0-bf83-5cb06d41bab7",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133095"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm official LEGO pricing, release date, and regional availability directly with LEGO, as the source only covers Brickset's review and feed excerpt without full commercial details. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-17T13:54:47Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133095?53673"
+    ]
+  },
+  {
     "id": "e5efe6d4-60c7-5179-a9c5-b7add3b7b4cd",
     "title": "LEGO Art reveals 31221 Gustav Klimt – The Kiss, but does it beat the gold record?",
     "summary": "LEGO has officially unveiled a 4,000-piece LEGO Art recreation of Gustav Klimt's The Kiss, arriving 1 August, though it's not yet clear if it beats 31213 Mona Lisa's record for most metallic gold pieces in a set.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-07-11T19:15:34Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/02/LEGO-City-60508-Police-Train-Heist-featured.jpg"
-    ]
-  },
-  {
-    "id": "5d07e322-51a6-5fd9-8199-5891b275661c",
-    "title": "LEGO launches new Midnight Valley Collection with 11383 Mayor Manor",
-    "summary": "LEGO Icons has revealed a spooky new seasonal village line, kicking off with 11383 Mayor Manor, a 1,420-piece gothic centrepiece set for a September launch.",
-    "bodyMarkdown": "## What happened\nLEGO has officially confirmed a new seasonal village collection called the Midnight Valley Collection, positioned as a spookier counterpart to the long-running LEGO Icons Winter Village range.\n\nThe first set, 11383 Mayor Manor, has been revealed with 1,420 pieces and a price of £99.99. It's a two-storey, deliberately weathered and asymmetrical building featuring stained glass windows, an old tree built into the brickwork, and plenty of gothic interior detail — including a suit of armour, fireplace, grandfather clock frozen at midnight, bookshelf and framed artwork.\n\nThree minifigures are included: the mayor and two housekeepers, all with glow-in-the-dark heads, plus an exclusive cat figure referenced within the build. The mayor minifigure also has a sitting-friendly dress design.\n\n11383 Mayor Manor is set to release on 1 September 2026, timed for the run-up to Halloween.\n\n## Why it matters\nThe Winter Village has become one of LEGO Icons' most beloved annual traditions, and a new seasonal collection gives fans another themed display line to build a collection around. For UK collectors and display builders, an autumn/Halloween-focused range adds a fresh seasonal centrepiece alongside existing festive builds — and glow-in-the-dark minifigure heads are a nice added detail for collectors.\n\n## What to watch next\nIt's not officially confirmed whether Midnight Valley will become an annual series like Winter Village, though the naming and format strongly suggest that's the intention. Watch for further sets in the collection and confirmation of future yearly releases.",
-    "category": "New Sets",
-    "tags": [
-      "lego-icons",
-      "midnight-valley",
-      "halloween-sets",
-      "new-set-reveal",
-      "display-builds"
-    ],
-    "sourceLinks": [
-      {
-        "id": "d2fc0f57-ca97-5fae-9d08-b6efc3eaefbb",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-starts-new-village-with-11383-mayor-manor"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm official LEGO Group naming/branding for 'Midnight Valley Collection' and verify whether an annual continuation has been officially stated or is editorial assumption from Brick Fanatics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T13:44:12Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/7c534b43-2c39-40c9-a20f-cf308bbd569c.png"
     ]
   }
 ]
