@@ -1,5 +1,34 @@
 [
   {
+    "id": "b2ffc1a9-c897-5224-84e2-49f505c7a95d",
+    "title": "LEGO Architecture reveals new Tower Bridge set with official images",
+    "summary": "LEGO has officially unveiled 21067 Tower Bridge, a fresh Architecture take on the iconic London landmark, arriving with over 3,700 pieces.",
+    "bodyMarkdown": "## What happened\nLEGO Architecture has officially confirmed 21067 Tower Bridge, a brand new model of the famous London landmark. This follows the original 10214 Tower Bridge from 2010, which was one of the largest LEGO sets of its time.\n\nAccording to the official press release shared by Brickset, the new set is rated 18+ and contains 3,745 pieces. It's priced at £269.99 in the UK ($349.99 in the US, €299.99 in Europe) and will be available directly from LEGO.com starting 1st August.\n\nThe model recreates the bridge's distinctive structure and includes microscale details such as a double-decker bus, cars, and a section representing the River Thames as part of the display base.\n\n## Why it matters\nTower Bridge is one of the UK's most recognisable landmarks, so a new large-scale LEGO Architecture version is big news for British fans, collectors and display builders. The original 2010 set is long retired and highly sought after, so this reissue-style model gives newer builders a chance to own an updated take on a classic subject.\n\n## What to watch next\nKeep an eye out for full box art, detailed piece breakdowns, and hands-on reviews closer to the 1st August release date. It'll also be worth watching secondary market prices for the original 10214 set once the new version launches.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-architecture",
+      "tower-bridge",
+      "new-sets",
+      "london-landmarks",
+      "adult-lego-fans"
+    ],
+    "sourceLinks": [
+      {
+        "id": "293b0424-3fd8-5d4a-a4c1-19b29b25ddf4",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133290"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 90,
+    "riskNotes": "Confirm final pricing and exact release date closer to launch, and verify piece count and set number once LEGO.com listing goes live. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-18T13:38:08Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133290?52676"
+    ]
+  },
+  {
     "id": "6c264353-30b1-5ebc-8802-e6fea7920f1e",
     "title": "Fan builder pays tribute to classic LEGO Adventurers set",
     "summary": "Builder Joeri Ridder has recreated the spirit of 2879 Desert Expedition, the beloved 1998 Adventurers set, using modern parts and techniques.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-07-11T19:16:17Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/d5068c67-6e77-4357-bbc3-755d5b6b7047.png"
-    ]
-  },
-  {
-    "id": "73a2df2a-7518-54d3-8ae7-cd7bd07ba7e4",
-    "title": "Building a Midnight Valley Halloween village before the next official set arrives",
-    "summary": "LEGO's new Midnight Valley Halloween village starts with 11383 Mayor Manor, but fans may need to wait until late 2027 for an official expansion — so Brick Fanatics has suggested other spooky sets that could fill the gap.",
-    "bodyMarkdown": "## What happened\nThe LEGO Group has officially announced 11383 Mayor Manor, kicking off a new seasonal collection called Midnight Valley, which appears to follow the same yearly-expansion pattern as the Winter Village line. According to Brick Fanatics, that likely means fans won't see an official follow-up set until late 2027.\n\nIn the meantime, Brick Fanatics has put together a list of existing sets that could be used to build out a fuller Halloween-style village display now, rather than waiting a year. Suggestions include 11370 Stranger Things: The Creel House, 76471 Knockturn Alley Wizarding Shops, 31167 Haunted Mansion, 76453 Malfoy Manor, 76786 Morticia's Cottage, and 21351 Disney Tim Burton's The Nightmare Before Christmas — none of which are officially part of the Midnight Valley range, but which share a suitably spooky, derelict or gothic aesthetic.\n\n## Why it matters\nSeasonal village collections are popular with collectors and display builders, and the gap between official releases can be frustrating for anyone wanting to build a bigger scene straight away. Mixing in themed sets from Harry Potter, Disney and Icons offers a practical way to bulk up a Halloween display without needing to wait for LEGO's next official expansion.\n\n## What to watch next\nIt's not yet confirmed whether Midnight Valley will definitely follow an annual release schedule like Winter Village — this is an assumption based on past patterns, not an official statement from LEGO. Fans should keep an eye out for any confirmation of a 2027 Midnight Valley expansion before planning displays around it.",
-    "category": "Display Builds",
-    "tags": [
-      "lego-halloween",
-      "midnight-valley",
-      "seasonal-village",
-      "display-builds",
-      "mayor-manor"
-    ],
-    "sourceLinks": [
-      {
-        "id": "84aaad23-38cd-59d2-9a75-1d94b117b301",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/13-lego-build-midnight-valley-halloween-village"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "The claim that Midnight Valley will get an annual expansion 'like Winter Village' is speculation from Brick Fanatics, not an official LEGO announcement — this should be clearly flagged as unconfirmed before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T19:15:57Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/052a2271-f375-427e-a801-1e53ced1ed7d.png"
     ]
   }
 ]
