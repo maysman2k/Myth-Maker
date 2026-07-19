@@ -1,5 +1,34 @@
 [
   {
+    "id": "5b436220-cb79-5695-b8dc-35f7eb0bbb31",
+    "title": "Brickset's Fortnight Round-Up: Pokémon Minifigures, Mayor Manor and More",
+    "summary": "Brickset has shared its most-read stories from the last two weeks, spotlighting new Pokémon sets, a spooky Mayor Manor release and fresh Ideas review results. Here's a quick catch-up if you missed anything.",
+    "bodyMarkdown": "## What happened\nBrickset has published its regular round-up of the most-read articles from the past fortnight, giving a handy snapshot of what's been grabbing the community's attention. Topping the list is the reveal of new LEGO Pokémon sets, said to include the first-ever Pokémon minifigures. Also popular was the launch of a new spooky series kicking off with set 11383 Mayor Manor, plus a review of 11377 The Lord of the Rings: Minas Tirith.\n\nOther highlights in the round-up include the results of the third 2025 LEGO Ideas review, the return of LEGO SpongeBob SquarePants, the reveal of LEGO Art 31221 Gustav Klimt – The Kiss (with an accompanying review), official images of LEGO Icons 11381 Jaguar E-Type, and a review of 11382 Hubble Space Telescope.\n\nAs this is a digest rather than a single announcement, full details on each set, price and release date sit within Brickset's individual articles rather than this summary.\n\n## Why it matters\nRound-ups like this are a useful way to spot what's trending across the LEGO fan community without trawling through every article yourself. For collectors and builders, it flags which sets and reviews are worth a closer look — from big licensed themes like Pokémon and The Lord of the Rings to Ideas fan-designed projects and Art category pieces.\n\n## What to watch next\nKeep an eye on Brickset's full articles for confirmed pricing, piece counts and release dates on the Pokémon minifigures, Mayor Manor, and the newly revealed Ideas review winners, as this summary doesn't include those specifics.",
+    "category": "Brick Culture",
+    "tags": [
+      "brickset",
+      "lego-pokemon",
+      "lego-ideas",
+      "new-sets",
+      "weekly-roundup"
+    ],
+    "sourceLinks": [
+      {
+        "id": "f295c4ab-622d-5682-aa4a-c3551205762a",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133308"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "This is a summary of a summary — verify official pricing, release dates and confirmation status (especially the Pokémon minifigures and Mayor Manor set) directly via Brickset's linked individual articles before publishing further detail. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-19T13:40:48Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133308?52825"
+    ]
+  },
+  {
     "id": "b2ffc1a9-c897-5224-84e2-49f505c7a95d",
     "title": "LEGO Architecture reveals new Tower Bridge set with official images",
     "summary": "LEGO has officially unveiled 21067 Tower Bridge, a fresh Architecture take on the iconic London landmark, arriving with over 3,700 pieces.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-07-11T19:16:27Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/db5f0c0e-1c94-439f-9fc3-279eac538a94.jpg"
-    ]
-  },
-  {
-    "id": "e8f8b441-2b0b-5a2d-8653-1274ba031ef1",
-    "title": "LEGO Icons Jaguar E-Type revealed: a British classic in brick form",
-    "summary": "LEGO has unveiled 11381 Jaguar E-Type, a 1,673-piece Icons set with opening doors, a detailed engine and a rare plume piece, available to pre-order now ahead of its 1 August release.",
-    "bodyMarkdown": "## What happened\nLEGO has officially revealed 11381 Jaguar E-Type, the 27th car to join the Icons range. Priced at £129.99 / $139.99 / €139.99, the 1,673-piece set recreates the classic 1960s British sports car in a green colour scheme, measuring 37cm long and 9cm tall.\n\nDetails include a printed front logo, a rear registration plate, opening doors, a fold-back textile roof revealing the dashboard, and a working steering system. Lifting the bonnet exposes a detailed inline-six engine, which includes what's described as a rare and unusual plume piece - a small detail that could tempt collectors beyond the usual LEGO car crowd. A five-piece toolkit tucks neatly into the boot for good measure.\n\nThe set is available to pre-order now directly from LEGO, ahead of its official release on 1 August 2026.\n\n## Why it matters\nThe Jaguar E-Type is one of Britain's most celebrated car designs, so its arrival in the Icons line-up is a big deal for UK-based fans and collectors alike. The inclusion of a rare, unusual element also adds a bit of extra appeal for parts collectors and custom builders who like to hunt down uncommon pieces for their own creations.\n\n## What to watch next\nKeep an eye on early reviews once the set lands on 1 August, and watch for how quickly it might sell out or see price changes given the popularity of LEGO's classic car recreations.",
-    "category": "New Sets",
-    "tags": [
-      "lego-icons",
-      "jaguar-e-type",
-      "new-set-reveal",
-      "classic-cars",
-      "rare-piece"
-    ],
-    "sourceLinks": [
-      {
-        "id": "70771a89-aade-56f4-aebb-5a064bef93db",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/british-icon-arrives-with-LEGO-Icons-Jaguar-E-Type"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 88,
-    "riskNotes": "Confirm the exact release date (1 August 2026) and pricing across all regions, and verify the 'rare plume piece' claim and set dimensions directly against LEGO's official product listing before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T19:16:17Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/d5068c67-6e77-4357-bbc3-755d5b6b7047.png"
     ]
   }
 ]
