@@ -1,5 +1,33 @@
 [
   {
+    "id": "96900878-04bd-53eb-bae3-f0475454b5cf",
+    "title": "Brickset Reviews the LEGO Speed Champions Ferrari 499P",
+    "summary": "Brickset has published its review of 77261 Ferrari 499P, the minifigure-scale Speed Champions set that finally follows last year's polybag hypercar version.",
+    "bodyMarkdown": "## What happened\nBrickset has posted a review of the LEGO Speed Champions set 77261 Ferrari 499P, a 329-piece build priced at £22.99 / $29.99 / €27.99. According to the review, Speed Champions polybags usually come with a minifigure-scale companion model, but the 2025 polybag 30709 Ferrari 499P – Hypercar broke that pattern by launching without one. This new set fills that gap, giving the endurance racer its minifigure-scale counterpart a year later.\n\nThe reviewer notes that endurance racing cars, with their wide stance and very low ground clearance, tend to suit the modern Speed Champions format well, and says the model looks largely realistic - though the full review flags some design compromises worth checking out for detail.\n\n## Why it matters\nSpeed Champions remains one of the most popular lines for car fans and collectors within the brick-building hobby, and Ferrari sets in particular tend to attract strong interest. A solid review from a trusted source like Brickset helps buyers decide whether this is worth adding to a Speed Champions shelf, especially alongside the earlier polybag version.\n\n## What to watch next\nFans of the line may want to read the full Brickset review for details on the specific parts and design trade-offs mentioned, and keep an eye out for how this set compares to future Speed Champions endurance racer releases.",
+    "category": "New Sets",
+    "tags": [
+      "speed-champions",
+      "ferrari-499p",
+      "lego-review",
+      "endurance-racing"
+    ],
+    "sourceLinks": [
+      {
+        "id": "f8d39957-8e91-5d42-a845-195b4637b3ac",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133148"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm the set's actual release/availability date and current pricing, and verify the 2026 posting date isn't an error, since the source content references a review published under that year. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-19T19:16:18Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133148?72967"
+    ]
+  },
+  {
     "id": "5b436220-cb79-5695-b8dc-35f7eb0bbb31",
     "title": "Brickset's Fortnight Round-Up: Pokémon Minifigures, Mayor Manor and More",
     "summary": "Brickset has shared its most-read stories from the last two weeks, spotlighting new Pokémon sets, a spooky Mayor Manor release and fresh Ideas review results. Here's a quick catch-up if you missed anything.",
@@ -1417,35 +1445,6 @@
     "foundAt": "2026-07-11T19:16:53Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2023/11/LEGO-Creator-Expert-10232-Palace-Cinema-screening-room-featured.jpeg"
-    ]
-  },
-  {
-    "id": "42d7e93d-88e5-571e-9c84-9a32974aa00c",
-    "title": "LEGO Insiders Days 2026: last day for remaining deals as free gifts sell out",
-    "summary": "The LEGO Insiders Days 2026 promotion wraps up on 12 July, with the free Sea Serpent gift now sold out everywhere and only limited discounts left to grab.",
-    "bodyMarkdown": "## What happened\nLEGO's Insiders Days 2026 event, which has been running since 7 July, is now on its final day. According to Brick Fanatics, the free 40912 Sea Serpent gift-with-purchase (previously available with qualifying orders over £160/$180/€180) has now sold out across the UK, US and Europe.\n\nThe free 5010053 Airplane set is still available in the UK and Europe with qualifying Creator 3-in-1, City or Friends orders over £90/€100, though it's already sold out in the US. Beyond these gifts, a number of member-exclusive discounts remain live on sets including 10302 Optimus Prime, 21350 Jaws, 21360 Willy Wonka & the Chocolate Factory, and 10337 Lamborghini Countach, though many of the biggest reductions have already ended.\n\n## Why it matters\nInsiders Days is one of LEGO's regular official promotional windows for LEGO Insiders (formerly VIP) members, offering free sets and discounts on retiring or popular models. With stock of the headline freebie gone and the event closing on 12 July, this is effectively the last chance for UK fans to take advantage of any remaining offers before prices return to normal.\n\n## What to watch next\nExpect stock on the remaining discounted sets to be limited too — worth checking availability quickly if you're after any of the listed models before the promotion ends.",
-    "category": "Deals",
-    "tags": [
-      "lego-insiders-days",
-      "lego-deals",
-      "gift-with-purchase",
-      "lego-vip",
-      "retiring-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "831212d4-3f0f-5114-be23-728a381ac81b",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/what-s-left-of-lego-insiders-days-2026"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Verify exact end date/time for the promotion and confirm current stock status in UK/Europe, as availability can change hourly during the final day. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T19:16:27Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/db5f0c0e-1c94-439f-9fc3-279eac538a94.jpg"
     ]
   }
 ]
