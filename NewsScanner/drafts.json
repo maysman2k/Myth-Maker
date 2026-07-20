@@ -1,5 +1,34 @@
 [
   {
+    "id": "6bf340e3-1ef0-5bcd-b222-501e191884b9",
+    "title": "LEGO reveals Champions Edition trophy set for World Cup winners",
+    "summary": "LEGO has unveiled 4000351, a special 'Champions Edition' of its FIFA World Cup Official Trophy set, exclusive to the tournament-winning nation and set for an October 1st release.",
+    "bodyMarkdown": "## What happened\nAccording to Brickset, LEGO has revealed a new variant of its 43020 FIFA World Cup Official Trophy set following the conclusion of the 2026 FIFA World Cup. The new set, numbered 4000351 and named the 'Champions Edition', is described as exclusive to the winning country and will only be available there.\n\nThe set is largely the same build as the original March release, but with a few tweaks: the hidden scene inside the trophy's secret compartment has been changed, a special printed plate has been added, and the minifigure included in the original set has been removed. Piece count rises slightly to 2,845 (three more than the standard version), and it's priced at €199.99. Pre-orders are open now ahead of an October 1st release date.\n\n## Why it matters\nExclusive regional variants like this are a big deal for collectors, especially fans of sports-themed LEGO builds and display pieces. A limited, country-specific release tends to drive strong demand and can become tricky to find once stock is gone, so anyone hoping to add it to their collection may want to keep an eye on availability.\n\n## What to watch next\nWatch for confirmation of which retailers will stock the Champions Edition and whether LEGO opens it up more broadly outside the winning country at a later date. Pricing and availability outside the exclusive region are worth confirming closer to the October release.",
+    "category": "New Sets",
+    "tags": [
+      "lego-fifa-world-cup",
+      "champions-edition",
+      "exclusive-set",
+      "collectors",
+      "new-sets-2026"
+    ],
+    "sourceLinks": [
+      {
+        "id": "764741be-6244-5de3-ba78-966f37962451",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133319"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "This story is based on a future/hypothetical 2026 World Cup outcome reported by Brickset; editors should verify the tournament result and set exclusivity details before publishing, and confirm pricing/availability in UK currency and retailers. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-20T03:49:32Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133319?17361"
+    ]
+  },
+  {
     "id": "96900878-04bd-53eb-bae3-f0475454b5cf",
     "title": "Brickset Reviews the LEGO Speed Champions Ferrari 499P",
     "summary": "Brickset has published its review of 77261 Ferrari 499P, the minifigure-scale Speed Champions set that finally follows last year's polybag hypercar version.",
@@ -1416,35 +1445,6 @@
     "foundAt": "2026-07-12T03:39:16Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/de537f53-73d3-49d5-9c60-0fe0fac46fcc.png"
-    ]
-  },
-  {
-    "id": "3f77a1e3-585e-5bbb-9b8b-2beaa9101db2",
-    "title": "Rumoured LEGO Star Wars cinema set has a long line of LEGO movie theatres before it",
-    "summary": "Chatter about a possible LEGO Star Wars cinema set for 2027 has us looking back at the LEGO cinemas that have already graced our shelves, from 2008's Town Plan to the beloved Palace Cinema modular.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has rounded up LEGO's cinema-building history following **rumours** (unconfirmed) of a new LEGO Star Wars cinema set, said to be numbered 75659 and dubbed a 'Movie Theatre'. According to these rumours, it would be an 18+ set retailing at $199.99 in the US and arriving on 1 April 2027 — but none of this has been officially confirmed by LEGO, so treat it as speculation for now.\n\nIf it does happen, it wouldn't be LEGO's first trip to the pictures. The first full LEGO cinema build appeared in **2008's 10184 Town Plan**, a 1,981-piece anniversary set marking 50 years of the LEGO brick, complete with a marquee, ticket booth, snack counter and a full screen showing a western.\n\nThe most famous LEGO cinema followed in **2013 with 10232 Palace Cinema**, a 2,196-piece modular building inspired by Hollywood's Chinese Theatre. It featured a four-walled interior with room for six minifigures at the screen, plus posters for in-universe films — and US buyers in September 2013 even got a bonus poster referencing The LEGO Movie.\n\nA smaller entry came in **2014 with 40180 Bricktober Theater**, a 164-piece Toys 'R' Us giveaway set continuing the cinema theme on a much smaller scale.\n\n## Why it matters\nLEGO cinema builds have a strong pedigree among modular and city fans, so a potential Star Wars-themed entry — sitting alongside multi-theme sets like Friends, Batman and Icons — would be a notable addition if confirmed. For UK collectors and display builders, it's worth keeping an eye on official announcements before getting too invested in the rumoured details.\n\n## What to watch next\nNo official confirmation exists yet for 75659. Watch for LEGO's own announcements or further credible leaks before treating the price, date, or age rating as fact.",
-    "category": "Rumours",
-    "tags": [
-      "lego-star-wars",
-      "lego-rumours",
-      "modular-buildings",
-      "lego-history",
-      "display-builds"
-    ],
-    "sourceLinks": [
-      {
-        "id": "17d0ad23-f81d-5928-ba74-001fa1b7350f",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-cinemas-history-star-wars-50th-anniversary"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "The Star Wars 'Movie Theatre' set number, price and release date are all rumoured and unconfirmed by LEGO — verify before treating as fact. The historical set details (10184, 10232, 40180) appear to be factual recaps but should be cross-checked against official LEGO catalogue data. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-11T19:16:53Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2023/11/LEGO-Creator-Expert-10232-Palace-Cinema-screening-room-featured.jpeg"
     ]
   }
 ]
