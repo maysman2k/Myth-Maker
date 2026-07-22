@@ -1,5 +1,34 @@
 [
   {
+    "id": "3fa71893-cec6-58c4-ba29-c4f53a724e6b",
+    "title": "LEGO unveils ultra-rare Bugatti Type 35 set – but you can't buy one",
+    "summary": "A limited-run LEGO Bugatti Type 35 set has been revealed after being given exclusively to guests at a LEGO House event in June. Only 250 exist, and none were ever for sale.",
+    "bodyMarkdown": "## What happened\nLEGO House in Billund hosted the 26th International Bugatti Meeting in June, a joint event with Bugatti Club Denmark. Guests attending received an exclusive set: 4000048 Bugatti Type 35, a 1,592-piece model finished in bright blue with wheels that appear unique to this set.\n\nThe set is officially limited to 250 units and was not sold in shops - it was only available to those at the event, which was attended by more than 200 Bugatti Club Denmark members (many bringing their own pre-war Bugattis), the King of Denmark, LEGO Group owner Kjeld Kirk Kristiansen, and CEO Niels B. Christiansen.\n\nThe model recreates the Bugatti Type 35, widely regarded as the first car purpose-built for racing and one of the most successful race cars in history. This continues LEGO's long-running relationship with Bugatti across Technic and Speed Champions themes, and LEGO House has previous form here too - it's where the life-size 42083 Bugatti Chiron was first unveiled back in 2018.\n\n**Worth flagging:** the wheels are described as \"possibly 3D-printed\" based on images shared from the event rather than confirmed detail, so treat that specific point as unverified for now.\n\n## Why it matters\nFor collectors, ultra-limited event-exclusive sets like this rarely appear anywhere outside the secondhand market, and demand for genuinely rare LEGO pieces tends to push resale prices well above retail. It's also another sign of how seriously LEGO invests in its Bugatti partnership, which could hint at more premium car-themed sets down the line.\n\n## What to watch next\nKeep an eye on the aftermarket and collector forums - a small number of these sets may surface for resale, likely at a significant premium given the tiny production run of 250 units.",
+    "category": "Collectors",
+    "tags": [
+      "lego-bugatti",
+      "limited-edition",
+      "lego-house",
+      "exclusive-set",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "542b9c3c-6c41-5aab-8309-19ca9e4c972a",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/ultra-rare-lego-bugatti-type-35-set-revealed"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 68,
+    "riskNotes": "Confirm the '3D-printed wheels' detail before republishing as fact - source itself says 'possibly'; also verify exact attendee numbers and event date with a primary LEGO or Bugatti Club source if possible. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-22T19:37:27Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/e0c667d7-2b08-406c-a4cb-c38913828401.jpg"
+    ]
+  },
+  {
     "id": "b5fdce3f-1cd3-5751-a0fb-eaa8f6c22d64",
     "title": "Rumoured LEGO Star Wars 2027 lineup starts to take shape",
     "summary": "Early rumours point to a fresh wave of LEGO Star Wars sets for 2027, including a returning X-wing Microfighter and a new Anakin's Starfighter. Nothing here is officially confirmed by LEGO yet.",
@@ -1412,35 +1441,6 @@
     "foundAt": "2026-07-15T13:59:38Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/581ee088-964b-46e0-814d-8d359a284024.jpg"
-    ]
-  },
-  {
-    "id": "ad9dbc8d-605f-5dff-b0d0-cf5985249aa5",
-    "title": "LEGO Pick a Brick adds save-to-list feature in US and GB",
-    "summary": "LEGO.com's Pick a Brick service now lets shoppers in the US and GB save individual parts to lists for buying later, building on the 2024 upload list tool.",
-    "bodyMarkdown": "## What happened\nLEGO.com's Bricks and Pieces team has rolled out a new list-building feature within Pick a Brick, currently live only for shoppers in the US and GB. According to Brickset, you can now click a heart icon next to parts you're browsing to save them into a list for later, rather than having to buy them immediately. There's also an option to set how many of each piece you want as you add them.\n\nThe catch is that you can only save parts that are currently showing as available on Pick a Brick at the time you add them to your list, so it's not a way to track out-of-stock pieces for the future.\n\nThis builds on the upload list feature LEGO introduced in 2024, giving fans another tool for planning custom builds, MOCs and replacement part orders piece by piece.\n\n## Why it matters\nAnyone who uses Pick a Brick to source parts for custom builds, MOCs, or to replace missing pieces will find this handy — it means you can browse over multiple sessions and build up an order gradually instead of buying everything in one go. For stadium builders and display modellers who often need specific parts in bulk, a proper wishlist tool makes planning restocks much easier.\n\n## What to watch next\nIt's worth keeping an eye on whether LEGO extends this list feature beyond the US and GB to other Pick a Brick regions, and whether it later adds the ability to save currently unavailable parts for when they're back in stock.",
-    "category": "New Sets",
-    "tags": [
-      "pick-a-brick",
-      "lego-com",
-      "parts-shopping",
-      "custom-builds",
-      "moc-tools"
-    ],
-    "sourceLinks": [
-      {
-        "id": "6bdd3190-783e-559c-bf97-1073986d51b5",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133221"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm current regional availability hasn't already expanded beyond US/GB by publication date, and verify the exact mechanics of the list feature (e.g. list limits, saving unavailable parts) directly on LEGO.com before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-15T13:59:25Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133221?53954"
     ]
   }
 ]
