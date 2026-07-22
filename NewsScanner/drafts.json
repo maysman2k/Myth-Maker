@@ -1,5 +1,63 @@
 [
   {
+    "id": "b5fdce3f-1cd3-5751-a0fb-eaa8f6c22d64",
+    "title": "Rumoured LEGO Star Wars 2027 lineup starts to take shape",
+    "summary": "Early rumours point to a fresh wave of LEGO Star Wars sets for 2027, including a returning X-wing Microfighter and a new Anakin's Starfighter. Nothing here is officially confirmed by LEGO yet.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has rounded up early **rumours** about LEGO Star Wars sets said to be coming in the first half of 2027, citing sources including BrickTap. According to this unconfirmed report:\n\n- **75463 X-wing Microfighter** may return in January 2027 at $14.99, bringing back the Microfighters format after its 2026 hiatus.\n- **75464 Anakin's Starfighter** is rumoured for January 2027 at $29.99, reportedly a new Delta-7B Jedi Starfighter model.\n- **75465 Death Star II Midi-scale** is said to be planned for June 2027 at $69.99, continuing the Starship Collection line.\n\nThe wider article also mentions 50th-anniversary sets, new helmets and further midi-scale models, though full details on these weren't included in the excerpt we have. Prices quoted are in US dollars and, per Brick Fanatics, subject to change before release.\n\n## Why it matters\nIf accurate, this suggests LEGO Star Wars will keep leaning into nostalgic formats like Microfighters and the Starship Collection into 2027, alongside bigger 50th-anniversary celebrations. For collectors and Star Wars fans, this is useful early warning of what to budget and shelf space for — but it's all speculation for now, so treat set numbers, prices and dates as unconfirmed until LEGO says otherwise.\n\n## What to watch next\nKeep an eye on Brick Fanatics and BrickTap for further leaks, and watch for any official LEGO Star Wars reveals or teasers later in 2026 that might confirm or contradict these rumours.",
+    "category": "Rumours",
+    "tags": [
+      "lego-star-wars",
+      "2027-rumours",
+      "microfighters",
+      "starship-collection",
+      "set-leaks"
+    ],
+    "sourceLinks": [
+      {
+        "id": "424e97eb-2677-58fc-aeaa-6009b3984c38",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/every-lego-star-wars-set-rumoured-2027-jul-2026"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 72,
+    "riskNotes": "Entire story is based on unconfirmed rumours (BrickTap via Brick Fanatics); set numbers, prices and release dates should be verified against official LEGO announcements before treating as fact. Source excerpt is incomplete, so confirm full set list and 50th-anniversary details before expanding coverage. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-22T14:13:14Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/5374d233-1c0d-47c8-9649-61edeb9f36d6.jpg"
+    ]
+  },
+  {
+    "id": "26e05a06-9320-515f-bccd-3e73aa931466",
+    "title": "Gillian Anderson gives her verdict on the new LEGO Ideas X-Files set",
+    "summary": "The X-Files star has spoken about the newly revealed LEGO Ideas set based on the show, praising both the model and the fan-led LEGO Ideas programme behind it.",
+    "bodyMarkdown": "## What happened\nLEGO Ideas set 21369 The X-Files has been officially revealed, alongside a gift-with-purchase model, 40896 The X-Files: Scully's Lab. Actress Gillian Anderson, who played Dana Scully in the original series, has spoken about the set in an interview with Forbes, calling it 'very, very special' and comparing the moment to appearing in an episode of The Simpsons.\n\nAnderson said she'd assumed the project had quietly disappeared after being submitted, and admitted she understood why it took so long to reach shelves given the level of detail involved.\n\nThe set was designed by fan creator Brent Waller, known for previous LEGO Ideas releases including 21108 Ghostbusters Ecto-1 and 21328 Seinfeld. Waller's X-Files project won the LEGO Ideas 90s Nostalgia Challenge in early 2025 after originally being submitted years earlier. During development, he reportedly shared minifigure mock-ups with Anderson and David Duchovny (Fox Mulder), both of whom posted them on social media.\n\nAnderson also praised the wider LEGO Ideas programme, saying it lets fans feel genuine ownership over the sets that make it to production.\n\n## Why it matters\nThis is another example of LEGO Ideas turning a long-running fan submission into an officially confirmed retail set, and having the show's own cast publicly endorse it is a nice bit of validation for the fan-design process. For collectors, it's a strong pop-culture crossover set with a gift-with-purchase companion, which often affects availability and demand.\n\n## What to watch next\nWatch for official pricing, piece count and release date details from LEGO, plus reaction from the wider AFOL community once the set is available to order.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-ideas",
+      "x-files",
+      "gillian-anderson",
+      "brent-waller",
+      "fan-designer"
+    ],
+    "sourceLinks": [
+      {
+        "id": "98f3bf6c-4396-5a4b-ae27-1e5c0f71426c",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/gillian-anderson-praises-lego-x-files"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm exact release date, pricing and piece counts for 21369 and 40896 directly with official LEGO channels, and verify the Forbes quotes against the original interview before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-22T14:12:51Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/bf-derivatives/webp/cc06d819707ffaf3faa23165c55c9c49e246b007a9061618b59716fab7bfbe78.webp"
+    ]
+  },
+  {
     "id": "eec1f270-5163-54bc-a512-15747406d450",
     "title": "LEGO Ideas X-Files Set Revealed – With a Clever Twist on a Reused Minifigure Face",
     "summary": "LEGO has officially unveiled 21369 The X-Files, an 8-minifigure Ideas set that reuses a familiar head mould for Alex Krycek but adds a new print to nail his black oil infection look.",
@@ -1383,64 +1441,6 @@
     "foundAt": "2026-07-15T13:59:25Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133221?53954"
-    ]
-  },
-  {
-    "id": "a101825e-4cf8-5147-9e5c-338259bdd449",
-    "title": "LEGO Ideas third 2025 review: 68 fan projects rejected, seven move forward",
-    "summary": "LEGO Ideas has published the results of its third 2025 review, with only seven fan-designed projects surviving from a batch of 75 submissions.",
-    "bodyMarkdown": "## What happened\nLEGO Ideas has confirmed the outcome of its third review of 2025, and it's been a tough round for fan designers. Of the 75 projects that qualified for consideration, only seven have been announced or are being considered for a future official set, meaning 68 submissions have been rejected.\n\nAmong the projects said to have made it through are concepts based on Jumanji, Universal Monsters, an iMac, and Naruto's Ichiraku Ramen Shop, alongside a handful of other fan favourites. Meanwhile, dozens of creative pitches — covering everything from a Converse Chuck Taylor build to a BBC Ghosts set and a Twilight Zone Tower of Terror model — didn't make the cut this time.\n\nThe good news for rejected creators is that they're free to resubmit their projects and try to reach 10,000 supporters again to qualify for a future review.\n\n## Why it matters\nLEGO Ideas is one of the few official routes for fan concepts to become real sets, so review results are always closely watched by the community. A low success rate like this one is a reminder of just how competitive the platform has become, and it's useful context for anyone supporting projects or thinking about submitting their own.\n\n## What to watch next\nKeep an eye on Brick Fanatics and LEGO Ideas for confirmation of which of the seven successful concepts get greenlit as official sets, and watch for resubmissions from popular rejected projects in future review rounds.",
-    "category": "Ideas",
-    "tags": [
-      "lego-ideas",
-      "fan-designs",
-      "official-reveals",
-      "brick-fanatics",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "8457af53-a5b2-56d0-b417-a492ac869c6a",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/68-lego-ideas-projects-rejected-third-2025-review"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Double-check the seven successful project names against LEGO Ideas' official announcement, as the source lists eight titles against a stated total of seven; also verify the article's stated publication date, which appears unusually far ahead (July 2026). Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-15T03:16:50Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/be3ceacc-1828-4024-99d6-07da03eb8cfd.webp"
-    ]
-  },
-  {
-    "id": "9e6afe87-2439-5385-9909-3afe8ccb6e50",
-    "title": "LEGO Zelda 77093 Ocarina of Time – The Final Battle reviewed by The Brothers Brick",
-    "summary": "The second set in LEGO's Legend of Zelda theme has landed, and The Brothers Brick has put together a full review of this 1,003-piece display build.",
-    "bodyMarkdown": "## What happened\nThe Brothers Brick has published a review of 77093 Ocarina of Time – The Final Battle, the newest set in LEGO's The Legend of Zelda theme. The set is confirmed as officially available now, with 1,003 pieces, and pricing listed at US $129.99 / CAN $179.99 / UK £99.99. LEGO provided the reviewer with an early copy of the set.\n\nAccording to the review, the set is aimed at adult builders (18+) and works primarily as a display piece, though it includes play features and posable minifigures. The build centres on a showdown between Link and Ganon, staged on a black base with a gold Triforce inlay as the standout visual feature. The reviewer notes specific 'designed' poses, including Ganon's feet locking into built-in ground sections and his tail resting on a sloped brick, alongside Link positioned in his own attached spot.\n\nThe review also mentions this is the second set in the Zelda theme, following 77092 Great Deku Tree 2-in-1, and notes upcoming Zelda media tie-ins: an Ocarina of Time game remake and a live-action film, both expected around 2026–2027.\n\n## Why it matters\nLicensed LEGO themes like Zelda tend to draw strong collector interest, especially display-focused sets with detailed minifigures and diorama-style bases. For UK fans, confirmed local pricing (£99.99) and availability now make this a set worth knowing about, whether you're building a Zelda display shelf or just tracking how the theme is developing after its first release.\n\n## What to watch next\nWith upcoming Zelda game and film releases on the horizon, it's worth watching whether LEGO continues expanding this theme with further sets tied to other games in the series.",
-    "category": "New Sets",
-    "tags": [
-      "lego-zelda",
-      "ocarina-of-time",
-      "licensed-sets",
-      "display-builds",
-      "new-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "e5e2b331-0e45-5aea-a4f6-0f68d0b62cce",
-        "name": "The Brothers Brick",
-        "url": "https://www.brothers-brick.com/2026/07/13/lego-the-legend-of-zelda-77093-ocarina-of-time-the-final-battle-review/"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm current UK availability and pricing directly with LEGO or official retailers, as the source excerpt was cut off before full display and play-feature details were covered. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-15T03:16:19Z",
-    "suggestedImageURLs": [
-      "https://media-cdn.brothers-brick.com/2026/07/LEGO-The-Legend-of-Zelda-8SNMWPDYXKR4-TBB-Review-Cover-Social.jpg"
     ]
   }
 ]
