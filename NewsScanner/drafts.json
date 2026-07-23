@@ -1,5 +1,63 @@
 [
   {
+    "id": "4be7cbd3-94b3-518b-926b-b1246b4f5ddd",
+    "title": "LEGO reveals second Star Trek set: the U.S.S. Enterprise Bridge",
+    "summary": "LEGO has officially unveiled 11385 LEGO Icons Star Trek: U.S.S. Enterprise NCC-1701 Bridge, a minifigure-packed interior set launching for Star Trek's 60th anniversary.",
+    "bodyMarkdown": "## What happened\nLEGO has officially revealed its second LEGO Star Trek set, 11385 LEGO Icons Star Trek: U.S.S. Enterprise NCC-1701 Bridge. It follows last November's exterior model, 10356 U.S.S. Enterprise NCC-1701-D, and this time recreates the ship's interior instead.\n\nThe set launches on 1 September 2026 to mark Star Trek's 60th anniversary, priced at £159.99 / $199.99 / €179.99 for 1,701 pieces. Measuring 9cm high, 57cm wide and 34cm deep, it recreates two Star Trek: The Original Series locations - the bridge and the transporter room - with multiple display options.\n\nIt includes eight Starfleet minifigures (Kirk, Spock, Uhura, Sulu, McCoy, Chekov, Chapel and Scott), four tribbles, and accessories including communicators, phasers, a Vulcan harp, lirpas and a tricorder. Play features include a rocking captain's chair, a working transporter dial and a lever-operated turbolift door. It's available to pre-order now.\n\n## Why it matters\nThis is only the second official LEGO Star Trek release, so it's a good signal that the theme has legs beyond a one-off tribute set. For collectors and display builders, the interior focus and heavy minifigure count make it a strong companion piece to the original Enterprise model.\n\n## What to watch next\nWorth watching whether LEGO continues the Star Trek theme with further sets, and how this bridge set displays alongside the original Enterprise exterior model.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-star-trek",
+      "lego-icons",
+      "new-set-reveal",
+      "minifigures",
+      "star-trek-60th-anniversary"
+    ],
+    "sourceLinks": [
+      {
+        "id": "fded21c9-7215-56fc-b0aa-50b279f2b3f2",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/second-lego-star-trek-model-officially-revealed"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 88,
+    "riskNotes": "Confirm final pricing and release date haven't changed closer to launch, and verify piece count/minifigure list against LEGO's official product page before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-23T08:41:37Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/43cadf1d-325a-4fd5-865e-ab709d546533.jpg"
+    ]
+  },
+  {
+    "id": "891789f1-5e7e-5dae-a228-349b459f3988",
+    "title": "LEGO's Donkey Kong Arcade set shown in action at SDCC",
+    "summary": "LEGO's new 72051 Donkey Kong Arcade set has been officially unveiled and demoed at San Diego Comic-Con, with barrel-dodging action captured on video ahead of its August launch.",
+    "bodyMarkdown": "## What happened\nLEGO has officially revealed the 72051 Donkey Kong Arcade set, showing it in action on the show floor at San Diego Comic-Con. Footage from Beyond the Brick shows the mechanism at work: pressing a button on the cabinet sends a barrel rolling down pink scaffolding, while a joystick moves Jumpman (the character who'd later become Mario) side to side and up and down to hop over it.\n\nThe set has 1,367 pieces and is priced at £149.99 / $199.99 / €169.99, making it smaller and cheaper than the retiring 10323 PAC-MAN Arcade. It's not a fully playable recreation — Jumpman's movement is limited and can't travel the full height of the cabinet, and the barrels actually run on a separate track behind him rather than being avoidable in any real sense. So it's more about recreating the look of the classic arcade gameplay than offering genuine challenge, sitting somewhere between the simulated action of PAC-MAN Arcade and the more skill-based 11374 Arcade Pinball Machine.\n\n72051 Donkey Kong Arcade is up for pre-order now in some regions, with a full launch set for 1 August.\n\n## Why it matters\nArcade-style LEGO sets have proven popular with collectors and display builders, and this continues the trend of officially licensed Nintendo sets following on from Super Mario and PAC-MAN. For fans of the format, it's a smaller, more affordable entry point than PAC-MAN Arcade, and the limited but tactile play mechanism could appeal to both collectors and anyone into modding or custom brick tinkering.\n\n## What to watch next\nIt'll be worth watching whether the custom building community attempts to mod the set for fuller playability, potentially trading off stability or looks for more authentic gameplay. Full hands-on reviews are also expected closer to the August launch.",
+    "category": "New Sets",
+    "tags": [
+      "lego-donkey-kong",
+      "arcade-sets",
+      "san-diego-comic-con",
+      "nintendo-lego",
+      "new-set-reveal"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e8826413-bab7-5dc9-9fef-ec74d7717e53",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/watch-lego-donkey-kong-arcade-machine-in-action"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 88,
+    "riskNotes": "Confirm final regional pricing and exact release date/regions before publishing, as pre-order availability was described as regional and partial at time of writing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-23T08:41:23Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/26dda3c4-94c8-4fea-9a3f-b81fd066c1cb.jpg"
+    ]
+  },
+  {
     "id": "21b61f16-f450-5f53-9325-776f6ea6e04b",
     "title": "LEGO Shrek Minifigures officially confirmed for September",
     "summary": "LEGO has officially revealed 71053 Shrek, a new blind-bagged minifigure line featuring 12 characters from the franchise, landing on shelves 1 September.",
@@ -1382,64 +1440,6 @@
     "foundAt": "2026-07-16T14:10:48Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2024/09/LEGO-Winter-Village-10339-10325-10293-10308-Lifestyle-featured.jpeg"
-    ]
-  },
-  {
-    "id": "302f258f-52ac-546f-98ed-4230e53981ed",
-    "title": "LEGO Ideas' La Catrina: fan designer shares his reaction to the finished set",
-    "summary": "The designer behind the upcoming 21372 La Catrina LEGO Ideas set has spoken about seeing his Day of the Dead-inspired submission become an official product.",
-    "bodyMarkdown": "## What happened\nJosé Miguel Medina Pérez (known online as yop1172), the fan designer behind the 10K LEGO Ideas submission that inspired 21372 La Catrina, has discussed the set's journey from concept to shelf in a LEGO Ideas blog post covered by Brick Fanatics. The 1,212-piece posable figure celebrates Día de los Muertos, the Mexican Day of the Dead, and was inspired by a trip José took to Capula in Michoacán, Mexico, where he saw clay Catrina sculptures.\n\nJosé explained how he moved from an anatomically-focused skeleton design to building the elaborate dress, eventually using small ball-joint pieces rather than SNOT techniques to achieve fabric-like folds. The finished official set includes brick-built marigolds and monarch butterflies, plus printed sugar skull decorations on the hat and dress.\n\nDespite some size reduction and changes from his original design, José has given his approval to the final LEGO Ideas product, saying the team did a great job retaining the elements that made his model special.\n\n## Why it matters\nThis is a nice look behind the scenes at how a LEGO Ideas submission gets reworked for mass production, and it's useful for fans who want to understand the design compromises involved. It also highlights another culturally-themed set joining the LEGO Ideas line-up, which will interest collectors and those who enjoy display-focused builds.\n\n## What to watch next\n21372 La Catrina is due to arrive next month, so expect official pricing, piece count confirmation and wider reviews once it's fully available.",
-    "category": "Ideas",
-    "tags": [
-      "lego-ideas",
-      "la-catrina",
-      "fan-designer",
-      "day-of-the-dead",
-      "lego-ideas-2026"
-    ],
-    "sourceLinks": [
-      {
-        "id": "4e7117e9-0079-5851-a735-67bd07b2aa3e",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-la-catrina-s-fan-designer-reacts-to-the-finished-set"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm official release date and price for 21372 La Catrina before publishing, as the source only states it's arriving 'next month' without a specific date. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-15T19:23:42Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/b0a57881-bafb-4b72-a764-367133702d09.jpg"
-    ]
-  },
-  {
-    "id": "025be0f7-c812-5e74-aee1-f0a0104ec9eb",
-    "title": "LEGO Ideas reveals why 21372 La Catrina ended up smaller than the original fan design",
-    "summary": "LEGO designers have explained how the skull detailing and arm posing shaped the final scale of the upcoming 21372 La Catrina set, based on comments made at a fan media roundtable.",
-    "bodyMarkdown": "## What happened\nLEGO Ideas has shared new details about 21372 La Catrina, a 1,212-piece set based on a winning fan submission by yop1172 (José Miguel Medina Pérez). According to comments made by the LEGO Ideas design team at a roundtable with fan media, reported by Brick Fanatics, the finished model ended up noticeably smaller than the original fan design.\n\nDesigner Jim Clayton said he used other LEGO buildable figures as a starting point for sizing, before focusing heavily on the skull, which he described as the trickiest part to get right. He reportedly built more than 100 test versions of the skull, which is constructed partly upside down and then sandwiched together, before settling on a final approach that balanced detail, strength and buildability.\n\nLEGO Ideas design manager Jordan David Scott also pointed to the figure's arms as a key factor. The original fan design relied on a support structure to hold certain poses, whereas the official LEGO set apparently took a different approach, which further influenced the overall scale of the finished model.\n\n## Why it matters\nThis gives fans a behind-the-scenes look at how LEGO Ideas designers balance faithfulness to a fan's original concept with the practical demands of buildability, stability and detail. For collectors watching 21372 La Catrina, it also helps explain the size and design choices ahead of the set's full release.\n\n## What to watch next\nFurther official details, pricing and release timing for 21372 La Catrina are expected soon from LEGO Ideas, alongside more from this fan media roundtable.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-ideas",
-      "la-catrina",
-      "new-sets",
-      "design-insight",
-      "buildable-figures"
-    ],
-    "sourceLinks": [
-      {
-        "id": "3cbf332f-78e5-5c1b-b1a0-cf6d3e2bf804",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-la-catrina-s-reduced-scale-was-the-result-of-two-considerations"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 72,
-    "riskNotes": "Confirm exact set number, piece count and pricing/release date once LEGO's official reveal is checked directly, and verify quoted designer comments against the full roundtable transcript before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-15T19:23:16Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/12e94847-606d-4936-9f28-56a2b41fba5c.jpg"
     ]
   }
 ]
