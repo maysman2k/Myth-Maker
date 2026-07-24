@@ -1,5 +1,63 @@
 [
   {
+    "id": "8c0ec957-a7e0-5b1a-a738-52ec1db7642d",
+    "title": "LEGO.com brings back Darksaber, Spider-Man and Straw Topper gifts with purchase",
+    "summary": "LEGO.com has relaunched a trio of gift-with-purchase promotions, including the return of the Darksaber polybag, running until 31 July or while stocks last.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, LEGO.com is currently offering three gift-with-purchase (GWP) promotions:\n\n- **40917 The Darksaber** – free with 75442 The Mandalorian's N-1 Starfighter only. This is a repeat of the GWP first offered alongside the set back in May.\n- **30725 Spider-Man vs. Anti-Venom Heist** – free with Marvel, DC or Jurassic World orders over £35 / $40 / €40.\n- **5010927 Straw Topper Set** – free with orders over £60 / $65 / €65 from Botanicals, Creator, Disney, Harry Potter, Friends, Wednesday or Wicked themes. It includes four straws with silicone toppers shaped like a rainbow, cat, ice cream and robot.\n\nAll three are available directly from LEGO.com until 31 July, or while stocks last, timed to coincide with several sets retiring that month.\n\n## Why it matters\nGWPs are a good way to pick up exclusive polybags without extra cost, especially the Darksaber, which is otherwise tied to a specific Ultimate Collector Series purchase. For anyone eyeing a retiring set this month, stacking it with one of these freebies adds a bit of extra value before stock runs out.\n\n## What to watch next\nWorth checking LEGO.com regularly, as these GWP offers tend to change monthly and stock can run out before the stated end date.",
+    "category": "Deals",
+    "tags": [
+      "lego-gwp",
+      "darksaber",
+      "lego-star-wars",
+      "lego-deals",
+      "lego-com"
+    ],
+    "sourceLinks": [
+      {
+        "id": "7d13dd55-ae94-5bb1-8dde-6ace26802bdb",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-star-wars-spider-man-and-straw-topper-gwps"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Article date (24 July 2026) appears to be far in the future relative to today; confirm this is a genuine current promotion and not test or archived content before publishing, and verify GWP end date and pricing thresholds directly on LEGO.com. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-24T08:36:59Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/04/LEGO-Star-Wars-40917-The-Darksaber-featured.png"
+    ]
+  },
+  {
+    "id": "e73792e2-6a5a-540f-a965-c0c3bf62a27e",
+    "title": "New LEGO.com Gifts-With-Purchase Now Live",
+    "summary": "LEGO.com has refreshed its gifts-with-purchase line-up, with a returning Darksaber polybag and two new freebies up for grabs until the end of July.",
+    "bodyMarkdown": "## What happened\nLEGO.com has added new gifts-with-purchase (GWPs), officially confirmed by Brickset. The **5010927 Straw Topper Set** is free with orders of £60/$65/€65 or more from Botanicals, Friends, Creator, Disney, Harry Potter, Wednesday or Wicked ranges. The **30725 Spider-Man vs. Anti-Venom Heist** set is free with orders of £35/$40/€40 or more across DC Comics Super Heroes, Jurassic World or Marvel Super Heroes. Separately, the previously seen **40917 The Darksaber** polybag has returned, free with any purchase of the **75442 The Mandalorian's N-1 Starfighter** set. All three offers run until 31 July, or while stocks last.\n\n## Why it matters\nGWPs are a popular, low-cost way for LEGO fans and collectors to pad out a display shelf or minifigure collection without spending extra. The Darksaber's return will particularly interest Star Wars collectors who missed it the first time round, while the Spider-Man polybag adds a fun extra for superhero fans hitting a lower spend threshold.\n\n## What to watch next\nStock is limited and these offers are time-boxed to the end of July, so shoppers hoping to grab any of the three should check LEGO.com sooner rather than later. Keep an eye out for whether LEGO.com rotates in further GWPs once these end.",
+    "category": "Deals",
+    "tags": [
+      "gwp",
+      "lego-com",
+      "darksaber",
+      "star-wars",
+      "marvel"
+    ],
+    "sourceLinks": [
+      {
+        "id": "b60af115-a9bd-5a83-a9a7-24e5a06c56ca",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133429"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm current availability and exact spend thresholds directly on LEGO.com, as GWP stock and offers can change or end early. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-24T08:36:49Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/set/30725-1"
+    ]
+  },
+  {
     "id": "9ca82591-da45-54d2-b44d-46951252fab4",
     "title": "LEGO Ideas 21369 The X-Files Set Reviewed Ahead of August Launch",
     "summary": "The Brothers Brick has published an in-depth review of the official LEGO Ideas X-Files set and its GWP Scully's Lab, ahead of release on 1 August for Insiders and 4 August for everyone else.",
@@ -1381,64 +1439,6 @@
     "foundAt": "2026-07-17T13:54:47Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133095?53673"
-    ]
-  },
-  {
-    "id": "e5efe6d4-60c7-5179-a9c5-b7add3b7b4cd",
-    "title": "LEGO Art reveals 31221 Gustav Klimt – The Kiss, but does it beat the gold record?",
-    "summary": "LEGO has officially unveiled a 4,000-piece LEGO Art recreation of Gustav Klimt's The Kiss, arriving 1 August, though it's not yet clear if it beats 31213 Mona Lisa's record for most metallic gold pieces in a set.",
-    "bodyMarkdown": "## What happened\nLEGO has officially unveiled 31221 Gustav Klimt – The Kiss, the latest addition to the LEGO Art theme. The 4,000-piece build releases on 1 August and recreates the famous Austrian painting using multiple metallic gold elements, echoing the Byzantine mosaic and Japanese lacquer techniques Klimt drew on for the original artwork.\n\nWhat's still unconfirmed is exactly how many metallic gold pieces the set contains. That matters because LEGO Art has quietly built up a bit of a gold-piece leaderboard over the years. The soon-to-retire 31213 Mona Lisa currently holds the record with 314 metallic gold pieces out of 1,503 total, all used in the frame around Leonardo da Vinci's masterpiece. Before that, 2021's 76191 Infinity Gauntlet included 153 gold pieces, and 2020's 80012 Monkey King Warrior Mech had 119.\n\nWith The Kiss's much larger 4,000-piece count and gold being central to Klimt's original technique, there's plenty of reason to think it could challenge Mona Lisa's crown — but until LEGO confirms the breakdown, that's speculation.\n\n## Why it matters\nFor collectors and display builders, metallic gold elements are prized both for their rarity and their striking look on a shelf. A new record-holder would be a notable moment for the LEGO Art theme and could affect demand and resale interest, especially with Mona Lisa retiring soon.\n\n## What to watch next\nExpect the full piece count and gold element breakdown to surface closer to or on the 1 August release date. Worth checking official LEGO channels or Brick Fanatics for confirmation before treating any gold-piece comparison as fact.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-art",
-      "gustav-klimt",
-      "the-kiss",
-      "metallic-gold",
-      "mona-lisa"
-    ],
-    "sourceLinks": [
-      {
-        "id": "c855b89e-b5c0-5871-9244-a739f164d45d",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/will-lego-art-the-kiss-manage-to-outshine-its-golden-rivals"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "The exact metallic gold piece count for 31221 has not been confirmed by LEGO, so any comparison to Mona Lisa's record is speculative until official figures are released; verify release date and pricing before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-17T03:26:46Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/25d85984-a40e-41dd-a475-622338ae8ed4.jpg"
-    ]
-  },
-  {
-    "id": "03919e44-ab0c-5f68-b218-cd21eb02837e",
-    "title": "LEGO Art reveals the design story behind Gustav Klimt's The Kiss",
-    "summary": "LEGO's design team has shared how they worked with Vienna's Belvedere Museum to recreate Gustav Klimt's The Kiss as a brick-built art set, ahead of its 1 August launch.",
-    "bodyMarkdown": "## What happened\nLEGO Art and the Belvedere Museum in Vienna, home to Gustav Klimt's original painting, have detailed the collaboration behind 31221 Gustav Klimt – The Kiss on LEGO.com. Master Model Designer Milan Madge explained the challenge of translating Klimt's exact proportions into LEGO's building system, while Belvedere curator Stephanie Auer shed light on the painting's real-world materials, including gold, platinum and brass leaf rather than simple gold paint.\n\nThe design team also had to work within a limited colour palette to capture the shifting, luminous look of the artwork, which appears differently depending on the viewing angle. The set is set to launch on 1 August.\n\n## Why it matters\nLEGO Art sets have become a popular crossover between brick building and fine art collecting, and insight into the design process gives fans a deeper appreciation of the craftsmanship involved. It's also a useful preview for anyone considering the set for their display collection ahead of release.\n\n## What to watch next\nExpect reviews and building experience write-ups once 31221 launches on 1 August, along with likely commentary on how accurately the brick version captures Klimt's original colour and texture effects.",
-    "category": "Display Builds",
-    "tags": [
-      "lego-art",
-      "gustav-klimt",
-      "the-kiss",
-      "belvedere-museum",
-      "display-builds"
-    ],
-    "sourceLinks": [
-      {
-        "id": "60e26d54-c8b3-5a16-aa2e-692807e41acd",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/discover-how-lego-art-brought-gustav-klimt-s-the-kiss-to-life"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 72,
-    "riskNotes": "Confirm the exact UK release date and price for 31221 once official LEGO channels publish full set details. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-17T03:26:32Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/da8ef794-2edd-462b-961f-2576ff8cf983.jpg"
     ]
   }
 ]
