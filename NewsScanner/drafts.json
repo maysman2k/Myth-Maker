@@ -1,5 +1,34 @@
 [
   {
+    "id": "d42bd14c-e84c-51c7-9cae-ddf34d94f96d",
+    "title": "LEGO NINJAGO Duskfall trailer lands – how do the sets compare?",
+    "summary": "The first full trailer for LEGO NINJAGO: Legends Duskfall has arrived, giving fans a chance to see how the three tie-in sets stack up against the animation.",
+    "bodyMarkdown": "## What happened\nLEGO NINJAGO's Duskfall storyline has its first full trailer, following an early look at San Diego Comic-Con 2026. The three tie-in sets are already available (or landing 1 August in the US), with the full Duskfall release due in September.\n\nComparing the trailer to the builds:\n\n- **71870 The Twin Titan Mechs** – The two mechs, piloted by Kai and Nya (and possibly Mira), closely match their animated look. Kai's mech keeps its golden arm guards, while Nya's carries her staff, and one mech features a jetpack, just like on screen.\n- **71871 Battle at the Dragon's Blade** – The scene that inspired this set, a dragon perched on a giant sword emerging from a skull's mouth, doesn't appear in the new trailer, though it was briefly shown in an earlier teaser. How this moment fits into the story isn't yet clear.\n- **71872 Ultra Dragon's Battle** – This set has the biggest differences from the trailer. The Great Devourer shown in the animation is notably larger than its LEGO model counterpart.\n\n## Why it matters\nSet-to-screen comparisons are a fun way for NINJAGO fans to see how faithfully models translate animated moments into brick form, and they can hint at future sets based on scenes not yet covered. For UK collectors and builders, it's also a heads-up on new NINJAGO stock arriving on shelves this year.\n\n## What to watch next\nWith one Duskfall scene (the Dragon's Blade moment) still unaccounted for in the new trailer, there may be more sets or story reveals to come before the September launch. Watch for additional trailers or set announcements as Duskfall approaches.",
+    "category": "New Sets",
+    "tags": [
+      "lego-ninjago",
+      "duskfall",
+      "set-comparison",
+      "new-sets",
+      "ninjago-2026"
+    ],
+    "sourceLinks": [
+      {
+        "id": "c70237ea-0fa0-54e5-a33e-bb066d177554",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-ninjago-duskfall-set-comparison-more-we-need"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm exact set numbers, names and release dates (September for Duskfall, 1 August US launch) directly with LEGO before publishing, as these are taken from a messy page excerpt. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-25T19:19:45Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/05/LEGO-NINJAGO-71870-twin-titan-mechs-lifestyle-featured.png"
+    ]
+  },
+  {
     "id": "b1c4fc98-32da-5164-bb93-a1e78c5ded3b",
     "title": "New LEGO Shrek Minifigures Could Be a Hidden Win for Castle Builders",
     "summary": "The newly revealed 71053 Shrek minifigure series brings fairytale and medieval-styled characters that Castle theme fans may want to raid for parts.",
@@ -1411,29 +1440,6 @@
     "foundAt": "2026-07-20T19:52:19Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/3d66720a-cf55-4632-8707-c2d2662673d4.jpg"
-    ]
-  },
-  {
-    "id": "20c5eb62-fae8-5651-a640-107b4d255624",
-    "title": "Rumour: Another buildable LEGO Star Wars Yoda tipped for 2027",
-    "summary": "A new LEGO Star Wars Yoda set, said to be numbered 75474 Master Yoda, is rumoured for 2027 with a $149.99 price and 1,200 pieces – unconfirmed for now, but it would add to an already long line of buildable Yodas.",
-    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, a set numbered 75474 Master Yoda is rumoured to arrive in 2027, reportedly priced at $149.99 with around 1,200 pieces. This is unofficial and unconfirmed – LEGO has not announced it. If accurate, it would sit in size between the original 2002 buildable Yoda (7194) and the larger 2019 version (75255), and follow this year's 75438 Yoda Bust.\n\nYoda already has a long history of buildable figures, including BrickHeadz and Comic-Con exclusives, making him one of the most-modelled LEGO Star Wars characters – second only to R2-D2, who has around ten such figures compared to Yoda's seven.\n\n## Why it matters\nBuildable Star Wars figures are a popular collecting niche for display builders and Star Wars fans, so any new large-scale Yoda model would be a notable addition to shelves. With Grogu also expanding rapidly in LEGO's Star Wars range, fans are starting to ask whether the same character (or species) is being repeated too often.\n\n## What to watch next\nAs this is currently just a rumour, watch for official LEGO confirmation of set number 75474, along with verified pricing and piece count, before treating these details as fact.",
-    "category": "Brick Culture",
-    "tags": [],
-    "sourceLinks": [
-      {
-        "id": "fd4c78cd-9cbf-5322-90e9-9c7676a1b935",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/how-many-lego-star-wars-buildable-yodas-too-many"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-20T19:52:06Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2026/03/lego-star-wars-75438-yoda-bust-lifestyle-4-featured.png"
     ]
   }
 ]
