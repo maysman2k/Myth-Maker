@@ -1,5 +1,34 @@
 [
   {
+    "id": "de43680c-1bf8-5931-a60c-b30dfcecb7fa",
+    "title": "Brickset's Weekly Chart: Sagrada Família Tops the Most-Viewed Sets",
+    "summary": "Brickset's weekly page-view chart shows the Sagrada Família leading the pack, with a surprise return for a huge Chima set and big jumps for the Millennium Falcon and Minas Tirith.",
+    "bodyMarkdown": "## What happened\nBrickset has published its regular \"What's hot this week\" chart, ranking sets by how many times their detail pages were viewed on the site. The Sagrada Família (21065) took the top spot with 7,517 views, just ahead of the enormous BIGBOX 'The ultimate battle for CHIMA' set (4407), which climbed into second place.\n\nElsewhere in the top ten, the UCS Millennium Falcon (75192) and The Lord of the Rings: Minas Tirith (11377) both jumped significantly compared with last week, landing at third and fourth respectively. Titanic (10294), The X-Files (21369), a Shrek-themed set (72423), the Star Trek Enterprise Bridge (11385), Tower Bridge (10214) and Donkey Kong Arcade (72051) rounded out the list.\n\nBrickset notes that overall traffic was up too, with 1,725,907 set detail pages viewed across the site this week — over 52,000 more than the previous week.\n\n## Why it matters\nThis kind of chart is a handy snapshot of what's capturing the community's attention right now, from architecture and licensed builds to big display pieces. For UK fans following display builds, Modular-style architecture sets and large-scale models, it's a useful pulse-check on what's trending before you commit shelf space or budget to your next build.\n\n## What to watch next\nIt'll be worth keeping an eye on whether the Chima BIGBOX set's rise reflects renewed interest in retro/rare large sets, and whether the Minas Tirith and Millennium Falcon jumps are tied to any wider news or restocks — nothing on that is confirmed yet, so treat any reasons behind the movement as speculation for now.",
+    "category": "Collectors",
+    "tags": [
+      "most-viewed-sets",
+      "brickset",
+      "weekly-chart",
+      "display-builds",
+      "collecting"
+    ],
+    "sourceLinks": [
+      {
+        "id": "dd132fc5-568a-555e-9137-026da7c6904e",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133468"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Verify current set names/numbers (e.g. 'BIGBOX' Chima set) as they appear unusually formatted in the source; confirm whether any of the featured sets have specific news tied to their view spikes before adding speculative context. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-26T03:40:03Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133468?16792"
+    ]
+  },
+  {
     "id": "d42bd14c-e84c-51c7-9cae-ddf34d94f96d",
     "title": "LEGO NINJAGO Duskfall trailer lands – how do the sets compare?",
     "summary": "The first full trailer for LEGO NINJAGO: Legends Duskfall has arrived, giving fans a chance to see how the three tie-in sets stack up against the animation.",
@@ -1411,35 +1440,6 @@
     "foundAt": "2026-07-21T14:10:09Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133353?54599"
-    ]
-  },
-  {
-    "id": "4de9239a-436e-51e6-bba3-a2f273be83e1",
-    "title": "LEGO's buildable character trend keeps growing into 2027",
-    "summary": "Brick Fanatics has spotted a clear pattern: LEGO's buildable character sets have risen every year since 2022, and rumoured 2027 lineups suggest the trend isn't slowing down.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has tracked the rise of LEGO's buildable character sets — think brick-built figures like 76469 Dobby the Free Elf or 75455 Boba Fett — and found the numbers have climbed every year since 2020, hitting a new high in 2026 across themes including Star Wars, Harry Potter, Disney, Pokémon, Marvel and Ideas.\n\nLooking ahead, **rumoured** 2027 lineups reportedly include at least 11 buildable character sets, with six of those said to sit under the LEGO Disney banner alone, covering around 10 different characters. If accurate, that could mean 15 or more unique buildable characters arriving from just the sets rumoured so far — though nothing here has been confirmed as an official LEGO announcement.\n\nThe analysis suggests LEGO is leaning into buildable characters the same way it previously doubled down on mid-range Technic cars, Creator 3-in-1 animals, and BIONICLE-style constraction figures, once a concept proves popular with buyers.\n\n## Why it matters\nFor collectors and display builders, more buildable characters means more shelf-worthy pieces to hunt down, but it also raises questions about whether other themes get squeezed out as LEGO chases what's selling. If the trend continues, expect buildable characters to become an even bigger part of LEGO's yearly catalogue — which matters for anyone planning displays, MOC integrations, or just budgeting for new releases.\n\n## What to watch next\nKeep an eye out for official LEGO confirmation of 2027 sets, as the figures currently circulating are based on rumoured lineups rather than confirmed releases. We'll update as more solid details emerge.",
-    "category": "Rumours",
-    "tags": [
-      "lego-buildable-characters",
-      "2027-lego-sets",
-      "lego-disney",
-      "lego-trends",
-      "collecting"
-    ],
-    "sourceLinks": [
-      {
-        "id": "c560a8a1-e958-5776-875e-7ce3719c6c61",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/when-lego-gets-laser-focused-on-one-thing"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 64,
-    "riskNotes": "The 2027 set count and character breakdown are explicitly rumoured/unconfirmed in the source; only 2026 releases like Dobby and Boba Fett are established. Verify no official LEGO confirmation exists before treating 2027 figures as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-20T19:52:19Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/3d66720a-cf55-4632-8707-c2d2662673d4.jpg"
     ]
   }
 ]
