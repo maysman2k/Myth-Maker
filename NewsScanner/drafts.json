@@ -1,5 +1,63 @@
 [
   {
+    "id": "a149955f-9c35-5a00-80fe-e99904483233",
+    "title": "Brickset rounds up its latest LEGO set reviews",
+    "summary": "Brickset has published a fresh batch of set reviews, covering everything from Technic supercars to a Donkey Kong arcade cabinet. Here's a quick rundown of what the reviewers made of each one.",
+    "bodyMarkdown": "## What happened\nBrickset has shared a summary of its most recent official set reviews. The line-up includes:\n\n- **77263 BMW M3 (E30)** – reviewers felt the model doesn't quite capture the car's shape, though it still offers a distinctive building experience.\n- **42232 Koenigsegg Sadair's Spear Megacar** – praised as the best Technic Ultimate Car release to date.\n- **72051 Donkey Kong Arcade** – described as a playable tribute to the classic arcade game in a compact cabinet form.\n- **43029 Olivia Rodrigo's Concert Moon** – a display piece capturing a moment from the GUTS World Tour.\n- **77081 KIT** – noted for combining play and display features with some unexpected detail.\n- **42699 Beach House with Seals** – reviewed as a tropical-themed build that lives up to its name.\n\nFull details and scores for each set are available via Brickset's individual reviews.\n\n## Why it matters\nSet reviews like these help builders and collectors decide where to spend their money, especially for pricier Technic and Icons releases. A strong shout-out for the Koenigsegg Technic set may be particularly useful for anyone eyeing up their next big build.\n\n## What to watch next\nKeep an eye on Brickset for full written reviews of each set, plus any follow-up video reviews that may offer more detail on build quality and play value.",
+    "category": "Collectors",
+    "tags": [
+      "lego-reviews",
+      "technic",
+      "icons",
+      "brickset",
+      "set-roundup"
+    ],
+    "sourceLinks": [
+      {
+        "id": "7d46f5c7-efd5-53fd-a029-5875a6c986e1",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133484"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "This is a roundup of existing reviews rather than new news; confirm set numbers and names match official LEGO product listings before publishing, and verify no pricing or release-date claims were added beyond what's stated. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-27T10:04:50Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133484?39880"
+    ]
+  },
+  {
+    "id": "77a9c6c9-721c-5bdd-9774-a2bb93483c0f",
+    "title": "Shrek Collectable Minifigures: Pre-orders Now Open Ahead of September Launch",
+    "summary": "The LEGO Shrek series of collectable minifigures launches on 1 September, and third-party retailers are already taking pre-orders to help fans secure a full set before stock runs out.",
+    "bodyMarkdown": "## What happened\nLEGO's Shrek-themed Collectable Minifigures series (set 71053) is set to launch on 1 September, according to Brickset. Ahead of the official release, several third-party retailers are offering pre-orders, which Brickset suggests could be the best way to guarantee a complete set given the anticipated demand.\n\nIn the UK, Brickabrac is offering a set of 12 figures for £38.99, or a full box of 36 for £99.99. In the EU, Ireland-based Minifigure Madness has a deal on two boxes of 36 figures for €223.99 using a discount code, plus a bonus voucher for every 10th order. A US retailer, Minifigures Plus, is also listed as a source, though full pricing details weren't included in this report.\n\nIt's worth noting these are third-party resellers, not direct LEGO Group pre-orders, so pricing and availability may vary by supplier.\n\n## Why it matters\nCollectable Minifigures series tend to sell out fast, especially when tied to a popular licensed theme like Shrek. Securing a pre-order through a trusted supplier could save collectors the hassle of hunting for missing figures after launch, and early bulk deals may offer better value than buying blind bags individually once the series is officially out.\n\n## What to watch next\nKeep an eye out for the official LEGO Group product listing and full set contents once it goes live closer to 1 September, along with confirmation of pricing from LEGO's own store.",
+    "category": "New Sets",
+    "tags": [
+      "collectable-minifigures",
+      "shrek",
+      "cmf-series",
+      "pre-order",
+      "lego-licensed"
+    ],
+    "sourceLinks": [
+      {
+        "id": "f858aee1-194a-544b-99a7-8c3e8edc231d",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133493"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm official LEGO Group pricing and set number (71053) once the theme is listed on LEGO.com, and verify current pricing/availability with the named third-party retailers before publishing, as reseller deals can change quickly. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-27T10:04:27Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/set/71053-13"
+    ]
+  },
+  {
     "id": "ec1f8ab1-7c65-5e16-aa5c-cef152a123fc",
     "title": "LEGO Marvel Avengers: Doomsday sets officially revealed",
     "summary": "LEGO and Marvel Studios have confirmed five new sets for Avengers: Doomsday, including a BrickHeadz pack, a Doctor Doom bust, and minifigure-based builds like the Quinjet.",
@@ -1382,64 +1440,6 @@
     "foundAt": "2026-07-23T03:33:08Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133391?16379"
-    ]
-  },
-  {
-    "id": "3fa71893-cec6-58c4-ba29-c4f53a724e6b",
-    "title": "LEGO unveils ultra-rare Bugatti Type 35 set – but you can't buy one",
-    "summary": "A limited-run LEGO Bugatti Type 35 set has been revealed after being given exclusively to guests at a LEGO House event in June. Only 250 exist, and none were ever for sale.",
-    "bodyMarkdown": "## What happened\nLEGO House in Billund hosted the 26th International Bugatti Meeting in June, a joint event with Bugatti Club Denmark. Guests attending received an exclusive set: 4000048 Bugatti Type 35, a 1,592-piece model finished in bright blue with wheels that appear unique to this set.\n\nThe set is officially limited to 250 units and was not sold in shops - it was only available to those at the event, which was attended by more than 200 Bugatti Club Denmark members (many bringing their own pre-war Bugattis), the King of Denmark, LEGO Group owner Kjeld Kirk Kristiansen, and CEO Niels B. Christiansen.\n\nThe model recreates the Bugatti Type 35, widely regarded as the first car purpose-built for racing and one of the most successful race cars in history. This continues LEGO's long-running relationship with Bugatti across Technic and Speed Champions themes, and LEGO House has previous form here too - it's where the life-size 42083 Bugatti Chiron was first unveiled back in 2018.\n\n**Worth flagging:** the wheels are described as \"possibly 3D-printed\" based on images shared from the event rather than confirmed detail, so treat that specific point as unverified for now.\n\n## Why it matters\nFor collectors, ultra-limited event-exclusive sets like this rarely appear anywhere outside the secondhand market, and demand for genuinely rare LEGO pieces tends to push resale prices well above retail. It's also another sign of how seriously LEGO invests in its Bugatti partnership, which could hint at more premium car-themed sets down the line.\n\n## What to watch next\nKeep an eye on the aftermarket and collector forums - a small number of these sets may surface for resale, likely at a significant premium given the tiny production run of 250 units.",
-    "category": "Collectors",
-    "tags": [
-      "lego-bugatti",
-      "limited-edition",
-      "lego-house",
-      "exclusive-set",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "542b9c3c-6c41-5aab-8309-19ca9e4c972a",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/ultra-rare-lego-bugatti-type-35-set-revealed"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "Confirm the '3D-printed wheels' detail before republishing as fact - source itself says 'possibly'; also verify exact attendee numbers and event date with a primary LEGO or Bugatti Club source if possible. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-22T19:37:27Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/e0c667d7-2b08-406c-a4cb-c38913828401.jpg"
-    ]
-  },
-  {
-    "id": "b5fdce3f-1cd3-5751-a0fb-eaa8f6c22d64",
-    "title": "Rumoured LEGO Star Wars 2027 lineup starts to take shape",
-    "summary": "Early rumours point to a fresh wave of LEGO Star Wars sets for 2027, including a returning X-wing Microfighter and a new Anakin's Starfighter. Nothing here is officially confirmed by LEGO yet.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has rounded up early **rumours** about LEGO Star Wars sets said to be coming in the first half of 2027, citing sources including BrickTap. According to this unconfirmed report:\n\n- **75463 X-wing Microfighter** may return in January 2027 at $14.99, bringing back the Microfighters format after its 2026 hiatus.\n- **75464 Anakin's Starfighter** is rumoured for January 2027 at $29.99, reportedly a new Delta-7B Jedi Starfighter model.\n- **75465 Death Star II Midi-scale** is said to be planned for June 2027 at $69.99, continuing the Starship Collection line.\n\nThe wider article also mentions 50th-anniversary sets, new helmets and further midi-scale models, though full details on these weren't included in the excerpt we have. Prices quoted are in US dollars and, per Brick Fanatics, subject to change before release.\n\n## Why it matters\nIf accurate, this suggests LEGO Star Wars will keep leaning into nostalgic formats like Microfighters and the Starship Collection into 2027, alongside bigger 50th-anniversary celebrations. For collectors and Star Wars fans, this is useful early warning of what to budget and shelf space for — but it's all speculation for now, so treat set numbers, prices and dates as unconfirmed until LEGO says otherwise.\n\n## What to watch next\nKeep an eye on Brick Fanatics and BrickTap for further leaks, and watch for any official LEGO Star Wars reveals or teasers later in 2026 that might confirm or contradict these rumours.",
-    "category": "Rumours",
-    "tags": [
-      "lego-star-wars",
-      "2027-rumours",
-      "microfighters",
-      "starship-collection",
-      "set-leaks"
-    ],
-    "sourceLinks": [
-      {
-        "id": "424e97eb-2677-58fc-aeaa-6009b3984c38",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/every-lego-star-wars-set-rumoured-2027-jul-2026"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 72,
-    "riskNotes": "Entire story is based on unconfirmed rumours (BrickTap via Brick Fanatics); set numbers, prices and release dates should be verified against official LEGO announcements before treating as fact. Source excerpt is incomplete, so confirm full set list and 50th-anniversary details before expanding coverage. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-22T14:13:14Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/5374d233-1c0d-47c8-9649-61edeb9f36d6.jpg"
     ]
   }
 ]
