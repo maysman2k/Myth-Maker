@@ -1,5 +1,63 @@
 [
   {
+    "id": "fc0bcb5c-36c2-5440-ba76-51d4faaad6de",
+    "title": "LEGO designer rebuilds viral raccoon 'Jimothy' from Grey Wolf set",
+    "summary": "A LEGO Senior Design Manager has recreated internet-famous short-spined raccoon Jimothy using only parts from the official 31393 Grey Wolf set.",
+    "bodyMarkdown": "## What happened\nJordan Scott, a Senior Design Manager, has built a custom model of Jimothy, the short-spined raccoon that's gone viral online, using only pieces from the official 31393 Grey Wolf set (657 pieces, £44.99 / $49.99 / €49.99, out now).\n\nAccording to Brick Fanatics, the build reworks the raccoon element already included in Grey Wolf, shortening its body to match Jimothy's distinctive look. No official instructions have been released, but it's confirmed that no extra or modified parts were used beyond what comes in the standard set.\n\nJimothy himself isn't LEGO-related at all — he's a real raccoon spotted in Seattle with what experts believe is a spinal deformity, though he's said to be healthy. His unusual appearance has made him a viral hit across gaming and pop culture this week, and now the brick-building world too.\n\n## Why it matters\nIt's a fun reminder of how flexible official LEGO sets can be for custom building — fans (and even LEGO's own designers) can repurpose animal-themed sets like Grey Wolf for creative alternate builds. For UK builders and collectors, it's also a nudge that 31393 Grey Wolf offers good part variety for animal MOCs beyond its intended design.\n\n## What to watch next\nThere's no confirmed plan for an official LEGO Jimothy set or promotion, so any further builds, instructions, or social media follow-ups remain speculative for now.",
+    "category": "Brick Culture",
+    "tags": [
+      "lego-jimothy",
+      "custom-moc",
+      "grey-wolf-set",
+      "brick-culture",
+      "animal-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "b0c698a0-5f60-5cd9-8a67-cd700ffa49a2",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-designer-makes-internet-s-favourite-raccoon-from-set"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm Jordan Scott's exact job title and that this build is a personal/fan project rather than an official LEGO release; verify current pricing and availability of 31393 Grey Wolf before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-28T14:28:07Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/256e5fd9-9132-4cef-8aee-3d942716f97d.png"
+    ]
+  },
+  {
+    "id": "837b5b10-81af-599f-b153-65a6f6164e2c",
+    "title": "LEGO's August 2026 line-up: five sets under £50 worth a look",
+    "summary": "Brick Fanatics has rounded up its picks for the best LEGO sets launching in August 2026 priced under £50, spanning Olivia Rodrigo, Minecraft and Pokémon themes.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, a wave of new LEGO sets is due to launch on 1 August 2026, with many flagship models priced above £150. Alongside these, the outlet has highlighted a handful of smaller, more affordable builds coming in under £50.\n\nHighlights from the list include:\n\n- **43029 Olivia Rodrigo's Concert Moon** – £44.99, 670 pieces, out 1 August 2026. Part of the LEGO Botanicals/Editions range, it includes an exclusive Olivia Rodrigo minifigure and converts into a standalone record player build.\n- **21591 The Twisted Warden Battle** – £44.99, 438 pieces, out 1 August 2026. A LEGO Minecraft Dungeons-themed set tied to the game's second instalment, featuring four exclusive minifigures and a poseable Twisted Warden figure.\n- **72158 Sprigatito, Fuecoco and Quaxly Battle** – £29.99, 313 pieces, out 1 August 2026. A LEGO Pokémon set covering the three starter creatures.\n\nBrick Fanatics notes this follows an earlier round-up of even cheaper LEGO sets (under £25) launching the same month.\n\n## Why it matters\nFor UK builders and collectors keeping an eye on their budgets, these picks give an early steer on which August 2026 releases might offer the best value without breaking the bank, useful if you're planning what to add to your collection or display shelf.\n\n## What to watch next\nKeep an eye out for official LEGO Group confirmation and UK store listings closer to the 1 August 2026 release date, as pricing and piece counts can sometimes shift before launch.",
+    "category": "New Sets",
+    "tags": [
+      "lego-2026",
+      "lego-minecraft",
+      "lego-pokemon",
+      "lego-under-50",
+      "new-lego-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "a36ffd63-f5aa-5d5b-aab5-8c60c1916307",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/the-best-lego-august-2026-sets-under-50"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Prices, piece counts and release date are as reported by Brick Fanatics and should be cross-checked against official LEGO.com listings closer to launch, as details for future sets can change before release. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-28T14:27:24Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/e972b04f-9d43-4617-863f-017edc6a157b.png"
+    ]
+  },
+  {
     "id": "55528d6d-3541-5825-9829-25c3bab1f992",
     "title": "LEGO Marvel mini modulars set to move beyond Spider-Man with Avengers Tower",
     "summary": "LEGO's Marvel mini modular street is growing again, with a new Avengers Tower set marking the first building in the series not tied to Spider-Man.",
@@ -1383,64 +1441,6 @@
     "foundAt": "2026-07-23T19:37:09Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/5f9dacfd-2572-45aa-a9c0-fabce600af1b.jpg"
-    ]
-  },
-  {
-    "id": "097349d2-e6cf-5ab5-a93f-0e2b502ef421",
-    "title": "LEGO Ideas 21369 The X-Files reviewed: great set, tough price",
-    "summary": "Brick Fanatics has put LEGO Ideas 21369 The X-Files through its paces, praising the design and minifigures but flagging its £180 price tag as the set's biggest drawback.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has published its review of LEGO Ideas 21369 The X-Files, the latest set from the Ideas range designed by fan creator Brent Waller and based on his '90s-era 'Twist of Nostalgia' submission. The set recreates Mulder's cluttered basement office alongside a UFO section above it, echoing the two-tier build style seen in sets like 76417 Gringotts Wizarding Bank.\n\nThe reviewer praised the faithful, detailed design and the strong minifigure line-up, but was less keen on some of the tree-building sections and noted that not every fan-favourite character has made it into the set. The biggest criticism, though, is the price: the review argues the set feels like it offers around £130 worth of value despite reportedly costing £180.\n\nOverall scores given were 9/10 for design, 8/10 for minifigures, 7/10 for build and playability, but just 4/10 for value, leading to a 7/10 overall rating.\n\n## Why it matters\nLEGO Ideas sets are a big draw for adult fans and collectors because they're based on genuine fan submissions, and pricing directly affects whether they're worth queuing up for. If value-for-money concerns are widespread, it could shape how enthusiasts approach future Ideas releases and second-hand pricing down the line.\n\n## What to watch next\nKeep an eye out for wider community reaction and any official pricing clarifications from LEGO, plus how this set performs on secondary markets given the review's value concerns.",
-    "category": "New Sets",
-    "tags": [
-      "lego-ideas",
-      "x-files",
-      "set-review",
-      "pricing",
-      "minifigures"
-    ],
-    "sourceLinks": [
-      {
-        "id": "d8c50668-7fd8-59e0-a155-66f1e18dee90",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-ideas-21369-the-x-files-review"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 82,
-    "riskNotes": "Confirm the exact UK retail price (£180) directly with LEGO's official channels before republishing, as this comes from a single review source; also verify piece count and release date if referenced elsewhere. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-23T14:24:26Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/b6c77dc0-e1e8-420b-b812-3c9aaf682161.jpg"
-    ]
-  },
-  {
-    "id": "74b46f0c-f30a-5589-9184-2f65c7242433",
-    "title": "LEGO Shrek Collectible Minifigures ranked by a Brick Fanatics writer",
-    "summary": "With the new LEGO Shrek Collectible Minifigures series now revealed, one Brick Fanatics writer has ranked all 12 characters from least to most exciting ahead of their September launch.",
-    "bodyMarkdown": "## What happened\nLEGO has officially revealed a new Collectible Minifigures series based on the Shrek films, numbered 71053, which is set to launch on 1 September 2026. The line features 12 characters from the beloved DreamWorks franchise, including fan favourites like the Big Bad Wolf, Prince Charming, Gingy, the Fairy Godmother and Merlin.\n\nOff the back of the reveal, Brick Fanatics writer Dylan McLaren has put together a personal ranking of all 12 minifigures, from least favourite to top pick, based purely on the official images released so far. This is one fan's opinion rather than an official LEGO ranking, but it gives a good flavour of what to expect from the wave, from clever printed details (like the icing pattern on Gingy's legs) to fun accessories such as a magical effect piece for Merlin and a Three Blind Mice figure alongside the Big Bad Wolf.\n\n## Why it matters\nCollectible Minifigures series always spark excitement among collectors, and a licensed Shrek wave is a big deal for fans of both the films and minifigure collecting. Rankings and early reactions like this can help UK collectors decide which figures to prioritise once the set lands on shelves, especially with blind-bag style CMF lines where hunting for favourites is part of the fun.\n\n## What to watch next\nKeep an eye out for the full official reveal details and packaging as 1 September approaches, plus more community rankings and reviews once the figures are widely available to compare in person.",
-    "category": "New Sets",
-    "tags": [
-      "lego-shrek",
-      "collectible-minifigures",
-      "cmf-series",
-      "new-sets",
-      "minifigure-collecting"
-    ],
-    "sourceLinks": [
-      {
-        "id": "21ddf5d3-86a8-529f-a816-9a245ce1233b",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/ranking-lego-shrek-collectible-minifigures"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm the official set number (71053) and 1 September release date directly with LEGO Group sources, and clarify that the ranking itself is an opinion piece, not an official LEGO ranking. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-23T14:24:13Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/3e6f40bb-036e-4fb6-880f-d994a505f58b.jpg"
     ]
   }
 ]
