@@ -1,5 +1,34 @@
 [
   {
+    "id": "f0a281a7-81a6-589a-8b26-6f1e49540c48",
+    "title": "Rumour: LEGO Jurassic World Velociraptor fossil set tipped for 2027",
+    "summary": "A set number for a rumoured LEGO Jurassic World Velociraptor fossil display piece has surfaced online, suggesting the dinosaur skeleton series could continue into 2027.",
+    "bodyMarkdown": "## What happened\nAccording to a report from Brick Fanatics, citing Unibricks, a set numbered 77987 and titled 'Dinosaur Fossils: Velociraptors' is rumoured to launch in May 2027. This would follow on from the confirmed 2025 set 76968 Dinosaur Fossils: Tyrannosaurus rex and the 2026 set 77985 Dinosaur Fossils: Triceratops.\n\nNo price or piece count has been mentioned for the rumoured Velociraptor set, so it's unclear what scale it might be built to. For comparison, the T. rex fossil set is the largest and priciest of the pair so far, with 3,145 pieces at £219.99, while the Triceratops is smaller and cheaper at 1,154 pieces for £89.99.\n\nThe plural 'Velociraptors' in the rumoured name has led to speculation that the set could feature more than one raptor skeleton in the box, though this is purely speculation at this stage and not confirmed.\n\n## Why it matters\nIf accurate, this would mark a third entry in LEGO's growing Jurassic World fossil display series, a popular option for collectors and display builders who enjoy skeleton-style sets alongside traditional playsets. The scale and pricing will matter a lot to fans wanting a cohesive fossil collection on their shelves.\n\n## What to watch next\nThis is currently only a rumour based on a set number and title, with no official LEGO confirmation, pricing or piece count. Fans should treat the release date, scale and contents as unconfirmed until more details or official images emerge.",
+    "category": "Rumours",
+    "tags": [
+      "lego-jurassic-world",
+      "dinosaur-fossils",
+      "2027-sets",
+      "rumour",
+      "display-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "b15598e8-35c5-5532-b261-554e940a7e5f",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/more-lego-jurassic-dinosaur-fossils-rumoured-2027"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 62,
+    "riskNotes": "Entire story is based on an unofficial rumour (Unibricks via Brick Fanatics) with no LEGO confirmation of set number, name, price, piece count or release date; verify before treating any details as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-29T08:51:25Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/04/LEGO-Jurassic-World-77985-Dinosaur-Fossils-Triceratops-featured.jpg"
+    ]
+  },
+  {
     "id": "e1bc05da-8588-571e-9cd3-a157236ca5ff",
     "title": "LEGO Ideas launches Paradisa-themed building challenge",
     "summary": "LEGO Ideas has opened a new fan challenge celebrating the retro Paradisa theme, with a summer-and-flowers prize bundle worth over £700 up for grabs.",
@@ -1412,35 +1441,6 @@
     "foundAt": "2026-07-24T08:36:59Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/04/LEGO-Star-Wars-40917-The-Darksaber-featured.png"
-    ]
-  },
-  {
-    "id": "e73792e2-6a5a-540f-a965-c0c3bf62a27e",
-    "title": "New LEGO.com Gifts-With-Purchase Now Live",
-    "summary": "LEGO.com has refreshed its gifts-with-purchase line-up, with a returning Darksaber polybag and two new freebies up for grabs until the end of July.",
-    "bodyMarkdown": "## What happened\nLEGO.com has added new gifts-with-purchase (GWPs), officially confirmed by Brickset. The **5010927 Straw Topper Set** is free with orders of £60/$65/€65 or more from Botanicals, Friends, Creator, Disney, Harry Potter, Wednesday or Wicked ranges. The **30725 Spider-Man vs. Anti-Venom Heist** set is free with orders of £35/$40/€40 or more across DC Comics Super Heroes, Jurassic World or Marvel Super Heroes. Separately, the previously seen **40917 The Darksaber** polybag has returned, free with any purchase of the **75442 The Mandalorian's N-1 Starfighter** set. All three offers run until 31 July, or while stocks last.\n\n## Why it matters\nGWPs are a popular, low-cost way for LEGO fans and collectors to pad out a display shelf or minifigure collection without spending extra. The Darksaber's return will particularly interest Star Wars collectors who missed it the first time round, while the Spider-Man polybag adds a fun extra for superhero fans hitting a lower spend threshold.\n\n## What to watch next\nStock is limited and these offers are time-boxed to the end of July, so shoppers hoping to grab any of the three should check LEGO.com sooner rather than later. Keep an eye out for whether LEGO.com rotates in further GWPs once these end.",
-    "category": "Deals",
-    "tags": [
-      "gwp",
-      "lego-com",
-      "darksaber",
-      "star-wars",
-      "marvel"
-    ],
-    "sourceLinks": [
-      {
-        "id": "b60af115-a9bd-5a83-a9a7-24e5a06c56ca",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133429"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm current availability and exact spend thresholds directly on LEGO.com, as GWP stock and offers can change or end early. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-24T08:36:49Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/set/30725-1"
     ]
   }
 ]
