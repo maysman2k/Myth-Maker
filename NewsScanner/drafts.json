@@ -1,5 +1,63 @@
 [
   {
+    "id": "512e2ce4-778c-5a76-b519-6bf4b7af1f27",
+    "title": "Two more LEGO Ideas projects reach the review stage",
+    "summary": "A chrome-gold chess set and a Disney-inspired space galleon have hit 10,000 votes, joining the current LEGO Ideas review. Neither is confirmed as an official set yet.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, two new fan-designed projects have reached the 10,000-supporter milestone and entered the second LEGO Ideas review of 2026.\n\nThe first is JonnyBrickz1820's Medieval Chess Set With Storage Drawer, a black-and-white chess set built for his daughter, featuring chrome gold detailing across the pieces. The second is DRChurch's Treasure Planet - The RLS Legacy, a display model of the solar galleon from Disney's 2002 film, which reportedly took nine months to design and includes four minifigures: Jim Hawkins, Dr. Delbert Doppler, Captain Amelia, and Long John Silver.\n\nThis brings the total number of projects currently under LEGO Ideas review to 55, with the voting deadline for this round said to close in September 2026.\n\n## Why it matters\nLEGO Ideas is one of the few official routes fans have to see their own creations become real sets, so every project reaching review is worth watching for collectors and custom builders alike. Chrome gold pieces are especially prized among LEGO collectors since they're rarely used outside sets like The One Ring, so a chess set built around them could be a big draw if approved.\n\n## What to watch next\nNeither project is confirmed to become an official LEGO set — reaching review only means LEGO Group will assess them for production. Fans can compare this to past successes like 21370 E.T. the Extra-Terrestrial and 21372 La Catrina, which both started as Ideas submissions before launching as retail sets.",
+    "category": "Ideas",
+    "tags": [
+      "lego-ideas",
+      "chrome-gold",
+      "disney-lego",
+      "fan-designs",
+      "lego-review"
+    ],
+    "sourceLinks": [
+      {
+        "id": "5ce7bfc7-f9e5-5511-8707-f6364d395e61",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-ideas-chrome-gold-and-cosmic-adventures"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm the exact September 2026 voting deadline and current total project count with LEGO Ideas' official page before publishing, as these details come from a third-party summary and could change. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-29T19:34:34Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/a15882cc-c1c8-4b52-8ccb-77ab0f6df208.png"
+    ]
+  },
+  {
+    "id": "46c5460a-9d12-51f2-bdfc-87478d6588a2",
+    "title": "Amazon UK checkout deals knock up to 43% off LEGO sets",
+    "summary": "Amazon UK is stacking extra checkout discounts on top of existing LEGO offers, with savings of up to 43% across sets including Star Wars, Architecture and Harry Potter.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, Amazon UK is applying bonus discounts at checkout on a range of new and retiring LEGO sets, on top of the prices shown on product pages. Highlighted deals include 31215 Vincent van Gogh – Sunflowers dropping from £169.99 to £109.99, and 71847 The Guardian Dragon (which is retiring this year) falling from £139.99 to £100.99.\n\nOther sets mentioned include 75435 Battle of Felucia Separatist MTT, 76444 Diagon Alley: Wizarding Shops, 21062 Trevi Fountain, 43301 Toy Story Slinky Dog Bookends, 72152 Pikachu and Poké Ball, and 42202 Ducati Panigale V4 S.\n\nThe checkout discounts are said to be part of a wider offer giving £15 off when you spend £99 or more on selected LEGO sets, with smaller sets like 10349 Happy Plants, 77255 Lightning McQueen, 76332 The Batman Batmobile, 75439 Darth Vader Bust, 75375 Millennium Falcon and 43022 Lewis Hamilton Helmet suggested as ways to bulk up an order to hit that threshold. Brick Fanatics gives an example basket of five smaller sets normally totalling £157.95 coming down to £89.99 - a 43% saving overall.\n\nAs these are checkout-only discounts, the reduced price won't show on the product listing page itself - it only appears once you go to pay.\n\n## Why it matters\nDeals like this are a handy way to pick up retiring sets, big display pieces or gifts for less, especially if you're already planning a LEGO order. Bundling smaller sets to hit the £99 spend threshold could make it easier to justify picking up extras you'd been eyeing anyway.\n\n## What to watch next\nAmazon deals can change or end without notice, so it's worth checking current checkout prices before buying, and confirming stock levels on sets you want, particularly the retiring Guardian Dragon.",
+    "category": "Deals",
+    "tags": [
+      "lego-deals",
+      "amazon-uk",
+      "retiring-sets",
+      "star-wars",
+      "harry-potter"
+    ],
+    "sourceLinks": [
+      {
+        "id": "648e2093-d02f-5e7b-9da1-2c5a58f05104",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/up-to-43-off-new-and-retiring-lego-amazon-uk"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Prices and offer availability are time-sensitive and sourced from a third-party affiliate article; verify current checkout prices and offer terms on Amazon UK before publishing, as deals may have expired or changed. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-29T19:34:24Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2025/07/LEGO-Star-Wars-75435-Battle-of-Felucia-Separatist-MTT-review-title.jpg"
+    ]
+  },
+  {
     "id": "12cff57f-2de4-5f4d-9b8c-0cfcbb9faa7a",
     "title": "Rumoured LEGO 2027 polybag list surfaces, with Boba Fett and Batman sets tipped",
     "summary": "An unofficial list claims to reveal 14 LEGO polybags heading to shelves in 2027, spanning Star Wars, Batman, Marvel, NINJAGO and more — though nothing is confirmed by LEGO yet.",
@@ -1383,64 +1441,6 @@
     "foundAt": "2026-07-24T19:41:02Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/1356f7fb-9e9a-4b80-bd9c-2141c9ba813e.png"
-    ]
-  },
-  {
-    "id": "ceade042-afa9-5a5b-b2c0-f7e29e45d84b",
-    "title": "Brickset reviews LEGO Super Mario 72051 Donkey Kong Arcade",
-    "summary": "Brickset has published a hands-on review of the LEGO Super Mario 72051 Donkey Kong Arcade set, praising its playable mechanisms but flagging some design trade-offs.",
-    "bodyMarkdown": "## What happened\nBrickset has posted a staff review of 72051 Donkey Kong Arcade, a LEGO Super Mario set based on Nintendo's 1981 arcade classic. The set recreates the iconic cabinet and, notably, includes a genuinely playable mechanism letting builders control the character using buttons — a step up from the static LEGO Pacman arcade machine. According to the review, this playability comes with some compromises elsewhere in the build, though the model is described as a fun celebration of retro gaming history.\n\n## Why it matters\nArcade and retro gaming tie-ins have become a strong niche within LEGO's licensed lineup, and this set continues that trend with added interactivity that goes beyond typical display-only builds. For collectors and display-build fans, a functioning mechanism adds novelty value, while Super Mario theme followers will want to know how it stacks up against previous arcade-style sets before buying.\n\n## What to watch next\nKeep an eye on Brickset's full review for detailed build notes, part usage, and final verdict, plus any official LEGO pricing or availability confirmation for 72051 Donkey Kong Arcade.",
-    "category": "New Sets",
-    "tags": [
-      "lego-super-mario",
-      "donkey-kong",
-      "set-review",
-      "arcade-sets",
-      "brickset"
-    ],
-    "sourceLinks": [
-      {
-        "id": "e75603d7-ad2f-56ed-82dc-03adde8868bd",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133416"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm the official set number, name, price and release date directly with LEGO/Brickset before publishing, as the excerpt is a partial review and does not include full official set details. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-24T19:40:41Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133416?74429"
-    ]
-  },
-  {
-    "id": "0a524641-7fc4-5c2c-bad9-e87618dcc760",
-    "title": "New LEGO Technic Mystery Boxes May Be Scannable Before You Buy",
-    "summary": "LEGO Technic is getting its own blind-box collectible line, 42233 Mighty Machines, launching 1 August — and early reviews hint the boxes could be scanned to reveal contents, just like recent Collectible Minifigures.",
-    "bodyMarkdown": "## What happened\nLEGO Technic is branching into blind-box collectibles with 42233 Mighty Machines, a new line of eight miniature machine builds set to launch on 1 August. It sits alongside the existing Collectible Minifigures series rather than replacing it, with that range continuing in September with 71053 Shrek.\n\nEach box is priced at £4.49, a little more than a standard minifigure box. **Rumour:** early reviews suggest the packaging may include the same scannable QR codes used on recent Collectible Minifigures boxes, which would let fans use the Brick Search app to identify which model is inside before buying. This hasn't been officially confirmed by LEGO Group. Each box is also said to contain a separate code linking to an online card game.\n\n## Why it matters\nBlind-box collecting is popular but can be frustrating for fans chasing specific pieces, especially with eight different machines to track down. If the scannable code feature carries over to Technic, it would give collectors more control over which boxes they pick up, and signals LEGO Group may be standardising this scan-to-reveal approach across its collectible ranges.\n\n## What to watch next\nKeep an eye out for confirmation once 42233 Mighty Machines officially launches on 1 August, including whether Brick Search app support for scanning these boxes goes live as suggested.",
-    "category": "New Sets",
-    "tags": [
-      "lego-technic",
-      "mystery-boxes",
-      "collectibles",
-      "brick-search",
-      "new-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "f92e83a1-012e-5771-9013-10f69ac1ffe5",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-technic-mystery-boxes-not-for-long"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 82,
-    "riskNotes": "The claim that Technic mystery boxes are scannable via Brick Search is based on 'early reviews' and not officially confirmed by LEGO Group; verify before publishing as fact, and check pricing/currency conversions and set number accuracy. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-24T14:01:59Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2026/05/LEGO-Technic-42233-Mighty-Machines-featured-image.jpg"
     ]
   }
 ]
