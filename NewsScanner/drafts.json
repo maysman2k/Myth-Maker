@@ -1,5 +1,34 @@
 [
   {
+    "id": "400d09f5-9ae1-5a38-ab02-24ef865724eb",
+    "title": "LEGO PlayStation set rumoured to land in October with Astro Bot GWP",
+    "summary": "A leak suggests the rumoured LEGO PlayStation set has moved forward to an October 2026 release, with an Astro Bot gift-with-purchase said to accompany it. Nothing here is official yet.",
+    "bodyMarkdown": "## What happened\nAccording to a **rumour** from BrickTap, the long-speculated LEGO PlayStation set (numbered 72306) may now launch on 1 October 2026, earlier than a previously rumoured December date. The set is still said to carry a $159.99 price tag and 1,911 pieces.\n\nAlongside it, leaks point to a gift-with-purchase set numbered 40899 Astro Bot, tied to Team Asobi's acclaimed PlayStation platformer. No piece count, contents, or UK pricing have surfaced, and none of this has been confirmed by the LEGO Group.\n\nFor context, an earlier rumour linking a Mario arcade machine to the same wave has since been confirmed as the official 72051 Donkey Kong Arcade set, which may lend some weight to the PlayStation leak — though that's not confirmation in itself.\n\n## Why it matters\nA buildable PlayStation console would be a big deal for gaming crossover fans and display builders alike, and a bundled Astro Bot GWP could be a nice bonus for early buyers. UK collectors watching LEGO's gaming-themed lineup will want to keep an eye on this before making any purchase plans.\n\n## What to watch next\nAs the rumoured date approaches, expect either official confirmation from the LEGO Group or further leaked details on box art, pricing and GWP thresholds. Treat all figures here as unconfirmed until then.",
+    "category": "Rumours",
+    "tags": [
+      "lego-playstation",
+      "astro-bot",
+      "gift-with-purchase",
+      "rumour",
+      "2026-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "d20f3471-4a4f-53c3-8038-429433491827",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-playstation-astro-bot-gwp-rumoured-2026"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 62,
+    "riskNotes": "Entire story rests on an unconfirmed BrickTap leak reported via Brick Fanatics; verify release date, pricing and GWP details once LEGO Group issues official confirmation before treating as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-07-31T09:12:00Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/92ecf9fe-35cf-4927-a3ff-af26303ab078.png"
+    ]
+  },
+  {
     "id": "863afe09-2098-5b67-b1c3-a238214b3ca4",
     "title": "Best LEGO August 2026 sets under £200: Jaguar, Sandcrawler and Donkey Kong lead the pack",
     "summary": "Brick Fanatics has rounded up the standout LEGO releases landing in August 2026 for £100-£200, with an Icons supercar and a Star Wars vehicle leading the charge.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-07-26T13:44:13Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133296?53045"
-    ]
-  },
-  {
-    "id": "de43680c-1bf8-5931-a60c-b30dfcecb7fa",
-    "title": "Brickset's Weekly Chart: Sagrada Família Tops the Most-Viewed Sets",
-    "summary": "Brickset's weekly page-view chart shows the Sagrada Família leading the pack, with a surprise return for a huge Chima set and big jumps for the Millennium Falcon and Minas Tirith.",
-    "bodyMarkdown": "## What happened\nBrickset has published its regular \"What's hot this week\" chart, ranking sets by how many times their detail pages were viewed on the site. The Sagrada Família (21065) took the top spot with 7,517 views, just ahead of the enormous BIGBOX 'The ultimate battle for CHIMA' set (4407), which climbed into second place.\n\nElsewhere in the top ten, the UCS Millennium Falcon (75192) and The Lord of the Rings: Minas Tirith (11377) both jumped significantly compared with last week, landing at third and fourth respectively. Titanic (10294), The X-Files (21369), a Shrek-themed set (72423), the Star Trek Enterprise Bridge (11385), Tower Bridge (10214) and Donkey Kong Arcade (72051) rounded out the list.\n\nBrickset notes that overall traffic was up too, with 1,725,907 set detail pages viewed across the site this week — over 52,000 more than the previous week.\n\n## Why it matters\nThis kind of chart is a handy snapshot of what's capturing the community's attention right now, from architecture and licensed builds to big display pieces. For UK fans following display builds, Modular-style architecture sets and large-scale models, it's a useful pulse-check on what's trending before you commit shelf space or budget to your next build.\n\n## What to watch next\nIt'll be worth keeping an eye on whether the Chima BIGBOX set's rise reflects renewed interest in retro/rare large sets, and whether the Minas Tirith and Millennium Falcon jumps are tied to any wider news or restocks — nothing on that is confirmed yet, so treat any reasons behind the movement as speculation for now.",
-    "category": "Collectors",
-    "tags": [
-      "most-viewed-sets",
-      "brickset",
-      "weekly-chart",
-      "display-builds",
-      "collecting"
-    ],
-    "sourceLinks": [
-      {
-        "id": "dd132fc5-568a-555e-9137-026da7c6904e",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133468"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Verify current set names/numbers (e.g. 'BIGBOX' Chima set) as they appear unusually formatted in the source; confirm whether any of the featured sets have specific news tied to their view spikes before adding speculative context. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-26T03:40:03Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133468?16792"
     ]
   }
 ]
