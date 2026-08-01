@@ -1,5 +1,34 @@
 [
   {
+    "id": "f49e2d48-8757-52b8-988a-90a40f6343bd",
+    "title": "Free X-Files Lab Set Up For Grabs With New LEGO Ideas Release",
+    "summary": "Buy the newly launched 21369 The X-Files set from LEGO.com and you'll currently get the 221-piece 40896 Scully's Lab thrown in for free. Brickset's quick look rates it a nice extra, though not essential.",
+    "bodyMarkdown": "## What happened\nLEGO's big X-Files Ideas set, 21369, launched today, and for a limited time buyers ordering it directly from LEGO.com receive 40896 The X-Files: Scully's Lab as a gift with purchase (GWP). Brickset didn't have the large set to review but got hold of the GWP and gave it a quick look.\n\nThe 221-piece Scully's Lab sits on a 16x18 stud base and is described as densely detailed for its size. Highlights include storage cupboards and a worktop with a sink along the back wall, a small desk with a microscope, and an autopsy table taking centre stage. Brickset's verdict: it's a great companion piece to the main set, though not essential on its own.\n\n## Why it matters\nGWP sets like this are a nice bonus for fans buying big-ticket LEGO Ideas releases, but they're usually only available while stock lasts or for a limited promotional window. If you're planning to pick up 21369 The X-Files anyway, this is the kind of detail worth knowing about before the offer disappears.\n\n## What to watch next\nAs with most LEGO GWP promotions, availability tends to be time-limited or tied to stock levels, so anyone interested should check LEGO.com's current terms before ordering. Brickset's full review of the main 21369 set is also expected soon, which should give a clearer picture of the whole X-Files line-up.",
+    "category": "New Sets",
+    "tags": [
+      "lego-ideas",
+      "x-files",
+      "gift-with-purchase",
+      "lego-com",
+      "new-release"
+    ],
+    "sourceLinks": [
+      {
+        "id": "fa5246fe-3cb1-562d-9323-4712911b423b",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133609"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm the exact end date/terms of the GWP offer on LEGO.com, as promotional windows and stock-based availability can change quickly and weren't detailed in the source. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-01T08:30:19Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133609?34206"
+    ]
+  },
+  {
     "id": "e619fa79-775c-5c65-ac55-0ddb3abe2548",
     "title": "LEGO Pokémon Insiders reward 40911 Mini Pokémon Center back in stock",
     "summary": "The sought-after LEGO Pokémon Insiders Reward has returned for redemption, timed to coincide with a fresh wave of LEGO Pokémon sets landing this week.",
@@ -1416,35 +1445,6 @@
     "foundAt": "2026-07-27T14:52:29Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/133005?57139"
-    ]
-  },
-  {
-    "id": "a149955f-9c35-5a00-80fe-e99904483233",
-    "title": "Brickset rounds up its latest LEGO set reviews",
-    "summary": "Brickset has published a fresh batch of set reviews, covering everything from Technic supercars to a Donkey Kong arcade cabinet. Here's a quick rundown of what the reviewers made of each one.",
-    "bodyMarkdown": "## What happened\nBrickset has shared a summary of its most recent official set reviews. The line-up includes:\n\n- **77263 BMW M3 (E30)** – reviewers felt the model doesn't quite capture the car's shape, though it still offers a distinctive building experience.\n- **42232 Koenigsegg Sadair's Spear Megacar** – praised as the best Technic Ultimate Car release to date.\n- **72051 Donkey Kong Arcade** – described as a playable tribute to the classic arcade game in a compact cabinet form.\n- **43029 Olivia Rodrigo's Concert Moon** – a display piece capturing a moment from the GUTS World Tour.\n- **77081 KIT** – noted for combining play and display features with some unexpected detail.\n- **42699 Beach House with Seals** – reviewed as a tropical-themed build that lives up to its name.\n\nFull details and scores for each set are available via Brickset's individual reviews.\n\n## Why it matters\nSet reviews like these help builders and collectors decide where to spend their money, especially for pricier Technic and Icons releases. A strong shout-out for the Koenigsegg Technic set may be particularly useful for anyone eyeing up their next big build.\n\n## What to watch next\nKeep an eye on Brickset for full written reviews of each set, plus any follow-up video reviews that may offer more detail on build quality and play value.",
-    "category": "Collectors",
-    "tags": [
-      "lego-reviews",
-      "technic",
-      "icons",
-      "brickset",
-      "set-roundup"
-    ],
-    "sourceLinks": [
-      {
-        "id": "7d46f5c7-efd5-53fd-a029-5875a6c986e1",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133484"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "This is a roundup of existing reviews rather than new news; confirm set numbers and names match official LEGO product listings before publishing, and verify no pricing or release-date claims were added beyond what's stated. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-27T10:04:50Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133484?39880"
     ]
   }
 ]
