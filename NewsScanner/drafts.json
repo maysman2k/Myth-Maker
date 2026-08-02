@@ -1,5 +1,34 @@
 [
   {
+    "id": "31b81d52-25a1-54e0-86cc-6f710a7a0168",
+    "title": "Two new LEGO BrickHeadz sets confirmed for September",
+    "summary": "LEGO has officially revealed two new BrickHeadz packs — Golden Age Superman and Batman, and Gremlins' Gizmo and Stripe — both landing on 1 September.",
+    "bodyMarkdown": "## What happened\nLEGO has officially unveiled two new BrickHeadz sets set to release on 1 September. **40859 Golden Age Superman and Batman** (218 pieces) brings a retro-styled take on the classic DC duo, while **40919 Gremlins: Gizmo and Stripe Figures** (230 pieces) gives fans a chunky BrickHeadz version of the beloved 80s movie characters. Both sets are priced at £22.99 / $24.99 / €24.99 and follow a busy wave of August LEGO releases.\n\n## Why it matters\nBrickHeadz remain a popular, affordable way for collectors to add character-based builds to a shelf without the cost or space commitment of larger sets. New DC and pop-culture crossovers like Gremlins also show LEGO continuing to lean into nostalgic licensed themes, which tend to appeal strongly to adult collectors and display builders.\n\n## What to watch next\nKeep an eye out for official product images and full box art closer to the 1 September release date, along with potential regional pricing or availability differences.",
+    "category": "New Sets",
+    "tags": [
+      "brickheadz",
+      "lego-dc",
+      "gremlins",
+      "new-sets",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e0ab1544-9aca-520d-baa3-cc9733caf3e3",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133633"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm final UK pricing and exact release date once LEGO.com listings go live, as September launches can occasionally shift. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-02T03:37:13Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133633?16626"
+    ]
+  },
+  {
     "id": "a722f004-5d6c-5e70-bfd5-1c01a213ae8a",
     "title": "LEGO Pokémon SMART Play range launches with new figure line-up",
     "summary": "LEGO's Pokémon line has expanded beyond its 18+ sets with a fresh SMART Play range out today, bringing a wide cast of figures and a free gift-with-purchase offer.",
@@ -1415,35 +1444,6 @@
     "foundAt": "2026-07-28T14:28:07Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/256e5fd9-9132-4cef-8aee-3d942716f97d.png"
-    ]
-  },
-  {
-    "id": "837b5b10-81af-599f-b153-65a6f6164e2c",
-    "title": "LEGO's August 2026 line-up: five sets under £50 worth a look",
-    "summary": "Brick Fanatics has rounded up its picks for the best LEGO sets launching in August 2026 priced under £50, spanning Olivia Rodrigo, Minecraft and Pokémon themes.",
-    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, a wave of new LEGO sets is due to launch on 1 August 2026, with many flagship models priced above £150. Alongside these, the outlet has highlighted a handful of smaller, more affordable builds coming in under £50.\n\nHighlights from the list include:\n\n- **43029 Olivia Rodrigo's Concert Moon** – £44.99, 670 pieces, out 1 August 2026. Part of the LEGO Botanicals/Editions range, it includes an exclusive Olivia Rodrigo minifigure and converts into a standalone record player build.\n- **21591 The Twisted Warden Battle** – £44.99, 438 pieces, out 1 August 2026. A LEGO Minecraft Dungeons-themed set tied to the game's second instalment, featuring four exclusive minifigures and a poseable Twisted Warden figure.\n- **72158 Sprigatito, Fuecoco and Quaxly Battle** – £29.99, 313 pieces, out 1 August 2026. A LEGO Pokémon set covering the three starter creatures.\n\nBrick Fanatics notes this follows an earlier round-up of even cheaper LEGO sets (under £25) launching the same month.\n\n## Why it matters\nFor UK builders and collectors keeping an eye on their budgets, these picks give an early steer on which August 2026 releases might offer the best value without breaking the bank, useful if you're planning what to add to your collection or display shelf.\n\n## What to watch next\nKeep an eye out for official LEGO Group confirmation and UK store listings closer to the 1 August 2026 release date, as pricing and piece counts can sometimes shift before launch.",
-    "category": "New Sets",
-    "tags": [
-      "lego-2026",
-      "lego-minecraft",
-      "lego-pokemon",
-      "lego-under-50",
-      "new-lego-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "a36ffd63-f5aa-5d5b-aab5-8c60c1916307",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/the-best-lego-august-2026-sets-under-50"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Prices, piece counts and release date are as reported by Brick Fanatics and should be cross-checked against official LEGO.com listings closer to launch, as details for future sets can change before release. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-07-28T14:27:24Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/e972b04f-9d43-4617-863f-017edc6a157b.png"
     ]
   }
 ]
