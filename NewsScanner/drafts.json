@@ -1,5 +1,34 @@
 [
   {
+    "id": "ee4b5afa-0f63-53e4-a08f-e5d6a59b89fd",
+    "title": "Early Amazon UK discounts land on new August 2026 LEGO sets",
+    "summary": "Amazon UK has already knocked money off several LEGO sets that only launched days ago, covering Star Wars, Pokémon and One Piece themes.",
+    "bodyMarkdown": "## What happened\nAmazon UK has started discounting a handful of the roughly 70 new LEGO sets that launched worldwide earlier this month. According to Brick Fanatics, four sets are currently reduced:\n\n- **75461 Dr. Hiriluk's Hideout** (One Piece) – down 16%, from £24.99 to £20.99\n- **75455 Boba Fett** (Star Wars buildable figure) – down 10%, from £149.99 to £134.99\n- **72160 Arcanine** (Pokémon display set) – down 9%, now £81.99\n- **75454 Imperial Remnant AT-AT with INT-4** (Star Wars) – down from £139.99 to £128.99\n\nBrick Fanatics notes these are early markdowns rather than the deepest discounts these sets are likely to see over time, but each currently offers a better saving than the standard 5% return in LEGO Insiders points if bought direct from LEGO.com.\n\n## Why it matters\nFast discounts on freshly released sets are unusual, so this is worth a look for anyone building a Pokémon display shelf, adding to a Star Wars collection, or after the exclusive minifigures in the One Piece playset. For UK collectors watching prices closely, it's a reminder that Amazon UK sometimes beats official LEGO channels on price soon after launch.\n\n## What to watch next\nPrices on Amazon can change quickly, so check current pricing before buying. It's also worth keeping an eye out for bigger discounts later in the set's life cycle, as these early cuts may not be the best deals available long-term.",
+    "category": "Deals",
+    "tags": [
+      "lego-deals",
+      "amazon-uk",
+      "star-wars",
+      "pokemon",
+      "one-piece"
+    ],
+    "sourceLinks": [
+      {
+        "id": "293fbaae-52da-5677-bfb6-8e3f52c9ef51",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/four-early-lego-deals-brand-new-august-2026-sets"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Prices and discount percentages are time-sensitive and may have already changed since publication; verify current Amazon UK pricing before republishing figures. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-05T08:47:05Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/d34a6534-44b5-476f-b2ac-a56384bd16b5.jpg"
+    ]
+  },
+  {
     "id": "5a391e45-287d-5734-9fca-6b1f72087f78",
     "title": "LEGO Pokémon's Big New Wave Sparks Fan Customs and Reactions",
     "summary": "LEGO Pokémon's largest wave of sets yet has landed, and fans are already sharing quirky customs and reactions online, from feline-approved Rayquaza to a Bulbasaur/Lord of the Rings mash-up.",
@@ -1410,35 +1439,6 @@
     "foundAt": "2026-08-01T03:38:12Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/14e1500a-1ab3-49e7-825c-3f81716949c6.png"
-    ]
-  },
-  {
-    "id": "01221129-cf23-53b1-810d-3e87c609f205",
-    "title": "Huge LEGO Release Wave Lands for 1 August 2026 — Tower Bridge Leads the Charge",
-    "summary": "A bumper crop of new LEGO sets has arrived today, spanning Architecture, Art, Animal Crossing, Botanicals and more, headlined by a mammoth new take on London's Tower Bridge.",
-    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, 1 August 2026 is one of the biggest LEGO release days of the year, with dozens of new sets going on general sale across multiple themes. Highlights include 21067 Tower Bridge, a large 3,745-piece LEGO Architecture model of the London landmark that nods to the earlier 10214 Tower Bridge set, priced at £269.99. LEGO Art also gets a new 4,000-piece Gustav Klimt – The Kiss set at £269.99, while LEGO Animal Crossing adds 77059 Timmy & Tommy's Fun Day Out (513 pieces, £54.99). LEGO Botanicals brings several new arrangements, including an Olivia Rodrigo-themed flower bouquet.\n\nAlongside the new sets, a handful of limited gift-with-purchase promotions are running, including a Pokémon-themed Ditto as Squirtle set and an X-Files themed gift tied to specific purchases, both time-limited or while stocks last. Brick Fanatics also flags that 30729 Premier Ball appears listed as available but can't currently be added to baskets — likely a temporary site error rather than a stock issue.\n\nThe report notes the list also includes some sets that launched in June for most regions but are only becoming available today for US shoppers, so release timing can vary by market.\n\n## Why it matters\nFor UK fans, this is a big day to check pricing and availability across favourite themes, especially with a landmark British subject — Tower Bridge — getting a large-scale Architecture treatment. Collectors chasing gift-with-purchase exclusives will want to act within the stated promotional windows before they end or stock runs out.\n\n## What to watch next\nKeep an eye on whether the 30729 Premier Ball basket issue gets resolved, and watch for official pricing or availability confirmations directly from LEGO.com as the promotional gift-with-purchase windows progress.",
-    "category": "New Sets",
-    "tags": [
-      "lego-architecture",
-      "tower-bridge",
-      "new-sets",
-      "pokemon-lego",
-      "lego-art"
-    ],
-    "sourceLinks": [
-      {
-        "id": "31de84d7-0ce5-5569-bc4e-312d3407ae2b",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/every-new-lego-set-available-today-august-1-2026"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Verify current pricing, exact release dates by region, and whether the 30729 Premier Ball basket/availability issue has since been fixed before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-01T03:38:00Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/d5068c67-6e77-4357-bbc3-755d5b6b7047.png"
     ]
   }
 ]
