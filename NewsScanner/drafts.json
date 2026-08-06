@@ -1,5 +1,28 @@
 [
   {
+    "id": "b97d22d6-c1fc-53a1-8e9f-141de044d8e1",
+    "title": "LEGO reveals 40908 Restaurants of the World: Greece GWP set",
+    "summary": "LEGO has announced its third Restaurants of the World gift-with-purchase, a Greek taverna model, arriving for Insiders on 11 August.",
+    "bodyMarkdown": "## What happened\nLEGO has officially revealed 40908 Restaurants of the World: Greece as the third set in its Restaurants of the World gift-with-purchase series. The model is based on a traditional Greek taverna, giving it the sort of look you'd expect from a sunny island setting like Santorini.\n\nIt will be available to LEGO Insiders from 11 August. The spending threshold to qualify has been confirmed as €180 in Europe. Based on typical conversions, this would likely work out to around £160 in the UK or $180 in the US, though exact regional pricing hasn't been officially confirmed yet.\n\n## Why it matters\nGift-with-purchase sets like this are a nice little bonus for anyone already planning a LEGO haul, and the Restaurants of the World series has been building a following as a fun, low-cost way to add themed display models to a collection. For UK builders, the actual local threshold is worth keeping an eye on once it's officially confirmed.\n\n## What to watch next\nKeep watching for the official UK/US pricing thresholds once LEGO confirms them locally, along with box images and full set details closer to the 11 August release.",
+    "category": "Brick Culture",
+    "tags": [],
+    "sourceLinks": [
+      {
+        "id": "1f209066-c8aa-5235-9bb7-aa7076933bb6",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133740"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 72,
+    "riskNotes": "Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-06T03:22:06Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/133740?15717"
+    ]
+  },
+  {
     "id": "4f314f2c-5bdd-520c-bf87-247c3729bb2e",
     "title": "Rumour: two 3,000+ piece LEGO Architecture sets tipped for 2027",
     "summary": "Leaked set numbers suggest LEGO Architecture could follow its record-breaking Sagrada Família with two more large-scale builds in early 2027. Nothing is confirmed yet, and the source remains unproven.",
@@ -1411,35 +1434,6 @@
     "foundAt": "2026-08-01T19:20:35Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/02/43020-FIFA-World-Cup-Official-Trophy-featured-image.jpg"
-    ]
-  },
-  {
-    "id": "d4a420f8-c8fb-5b1c-861b-bff4732ed13e",
-    "title": "LEGO Mini Disney is gone, but the concept lives on in Harry Potter and Wednesday",
-    "summary": "LEGO Mini Disney sets may have stopped, but two newly revealed sets, Mini Hogwarts Castle and Nevermore Academy, show the small-scale-building-plus-minifigure format is still very much alive.",
-    "bodyMarkdown": "## What happened\nThe LEGO Group's official reveals of 40975 Mini Hogwarts Castle and 76788 Nevermore Academy have brought back a familiar format: a smaller-scale iconic building paired with a single minifigure. It's a style long associated with the now-quiet LEGO Mini Disney range, which hasn't had a new release since 2024.\n\n40975 Mini Hogwarts Castle contains 700 pieces and is priced at £39.99 / $39.99 / €39.99, matching the upper end of the old Mini Disney pricing. Its included minifigure isn't new to the LEGO Harry Potter range.\n\n76788 Nevermore Academy is bigger, at 890 pieces, and carries a higher price of £59.99 / $69.99 / €69.99. Notably, it includes the only minifigure released so far in the entire LEGO Wednesday theme, making it a must for completists.\n\n## Why it matters\nFor collectors and display builders, this confirms the \"mini landmark plus exclusive minifigure\" format isn't tied to Disney licensing alone. If you enjoyed the compact scale and shelf-friendly size of Mini Disney sets, these new Harry Potter and Wednesday releases offer a similar experience, and possibly a template for other themes going forward.\n\n## What to watch next\nIt's worth watching whether other LEGO licensed themes adopt this same mini-building format, and whether Mini Disney itself ever returns given its multi-year gap since the last release.",
-    "category": "New Sets",
-    "tags": [
-      "mini-disney",
-      "harry-potter",
-      "lego-wednesday",
-      "minifigures",
-      "display-builds"
-    ],
-    "sourceLinks": [
-      {
-        "id": "0828d022-2d0f-5ddc-8668-06ecb5c54ec9",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-mini-disney-lives-on-in-other-themes"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm exact piece counts and regional pricing for both sets, and verify the claim that Nevermore Academy's minifigure is the only one in the Wednesday theme before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-01T19:20:14Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/e106456d-b240-45d3-b0a9-b2fe8da12569.png"
     ]
   }
 ]
