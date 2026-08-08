@@ -1,5 +1,34 @@
 [
   {
+    "id": "caca057e-b2ef-51fd-88f1-dfa9229e3ea1",
+    "title": "Rumour: More LEGO Up-Scaled Minifigures on the way — but should they include a normal minifig too?",
+    "summary": "Fresh rumours point to up-scaled Homer Simpson, Captain Rex and Spider-Punk sets, reigniting calls for LEGO to bundle a regular minifigure alongside these display-focused giants.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, unconfirmed rumours suggest three new additions to LEGO's Up-Scaled Minifigure line: Homer Simpson, Captain Rex and Spider-Punk. This follows earlier rumoured sets 40875 Up-Scaled Mrs Claus and 75483 Up-Scaled Luke Skywalker Minifigure.\n\nNone of this has been confirmed by LEGO — it's all rumour for now, based on leaks reported by Brick Fanatics.\n\nThe article also raises a design point worth flagging to fans: back in 2023, 40649 Up-Scaled LEGO Minifigure included a normal-sized minifigure alongside the giant build, but that practice hasn't been repeated since. As the line-up shifts towards more niche characters — a display-only Mrs Claus, or a Spider-Punk previously only available in one Marvel set — fans are left wanting an accessible standard minifigure too, rather than just the oversized display piece.\n\n## Why it matters\nUp-Scaled Minifigures are popular display pieces for collectors, but when they're the only way to get a character in minifigure form, it limits accessibility for fans who just want the classic pocket-sized version to add to their collection or custom builds. Bundling a regular minifigure would boost value and appeal, especially for characters like Captain Rex or Spider-Punk that don't have easy standalone releases.\n\n## What to watch next\nKeep an eye out for official LEGO confirmation of these rumoured sets. If Homer Simpson, Captain Rex, or Spider-Punk up-scaled sets are announced, it's worth checking whether LEGO brings back the bonus standard minifigure — a detail that could make or break these sets for completists.",
+    "category": "Rumours",
+    "tags": [
+      "lego-rumours",
+      "up-scaled-minifigures",
+      "minifigure-collecting",
+      "star-wars-lego",
+      "marvel-lego"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e6f8f5e6-e3f0-5f60-becc-de6954deead8",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-needs-to-fix-scaled-minifigures"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "Entire premise rests on unverified rumours (Homer Simpson, Captain Rex, Spider-Punk up-scaled sets) with no official LEGO confirmation cited; set numbers 40875 and 75483 are also described as rumoured, not confirmed — editor should verify before treating any set as real or upcoming. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-08T02:06:01Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2023/05/40649_alt4-edited.webp"
+    ]
+  },
+  {
     "id": "3682b60a-7e38-5c48-8d59-a2d5fe16d051",
     "title": "Rumoured LEGO Lord of the Rings inn set could rival BrickLink's Sleepy Dragon Inn",
     "summary": "Whispers of a LEGO Lord of the Rings Prancing Pony set have surfaced, and it looks set to share shelf space in fans' hearts (if not their shelves) with the confirmed BrickLink Designer Program tavern build.",
@@ -1398,35 +1427,6 @@
     "foundAt": "2026-08-03T19:47:36Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/b4e1fa44-e652-4f2c-a60b-2a78bc9919aa.png"
-    ]
-  },
-  {
-    "id": "fb03d672-56c3-5970-ab73-137a42838976",
-    "title": "LEGO Pokémon x Pokémon GO event brings free in-game and in-store bonuses",
-    "summary": "To mark the launch of the new LEGO Pokémon range, an official Pokémon GO tie-in is offering free digital items and in-store extras, including a redeemable code for UK players.",
-    "bodyMarkdown": "## What happened\nLEGO and Pokémon GO have launched an official crossover event to celebrate the new wave of LEGO Pokémon sets, including the theme's first SMART Play builds. According to Brick Fanatics, players in the UK, US, Poland, France, Germany and Australia can pick up in-game LEGO-themed clothing for their trainer through timed research, plus a stamp rally rewarding an exclusive Pikachu illustration with a LEGO background. Gym raids tied to the event are limited to one per store per day.\n\nThere's also a free code, LEGOXPOKEMONGOXCAP, which unlocks a LEGO Pokémon cap for your in-game character. Participating LEGO Stores are offering a physical SMART Tag alongside the new sets, which include the 18+ 72168 Rayquaza model. The event and its in-game activities are confirmed to run until 30 September.\n\n## Why it matters\nThis is described as the biggest LEGO Pokémon launch day so far, and the Pokémon GO tie-in gives fans an easy, free way to join in even without buying a set. For UK collectors, it's also a nudge to check local LEGO Stores for physical event extras alongside the new lineup.\n\n## What to watch next\nWorth confirming with your local LEGO Store whether SMART Tags and gym raid slots are still available, and redeeming the cap code before the 30 September cut-off if you want it.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-pokemon",
-      "pokemon-go",
-      "smart-play",
-      "lego-store-event",
-      "collaboration"
-    ],
-    "sourceLinks": [
-      {
-        "id": "77735ad8-a39b-5179-b69b-2a086241487a",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/exclusive-free-lego-pokemon-go-bonuses-revealed"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm the LEGOXPOKEMONGOXCAP code is still valid and check that UK LEGO Stores are actually participating in the SMART Tag and gym raid elements before publishing store-specific claims. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-03T19:47:27Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/59a19f99-17c9-47b7-94cd-0a88189a3172.jpg"
     ]
   }
 ]
