@@ -1,5 +1,62 @@
 [
   {
+    "id": "5e1dcf12-4650-5471-b853-4f9e4338f7bf",
+    "title": "LEGO Pokémon gifts-with-purchase could sell out before deadline",
+    "summary": "Two LEGO Pokémon GWPs are officially due to end on 10 August, but with a similar offer already gone early, fans are being urged not to wait.",
+    "bodyMarkdown": "## What happened\nLEGO's current run of Pokémon gifts-with-purchase (GWPs) is thinning out fast. The 40896 The X-Files: Scully's Lab GWP has officially sold out early across the UK, US and Europe, ahead of its planned end date.\n\nTwo other Pokémon-related GWPs are still up for grabs, but their official offer window is also due to close on 10 August:\n\n- **40887 Ditto as Squirtle: Movie Night** – available worldwide (UK/US/EU) when spending £115 / $130 / €130 or more on Pokémon SMART play sets.\n- **40892 Kanto Region Badge Collection** – available in the US only, with the purchase of 72153 Venusaur, Charizard and Blastoise.\n\nLEGO GWP offers always run \"while stocks last,\" so an official end date doesn't guarantee availability right up until then.\n\n## Why it matters\nGWPs like these are a popular way for collectors to bulk out a Pokémon or wider LEGO collection without buying an extra set outright. Given how quickly the X-Files GWP vanished, and how sought-after the Kanto badge set was on its original release, there's a real chance both remaining offers could disappear before their scheduled cut-off.\n\n## What to watch next\nIf you're after either freebie, it's worth placing a qualifying order sooner rather than later. Stock levels aren't published, so once they're gone, they're gone — regardless of the official 10 August end date.",
+    "category": "Deals",
+    "tags": [
+      "lego-pokemon",
+      "gift-with-purchase",
+      "lego-deals",
+      "lego-collecting"
+    ],
+    "sourceLinks": [
+      {
+        "id": "509e37f1-f278-5086-a0ac-aeb5368854e2",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/last-chance-multiple-lego-pokemon-gifts-purchase"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm current stock status of both GWPs and the official end date hasn't changed since publication, as availability is fluid and region-specific. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-08T18:49:58Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/01/LEGO-Pokemon-40892-Kanto-Region-Badge-Collection-lifestyle-featured.jpg"
+    ]
+  },
+  {
+    "id": "f578422e-55b4-5ac3-a770-6051f792e4b9",
+    "title": "How big should a LEGO Lord of the Rings Helm's Deep be?",
+    "summary": "With rumours swirling of a new LEGO Lord of the Rings Helm's Deep, Brick Fanatics explores what piece count would do the iconic castle justice.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has taken a look at how large a potential new LEGO The Lord of the Rings Helm's Deep set could be, following **rumours** that LEGO may expand the theme with three new sets, including a Helm's Deep castle, possibly arriving in 2027 or 2028.\n\nThe only minifigure-scale Helm's Deep so far is the 2012 combo of 9474 The Battle of Helm's Deep and 9471 Uruk-Hai Army, totalling around 1,625 pieces — modest by today's standards. For comparison, recent flagship LEGO Lord of the Rings sets like 10316 Rivendell (around 6,000 pieces), 10333 Barad-dûr and 11377 Minas Tirith have set a much bigger benchmark.\n\nThe article points to fan-made concepts, including one from Playwell Bricks envisioning a Rivendell-scale Helm's Deep with a detailed interior and full-length wall, as an example of what an official set at that size could look like.\n\n**Note: any new Helm's Deep set, its size, and its release window are unconfirmed rumours at this stage.**\n\n## Why it matters\nHelm's Deep is one of the most iconic locations in Middle-earth, and fans have long wanted a set that matches the scale and detail of recent Lord of the Rings flagships. If the rumours prove true, this could be a major addition for castle builders, display collectors and Lord of the Rings fans alike.\n\n## What to watch next\nKeep an eye out for any official LEGO Lord of the Rings announcements confirming a Helm's Deep set, along with details on piece count, scale and release date.",
+    "category": "Rumours",
+    "tags": [
+      "lego-lord-of-the-rings",
+      "helms-deep",
+      "rumours",
+      "castle-builds",
+      "display-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "c1849504-db43-553c-ad28-0d3b4d88c612",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/how-big-should-lego-lord-of-the-rings-helm-s-deep"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 74,
+    "riskNotes": "The entire premise (new Helm's Deep set, 2027/2028 timing, three new sets) is rumour-based and unconfirmed by LEGO; verify no official announcement has since been made before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-08T18:49:47Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/a2ee7b68-bb6f-4f76-9ffe-5437a918c136.png"
+    ]
+  },
+  {
     "id": "412e6679-65d2-5372-b5c4-f4f333411615",
     "title": "Rumour: LEGO Technic 2027 line-up could include Mighty Machines Series 2",
     "summary": "Early, unconfirmed leaks point to a second wave of blind-boxed Technic collectibles and several new Monster Jam and space-themed sets for 2027 - all rumoured for now.",
@@ -1369,64 +1426,6 @@
     "foundAt": "2026-08-04T14:33:54Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/01/lego-education-ai-monorail-2.png"
-    ]
-  },
-  {
-    "id": "7d1abcb5-7e7c-53d4-8d23-45fe7cc5201e",
-    "title": "Rumour: LEGO Minecraft January 2027 wave said to include a jousting castle set",
-    "summary": "An unconfirmed leak points to seven new LEGO Minecraft sets landing in January 2027, headlined by a $69.99 castle joust set. Nothing is official yet.",
-    "bodyMarkdown": "## What happened\nAccording to a **rumour**, sourced by Brick Fanatics from Unibricks via leaker itsjustajoe, seven LEGO Minecraft sets are said to be releasing in January 2027. The list includes smaller mob-themed builds like 21599 The Forest Attack ($9.99) and 21601 The Baby Wolf House ($19.99), through to bigger sets such as 21603 The Mineshaft Cave Expedition ($29.99) and 21604 The Pig ($39.99).\n\nThe standout claim is 21606 The Castle Joust, rumoured at $69.99. LEGO Minecraft has featured castles before, but jousting would be a new build concept for the theme, tying into Minecraft's horseback spear mechanic. This follows an earlier leak about 30757 The Desert Attack Mini-Build, also tipped for 2027.\n\nPiece counts and exact release dates aren't known yet, and none of this has been confirmed by LEGO.\n\n## Why it matters\nLEGO Minecraft continues to expand with varied mob houses and biome builds, and a jousting castle would be a fresh angle for fans who enjoy castle and medieval-style builds within the theme. If accurate, it also gives UK collectors an early heads-up on 2027 wishlist planning and budgeting, especially with a range of price points from pocket-money sets to a flagship $69.99 model.\n\n## What to watch next\nWatch for official LEGO announcements or further leaks confirming set numbers, UK pricing, piece counts and release dates. As always, treat this list as speculative until LEGO confirms anything.",
-    "category": "Rumours",
-    "tags": [
-      "lego-minecraft",
-      "2027-sets",
-      "rumour",
-      "castle-build",
-      "new-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "5c8624bc-1b2c-5935-a1c1-ca99582b6d2f",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-minecraft-january-2027-sets-including-castle"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 62,
-    "riskNotes": "Entirely based on an unverified leak (Unibricks/itsjustajoe via Brick Fanatics); prices are in USD and unconfirmed, no official LEGO confirmation, piece counts and dates are TBC - verify before treating as factual. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-04T14:33:32Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/LEGO-Minecraft-logo-featured-resized.jpg"
-    ]
-  },
-  {
-    "id": "7f796460-864f-5f8d-ba9e-229c4ec36db3",
-    "title": "Leaked parts hint at LEGO's 2026 Halloween Build-a-Minifigure set",
-    "summary": "A LEGO certification listing has revealed part images for a rumoured 40945 BaM 2026 Halloween set, featuring zombies and a wolf-costume minifigure that look tailor-made for the upcoming 11383 Mayor Manor.",
-    "bodyMarkdown": "## What happened\nAn image from the LEGO Product Certification page has surfaced online, showing parts for something labelled **40945 BaM 2026 Halloween** — LEGO's shorthand for a Build-a-Minifigure part selection. The leaked artwork shows three spooky minifigures: two zombies dressed in formal uniforms, and a woman wearing a wolf costume (not a full werewolf). The wolf headpiece appears to reuse the accessory first seen in 2022's Series 23 Collectible Minifigures, now recoloured brown.\n\n**Rumour:** this listing hasn't been officially confirmed by the LEGO Group, and no release date has been announced. It's based on a certification document, which has previously proven a reliable early source for genuine upcoming products, but nothing is guaranteed until LEGO confirms it themselves.\n\nThe timing lines up neatly with 11383 Mayor Manor, LEGO's next big Halloween-themed set featuring ghostly minifigures, which is expected to kick off the brand's seasonal celebrations around September.\n\n## Why it matters\nIf accurate, these Build-a-Minifigure parts would be a brilliant match for Mayor Manor's spooky cast, giving fans and custom builders extra characters — zombie staff and a wolf-costumed figure — to populate their haunted displays. For collectors and customisers, early leaks like this help with planning purchases and custom builds ahead of official launches.\n\n## What to watch next\nKeep an eye out for official LEGO confirmation of 40945 BaM 2026 Halloween and a firm release date, likely to appear alongside the Mayor Manor launch in the coming weeks.",
-    "category": "Rumours",
-    "tags": [
-      "lego-halloween",
-      "build-a-minifigure",
-      "mayor-manor",
-      "leaked-parts",
-      "seasonal-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "5294000a-1251-5f99-90f1-c334fecbca70",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/first-look-at-lego-build-a-minifigure-halloween-2026-parts"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "This is based on a leaked certification image, not an official LEGO announcement — confirm set number, contents and release date once LEGO officially reveals it before treating any details as final. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-04T14:33:05Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/7c534b43-2c39-40c9-a20f-cf308bbd569c.png"
     ]
   }
 ]
