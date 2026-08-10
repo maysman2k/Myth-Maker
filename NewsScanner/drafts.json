@@ -1,5 +1,121 @@
 [
   {
+    "id": "3e4084ff-2b3b-58f9-b216-1b1a44a7f218",
+    "title": "Rumoured LEGO Star Wars x Marvel set '75481 Iron Falcon' isn't as far-fetched as it sounds",
+    "summary": "A rumoured LEGO Star Wars and Marvel crossover set, dubbed 75481 Iron Falcon, has some real-world precedent behind it - though it remains firmly unconfirmed for now.",
+    "bodyMarkdown": "## What happened\nA rumour is circulating about a LEGO set called **75481 Iron Falcon**, which is said to blend LEGO Star Wars and LEGO Marvel themes together. This is **not officially confirmed by LEGO** - it's a rumour only.\n\nWhile a Star Wars/Marvel LEGO mash-up sounds like a stretch, Brick Fanatics points out it isn't completely baseless. Marvel Comics has published Star Wars comics since 1977, right up to 2025, and Disney now owns both franchises outright. There's also a separate, unrelated rumour - reported by Bleeding Cool - about a **Star Wars Vs Avengers** comic project from writer Mark Millar, which adds a bit more context (though still no confirmation) to why crossover chatter is doing the rounds.\n\nWorth noting: 2027 marks LEGO Star Wars' 50th anniversary, with several new sets already listed for release, including 30749 Boba Fett's Starship and 75464 Anakin Skywalker's Jedi Starfighter. A milestone year like this would be a fitting moment for LEGO to try something unusual - if a crossover were ever to happen.\n\n## Why it matters\nA genuine LEGO Star Wars x Marvel set would be a huge deal for two of the brand's biggest licensed themes, and could shake up how fans think about crossover builds and MOCs. Even as a rumour, it's a fun one to watch given the timing around Star Wars' big anniversary year.\n\n## What to watch next\nKeep an eye out for any official LEGO announcements, and treat 75481 Iron Falcon as unconfirmed until LEGO or a reliable insider verifies it. The 2027 Star Wars 50th anniversary lineup is a good indicator of what LEGO has planned, official crossover or not.",
+    "category": "Rumours",
+    "tags": [
+      "lego-star-wars",
+      "lego-marvel",
+      "rumour",
+      "iron-falcon",
+      "2027-anniversary"
+    ],
+    "sourceLinks": [
+      {
+        "id": "c928ee53-72cf-5f80-97e3-ed850d8b0bea",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-star-wars-marvel-crossover-isn-t-unfounded"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "This entire story is rumour-based with no official LEGO confirmation - the set number, name and crossover premise should be flagged clearly as unverified, and the Mark Millar comic rumour is a separate, unrelated source that should not be conflated with LEGO's plans. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-10T19:07:46Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/bd4321fe-8216-46da-884c-a29f40a7af80.png"
+    ]
+  },
+  {
+    "id": "b6b0deb8-56a5-561a-86c5-9d2ca36a684a",
+    "title": "Rumoured LEGO Creator 3-in-1 2027 lineup hints at food-shaped sets, and new build guidelines could already be in play",
+    "summary": "A leaked list of 2027 Creator 3-in-1 sets includes a 'Cute Bento Box' model, and it might tie into new LEGO guidelines being developed for building food — first mentioned in relation to the upcoming LEGO Ideas Ramen set.",
+    "bodyMarkdown": "## What happened\n**Rumour:** A list said to show LEGO Creator 3-in-1 sets for 2027 has surfaced, listing eight sets due in January 2027, including 31396 Magical Mermaid, 31397 Cute Bento Box, 31398 Mecha Super Robot, 31399 Micro Cyber Spaceship, 31400 Cute Animals: Playful Bunny, 31401 Wild Animals: Tropical Macaw, 31404 Music Decor: Beautiful Pink Guitar, and 31411 Beautiful Butterflies with Tea. Prices range from around $12.99 to $39.99, though piece counts aren't yet known.\n\nThe name '31397 Cute Bento Box' has caught attention because buildable food is rare in LEGO sets outside of fictional or minifigure-scale pieces. This is being linked, as speculation, to comments from LEGO Ideas Design Manager Jordan Scott about the upcoming LEGO Ideas Ramen set (an 18+ release). Scott has said the team has had to create new guidelines for building food safely, partly to avoid any confusion with real food, especially for younger builders. It's worth stressing this quote refers specifically to the 18+ Ramen set, and any link to a general-audience 2027 Creator 3-in-1 set is currently just speculation.\n\n## Why it matters\nIf accurate, this would suggest LEGO is expanding food-themed builds beyond adult-focused sets and into more widely available ranges like Creator 3-in-1. For UK fans and collectors, that could mean a fresh wave of buildable food models worth watching for in early 2027, alongside the usual mix of animals, vehicles and decor pieces in the 3-in-1 line.\n\n## What to watch next\nKeep an eye out for official confirmation of the 2027 Creator 3-in-1 lineup, more details on the LEGO Ideas Ramen set's release, and any further comments from LEGO about food-building guidelines that might apply beyond 18+ sets.",
+    "category": "Rumours",
+    "tags": [
+      "lego-2027",
+      "creator-3-in-1",
+      "lego-ideas",
+      "rumours",
+      "food-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "666b73d1-f812-5f9f-9313-dd46d5e34168",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/new-lego-guidelines-may-be-in-practice-early-2027"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "The 2027 Creator 3-in-1 list is unconfirmed and should be verified against official LEGO announcements; the connection between the Bento Box set and new food-building guidelines (which were described in relation to the 18+ Ramen set) is speculative and not confirmed by LEGO. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-10T19:06:55Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2025/10/LEGO-Ideas-Ramen-featured-2.jpg"
+    ]
+  },
+  {
+    "id": "81bdb314-72d8-51ef-9c28-3569b8ec8246",
+    "title": "LEGO BrickLink Designer Program Series 6: second chance sale date confirmed",
+    "summary": "LEGO and BrickLink have confirmed a second-chance sale for leftover BrickLink Designer Program Series 6 sets, landing on 17 August but expected to sell out fast.",
+    "bodyMarkdown": "## What happened\nLEGO and BrickLink have confirmed via emails to select BrickLink users that a second-chance sale for BrickLink Designer Program (BDP) Series 6 sets will take place on 17 August at 5pm CET. This sale offers up leftover stock from cancelled or unfulfilled orders of the five Series 6 models. Which regions will be included hasn't been confirmed yet.\n\nThe five sets involved are 910054 The Art Factory, 910055 Gold Mine Expedition, 910056 Off-road Adventure, 910057 Outlaw Forest Den, and 910058 Sequoia Tree Trail. Of these, Outlaw Forest Den proved the most popular during original sales, so any remaining copies are expected to disappear almost instantly. The other sets sold in smaller numbers but remain highly sought after due to their limited-edition status.\n\nBased on how previous BDP second-chance sales have gone, stock levels for all five sets are likely to be very limited.\n\n## Why it matters\nThe BrickLink Designer Program gives fan designers a route to official-style limited releases, and second-chance sales are often the only remaining way for collectors to get hold of sold-out models. With demand historically outstripping supply, anyone hoping to add one of these sets to their collection will need to be online and ready right at 5pm CET on the day.\n\n## What to watch next\nKeep an eye out for confirmation of which regions will be included in the sale, plus exact stock numbers, which LEGO and BrickLink haven't yet detailed.",
+    "category": "Collectors",
+    "tags": [
+      "bricklink",
+      "designer-program",
+      "lego-collecting",
+      "limited-edition",
+      "bdp-series-6"
+    ],
+    "sourceLinks": [
+      {
+        "id": "a0c49298-4c52-5f45-bcca-d1f972f74a43",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/second-chance-lego-bricklink-series-6-coming-soon"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm final list of participating regions and exact stock levels once officially announced, as these were not confirmed at time of writing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-10T19:06:18Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2025/09/lego-bricklink-designer-program-series-6-final-designs-featured.jpg"
+    ]
+  },
+  {
+    "id": "a301d50c-b7c6-5075-889d-4a07c0fd76c4",
+    "title": "Rumour: LEGO 'Castle Claw Machine' set could follow Minifigure Vending Machine",
+    "summary": "Whispers suggest LEGO might be planning a Castle-themed claw machine set for 2027 or 2028 — but fans reckon it'll need seriously good prizes to win them over.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, a new LEGO rumour points to a set tentatively called 'Castle Claw Machine', said to be planned for release in 2027 or 2028. This is **unconfirmed and should be treated as a rumour** — there's no official word from the LEGO Group on this yet.\n\nThe idea follows on from 21358 Minifigure Vending Machine, a real, currently available LEGO set built around a similar novelty concept, which includes exclusive minifigures from two new factions with fresh prints. The rumoured Claw Machine set would apparently work along the same lines, but themed around Castle — one of LEGO's most beloved classic lines, which has mostly seen new full sets through the BrickLink Designer Program rather than mainstream retail in recent years.\n\nIf the rumour holds true, fans are speculating (again, unconfirmed) that the set could include Castle-style minifigures, miniature models, horses, or even new factions as \"prizes\" inside the claw machine gimmick — mirroring what made the Vending Machine set appealing.\n\n## Why it matters\nCastle is a genuinely beloved theme for a lot of AFOLs and collectors, and full retail sets in this style are rare treats. A novelty claw machine build could be a fun, giftable way to bring fresh Castle minifigures and Easter eggs to shelves without committing to a full Designer Program release — but only if the \"prizes\" inside are strong enough to justify the hype.\n\n## What to watch next\nKeep an eye on Brick Fanatics and other LEGO rumour trackers for further leaks or official confirmation. Until LEGO themselves announce anything, treat the name, contents, and release window as speculative.",
+    "category": "Rumours",
+    "tags": [
+      "lego-castle",
+      "claw-machine-rumour",
+      "lego-rumours",
+      "minifigure-vending-machine",
+      "2027-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "5d01eb5c-1e17-5e82-9330-b374e9a18095",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/rumoured-lego-castle-claw-machine-needs-prizes"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 62,
+    "riskNotes": "Entire story is based on an unverified rumour from Brick Fanatics with no LEGO Group confirmation; verify set name, theme, and release window before treating as fact. Also confirm 21358 Minifigure Vending Machine details (faction/minifigure count) are accurately represented. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-10T19:06:08Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2025/05/LEGO-Ideas-21358-minifigure-vending-machine-minifigures-lifestyle-featured.jpg"
+    ]
+  },
+  {
     "id": "e6ef8e3b-24fe-5100-b039-9225f39282bc",
     "title": "Early Amazon UK discounts land on new August 2026 LEGO sets",
     "summary": "Amazon UK has cut prices on several brand-new August 2026 LEGO sets just days after launch, including Tower Bridge, Technic's Ducati, Pokémon display models and Olivia Rodrigo-themed builds.",
@@ -1317,122 +1433,6 @@
     "foundAt": "2026-08-06T14:29:52Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/ab645328-abc8-4f3f-a78f-b412112a7d17.png"
-    ]
-  },
-  {
-    "id": "3917d771-3bac-557c-9e0a-c3f7ee125687",
-    "title": "LEGO Ministry of Magic set sparks stability worries among Harry Potter fans",
-    "summary": "The newly revealed 76476 Ministry of Magic Collectors' Edition has fans buzzing - not about its £389.99 price tag, but about whether its tall, narrow design will stay upright on a shelf.",
-    "bodyMarkdown": "## What happened\nLEGO has officially unveiled 76476 The Ministry of Magic Collectors' Edition, a 3,491-piece set recreating the underground HQ of the wizarding government across three levels. It stands 51cm tall and 35cm wide, but is only 15cm deep - notably slimmer than other tall display sets like the Death Star, which has a full-footprint base for support.\n\nThe set's open-base design, built to show off the Hall of Prophecy, collapsing shelves and the Veil, has led some fans online to worry the model could be top-heavy and prone to tipping over when displayed. This concern is being discussed by fans and commentators - it hasn't been confirmed as an actual defect, and LEGO hasn't issued any statement on stability.\n\nIt's worth noting the set is aimed at 18+ builders and, as with any large display model, is likely to have internal reinforcement to support its height - though this can't be judged until people have it built at home.\n\n## Why it matters\nBig, tall display sets are a growing part of the LEGO lineup, and stability is a real practical concern for collectors who want to show these builds off safely on shelves. If this becomes a genuine issue, it could affect buying decisions for fans investing nearly £390 in a display piece.\n\n## What to watch next\nKeep an eye out for hands-on reviews once 76476 The Ministry of Magic Collectors' Edition is available, as these should reveal whether the internal structure holds up as well as fans hope.",
-    "category": "New Sets",
-    "tags": [
-      "lego-harry-potter",
-      "ministry-of-magic",
-      "display-builds",
-      "collectors-sets",
-      "set-stability"
-    ],
-    "sourceLinks": [
-      {
-        "id": "88166589-3a5b-53e7-989d-9c82dfd05880",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-harry-potter-concern-ministry-of-magic"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "The stability worry itself is fan speculation/rumour, not a confirmed flaw - this should be clearly framed as fan concern rather than fact; confirm official set details (price, piece count, dimensions) against LEGO's own listing before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-06T14:29:36Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/bf-derivatives/webp/839317465cdb008c123165483eaad23ee5cff18d45274ad80bac02a63cc1bcc1.webp"
-    ]
-  },
-  {
-    "id": "d2d6b20c-698e-5089-9072-815de80d1048",
-    "title": "Fan MOC Turns Four LEGO Haunted Mansion Sets Into a Spooky Castle",
-    "summary": "A Rebrickable designer has created a Halloween-themed alternative to the retired 10305 Lion Knights' Castle, and an Amazon UK discount makes it easier to build.",
-    "bodyMarkdown": "## What happened\nA fan designer known as re-bricked has published a custom build called Monster Knights Haunted Castle on Rebrickable. The MOC uses four copies of LEGO 31167 Haunted Mansion to create a roughly 2,600-piece castle, complete with a central tower, castle walls, a ramp entrance and a spooky interior.\n\nIt's inspired by 10305 Lion Knights' Castle, the 4,514-piece set released for LEGO's 90th anniversary in 2022, which retired in late 2025 and remains hugely popular with display builders.\n\nAmazon UK currently has 31167 Haunted Mansion reduced by 19%, bringing each copy down to £64.99. Buying four sets works out at around £260, plus a £9.99 fee for the Rebrickable instructions.\n\n## Why it matters\nWith Lion Knights' Castle retired and increasingly hard to find, this MOC gives fans a way to build a similarly grand medieval display piece from sets that are still readily available. The current Amazon UK discount also makes the project notably more affordable than buying four full-price Haunted Mansion sets.\n\n## What to watch next\nDeal pricing can change quickly, so check current Amazon UK stock and price before committing. It's also worth confirming piece count and build details directly via the Rebrickable listing, since fan instructions can be updated over time.",
-    "category": "Display Builds",
-    "tags": [
-      "lego-moc",
-      "haunted-mansion",
-      "rebrickable",
-      "amazon-deal",
-      "castle-display"
-    ],
-    "sourceLinks": [
-      {
-        "id": "d657755f-52e4-5cc7-8849-6e72ad924074",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-legendary-castle-back-from-the-dead-amazon-uk"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm the Amazon UK discount is still live and check the exact current price, as retailer deals change frequently; also verify the MOC's piece count and designer credit via the Rebrickable page. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-06T14:29:00Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/527e4fd7-3045-4bcb-8a5a-1183e14fbe1b.png"
-    ]
-  },
-  {
-    "id": "7d784768-d728-554d-a2df-db468975171f",
-    "title": "Brickset Reviews LEGO Icons 11370 Stranger Things: The Creel House",
-    "summary": "Brickset has published a review of 11370 Stranger Things: The Creel House, a new LEGO Icons set tied to the show's fifth and final season, featuring a transformation function.",
-    "bodyMarkdown": "## What happened\nBrickset has posted a review of LEGO Icons set 11370, Stranger Things: The Creel House. The set depicts the home of Henry Creel, later revealed as the villain Vecna, and ties into scenes from the fifth and final season of the Netflix series. According to the review, the model includes a transformation feature, following in the footsteps of 2019's fan-favourite 75810 The Upside Down set.\n\nThe review itself is marked as sponsored content on Brickset, and full details on price, piece count, and release date weren't included in the material we've seen, so those specifics should be checked before being reported as confirmed.\n\n## Why it matters\nStranger Things has been one of LEGO's most successful licensed partnerships, and this set marks the finale of the show's story in brick form. For collectors and fans of licensed LEGO Icons builds, a set built around the series' final season and its central villain is likely to be a notable addition to display shelves, especially with a built-in transformation gimmick adding play and display value.\n\n## What to watch next\nKeep an eye out for official LEGO.com confirmation of pricing, part count, and availability, as well as further details on how the transformation function works in practice.",
-    "category": "New Sets",
-    "tags": [
-      "lego-icons",
-      "stranger-things",
-      "set-review",
-      "brickset",
-      "licensed-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "a796d5f3-679b-5dfe-bcc7-37ef253e8677",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/126503"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm official set price, piece count, and release date directly from LEGO.com or Brickset's full review before publishing, as these weren't included in the excerpt; also note the Brickset review is labelled 'Sponsored'. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-06T14:28:44Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/126503?55710"
-    ]
-  },
-  {
-    "id": "75b61cb3-6cf3-528b-93ac-bbebf0ef086d",
-    "title": "LEGO Star Wars 2027: rumoured piece counts and age ratings surface online",
-    "summary": "A fresh wave of unconfirmed leaks fills in piece counts, ages and prices for next year's rumoured LEGO Star Wars wave — including a huge Death Star II Midiscale and a big Ewok Village.",
-    "bodyMarkdown": "## What happened\nA detailed table of alleged LEGO Star Wars 2027 sets has been doing the rounds online, reportedly sourced from leaker buggyleaks and shared by Redditor itsjustajoe. This is **unconfirmed rumour**, not an official LEGO reveal, but it adds extra detail — piece counts, age ratings and price points — to product numbers that had already leaked previously.\n\nHighlights from the leaked list include:\n\n- **75469 Star Wars Movie Theatre** – rumoured 18+, 1,628 pieces, $199.99\n- **75474 Master Yoda** – rumoured 1,200 pieces, $149.99\n- **75483 Up-Scaled Luke Skywalker Minifigure** – rumoured 981 pieces, $99.99\n- **75465 Death Star II Midiscale** – rumoured June 2027 release, price and piece count still TBC\n- **Ewok Village** – rumoured $179.99, piece count TBC\n- A batch of small microfighter and starfighter sets aimed at younger builders (ages 5+ to 9+)\n- Several new **SMART Play** interactive sets (e.g. Ewok Attack, Boba Fett's Starship, R2-D2, Battle of Hoth), continuing LEGO's push into app-connected building\n\nMany entries still show \"TBC\" for price, pieces or exact date, so treat the specifics as a snapshot of a leak in progress rather than a finished line-up.\n\n## Why it matters\nIf accurate, 2027 looks set to bring a real mix for LEGO Star Wars fans — from pocket-money microfighters to serious display pieces like the Movie Theatre and Up-Scaled Luke Skywalker figure. For UK collectors and display builders, the rumoured big-ticket sets are worth watching early, as high piece-count 18+ sets often become popular MOC donor sets and shelf centrepieces.\n\n## What to watch next\nAs with all pre-announcement leaks, expect prices, piece counts and even set names to shift before any official LEGO reveal. We'll update coverage once LEGO Group confirms anything officially.",
-    "category": "Rumours",
-    "tags": [
-      "lego-star-wars",
-      "2027-sets",
-      "rumour",
-      "leaked-sets",
-      "smart-play"
-    ],
-    "sourceLinks": [
-      {
-        "id": "6e1c713e-24e6-56c0-b180-c244eb85eff0",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-star-wars-2027-rumour-updates-piece-counts"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "All details are sourced from an unverified leak (buggyleaks via Reddit); prices are listed in USD and many fields are marked TBC, so figures, names and dates should be treated as provisional pending official LEGO confirmation. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-06T08:48:50Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2025/04/LEGO-Star-Wars-75407-Brick-Built-Star-Wars-Logo-featured-image.png"
     ]
   }
 ]
