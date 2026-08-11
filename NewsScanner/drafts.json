@@ -1,5 +1,34 @@
 [
   {
+    "id": "725ebc82-81e0-5814-a232-fd0bec9af935",
+    "title": "BrickLink Designer Program Series 6 excess stock going on sale next week",
+    "summary": "BrickLink is set to release leftover stock from Designer Program Series 6, giving fans who missed out another shot at these limited sets.",
+    "bodyMarkdown": "## What happened\nAccording to Brickset, BrickLink is preparing to sell excess stock from its Designer Program Series 6 range next week. This follows a similar pattern to previous releases, with Series 3 and 4 excess stock sold in January and Series 5 leftovers offered in April.\n\nAs with those earlier sales, quantities will reportedly be very limited per region, so demand is expected to be high and stock may sell out quickly. One of the Series 6 sets highlighted is The Art Factory (910054-1).\n\n## Why it matters\nThe BrickLink Designer Program lets AFOL (Adult Fans of LEGO) designers get their fan-made creations produced as official sets, but original print runs are often small and sell out fast. These excess stock drops are one of the few extra chances for collectors to pick up sets they missed the first time round, making this good news for anyone building a complete Designer Program collection.\n\n## What to watch next\nKeep an eye on official BrickLink channels for exact release timing and regional availability, as previous drops have required quick action due to limited inventory.",
+    "category": "Collectors",
+    "tags": [
+      "bricklink-designer-program",
+      "series-6",
+      "excess-stock",
+      "lego-collectors",
+      "limited-availability"
+    ],
+    "sourceLinks": [
+      {
+        "id": "a8259787-afa6-57fb-854e-0abc4c6cf4be",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/133867"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 68,
+    "riskNotes": "Confirm exact release date/time and regional stock limits once BrickLink's official announcement is published, and verify which specific Series 6 sets are included beyond The Art Factory. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-11T02:13:02Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/set/910054-1"
+    ]
+  },
+  {
     "id": "3e4084ff-2b3b-58f9-b216-1b1a44a7f218",
     "title": "Rumoured LEGO Star Wars x Marvel set '75481 Iron Falcon' isn't as far-fetched as it sounds",
     "summary": "A rumoured LEGO Star Wars and Marvel crossover set, dubbed 75481 Iron Falcon, has some real-world precedent behind it - though it remains firmly unconfirmed for now.",
@@ -1404,35 +1433,6 @@
     "foundAt": "2026-08-06T14:30:06Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/c856ca0b-0e1d-4247-a206-839105f67720.png"
-    ]
-  },
-  {
-    "id": "cde43e8d-c3d4-5a95-998f-d3446f0f3bbc",
-    "title": "LEGO Harry Potter's new Ministry of Magic set sparks minifigure design gripes",
-    "summary": "Fans have spotted that 76476 The Ministry of Magic Collectors' Edition gives Albus Dumbledore the wrong hair and beard pieces, fuelling comparisons to recent LEGO Star Wars cost-cutting criticism.",
-    "bodyMarkdown": "## What happened\nLEGO Harry Potter's newly revealed 76476 The Ministry of Magic Collectors' Edition has landed with some standout minifigures — new takes on Mad-Eye Moody and Dolores Umbridge are getting praise — but fans have quickly zeroed in on one big miss: Albus Dumbledore.\n\nThe set is based on Order of the Phoenix, where Dumbledore is played by Michael Gambon. LEGO has previously used a distinct hair, beard and hat combo for Gambon's Dumbledore in 2018's Harry Potter Collectible Minifigures and 2019's 75948 Hogwarts Clock Tower. But the new Ministry of Magic minifigure instead uses the hair and beard pieces associated with Richard Harris's earlier portrayal of the character — a mismatch that's caught the community's attention.\n\nThe comparison being drawn is with 75418 Death Star, last year's flagship LEGO Star Wars set, which copped criticism for its £899.99 price tag not being matched by its minifigure lineup, including missing the best version of C-3PO.\n\n## Why it matters\nMinifigure accuracy is a big deal for licensed themes like Harry Potter, where fans expect character likenesses to match specific film appearances. If cost-saving choices are creeping from LEGO Star Wars into other big licensed lines, it could shape expectations — and buying decisions — for upcoming premium sets across the board.\n\n## What to watch next\nIt's worth keeping an eye on whether LEGO addresses the Dumbledore mismatch in future Harry Potter releases, and whether other big-ticket sets show similar corner-cutting on minifigure detail.",
-    "category": "New Sets",
-    "tags": [
-      "lego-harry-potter",
-      "ministry-of-magic",
-      "minifigures",
-      "dumbledore",
-      "lego-star-wars"
-    ],
-    "sourceLinks": [
-      {
-        "id": "40d15219-2fba-5f1a-999c-ac317320c038",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-star-wars-cost-cutting-hits-harry-potter"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 63,
-    "riskNotes": "Confirm official UK/US pricing and full minifigure lineup for 76476 directly from LEGO before publishing, and verify the Dumbledore piece mismatch with additional images if possible. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-06T14:29:52Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/ab645328-abc8-4f3f-a78f-b412112a7d17.png"
     ]
   }
 ]
