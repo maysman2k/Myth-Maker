@@ -1,5 +1,34 @@
 [
   {
+    "id": "f807cd73-5bbb-5b67-a442-ed7426a46603",
+    "title": "Spyro the Dragon reaches 10,000 supporters in LEGO Ideas review",
+    "summary": "A Spyro the Dragon & Sparx submission and a Florar Ballet Box have both hit 10,000 supporters, joining the LEGO Ideas second 2026 review as entries 76 and 77.",
+    "bodyMarkdown": "## What happened\nTwo new projects have crossed the 10,000-supporter threshold on LEGO Ideas, earning them a place in the platform's second 2026 review.\n\nFirst over the line was the Florar Ballet Box by Lovia — a compact, elegant display piece with a hidden ballet figure inside. It's currently a static build, though a spinning mechanism wouldn't be a surprise if it were ever picked up officially.\n\nRight behind it came Spyro the Dragon & Sparx by Fabrick_89, based on the classic 1998 PlayStation character. The 2,540-piece submission includes buildable figures of both Spyro and Sparx on a display stand, with Spyro posed mid-glide using single-piece wings.\n\nThese join as submissions 76 and 77 in the second 2026 review, with the qualifying deadline of 7 September fast approaching. It's worth remembering that reaching 10,000 supporters only guarantees a review — not a guaranteed release as an official set.\n\n## Why it matters\nSpyro remains a beloved character with a new game due next year, so a LEGO version would likely draw strong interest from both LEGO fans and retro gamers. This also shows the LEGO Ideas review pipeline is filling up quickly, giving fans plenty to watch as the deadline nears.\n\n## What to watch next\nExpect more submissions to reach 10,000 supporters before the 7 September cut-off. LEGO Ideas fans should keep an eye on which projects the LEGO Group eventually shortlists for a possible official release.",
+    "category": "Ideas",
+    "tags": [
+      "lego-ideas",
+      "spyro",
+      "fan-designs",
+      "2026-review",
+      "video-game-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "7650de5e-0ea2-58f2-aff1-8eb2b22844a3",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/spyro-swoops-into-lego-ideas-second-2026-review"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 82,
+    "riskNotes": "Confirm the current supporter count and full list of the 77 submissions is accurate at publication, and verify no official LEGO Group statement exists yet regarding review outcomes. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-15T18:39:18Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/0146eeb6-7f79-4a1e-bfcb-e0f6ae8f50f0.png"
+    ]
+  },
+  {
     "id": "8ee02250-7ac2-54a3-8118-927bcda70e04",
     "title": "LEGO Marvel Sentinel spotted in new Avengers: Doomsday trailer",
     "summary": "A fresh Avengers: Doomsday trailer has given fans their first on-screen look at the towering Sentinel featured in the upcoming LEGO set 76348 Epic Battle: Avengers: Doomsday.",
@@ -1414,35 +1443,6 @@
     "foundAt": "2026-08-11T13:22:12Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/d5068c67-6e77-4357-bbc3-755d5b6b7047.png"
-    ]
-  },
-  {
-    "id": "676e0ff4-8938-527e-85b4-7fd75776efaa",
-    "title": "LEGO Insiders Day: today's shopping offers explained",
-    "summary": "LEGO.com's Insiders Day event is live now, with a free GWP set, bonus points and double points on select One Piece sets.",
-    "bodyMarkdown": "## What happened\nLEGO Insiders Day shopping offers have gone live on LEGO.com, according to Brickset. The deals include:\n\n- **40908 Restaurants of the World: Greece** free with orders over $180/£160/€160\n- An extra 500 Insiders points on your first order\n- Double points on selected One Piece sets\n- **30729 Premier Ball** free with orders over $40/£35/€40\n\nThese are official LEGO.com promotions and are live now, though as with all gift-with-purchase offers they'll run for a limited time and stock of the free sets isn't unlimited.\n\n## Why it matters\nInsiders Day events are a handy way to bag a free set or extra points without hunting for a separate promo code, so it's worth checking your basket before checking out if you're already planning a LEGO order today. The One Piece double points offer is also a nice bonus for fans building out that theme.\n\n## What to watch next\nKeep an eye on LEGO.com for how long the offers last and whether stock of the free 40908 and 30729 sets runs out before the day ends.",
-    "category": "Deals",
-    "tags": [
-      "lego-insiders",
-      "gift-with-purchase",
-      "lego-com-offers",
-      "one-piece",
-      "promotions"
-    ],
-    "sourceLinks": [
-      {
-        "id": "f082b9e3-65cb-5574-b98f-bcb89f549295",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133875"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Verify exact end time/date of the Insiders Day event and confirm current stock availability of the two GWP sets, as these details weren't specified in the source. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-11T13:22:02Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/set/40908-1"
     ]
   }
 ]
