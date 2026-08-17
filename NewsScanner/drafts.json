@@ -1,5 +1,34 @@
 [
   {
+    "id": "9bcdc5f4-52b1-5490-8205-a6452814d79a",
+    "title": "LEGO Pokémon Pikachu set hits lowest-ever Amazon UK price",
+    "summary": "The 2,050-piece LEGO Pokémon 72152 Pikachu and Poké Ball has dropped to £130.20 in a limited-time Amazon UK lightning deal, its cheapest price yet.",
+    "bodyMarkdown": "## What happened\nAmazon UK is running a lightning deal on LEGO Pokémon set 72152 Pikachu and Poké Ball, cutting the price to £130.20 — a 28% saving on the usual £179.99 asking price. According to Brick Fanatics, this is the lowest the 18+, 2,050-piece set has ever been priced at Amazon UK.\n\nThe deal is limited by time and stock: it's due to end on 29 August 2026, or sooner if all discounted units are claimed first, with a live stock indicator shown on the product page.\n\n72152 is one of three LEGO Pokémon sets aimed at adult builders that launched back in February, recreating Pikachu bursting dramatically out of a Poké Ball.\n\n## Why it matters\nDeals like this matter for UK collectors and display builders because large-scale licensed sets rarely see steep discounts, especially so soon after launch. A near-£50 saving makes a striking centrepiece build far more accessible, and lightning deals tend to sell out or revert to full price quickly.\n\n## What to watch next\nKeep an eye on the Amazon UK stock indicator if you're tempted — once the allotted discounted units are gone, or the deal window closes on 29 August, pricing is likely to return closer to full RRP.",
+    "category": "Deals",
+    "tags": [
+      "lego-pokemon",
+      "pikachu",
+      "amazon-deals",
+      "lego-sets",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "461917e0-74e3-5796-beed-ac500c0bc81b",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-pokemon-lightning-deal-best-price-on-pikachu"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm the deal is still live and the price/stock percentage before publishing, as lightning deals can end or sell out at any time; also verify the £130.20 price and 29 August end date haven't changed. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-17T12:57:45Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/01/LEGO-Pokemon-72152-Pikachu-and-Poke-Ball-featured.jpg"
+    ]
+  },
+  {
     "id": "5fb61f2b-65cf-57ef-9808-41455fb1888f",
     "title": "Rumour: LEGO SMART Play could get a small 81-piece 'All-in-one Activator' in 2027",
     "summary": "An unconfirmed leak points to a new low-piece-count SMART Play All-in-one set, numbered 72118, said to arrive next April. Take it as a rumour for now.",
@@ -1415,35 +1444,6 @@
     "foundAt": "2026-08-12T13:26:31Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/1604106e-c1ca-43ab-b40c-77feb8858a21.png"
-    ]
-  },
-  {
-    "id": "e3c5de25-fab3-5783-90ca-6ce4be6fa0f9",
-    "title": "Rumour: First LEGO Dragon Ball 2027 set list leaks online",
-    "summary": "An early, unconfirmed list of nine LEGO Dragon Ball sets has surfaced, pointing to a full theme launch in April 2027 alongside the already-rumoured LEGO Icons Shenron set.",
-    "bodyMarkdown": "## What happened\nA leaked list, reportedly compiled by BrickTap, claims to show nine upcoming LEGO Dragon Ball sets due in April 2027. The list includes seven standard sets, one 18+ build (72366 Kame House), and a polybag (30755). Names mentioned include Goku vs Raditz, Arrival on Namek, Z Fighters vs Saiyans, Porunga and the Final Battle, Frieza's Spaceship, and a Buildable Vegeta figure. No prices, piece counts, or exact release dates have been shared.\n\nThis follows earlier **rumours** of an 11390 Shenron LEGO Icons set expected in November, which many took as an early sign of a wider Dragon Ball theme launch.\n\n**This is all rumour at this stage** — LEGO has not confirmed a Dragon Ball theme, these set numbers, or an April 2027 launch window.\n\n## Why it matters\nIf accurate, this would mark LEGO's first proper venture into Dragon Ball, following recent moves into anime-adjacent territory with LEGO One Piece. For UK collectors and stadium/display builders who enjoy character-driven models, a minifigure-anchored Dragon Ball line could bring fresh scale-building and diorama opportunities — plus another licence for compatible brick brands to potentially riff on down the line.\n\n## What to watch next\nKeep an eye out for official LEGO announcements or further leaks confirming set numbers, pricing, and the rumoured Shenron Icons set, which may be the first solid indicator of whether this theme is really coming.",
-    "category": "Rumours",
-    "tags": [
-      "lego-dragon-ball",
-      "2027-sets",
-      "leaked-sets",
-      "lego-icons",
-      "anime-lego"
-    ],
-    "sourceLinks": [
-      {
-        "id": "5b17b229-5002-507f-a689-08d404c1ec01",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/first-list-of-rumoured-lego-dragon-ball-2027-sets"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "Entirely based on an unverified third-party leak (BrickTap) with no official LEGO confirmation of the theme, set numbers, or launch date — editors should flag as speculative and watch for official confirmation before treating as set news. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-12T13:26:20Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/17af38a7-724b-417b-ad28-c249266fe7f6.jpg"
     ]
   }
 ]
