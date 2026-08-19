@@ -1,5 +1,34 @@
 [
   {
+    "id": "3cf49711-2a2f-5215-bc6f-0e6d82d7b0b1",
+    "title": "LEGO Jurassic World Mosasaurus set sees first ever discount",
+    "summary": "The new 77983 Mosasaurus Dinosaur Boat Attack set, notable for its first moulded Mosasaurus figure, has dropped to £77.65 on Amazon UK — its lowest price since launch.",
+    "bodyMarkdown": "## What happened\nJust two weeks after release, LEGO Jurassic World's 77983 Mosasaurus Dinosaur Boat Attack has appeared on Amazon UK for £77.65, down from its £89.99 RRP. This is reportedly the first discount the set has seen since launching in August 2026.\n\nThe 703-piece set includes a boat, helicopter, submersible drone, and three minifigures (Zora Bennett, Dr. Henry Loomis and Duncan Kincaid, the latter with an exclusive torso print). The headline feature is a new moulded Mosasaurus figure with a specialised body, mouth and flipper mould, moving parts, and studs on top for customisation — a first for the sea creature, which had previously only appeared as a brick-built model.\n\n## Why it matters\nMoulded dinosaur figures tend to be popular with LEGO Jurassic World collectors, and this is the first time the Mosasaurus has had this treatment. A discount this soon after release will interest anyone who held off buying at full price, and it's a useful data point for tracking how quickly new Jurassic World sets tend to see price drops.\n\n## What to watch next\nWorth keeping an eye on whether other retailers match or beat this Amazon UK price, and whether further discounts follow as the set gets more widely stocked.",
+    "category": "Deals",
+    "tags": [
+      "lego-jurassic-world",
+      "mosasaurus",
+      "amazon-deals",
+      "new-sets",
+      "minifigures"
+    ],
+    "sourceLinks": [
+      {
+        "id": "73acce3c-7d0c-577c-8d50-16a7517dc181",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/first-discount-lego-jurassic-world-mosasaurus"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Price and discount figures are sourced from a single retailer (Amazon UK) via Brick Fanatics and may fluctuate; confirm current pricing before publishing as it may have changed. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-19T06:55:37Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/2286344b-3785-44d8-8853-5cc97de8569a.png"
+    ]
+  },
+  {
     "id": "727b5ebb-2e1e-572e-bde8-cfb306ed14b9",
     "title": "LEGO DC reveals 2,269-piece Batman Returns Batmobile with Batmissile split feature",
     "summary": "A new LEGO DC display set brings the 1992 Batman Returns Batmobile to life, including its first-ever LEGO transformation into the Batmissile.",
@@ -1418,35 +1447,6 @@
     "foundAt": "2026-08-14T13:22:44Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/03/LEGO-Marvel-76354-S.H.I.E.L.D.-Helicarrier-featured-image-1.jpg"
-    ]
-  },
-  {
-    "id": "7a0428d6-7d6b-54a1-9eed-630c52ec7fb4",
-    "title": "Brickset Reviews 910054 The Art Factory Ahead of BDP Series 6 Restock",
-    "summary": "Brickset has published a review of 910054 The Art Factory, the New York-style brownstone from BrickLink Designer Program Series 6, timed to coincide with news that leftover stock of the series will go on sale next week.",
-    "bodyMarkdown": "## What happened\nBrickset has posted a review of 910054 The Art Factory, a 2,256-piece set from BrickLink Designer Program Series 6. The set recreates a New York-style brownstone building that doubles as an art gallery, and retails at £199.99 / $229.99 / €229.99 (around 9-10p per piece). The reviewer built the set over a weekend and shares their thoughts on the design, build experience and display value.\n\nThe timing of the review isn't accidental — Brickset reports that excess stock from BDP Series 6 is due to become available again soon, though quantities will reportedly be very limited in each region.\n\n## Why it matters\nBrickLink Designer Program sets are fan-designed and typically produced in small numbers, so they're highly sought after by collectors and often sell out fast or command high resale prices. A restock of leftover Series 6 stock gives fans who missed out the first time round a fresh (if limited) chance to grab sets like The Art Factory.\n\n## What to watch next\nKeep an eye on official BrickLink and LEGO channels for the exact restock date and regional availability, as stock is expected to be scarce and could sell out quickly once live.",
-    "category": "Collectors",
-    "tags": [
-      "bricklink-designer-program",
-      "the-art-factory",
-      "set-review",
-      "restock",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "8fa8e45d-5211-5042-ad86-2b698692ba28",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/133854"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "Confirm the exact restock date, regional stock limits and whether this is officially confirmed by LEGO/BrickLink before publishing, as the source only gives a general 'next week' timeframe. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-14T13:22:04Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/133854?51709"
     ]
   }
 ]
