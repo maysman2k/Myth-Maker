@@ -1,5 +1,57 @@
 [
   {
+    "id": "9eff24f2-358a-50df-8a73-dcd7a63da8f4",
+    "title": "Is this LEGO's first ever 'display-only' minifigure?",
+    "summary": "The new 76355 Batman Returns Batmobile features a Michael Keaton Batman figure whose draped cape locks his arms and legs in place, sparking debate over whether it's the first minifigure built purely for display.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has spotted something unusual in the upcoming LEGO set 76355 Batman Returns Batmobile: a new Michael Keaton Batman minifigure design. Instead of the usual rubber cape-and-cowl piece seen in earlier sets like 76139 1989 Batmobile, this version drapes a moulded cape fully around the figure's body.\n\nWhile that looks great for recreating the character's iconic pose, it comes at a cost. The cape doesn't just stop head movement like before – it also restricts the arms and legs from turning at all. According to the report, there may be a tiny bit of wiggle room if you get fingers underneath the cape, or a slight tilt at the waist when the figure is fixed to studs, but proper posing looks off the table. The set includes a display stand, suggesting this Batman is designed to be placed and admired rather than played with.\n\n## Why it matters\nMinifigures are usually prized for their flexibility – you can pose them, swap parts, and use them in your own builds. A figure that's essentially locked into one dramatic stance is a first for many collectors, and it raises questions about where LEGO might be heading with future licensed, display-focused sets. For collectors and display-build fans, it's a sign that highly detailed sculpting is sometimes being prioritised over playability.\n\n## What to watch next\nThe set hasn't been released yet, so it's worth checking hands-on reviews once 76355 Batman Returns Batmobile is available to see exactly how much (if any) articulation the figure retains. It'll also be interesting to see whether this approach appears in other upcoming licensed sets.",
+    "category": "New Sets",
+    "tags": [
+      "lego-batman",
+      "minifigures",
+      "display-builds",
+      "batmobile",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e1e567f4-46f3-58c1-8460-5b99e092a7c4",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/what-about-display-only-lego-minifigures"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Article is based on a pre-release observation from Brick Fanatics; actual range of motion is unconfirmed until the set is physically reviewed, so treat 'first display-only minifigure' framing as the author's opinion rather than an official LEGO claim. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-19T13:00:21Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/90d9907a-81a5-4d6f-98bc-0c61edd4ae10.png"
+    ]
+  },
+  {
+    "id": "1ccb33b8-de89-5f2e-aa33-81b4447a9f5f",
+    "title": "LEGO's new Batman Returns Batmobile splits fan opinion",
+    "summary": "The LEGO Group has officially unveiled 76355 Batman Returns Batmobile, but fans are divided over its price, single minifigure and yet another Batmobile joining an already crowded lineup.",
+    "bodyMarkdown": "## What happened\nThe LEGO Group has officially announced 76355 Batman Returns Batmobile, priced at £189.99, launching for LEGO Insiders on 1 September before a wider release on 4 September. Reaction from fans on Reddit and Instagram has been mixed: some praise the build's design, moulded Batman minifigure and play function, while others feel the £189.99 price is steep for a single-minifigure set with no Penguin or Catwoman included. There's also debate over whether this smaller-scale model offers enough of an upgrade compared to the popular 76139 1989 Batmobile, alongside broader frustration at how many Batmobile sets LEGO has now released.\n\n## Why it matters\nBatmobiles are one of LEGO's most frequently revisited themes, so this launch is a useful gauge of collector fatigue versus genuine demand. For UK buyers weighing up display space and budget, the price-to-content debate here is worth watching before deciding whether to add another Batmobile to the shelf.\n\n## What to watch next\nKeep an eye on official reviews closer to the 1 September Insiders launch and 4 September wider release to see if hands-on impressions shift opinion on the price and play features.",
+    "category": "Brick Culture",
+    "tags": [],
+    "sourceLinks": [
+      {
+        "id": "31c7fb42-f3c0-5aab-9684-40b1b3cd8965",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-fans-react-to-another-batmobile"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 72,
+    "riskNotes": "Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-19T12:59:40Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/741bdc53-3312-4fa1-ab20-d3aab0499508.png"
+    ]
+  },
+  {
     "id": "3cf49711-2a2f-5215-bc6f-0e6d82d7b0b1",
     "title": "LEGO Jurassic World Mosasaurus set sees first ever discount",
     "summary": "The new 77983 Mosasaurus Dinosaur Boat Attack set, notable for its first moulded Mosasaurus figure, has dropped to £77.65 on Amazon UK — its lowest price since launch.",
@@ -1389,64 +1441,6 @@
     "foundAt": "2026-08-14T13:23:15Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/dcb6344d-036b-41ff-a17a-25c09eeec641.jpg"
-    ]
-  },
-  {
-    "id": "249d2854-8a72-5c75-aca1-c947090f098f",
-    "title": "LEGO Ministry of Magic review flags seven design gripes",
-    "summary": "Brick Fanatics' hands-on review of 76476 Ministry of Magic Collectors' Edition highlights seven design shortcomings, from missing minifigures to an unusually high sticker count, along with suggested fixes.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has published a hands-on review of the upcoming 76476 The Ministry of Magic Collectors' Edition, calling out seven specific design issues they found puzzling. Highlights include an empty courtroom scene missing key minifigures (Cornelius Fudge and Amelia Bones, neither of whom appear in the main set), and a heavy reliance on stickers – 32 in total – for details like hand dryers and a telephone box phone that the reviewer feels could have been brick-built instead.\n\nNotably, Fudge does appear, but only in the separate limited-time gift-with-purchase set 40901 Ministry Munchies & The Daily Prophet Stands, not in the main Ministry of Magic set itself.\n\n## Why it matters\nFor Harry Potter LEGO fans and collectors, minifigure line-up and build quality often make or break a big-ticket set like this. If genuine gaps exist in character selection or finishing touches, it's useful for prospective buyers to know before committing to what's likely a premium-priced Collectors' Edition.\n\n## What to watch next\nKeep an eye out for the full Brick Fanatics review of 76476 for more detail on these seven issues, plus any official response or design justification from the LEGO Group once the set is more widely available.",
-    "category": "New Sets",
-    "tags": [
-      "lego-harry-potter",
-      "ministry-of-magic",
-      "set-review",
-      "minifigures",
-      "collectors-edition"
-    ],
-    "sourceLinks": [
-      {
-        "id": "492f310c-77d6-5420-acb5-5a2c3eb1a257",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/seven-puzzling-problems-with-lego-ministry-of-magic"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Article excerpt is cut off mid-list, so only two of seven problems are detailed here; verify remaining points and full set number/pricing details against the complete Brick Fanatics review before publishing further coverage. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-14T13:23:06Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/c1e9b0dc-1dba-484d-97a7-e728c1ad7e95.png"
-    ]
-  },
-  {
-    "id": "adee5947-8594-5b8b-855f-b7fce33e1d17",
-    "title": "John Lewis LEGO Sale: Extra Discount Code Cuts Prices on Recent 2026 Releases",
-    "summary": "John Lewis has launched a LEGO deals event with the code LEGOAUGUST stacking on top of existing markdowns, bringing some very recent 2026 sets down to their lowest prices yet.",
-    "bodyMarkdown": "## What happened\nJohn Lewis is running a sale on dozens of 2026 LEGO sets, with the code LEGOAUGUST adding extra savings on top of items that are already discounted. The code works on a tiered spend system:\n\n- Save £10 when you spend £70\n- Save £15 when you spend £100\n- Save £45 when you spend £300\n\nAccording to Brick Fanatics, some of the standout deals include:\n\n- **11381 Jaguar E-Type** – only released in July, already reduced by £13, with the code bringing it down to £101.99 (around a 22% saving just weeks after launch).\n- **72423 Shrek, Donkey and Puss in Boots** – LEGO's first Shrek set, released in June, now discounted with the code for its first-ever price cut.\n- **60511 Vintage Steam Train** – part of LEGO City's recent train wave, marked down from its £79.99 RRP with the code applied for what's described as its best price yet.\n- **76354 S.H.I.E.L.D. Helicarrier** – also mentioned as part of the sale, though full pricing detail wasn't available in our source material.\n\nThese discounts and the code are live at John Lewis now, though as with all retail sales, stock and pricing can change quickly.\n\n## Why it matters\nIt's unusual to see meaningful discounts on sets that only hit shelves a month or two ago. For UK collectors and builders keeping an eye on newer 2026 releases, this is a chance to pick up recent sets — including a Jaguar E-Type, the debut Shrek set, and a City train — well below RRP, rather than waiting months for typical post-launch price drops.\n\n## What to watch next\nSale codes and stock levels at retailers like John Lewis tend to be time-limited, so it's worth checking current pricing and availability before ordering. It's also worth watching whether other UK retailers match these discounts on the same 2026 sets.",
-    "category": "Deals",
-    "tags": [
-      "lego-deals",
-      "john-lewis",
-      "2026-sets",
-      "lego-city",
-      "lego-marvel"
-    ],
-    "sourceLinks": [
-      {
-        "id": "c608b118-82ad-5a72-81ed-951ea74942c8",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/five-best-lego-2026-deals-new-john-lewis-sale"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 82,
-    "riskNotes": "Confirm current John Lewis pricing, stock and code validity before publishing as deals content dates quickly; the source excerpt was cut off before full Helicarrier pricing details, so verify that detail against the original article. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-14T13:22:44Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2026/03/LEGO-Marvel-76354-S.H.I.E.L.D.-Helicarrier-featured-image-1.jpg"
     ]
   }
 ]
