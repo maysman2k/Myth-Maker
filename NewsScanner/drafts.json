@@ -1,5 +1,33 @@
 [
   {
+    "id": "4a3a39a0-b85a-5f20-83a7-dd7b60373816",
+    "title": "LEGO Technic Mercedes-Benz G 500 drops to £120 in Amazon sale",
+    "summary": "Amazon has cut the price of the LEGO Technic Mercedes-Benz G 500 PROFESSIONAL Line by 45%, bringing this detailed off-roader down from £219.99 to £120.",
+    "bodyMarkdown": "## What happened\nAmazon has slashed the price of set 42177 Mercedes-Benz G 500 PROFESSIONAL Line, the 2,891-piece LEGO Technic off-roader, cutting it from its usual £219.99 down to £120 — a 45% saving. The set features working steering, raised suspension, a 6-cylinder engine, a gearbox, two differential locks, a detailed interior, plus a ladder, spare wheel and roof rack.\n\nThis is a retailer price cut rather than an official LEGO Group promotion, so it's worth noting the discount could end at any time.\n\n## Why it matters\nLEGO Technic sets rarely see discounts this steep, especially on a detailed, feature-packed model like the G 500. For fans of realistic vehicle builds or anyone wanting a display-worthy Technic piece without paying full price, this is a notable saving worth acting on quickly.\n\n## What to watch next\nKeep an eye on stock levels and pricing, as deals like this can disappear without warning. If you've been eyeing up the G 500 for your collection, it may be worth checking current availability before the discount ends.",
+    "category": "Deals",
+    "tags": [
+      "lego-technic",
+      "mercedes-benz-g500",
+      "amazon-deal",
+      "price-drop"
+    ],
+    "sourceLinks": [
+      {
+        "id": "d8b57360-9c72-58da-b75a-7fe25fc8910f",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-technic-mercedes-benz-g-500-now-available-with-45-off"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Confirm the deal is still live and check whether the 45% discount and £120 price apply specifically to UK Amazon, as pricing/availability can change quickly or vary by region. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-21T01:47:02Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/4112d6b6-5e67-4c91-ab3b-3e504d015657.jpg"
+    ]
+  },
+  {
     "id": "4dec2827-1159-5ffc-b64c-d6e41e7b8722",
     "title": "LEGO's early Doctor Doom bust sparks 'cash grab' criticism ahead of Avengers: Doomsday wave",
     "summary": "An early in-hand look at LEGO's first Avengers: Doomsday set, a Doctor Doom bust with an exclusive minifigure, has drawn criticism from a reviewer who says it's designed to cash in on eager fans a month before the rest of the wave lands.",
@@ -1412,35 +1440,6 @@
     "foundAt": "2026-08-16T12:53:28Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/fcac749c-a502-4bb2-8a5a-9084b80bc846.jpg"
-    ]
-  },
-  {
-    "id": "81fb00b3-f03a-534c-8032-38a5e63c5921",
-    "title": "The hidden fan tribute inside LEGO Ideas 21369 The X-Files",
-    "summary": "A LEGO Ideas set designer has confirmed a subtle nod to fan designer Brent Waller hidden within LEGO Ideas 21369 The X-Files, revealed via a new documentary and fan media roundtable.",
-    "bodyMarkdown": "## What happened\nLEGO designer Chris McVeigh has confirmed details of a fan Easter egg built into LEGO Ideas 21369 The X-Files, keeping up the tradition of quietly honouring the set's original fan designer.\n\nAccording to comments made during a fan media roundtable attended by Brick Fanatics, and further detail shared in an accompanying documentary, the set includes a newspaper byline with the initials 'BW' - a subtle reference to fan designer Brent Waller.\n\nMore significantly, the office scene in the set features video cassette tapes. McVeigh explained these serve a dual purpose: evoking a classic 1990s setting, and tying into Waller's favourite episode of the show, 'Wetwired', which centres on VHS tapes being used to influence people.\n\nWaller, who has used the username 'Wetwired' across LEGO Ideas and other platforms for years, said he was keen to see the reference included once the connection became clear. He also noted a possible secondary link between the tapes and the show's Mulder character, though he said this wasn't something the team had deliberately planned.\n\n## Why it matters\nEaster eggs honouring original fan designers have become a recurring and much-loved feature of LEGO Ideas sets. Details like this add extra depth for collectors and fans who enjoy digging into the story behind a set's design, beyond just the parts and build.\n\n## What to watch next\nFans of LEGO Ideas 21369 The X-Files may want to look out for the full documentary for more behind-the-scenes context, and it will be interesting to see whether future LEGO Ideas sets continue this tradition of hidden fan-designer nods.",
-    "category": "Brick Culture",
-    "tags": [
-      "lego-ideas",
-      "the-x-files",
-      "fan-designer",
-      "easter-egg",
-      "brent-waller"
-    ],
-    "sourceLinks": [
-      {
-        "id": "9ea85d3a-f2ce-5610-962a-7754919f3687",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/what-fan-easter-egg-lego-ideas-21369-the-x-files"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "Confirm the documentary's official source/publisher and exact release details before publishing further coverage; verify the 'BW' newspaper detail and cassette reference are accurately described from the roundtable transcript. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-16T12:53:05Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/e7b845ac-cbfc-419c-a54f-df5776eb2196.png"
     ]
   }
 ]
