@@ -1,5 +1,34 @@
 [
   {
+    "id": "4c2152c2-1e65-5d25-9cbb-bc9d387ac67e",
+    "title": "Rumour: LEGO Star Wars 'Movie Theatre' set could delight modular collectors",
+    "summary": "An unconfirmed 2027 LEGO Star Wars set, said to be numbered 75469, is rumoured to bring cinema-style building back to shelves - great news if you missed 10232 Palace Cinema first time round.",
+    "bodyMarkdown": "## What happened\nA rumour circulating online suggests LEGO Star Wars may release a set called 75469 Star Wars Movie Theatre in April 2027, tied to Star Wars' 50th anniversary celebrations. It's said to include 1,628 pieces and cost $199.99, though none of this has been confirmed by LEGO.\n\nAt that piece count, it's unlikely to be a full modular building like 2013's 10232 Palace Cinema, but speculation suggests it could still offer a detailed facade, movie-themed minifigures, and decorated elements such as posters and screens - key ingredients for building your own custom modular cinema alongside standard bricks for the rest of the structure.\n\n## Why it matters\nSince Palace Cinema retired in 2017, LEGO hasn't released anything as detailed in the cinema space, and sealed copies now average around $326. If this rumoured set arrives at $199.99, even with roughly $100 spent on extra parts to make it modular, it could still work out cheaper than hunting down the original - a potential win for street-display collectors who missed out.\n\n## What to watch next\nThis is currently just a rumour with no official confirmation of the set number, price, piece count or release date. Watch for official LEGO announcements or further leaks before treating any details as confirmed.",
+    "category": "Rumours",
+    "tags": [
+      "lego-star-wars",
+      "modular-buildings",
+      "rumour",
+      "collectors",
+      "star-wars-50th-anniversary"
+    ],
+    "sourceLinks": [
+      {
+        "id": "8c8e4892-9ae8-5523-84fc-81b4cd956454",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/rumoured-lego-star-wars-cinema-blessing-collectors"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "All specifics (set number 75469, price, piece count, April 2027 release) are unverified rumour from a single source image credit; confirm with official LEGO channels before treating as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-23T01:50:25Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/LEGO-10232-palace-cinema-featured.jpg"
+    ]
+  },
+  {
     "id": "f3afa9b9-d6c0-5836-8967-e984e277aa25",
     "title": "Ms. Frizzle and a Red Panda join LEGO Ideas' second 2026 review",
     "summary": "Two more fan designs, the Magic School Bus and a Red Panda display model, have hit the 10K supporters mark for LEGO Ideas' second 2026 review round.",
@@ -1411,35 +1440,6 @@
     "foundAt": "2026-08-18T12:59:17Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/7c534b43-2c39-40c9-a20f-cf308bbd569c.png"
-    ]
-  },
-  {
-    "id": "295abbbe-938b-55f0-bf9c-6af4b9306109",
-    "title": "Interstellar bookend design hits 10,000 supporters on LEGO Ideas",
-    "summary": "A new LEGO Ideas project reimagines Interstellar as a bookend set, and it's just reached the 10,000-supporter milestone needed for LEGO Group review.",
-    "bodyMarkdown": "## What happened\nA LEGO Ideas submission called Interstellar: A Look Back in Time Bookend, created by fan designer motiv56, has reached the 10,000 supporters needed to qualify for official review. Rather than recreating a ship or vehicle from the film, the roughly 585-piece build takes the form of a pair of bookends depicting Cooper and TARS recording a message to Murph. It's now set to be considered as part of the second 2026 LEGO Ideas review round, alongside other qualifying projects such as Twister (1996), Jumanji: A Magical Adventure and Wacky Races.\n\nThis isn't the first attempt at bringing Interstellar to LEGO Ideas — previous submissions have been rejected in earlier rounds. The bookend angle is a fresh approach, and it fits a format the LEGO Group has embraced elsewhere, including 75691 Glinda & Elphaba Bookends and 43301 Toy Story Slinky Dog Bookends.\n\n**Rumour flag:** reaching 10,000 supporters only means the project enters LEGO Group review — it is not yet an official confirmed set, and there's no guarantee it will be selected for production.\n\n## Why it matters\nFan-driven projects like this show how the LEGO Ideas platform can surface niche or unexpected licences that might not otherwise get a set. For UK collectors and film fans, a confirmed Interstellar release would be a notable addition to sci-fi and display-focused LEGO ranges, and the bookend format offers a different building and display experience compared with typical vehicle sets.\n\n## What to watch next\nKeep an eye on the outcome of the second 2026 LEGO Ideas review, where the LEGO Group will decide which qualifying projects — including this Interstellar concept — move forward towards an official release.",
-    "category": "Ideas",
-    "tags": [
-      "lego-ideas",
-      "interstellar",
-      "bookend-build",
-      "fan-design",
-      "2026-review"
-    ],
-    "sourceLinks": [
-      {
-        "id": "f5369259-41e1-5548-bdda-cfe2a1be9a1a",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-ideas-needs-interstellar-set-soon-as-possible"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm this is a fan submission awaiting LEGO Group review, not an announced official set; verify piece count and review round details against LEGO Ideas' official listing before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-18T12:59:06Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/d32f724d-36e8-462e-ad10-b1992ef3ba45.png"
     ]
   }
 ]
