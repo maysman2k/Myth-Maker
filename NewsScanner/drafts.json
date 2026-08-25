@@ -1,5 +1,63 @@
 [
   {
+    "id": "8e28e84e-a746-56d4-b96d-8be66a8f2f28",
+    "title": "LEGO's top-selling themes for early 2026 revealed, with Speed Champions in surprise form",
+    "summary": "LEGO's official half-year financial results show Speed Champions has broken into the top five best-selling themes, pushing out long-running favourite City.",
+    "bodyMarkdown": "## What happened\nThe LEGO Group has published its official financial results for the first half of 2026, which include a breakdown of the year's best-performing themes so far. The confirmed top five are Speed Champions, Botanicals, Technic, Icons and Star Wars.\n\nThat's a notable shift from the same period last year, when City, Technic, Botanicals, Icons and Star Wars made up the top five. This time, City has dropped out entirely, replaced by Speed Champions — a theme not typically seen among LEGO's biggest sellers.\n\nThe strong showing for Speed Champions is being linked to a busy first half of 2026, with a run of new releases including movie tie-in models like the Lightning McQueen set and the Back to the Future Time Machine. Notably, none of this year's Speed Champions sets so far have been double-vehicle packs, keeping every release under £25/$30/€30. A newer release, the Jaguar F-TYPE Project 7 & Land Rover Defender Classic, launched in August and so isn't reflected in these half-year figures.\n\n## Why it matters\nThis is official confirmation from LEGO's own financial reporting, giving fans a rare, data-backed look at which themes are actually resonating with buyers rather than just generating online buzz. For collectors and Speed Champions fans in particular, it's a signal the theme is having a genuine breakout moment, which could influence future set counts, pricing and licensing decisions.\n\n## What to watch next\nIt'll be worth watching whether Speed Champions maintains this momentum into the second half of 2026, and whether City's dip is a temporary blip or part of a longer trend. Fans should also keep an eye on how upcoming Speed Champions releases, like the recently launched Jaguar/Land Rover set, perform once full-year figures are published.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-financial-results",
+      "speed-champions",
+      "top-selling-themes",
+      "lego-icons",
+      "lego-technic"
+    ],
+    "sourceLinks": [
+      {
+        "id": "018c70ea-7d0b-5210-bc2b-c535d58b4526",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-reveals-top-selling-themes-first-half-of-2026"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 68,
+    "riskNotes": "Confirm exact theme ranking and sales figures directly from LEGO's official financial report before publishing, as this article relies on Brick Fanatics' summary of that data. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-25T13:00:54Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/2ac9808f-df64-4c04-91ce-6994b2cbef67.jpg"
+    ]
+  },
+  {
+    "id": "45255214-adb4-5d11-95d3-c9047faecd69",
+    "title": "LEGO September 2026 sets: what's landing on shelves",
+    "summary": "Brick Fanatics has rounded up the LEGO sets due out in September 2026, including a new Shrek Minifigures series alongside a string of Icons releases and the usual advent calendar wave.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has published a roundup of LEGO sets releasing in September 2026, noting it's a busier month than fans might expect despite sitting outside the usual big release windows of January, June and August.\n\nOne set detailed so far is **71053 Shrek Minifigures**, out from 1 September 2026, priced at £3.49 / $4.99 / €3.99 per blind bag. The series features 12 characters drawn from the first three Shrek films, built using a mix of new moulds and prints. Early community reaction, including from Brickset, is mixed but leans positive — Puss in Boots is tipped as a standout, while some prints (notably Shrek and Fiona) are described as a little 'uncanny'. The full character lineup and piece counts vary per bag, as is standard for LEGO Minifigures series.\n\nBrick Fanatics also flags that September 2026 will bring the usual run of advent calendars plus several licensed LEGO Icons sets, though full details on those weren't included in the excerpt we've seen.\n\n## Why it matters\nSeptember is traditionally a quieter LEGO release month, so a heavier lineup — including a licensed Minifigures series and multiple Icons sets — means more choices (and more spending) for collectors planning ahead. The Shrek Minifigures series also continues LEGO's expansion into the franchise following its 2025 debut.\n\n## What to watch next\nWe'll need the full Brick Fanatics list to confirm exactly which Icons sets and advent calendars are included in September 2026 — worth checking back once more details emerge, and always confirm pricing and release dates in your region before buying.",
+    "category": "New Sets",
+    "tags": [
+      "lego-september-2026",
+      "shrek-minifigures",
+      "lego-icons",
+      "advent-calendars",
+      "new-set-roundup"
+    ],
+    "sourceLinks": [
+      {
+        "id": "6bc85ad7-7442-5e21-a255-527c8a5bfcc6",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-september-2026-sets-before-you-buy"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "The source excerpt only fully details the Shrek Minifigures set; the full list of September 2026 Icons sets and advent calendars mentioned needs verifying against the complete Brick Fanatics article before publishing further specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-08-25T13:00:31Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/6f548076-8644-4e09-888b-f9cd7edbd7ed.png"
+    ]
+  },
+  {
     "id": "3b0c1c35-8896-5847-ae5a-5898fdb921c1",
     "title": "LEGO Marvel Doctor Doom Bust: Pre-order Deal Live Ahead of September Launch",
     "summary": "Amazon UK is offering an early discount on the upcoming 76345 Doctor Doom Bust, the first Avengers: Doomsday set to include the new MCU-inspired minifigure.",
@@ -1388,64 +1446,6 @@
     "foundAt": "2026-08-20T01:42:35Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/39649310-8da8-4132-9c78-b03bc728a039.jpg"
-    ]
-  },
-  {
-    "id": "0e2d13aa-9761-552b-8208-a8836bba0af4",
-    "title": "LEGO Icons 11385 Star Trek USS Enterprise Bridge reviewed ahead of launch",
-    "summary": "The Brothers Brick has published an early review of the new LEGO Icons Star Trek bridge set, which is up for pre-order now and lands on 1 September.",
-    "bodyMarkdown": "## What happened\nThe Brothers Brick has posted a review of LEGO Icons 11385 Star Trek USS Enterprise NCC-1701 Bridge, a 1,701-piece set recreating the bridge and other interior areas of the original USS Enterprise. Unlike last year's Enterprise-D exterior model, this one takes builders inside the ship, with a play feature transporter room complete with holographic stickers and spinning transporter pads.\n\nThe set is available to pre-order now ahead of a 1 September release, timed to coincide with Star Trek's 60th anniversary. Pricing is confirmed as US $199.99, CAN $269.99 and UK £159.99. The review notes the box contains 14 bags and a hefty sticker sheet, plus an instruction booklet with background on the show and its main cast.\n\nThe LEGO Group supplied The Brothers Brick with a review copy, though the outlet states this doesn't guarantee coverage or a favourable verdict.\n\n## Why it matters\nThis follows on from last year's Enterprise-D set and confirms LEGO is continuing to expand its Star Trek Icons line, giving fans of the original series their own detailed model for the first time. For collectors and display builders, an interior-focused set with play features is a different proposition to the exterior ship models we've seen before, so early reviews like this help buyers decide if it's worth adding to a collection.\n\n## What to watch next\nKeep an eye out for the full review verdict from The Brothers Brick on build experience and play features, plus how this set is received compared with the Enterprise-D on secondary and collector markets after release.",
-    "category": "New Sets",
-    "tags": [
-      "lego-icons",
-      "star-trek",
-      "new-set",
-      "lego-review",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "ba8130b9-8c31-55c3-a818-399fc5ec91a8",
-        "name": "The Brothers Brick",
-        "url": "https://www.brothers-brick.com/2026/08/18/lego-icons-11385-star-trek-uss-enterprise-ncc-1701-bridge-trials-and-tribble-ations-aboard-the-enterprisereview/"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 90,
-    "riskNotes": "Confirm the review's overall verdict/rating and any criticisms of build quality or stickers, as only the early build section was included in the source excerpt; full review conclusions were not available. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-20T01:41:50Z",
-    "suggestedImageURLs": [
-      "https://media-cdn.brothers-brick.com/2026/08/LEGO-Icons_11385-USS-Enterprise-NCC-1701-Bridge_TBB-Review_uy6mquw2sokh_Cover_Social-1024x536.jpg"
-    ]
-  },
-  {
-    "id": "0a55be7f-302a-58fc-971e-739b055cfa33",
-    "title": "First look at LEGO Star Wars 2026 Advent Calendar minifigures leaks early",
-    "summary": "An early in-store find has given fans a sneak peek at the four exclusive minifigures inside 75456 LEGO Star Wars Advent Calendar 2026, including a new IG-11 head mould and a festive Grogu.",
-    "bodyMarkdown": "## What happened\nAhead of its official release, LEGO Star Wars Advent Calendar 2026 (75456) has turned up early at a US Kohl's store, letting Instagram user hero_bricks share the first in-hand photos of its four exclusive minifigures.\n\nSpotted so far:\n- **IG-11** – featuring a brand-new moulded head piece, replacing the old brick-built design.\n- **Moff Gideon** – in a festive jumper inspired by his TIE fighter, with his helmet and two Darksabers printed on the back. He reuses his moustached face from 75459 Imperial Lambda-Class Shuttle and comes with the newer Darksaber piece, though his legs are left plain.\n- **Din Djarin** – wearing a dark green jumper printed with Grogu's face, paired with his standard legs and helmet.\n- **Festive Grogu** – built using the newer-style Grogu mould introduced this year, now in a cosy red torso, making it the third distinct Grogu variant to date.\n\nThis is an unofficial early sighting rather than a confirmed reveal from LEGO, so exact final details could still change before the calendar's official launch, expected in around two weeks.\n\n## Why it matters\nAdvent calendars are a big deal for Star Wars collectors, often packing in exclusive minifigures and parts you can't get anywhere else. The new IG-11 head mould in particular hints that more IG-series droid minifigures could be on the way, while the fresh Grogu variant adds another collectable to an already popular line-up.\n\n## What to watch next\nKeep an eye out for LEGO's official reveal of 75456, which should confirm full contents, pricing and release date for the UK.",
-    "category": "Rumours",
-    "tags": [
-      "lego-star-wars",
-      "advent-calendar",
-      "minifigures",
-      "the-mandalorian",
-      "leak"
-    ],
-    "sourceLinks": [
-      {
-        "id": "3f607e5b-cb8e-5fc3-8fdf-5cb2e3b6e8d5",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-star-wars-advent-calendar-minifigures-in-hand"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "Details come from an early, unofficial in-store find rather than a LEGO Group announcement, so final packaging, pricing and minor design details should be verified against LEGO's official reveal before publishing further coverage. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-19T18:45:53Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/901d241b-626b-4149-a533-590ce567b7df.png"
     ]
   }
 ]
