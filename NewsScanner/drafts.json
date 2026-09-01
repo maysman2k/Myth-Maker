@@ -1,5 +1,34 @@
 [
   {
+    "id": "bda63f1e-2af7-5579-82ca-e1fa52d57647",
+    "title": "LEGO confirms Harry Potter sets based on new HBO series",
+    "summary": "LEGO has confirmed sets tied to the upcoming HBO Max Harry Potter series, with new minifigures of Harry, Ron and Hermione teased at the Back to Hogwarts Showcase.",
+    "bodyMarkdown": "## What happened\nLEGO has officially confirmed that sets based on the new HBO Max Harry Potter television adaptation are on the way, as revealed during the Back to Hogwarts Showcase. A teaser clip showed new minifigures of Harry Potter, Ron Weasley and Hermione Granger, modelled on actors Dominic McLaughlin, Alastair Stout and Arabella Stanton from the show.\n\nThe TV series itself premieres on HBO Max in December. Brickset notes that the first LEGO sets could arrive as early as January, though this specific timing is **unconfirmed** and should be treated as speculation for now.\n\n## Why it matters\nHarry Potter remains one of LEGO's most popular licensed themes, and a fresh TV adaptation gives the brand a new visual identity to build sets around, separate from the original film-based designs. New minifigures based on the show's cast suggest LEGO is treating this as a distinct sub-line rather than a simple refresh, which could mean new castle builds, characters and play sets for collectors and Potter fans alike.\n\n## What to watch next\nKeep an eye out for official set reveals and pricing once LEGO shares more details closer to the show's December premiere. Until specific set numbers and release dates are confirmed, exact contents and the January launch window remain unofficial.",
+    "category": "Official Reveals",
+    "tags": [
+      "lego-harry-potter",
+      "hbo-max",
+      "new-minifigures",
+      "back-to-hogwarts",
+      "licensed-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "1e89eee1-3b2b-5583-bced-dfa16f616a7a",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/134373"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm the exact January release window and specific set numbers once LEGO publishes official product listings, as the timing is currently speculative from Brickset's coverage. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-01T20:55:29Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/134373?78917"
+    ]
+  },
+  {
     "id": "633762a5-9f27-55ec-be6d-fbeaede13b59",
     "title": "September 2026 LEGO Store highlights: new sets worth seeking out",
     "summary": "LEGO Stores have a fresh wave of September releases including Star Trek, SpongeBob and a new Halloween village range, with Brick Fanatics highlighting the biggest models in person.",
@@ -1394,35 +1423,6 @@
     "foundAt": "2026-08-28T22:10:02Z",
     "suggestedImageURLs": [
       "https://media-cdn.brothers-brick.com/2026/08/75457_Box1_v29_zora7NYAKT7e-640x603.png"
-    ]
-  },
-  {
-    "id": "d1866e0a-80df-5ce8-a9d8-c0e5bd244ee7",
-    "title": "Brick Train Awards return for 2026 after a year off",
-    "summary": "The popular virtual competition for LEGO and brick train builders is back, with entries open from 1–30 September 2026.",
-    "bodyMarkdown": "## What happened\nAccording to a press release covered by Brickset, the Brick Train Awards are officially returning for 2026 after being skipped last year. The competition is open for entries from 1st to 30th September 2026.\n\nThe awards are organised by members of the LEGO UK Railway train club and first launched in 2020. It's a virtual event, meaning builders from anywhere in the world can take part without needing to travel. Brickset notes the contest usually attracts around 700 entries, celebrating the creativity and skill of railway and railroad model builders using LEGO and compatible bricks.\n\nEntrants can submit models built within the last three years via the official Brick Train Awards website, with entry free of charge and up to three models allowed per category.\n\n## Why it matters\nTrain building is one of the most technical and rewarding areas of brick-based模型 building, and a dedicated global showcase gives builders a reason to finish and share ambitious layouts. For UK fans especially, it's notable that the event is organised by a UK-based train club, keeping this corner of the hobby firmly rooted at home while reaching an international audience.\n\n## What to watch next\nKeep an eye on the official Brick Train Awards website for full category details, rules, and judging criteria as the September entry window approaches.",
-    "category": "Events",
-    "tags": [
-      "brick-train-awards",
-      "lego-trains",
-      "brick-events",
-      "model-building",
-      "competitions"
-    ],
-    "sourceLinks": [
-      {
-        "id": "1bd7a39b-ea89-55c6-a550-bc3baef88c85",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/134259"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 72,
-    "riskNotes": "Verify exact category list, judging criteria, and any entry restrictions directly on the official Brick Train Awards site before publishing further detail, as the source excerpt was cut off mid-sentence. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-28T22:09:28Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/article/134259?83360"
     ]
   }
 ]
