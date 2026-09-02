@@ -1,5 +1,34 @@
 [
   {
+    "id": "8d9c6fed-6e7c-575e-bf8e-4b388c0262c3",
+    "title": "Rumour: LEGO Icons set 11388 could be a 5,682-piece release for November 2026",
+    "summary": "A new report points to an unannounced LEGO Icons set numbered 11388, said to pack nearly 5,700 pieces and cost €499.99 - but LEGO hasn't confirmed anything yet.",
+    "bodyMarkdown": "## What happened\nAccording to Brickmerge.de, via Brick Fanatics, an unrevealed LEGO Icons set with the number 11388 is rumoured to land in November 2026. The whispers suggest a hefty 5,682 pieces, an 18+ age rating, and a price tag of €499.99 - which would make it the second most expensive Icons release of the year, behind 11377 The Lord of the Rings: Minas Tirith.\n\nThere's no word yet on what the set actually depicts. It could be an original LEGO Icons design or a licensed model, and speculation is already swirling that it might follow on from last year's 10366 Tropical Aquarium. All of this remains unconfirmed rumour at this stage.\n\nSeparately, the same source has repeated earlier rumours about 21375 Godzilla, a LEGO Ideas set that was officially confirmed after winning a 2024 review. It's rumoured to arrive on 27 November with 5,360 pieces and a €399.99 price point, potentially as this year's big Black Friday release. Again, this pricing and date detail is unconfirmed.\n\n## Why it matters\nA near-6,000-piece LEGO Icons set would be a major addition to the adult-focused display range, and big builds like this always draw attention from serious collectors and display builders. If accurate, it also hints at an increasingly premium pricing trend for flagship Icons sets.\n\n## What to watch next\nKeep an eye out for any official LEGO teaser or leak confirming set 11388's contents, plus firmer details on the Godzilla set's November release date and final pricing.",
+    "category": "Rumours",
+    "tags": [
+      "lego-icons",
+      "rumour",
+      "2026-sets",
+      "lego-ideas",
+      "godzilla"
+    ],
+    "sourceLinks": [
+      {
+        "id": "7a34a2d9-0973-524a-ad85-4cd59738b2f0",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-icons-rumoured-to-be-dropping-a-6-000-piece-set-in-2026"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 88,
+    "riskNotes": "All figures (piece count, price, release date, set number) are unverified leaks from a third-party source (Brickmerge.de) and have not been confirmed by LEGO; verify before treating as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-02T20:55:01Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2024/10/LEGO-Icons-logo.jpg"
+    ]
+  },
+  {
     "id": "37cc3bcc-15d5-5681-82e5-0fd5b333f8e8",
     "title": "LEGO Speed Champions 2027: rumoured Lamborghini set swaps Revuelto for Fenomeno",
     "summary": "A previously leaked LEGO Speed Champions set thought to be a Lamborghini Revuelto is now rumoured to be a Lamborghini Fenomeno instead, alongside a possible date change to January 2027.",
@@ -1400,35 +1429,6 @@
     "foundAt": "2026-08-29T06:51:03Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/c79b735d-d291-489f-a75f-dbef96e06db8.png"
-    ]
-  },
-  {
-    "id": "df5482ba-4b78-5ddd-a38a-21439471d7dc",
-    "title": "Retired LEGO sets still up for grabs on LEGO.com – for now",
-    "summary": "Nearly a month after LEGO's July 2026 retirement wave, a handful of standout sets are still in stock direct from LEGO.com, including Optimus Prime and the huge Dungeons & Dragons castle set.",
-    "bodyMarkdown": "## What happened\nLEGO officially retired a large batch of sets on 31 July 2026, but according to Brick Fanatics, a few notable models are still available to buy directly from LEGO.com while stocks last.\n\nHighlights confirmed as still purchasable include:\n\n- **10302 Optimus Prime** (UK & US) – £159.99 / $179.99, 1,508 pieces. LEGO's first Transformers set and still considered one of the best, with a buildable figure that switches between vehicle and robot modes.\n- **21348 Dungeons & Dragons: Red Dragon's Tale** (UK only) – £314.99, 3,745 pieces. A huge fantasy set packed with exclusive minifigures and rare elements, marking the end (for now) of LEGO's Dungeons & Dragons theme.\n- **21350 Jaws** (US only) – $149.99, 1,497 pieces. A LEGO Ideas set based on the classic film, including three exclusive minifigures on a movie-inspired diorama.\n\nThe original round-up is titled \"six retired LEGO sets,\" and other models such as PAC-MAN Arcade, Donkey Kong Arcade and a Star Wars set are also referenced, though full pricing and details for those weren't included in the source material we've seen.\n\n## Why it matters\nOnce a LEGO set officially retires, it typically disappears from LEGO.com for good, with remaining stock only found through resellers or secondary markets at inflated prices. Catching leftover stock at RRP - especially for big-ticket sets like Optimus Prime or the Dungeons & Dragons castle - is a rare chance for UK collectors and fans to grab sought-after builds before they're gone from official channels.\n\n## What to watch next\nStock on retired sets can vanish without warning, so if you've had your eye on any of these, it's worth checking LEGO.com sooner rather than later. We'd also recommend verifying current availability and pricing for the additional sets mentioned in the original round-up, since full details weren't confirmed in our source material.",
-    "category": "Retiring Soon",
-    "tags": [
-      "retired-lego-sets",
-      "optimus-prime",
-      "lego-dungeons-and-dragons",
-      "lego-ideas",
-      "lego-com"
-    ],
-    "sourceLinks": [
-      {
-        "id": "404e137a-e19d-526d-b9d7-96af13443b4e",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/six-retired-lego-sets-you-still-buy-on-lego-com"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Only three of the six sets mentioned in the headline had confirmed pricing/details in the source excerpt (PAC-MAN Arcade, Donkey Kong Arcade and a Star Wars set were referenced but not detailed) - verify these before expanding the article. Also confirm stock levels and pricing are still current, as retired-set availability can change quickly. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-29T06:50:51Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2024/03/lego-ideas-21348-dungeons-dragons-red-dragons-tale-review-featured-edited.jpg"
     ]
   }
 ]
