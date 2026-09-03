@@ -1,5 +1,34 @@
 [
   {
+    "id": "0e4925e3-911a-5803-aed8-df64976785fa",
+    "title": "Amazon UK stacks discounts on LEGO sets for even bigger savings",
+    "summary": "Amazon UK is running a fresh offer that adds extra money off already-discounted LEGO sets when you spend over a set threshold, pushing some prices to their lowest yet.",
+    "bodyMarkdown": "## What happened\nAmazon UK has launched a new promotion that lets shoppers stack savings on top of existing LEGO discounts. Spend £69 or more on qualifying LEGO sets and an extra £10 comes off at checkout, on top of whatever reduction is already applied to those sets.\n\nBecause many LEGO sets on Amazon are already discounted, this extra saving pushes several items to their cheapest prices so far. Examples reported include the 31387 Iconic Pirate Ship dropping to around £61.99, the 76471 Knockturn Alley Wizarding Shops set falling to about £62.98, and the 77081 KIT set reaching roughly £64.92 at checkout.\n\nSmaller sets can also be bundled together to hit the £69 spend threshold. One combination — the 75438 Yoda Bust, 11504 Peace Lily, and 77259 Audi Revolut F1 Team R26 — reportedly comes down from a combined RRP of £112.97 to around £63.80 once the extra discount applies.\n\nThis is a retailer promotion from Amazon UK rather than a LEGO Group announcement, and pricing can change quickly.\n\n## Why it matters\nStacked discounts like this are a good chance to pick up sets — especially bundles of smaller ones — at genuinely strong prices. If you've been holding off on a set or two, checking your basket total against the £69 threshold could unlock extra savings you wouldn't get buying items individually.\n\n## What to watch next\nAs with any time-limited retail promotion, availability and exact prices may shift or end without notice, so it's worth double-checking current pricing and stock before building a basket around this offer.",
+    "category": "Deals",
+    "tags": [
+      "lego-deals",
+      "amazon-uk",
+      "discount-sale",
+      "lego-sets",
+      "retail-offers"
+    ],
+    "sourceLinks": [
+      {
+        "id": "dc0407c7-3452-54d4-8e2f-1c4d3487c4cf",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/new-lego-amazon-uk-double-discount-sale"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 68,
+    "riskNotes": "Confirm the £69/£10 stacking offer is still live and verify current prices for each named set (31387, 76471, 77081, 75438, 11504, 77259) before publishing, as retailer discounts change quickly and the source uses an Amazon affiliate link. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-03T11:03:11Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/05/lego-creator-31387-lifestyle-featured.png"
+    ]
+  },
+  {
     "id": "8d9c6fed-6e7c-575e-bf8e-4b388c0262c3",
     "title": "Rumour: LEGO Icons set 11388 could be a 5,682-piece release for November 2026",
     "summary": "A new report points to an unannounced LEGO Icons set numbered 11388, said to pack nearly 5,700 pieces and cost €499.99 - but LEGO hasn't confirmed anything yet.",
@@ -1400,35 +1429,6 @@
     "foundAt": "2026-08-29T16:37:13Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/set/76476-1"
-    ]
-  },
-  {
-    "id": "13adeabb-dbd7-58f0-ac70-47b5ad13eb17",
-    "title": "LEGO Skylines: could modular buildings be the game's first DLC?",
-    "summary": "Following the reveal of LEGO Skylines, fans are speculating about future DLC – including a possible pack featuring all the official LEGO modular buildings. Nothing is confirmed yet, so treat this as rumour.",
-    "bodyMarkdown": "## What happened\nLEGO Skylines, an upcoming city-building game from Paradox Interactive due in 2027, was recently revealed with a trailer and screenshots. The game's city layout appears to follow the dimensions of official LEGO baseplates (32x32 and 48x48 studs), but notably, none of the official LEGO modular buildings feature in the footage shown so far.\n\nThis has led to speculation that a modular buildings DLC pack could be a logical addition down the line, possibly bundling together classics like 10326 Natural History Museum. There's also chatter that LEGO Skylines could borrow a trick from LEGO Batman: Legacy of the Dark Knight, where codes included with physical sets unlock matching content in-game – potentially a way to keep adding new modular buildings as they're released.\n\n**Important:** none of this DLC content, BrickLink Studio integration, or post-launch support has been officially confirmed by LEGO Group or Paradox Interactive. These are rumours and educated guesses based on the baseplate-style layout and genre conventions from Paradox's existing Cities: Skylines DLC catalogue.\n\n## Why it matters\nIf LEGO Skylines does end up drawing from the modular buildings range and offering ongoing DLC, it could be a big deal for AFOLs (Adult Fans of LEGO) and collectors who love the modulars line – bringing a virtual dimension to a much-loved physical collecting hobby. It also hints at how digital games might increasingly tie in with real-world LEGO releases in future.\n\n## What to watch next\nKeep an eye out for any official statements from LEGO Group or Paradox Interactive confirming DLC plans, modular building integration, or code-based unlock systems. Until then, all of this remains speculation.",
-    "category": "Rumours",
-    "tags": [
-      "lego-skylines",
-      "modular-buildings",
-      "paradox-interactive",
-      "dlc-rumours",
-      "video-games"
-    ],
-    "sourceLinks": [
-      {
-        "id": "3a0f3fdf-3066-5935-8ea9-34369a5b55ab",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-skylines-has-years-and-years-of-dlc-potential"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 68,
-    "riskNotes": "Confirm with LEGO Group/Paradox Interactive whether any DLC, modular building integration, or code-unlock features have been officially announced before publishing as fact; the source article itself flags this as speculation. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-08-29T06:51:03Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/c79b735d-d291-489f-a75f-dbef96e06db8.png"
     ]
   }
 ]
