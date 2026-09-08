@@ -1,5 +1,63 @@
 [
   {
+    "id": "59bbe63c-0b4e-532b-b1ff-6183f1741859",
+    "title": "Brick Boy team plans working add-on for the LEGO PlayStation",
+    "summary": "The fans behind the working LEGO Game Boy mod are back with a new project to turn 72306 PlayStation into a plug-and-play console, ahead of its October launch.",
+    "bodyMarkdown": "## What happened\nSubstance Labs, the team behind the popular Brick Boy kit that turned LEGO's 72046 Game Boy set into a genuinely playable handheld, has confirmed it's working on a similar project for the upcoming 72306 PlayStation set.\n\nThe original Brick Boy campaign, funded via Kickstarter, is still live and taking orders. Its success has now inspired a follow-up called BrickStation, aimed at the LEGO PlayStation console recreation launching on 1 October for £139.99 / $179.99 / €159.99.\n\nA prototype has reportedly been previewed by Retro Dodo, showing the electronics condensed into a single block designed to slot into the same grooves used for the set's diorama inserts. The build reportedly includes a Raspberry Pi Zero 2W and HDMI output, and would likely replace one diorama slot rather than requiring major changes to the model itself.\n\nNo release date has been confirmed for the BrickStation kit yet — the project's website is live and is expected to be updated as more details emerge.\n\n## Why it matters\nBrick-based tech mods like this have become a genuine niche within the community, letting fans display a LEGO set that's also a working device. Because the PlayStation set has built-in space for dioramas, this project could be simpler to install than the Game Boy version was, potentially widening its appeal to less technical builders.\n\n## What to watch next\nKeep an eye on the BrickStation website for a firm release date, pricing, and confirmation of exactly which components and assembly steps will be required once the LEGO PlayStation set is out in shops from 1 October.",
+    "category": "Compatible Brick Brands",
+    "tags": [
+      "lego-playstation",
+      "brick-boy",
+      "brickstation",
+      "retro-tech-mods",
+      "raspberry-pi"
+    ],
+    "sourceLinks": [
+      {
+        "id": "43235755-3846-5275-8c8c-8d8c772f54d8",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/brick-boy-creators-back-working-lego-playstation"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "No confirmed release date, pricing, or official partnership status for the BrickStation kit — this is a third-party fan project, not a LEGO Group product, and details come from a prototype preview rather than a finished release. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-08T04:14:38Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/0a9aa6c2-a0a6-4a2e-9ccf-f2d1a494f2aa.jpg"
+    ]
+  },
+  {
+    "id": "aabd86f2-11a1-55c7-adc6-85718ff4f3b6",
+    "title": "LEGO's new Bookshop Book Nook could make a great modular custom build",
+    "summary": "LEGO's newly revealed 11379 Bookshop: Book Nook has interior dimensions that fit neatly onto a 16x32 modular baseplate, sparking ideas for a custom storefront refit.",
+    "bodyMarkdown": "## What happened\nThe LEGO Group has revealed 11379 Bookshop: Book Nook, its first original book nook design not tied to an existing story. It features a multi-level bookshop interior with shelves and furnishings, and can be displayed folded thin or unfolded into a wider scene.\n\nAccording to Brick Fanatics, the interior measures 14 studs across and 19 studs deep (including a hinged rear bookshelf), which fits within the footprint of a standard 16x32 modular building baseplate. That leaves a couple of spare studs in width and around 13 studs of depth — enough room, the outlet suggests, for fans to design their own storefront exterior, pavement and alleyway around the existing interior as a custom modular-style refit.\n\nThe main creative challenge highlighted is building an exterior that doesn't block views of the bookshop's balconies and shelving, unless the roof is made removable.\n\n## Why it matters\nModular buildings remain one of the most popular formats for LEGO collectors and custom builders, so any official set with modular-compatible dimensions is a big deal for the community. This gives fans and compatible brick brand builders a ready-made, highly detailed interior to build their own storefront around, opening up new customisation and display possibilities.\n\n## What to watch next\nIt's worth watching whether the LEGO Group or fan designers release official or fan-made exterior refits for this set, and whether future book nook releases are designed with modular compatibility in mind from the start.",
+    "category": "Ideas",
+    "tags": [
+      "book-nook",
+      "modular-buildings",
+      "lego-sets",
+      "custom-builds",
+      "display-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "ae5bc4af-a1e8-52fd-97bb-35129b144cc2",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-new-book-nook-is-begging-for-a-modular-refit"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm exact release date/price and official set number spelling (11379) before publishing; the modular refit idea is Brick Fanatics' own build suggestion, not an official LEGO Group product or endorsement. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-08T04:14:28Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/04e23db2-a51c-4955-93b6-ab44dfdfaced.png"
+    ]
+  },
+  {
     "id": "6bfc7ed6-fc53-534a-9ee4-f81834a04673",
     "title": "LEGO Icons 2026 mystery set: fans pitch more ideas for the rumoured 6,000-piece model",
     "summary": "Rumours of a huge new LEGO Icons set (said to be numbered 11388) have sparked fresh fan theories, from a reptile vivarium to a scaled Peterbilt lorry — all unconfirmed speculation for now.",
@@ -1376,64 +1434,6 @@
     "foundAt": "2026-09-03T16:17:20Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/5073e2cb-cfb3-49c9-8533-bc2950104275.jpg"
-    ]
-  },
-  {
-    "id": "cf016cf3-4169-5267-8844-fa96bd1d4c40",
-    "title": "LEGO Wallace & Gromit set confirmed – could more Aardman sets follow?",
-    "summary": "The LEGO Group has officially confirmed a Wallace & Gromit set is coming next month, based on a winning fan design, and the smooth collaboration with Aardman has fans speculating about what could come next.",
-    "bodyMarkdown": "## What happened\nThe LEGO Group has officially confirmed that a Wallace & Gromit set, numbered 21371, is due to launch next month. The model is based on a fan design by Pidelium that won the '90s Throwback Challenge on LEGO Ideas.\n\nThis follows the LEGO Group's first collaboration with Aardman on Boop in 2025. At a recent fan media roundtable attended by Brick Fanatics, LEGO designers Ellen Bowley and Tom Gerardin spoke about how well the two companies worked together, with Bowley praising the shared focus on \"play and humour\" and Gerardin describing a visit to Aardman's studios to meet creator Nick Park as a highlight of the project.\n\n**Rumour watch:** Neither designer confirmed that further Aardman sets are in development. Speculation about future sets, such as a possible Chicken Run-themed build, is purely fan and journalist speculation at this stage — not an official announcement.\n\n## Why it matters\nA confirmed LEGO Wallace & Gromit set is a big deal for fans of the beloved British stop-motion studio, and it shows the LEGO Ideas platform can turn niche fan pitches into real products. The strong working relationship between LEGO and Aardman also raises hopes for more collaborations down the line, even though nothing beyond this set has been confirmed.\n\n## What to watch next\nKeep an eye out for the official reveal details of 21371 Wallace & Gromit next month, and watch for any hints from LEGO or Aardman about further collaborations — but treat any talk of specific future themes, like Chicken Run, as unconfirmed speculation for now.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-wallace-and-gromit",
-      "aardman",
-      "lego-ideas",
-      "fan-design",
-      "lego-2026"
-    ],
-    "sourceLinks": [
-      {
-        "id": "441a17c7-c8b5-5450-823b-041a34fd36ac",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-wallace-gromit-more-aardman-sets"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm the official set number, name and release date/month for 21371 directly from LEGO's own announcement; the Chicken Run and 'more Aardman sets' angle is speculative commentary from Brick Fanatics, not an official LEGO statement, and should stay clearly framed as rumour. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-03T16:17:07Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/d5d84399-174f-48fe-a220-eb7aa3796f6a.png"
-    ]
-  },
-  {
-    "id": "5c30d103-2928-585f-84a2-811544bd7808",
-    "title": "LEGO PlayStation Set Officially Revealed With Hidden Game Dioramas",
-    "summary": "LEGO has officially unveiled a 1,911-piece PlayStation model featuring a working controller slot and two hidden dioramas based on classic PlayStation games.",
-    "bodyMarkdown": "## What happened\nLEGO has officially revealed 72306 PlayStation, a 1,911-piece recreation of Sony's original 1994 console. The set includes a printed controller with working Square, Triangle, Circle and Cross buttons that plugs into the console and opens the top of the build via a button press.\n\nInside, two hidden dioramas pay tribute to classic PlayStation games: a sliding Gran Turismo track on one side and an Ape Escape scene, complete with one of the game's monkeys, on the other.\n\nThe set will cost £139.99 / $179.99 / €159.99 and launches for LEGO Insiders on 1 October 2026, becoming widely available on 4 October 2026.\n\n## Why it matters\nThis is a big one for gaming and pop culture crossover fans, as well as collectors who love hidden details and functional builds. The combination of nostalgia, clever engineering (working buttons, sliding dioramas) and licensed gaming references makes this a standout release likely to appeal well beyond typical LEGO Icons buyers.\n\n## What to watch next\nKeep an eye on early reviews and unboxings once the set releases in October to see how the hidden mechanisms and dioramas hold up in person, and whether demand leads to early sell-outs.",
-    "category": "Official Reveals",
-    "tags": [
-      "lego-playstation",
-      "official-reveal",
-      "new-set",
-      "gran-turismo",
-      "ape-escape"
-    ],
-    "sourceLinks": [
-      {
-        "id": "d2fa16ea-17ca-52a6-9789-4cd9870d4b7d",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-playstation-revealed-two-hidden-dioramas"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 82,
-    "riskNotes": "Confirm final pricing, exact piece count, and release dates directly with LEGO's official announcement before publishing, as these details come from a single source excerpt. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-03T16:16:51Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/7d02b9d2-2acf-46a7-a9b1-34f675428ff1.png"
     ]
   }
 ]
