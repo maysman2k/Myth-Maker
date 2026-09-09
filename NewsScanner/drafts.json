@@ -1,5 +1,34 @@
 [
   {
+    "id": "ac90240a-c848-512b-8b3d-c34a83033c5e",
+    "title": "LEGO Insiders Double Points Event Live for One Day Only",
+    "summary": "LEGO's September 'members day' is running now in the UK, giving Insiders double points on selected themes — but a few sets are excluded.",
+    "bodyMarkdown": "## What happened\nLEGO's Insiders programme is running a one-day 'members day' event in the UK, giving members double points on selected sets bought at LEGO.com and in LEGO Stores. Normally Insiders earn the equivalent of 5% cashback in points, but during this event that doubles to 10% on eligible purchases.\n\nThe boost applies to selected LEGO City, Classic, Creator 3-in-1, DREAMZzz, DUPLO, Friends and NINJAGO sets. However, three sets are excluded from the offer: 42698 Friends Advent Calendar 2026, 60510 City Advent Calendar 2026, and 31394 Red Panda.\n\nThe event follows a similar Insiders-only promotion in August, which gave an extra 500 points on the first order of the day. The offer is confirmed as live now in the UK and Australia, with US shoppers set to gain access at midnight local time.\n\n## Why it matters\nDouble points events are a handy way for regular LEGO shoppers and collectors to stretch their budget further, since Insiders points can later be redeemed for future purchases or exclusive Rewards Centre items. Knowing which sets are excluded helps shoppers plan bigger purchases around the promotion rather than missing out.\n\n## What to watch next\nIt's worth checking LEGO.com in your region to see if any other promotions are stacking alongside this one. There's also a possibility, though unconfirmed, that this could be the start of more regular monthly Insiders points events going forward.",
+    "category": "Deals",
+    "tags": [
+      "lego-insiders",
+      "lego-deals",
+      "double-points",
+      "lego-city",
+      "lego-creator"
+    ],
+    "sourceLinks": [
+      {
+        "id": "1383d51c-58aa-52d2-9aae-02910a8d32d4",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/september-double-lego-insiders-points-live"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 72,
+    "riskNotes": "Confirm exact event date, as the source text shows a mismatch between the September 8 publish date and September 9 event date — verify which day the promotion actually runs before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-09T04:20:37Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/bf-derivatives/webp/70c78cd376f020103c3d843e1ccb45f5e95ab3afde5a8a7900c3f23e44d281d2.webp"
+    ]
+  },
+  {
     "id": "dff098bc-5d8c-5e3b-aedd-924ef2e61e73",
     "title": "LEGO BrickLink Designer Program Series 9: final designs and prices confirmed",
     "summary": "LEGO has confirmed the final designs and pricing for the five BrickLink Designer Program Series 9 sets, with crowdfunding opening in October.",
@@ -1417,35 +1446,6 @@
     "foundAt": "2026-09-04T20:40:00Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2025/06/LEGO-One-Piece-75639-The-Going-Merry-Pirate-Ship-featured-1.jpg"
-    ]
-  },
-  {
-    "id": "23ca32cd-63ff-5beb-a80f-afd29c8015ed",
-    "title": "LEGO 71053 Shrek Gingy 'cracks' might just be moulding marks",
-    "summary": "Fans spotted apparent cracks on the new LEGO Gingy minifigure from 71053 Shrek, but an experienced injection-moulder says they could simply be witness lines from the manufacturing process.",
-    "bodyMarkdown": "## What happened\nSince LEGO 71053 Shrek minifigures went on sale, several fans have shared photos showing what look like cracks around the head of the new Gingy minifigure. The community largely assumed these were genuine defects, especially given recent reports of a separate crack found on some Patrick minifigures from the same set.\n\nHowever, an AFOL with professional plastic injection-moulding experience — including designing LEGO-compatible custom minifigure parts — has offered an alternative explanation to Brick Fanatics. According to this fan, the marks are likely \"witness lines,\" a normal by-product of the injection-moulding process where molten plastic flows together from two injection points, or around an internal pin, and cools slightly as it joins along a flat surface. This can leave a visible seam that looks crack-like but isn't necessarily a structural fault.\n\nThis explanation is not an official statement from the LEGO Group, and Brick Fanatics has said its team is examining its own Gingy minifigures more closely, alongside the confirmed genuine crack reported separately on some Patrick pieces.\n\n**Rumour label:** The cause of the Gingy marks remains unconfirmed — this is community and expert speculation, not an official LEGO Group explanation.\n\n## Why it matters\nQuality concerns spread quickly in the LEGO fan community, and it's easy for normal manufacturing features to be mistaken for defects. If these marks are indeed witness lines rather than cracks, it's a useful reminder for collectors not to assume the worst before getting expert or official confirmation — useful knowledge for anyone building a Shrek-themed collection or checking minifigure quality before display.\n\n## What to watch next\nKeep an eye out for any official comment from the LEGO Group on the Gingy minifigure, plus further community testing to see whether the marks affect durability or are purely cosmetic.",
-    "category": "Collectors",
-    "tags": [
-      "lego-shrek",
-      "71053",
-      "minifigures",
-      "quality-control",
-      "gingy"
-    ],
-    "sourceLinks": [
-      {
-        "id": "6b1a7f7f-eea9-55c6-b7d9-20d9e5587dd1",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/the-lego-71053-shrek-minifigure-cracks-misleading"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 62,
-    "riskNotes": "No official LEGO Group statement confirms whether the marks are witness lines or defects; the moulding explanation comes from an anonymous fan source and should be verified before treating as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-04T20:39:50Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/96ee83c3-eca1-4dd1-9351-98ce146cfa7d.png"
     ]
   }
 ]
