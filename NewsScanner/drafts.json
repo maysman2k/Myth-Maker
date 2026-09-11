@@ -1,5 +1,63 @@
 [
   {
+    "id": "18f7420b-ebe6-5525-9fe4-3789338ed9c9",
+    "title": "LEGO Star Wars Boba Fett statue (75455) hits new low price at Amazon UK",
+    "summary": "The buildable Boba Fett bounty hunter statue has dropped to £121.59 at Amazon UK after a checkout discount, making it the cheapest it's been so far.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, LEGO Star Wars set 75455 Boba Fett has dropped in price again at Amazon UK. It's listed at £127.99, but an extra £6.40 discount applied at checkout brings the total down to £121.59 — reportedly the lowest price the set has reached so far.\n\nThis follows an earlier price drop just two days before this latest cut, according to the source.\n\n## Why it matters\nBuildable statue sets like Boba Fett tend to sit at a premium price point, so a deal like this is useful for fans and collectors who've been waiting for the right moment to add it to their display. If you've been on the fence about this one, price is now less of a barrier.\n\n## What to watch next\nRetailer prices change quickly, so it's worth checking Amazon UK directly for the current price and confirming the checkout discount is still applied before buying. As with all third-party deals, availability isn't guaranteed to last.",
+    "category": "Deals",
+    "tags": [
+      "lego-star-wars",
+      "boba-fett",
+      "amazon-deals",
+      "display-builds",
+      "collectors"
+    ],
+    "sourceLinks": [
+      {
+        "id": "385b6569-0046-59ee-b7c9-03e1c3d8f789",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-star-wars-boba-fett-keeps-getting-cheaper"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Price and discount are time-sensitive and sourced from a third-party deals article; confirm current Amazon UK pricing before publishing, as deals can expire quickly. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-11T11:04:01Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/efcdbf4d-b08f-4540-a53e-21855182304d.jpg"
+    ]
+  },
+  {
+    "id": "1e7af08e-2b6f-535e-be3a-07c94540bc85",
+    "title": "LEGO Shrek's Gingy minifigure may be prone to head cracks, fans report",
+    "summary": "Some collectors say the Gingy minifigure from the new LEGO Shrek line has a tight-fitting head that could crack, and one fan has taken matters into his own hands with a craft knife.",
+    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, the Gingy minifigure included in the new 71053 LEGO Shrek Minifigures series may share a design issue already seen on the Patrick Star minifigure from 11386 SpongeBob SquarePants: Bikini Bottom. Fans have spotted a line on the back of Gingy's head, and it's not yet confirmed whether this is simply a moulding mark or an actual crack caused by a tight fit between the head and neck peg.\n\nBrick Fanatics says its own staffer tested this by wedging a small piece of paper into the line, which suggests it could genuinely be a crack rather than just a mould line - though this hasn't been officially confirmed by LEGO.\n\nOne member of the LEGO SHOWOFF Facebook group, Michael R. Burgio, says he used a craft knife to shave down part of the head peg to relieve the tightness and reduce the risk of cracking. Another fan, Tom Van Der Jeught, reportedly suggested sanding down the inside of the head instead. Both are unofficial, fan-made fixes and not something LEGO has recommended.\n\n## Why it matters\nMinifigure quality issues like this matter to collectors, especially for characters from a limited or sought-after wave. If confirmed as a genuine manufacturing fault, it could affect how confidently fans buy, display or trade Gingy figures - and whether LEGO addresses it in future production runs.\n\n## What to watch next\nIt's worth watching for any official LEGO response or quality update on this minifigure line. In the meantime, any at-home modifications like shaving or sanding pegs are unofficial fan fixes done at the collector's own risk, and could affect resale value or warranty-style goodwill replacements from LEGO customer service.",
+    "category": "Collectors",
+    "tags": [
+      "lego-shrek",
+      "gingy-minifigure",
+      "minifigure-quality",
+      "collector-tips",
+      "lego-collecting"
+    ],
+    "sourceLinks": [
+      {
+        "id": "1621aa84-259c-5541-b6d2-3b44400c09a7",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-gingy-head-making-fans-resort-to-drastic-measures"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 62,
+    "riskNotes": "Whether Gingy's head is actually cracking (versus a mould line) is unconfirmed and disputed even among fans; no official LEGO statement on the defect exists, so this should be labelled clearly as an unverified fan report, not a confirmed fault. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-11T11:03:30Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/a60f5f73-4ff2-4d90-81d1-10e0d06e29e5.jpg"
+    ]
+  },
+  {
     "id": "6ec4045a-8dc0-5917-902b-11915224de0b",
     "title": "LEGO Ideas 21373 Downton Abbey officially revealed",
     "summary": "LEGO has officially unveiled its next Ideas set, a 4,711-piece recreation of Highclere Castle from Downton Abbey, arriving 1 October with 13 minifigures.",
@@ -1383,64 +1441,6 @@
     "foundAt": "2026-09-06T20:18:35Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/0470f205-8924-41f2-b0bd-22ae5d44c7a5.jpg"
-    ]
-  },
-  {
-    "id": "2c2c3e3b-d70a-59f8-9249-00e4e169d356",
-    "title": "LEGO KPop Demon Hunters: rumoured 2027 set list sparks wishlist speculation",
-    "summary": "A leaked list of five unconfirmed LEGO KPop Demon Hunters sets (plus a polybag) for May 2027 has fans speculating what scenes and characters might be included, though nothing beyond the theme's continuation is officially confirmed.",
-    "bodyMarkdown": "## What happened\nLEGO has officially confirmed that more KPop Demon Hunters sets are coming in 2027, following on from 72537 Derpy Tiger and Sussie Bird released earlier this year.\n\nBeyond that, a **rumoured** list has surfaced online naming five set numbers (72538, 72539, 72541, 72542, 72544) plus a polybag (30746), each with a placeholder May 1, 2027 release date and rough prices ranging from $24.99 up to $129.99. No piece counts, names or images have been confirmed.\n\nUsing this rumoured price and number spread, fans and commentators have started guessing what the sets could actually be, drawing comparisons to how LEGO has handled other film-based themes like Wednesday and Wicked. Suggestions include a vehicle set based on the film's Huntrix jet sequence, and various character or scene-based builds, but these ideas are purely speculative and not based on any leaked images or official details.\n\n## Why it matters\nKPop Demon Hunters has proven to be a genuinely popular LEGO tie-in, and any expansion of the theme is likely to interest fans of the film, minifigure/mini-doll collectors, and those following LEGO's growing slate of licensed themes. Early rumours like this help set expectations, but it's worth remembering how much can change before official reveals.\n\n## What to watch next\nKeep an eye out for official images, set names and confirmed pricing from LEGO as 2027 approaches. Until then, treat piece counts, release dates and set contents as unconfirmed rumour, not fact.",
-    "category": "Rumours",
-    "tags": [
-      "lego-kpop-demon-hunters",
-      "2027-sets",
-      "rumour",
-      "licensed-themes",
-      "lego-news"
-    ],
-    "sourceLinks": [
-      {
-        "id": "6fa209f5-552d-5bf0-a2eb-7a24e68bb4c3",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/five-lego-kpop-demon-hunters-sets-we-need-in-2027"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 72,
-    "riskNotes": "The set numbers, prices and May 2027 date are unverified rumours from a third-party list, not official LEGO confirmation; only the general continuation of the theme into 2027 is stated as official. Verify with LEGO before treating any specifics as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-06T20:18:08Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/e84e826b-f71d-40d7-a67c-089399bd4735.png"
-    ]
-  },
-  {
-    "id": "0e323cd6-1fbd-5135-8665-a54cec734bdd",
-    "title": "LEGO Ideas Wallace & Gromit set closely matches original film prop",
-    "summary": "LEGO designers reveal that 21371 Wallace & Gromit was tweaked after visiting Aardman to better match the screen-used puppet from A Close Shave, right down to Gromit's missing bottom half.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics attended a roundtable interview with the designers of LEGO Ideas set 21371 Wallace & Gromit, where it emerged that the set was refined to closely resemble the actual prop used in the Aardman film A Close Shave.\n\nDesigner Tom Gerardin said that after taking a prototype to Aardman and seeing the real prop in person, the LEGO model didn't quite match up, so changes were made. The result is reportedly close to a one-to-one scale match with the original puppet.\n\nThe set also mirrors the film in an unexpected way: Gromit doesn't have a bottom half in the model, just as he doesn't in certain shots from the film. Designer Ellen Bowley explained this came down to fitting Gromit into the egg-shaped sidecar, with no room left for his lower half - though a small \"Easter egg\" nod has apparently been included to make up for it.\n\n## Why it matters\nFor LEGO Ideas fans and collectors, this kind of behind-the-scenes detail shows the lengths designers go to for accuracy on licensed sets, and adds extra appeal for anyone who loves prop-accurate builds or Wallace & Gromit as a franchise.\n\n## What to watch next\nIt's worth keeping an eye out for more details on the \"Easter egg\" mentioned by Bowley, and for the full Brick Fanatics review of 21371 for a closer look at how these design choices play out in the finished set.",
-    "category": "New Sets",
-    "tags": [
-      "wallace-and-gromit",
-      "lego-ideas",
-      "21371",
-      "aardman",
-      "set-design"
-    ],
-    "sourceLinks": [
-      {
-        "id": "57d38374-c25a-5d38-9a8c-3799f0a053bb",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-wallace-gromit-is-a-close-match-to-the-prop"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm official set number and release details (21371) and verify direct quotes against the original Brick Fanatics article, as the excerpt is cut off mid-quote. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-06T20:17:56Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/bccd3fe6-046b-47f5-ba0a-cf716a0c0a2a.png"
     ]
   }
 ]
