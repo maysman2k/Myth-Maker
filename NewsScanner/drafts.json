@@ -1,5 +1,34 @@
 [
   {
+    "id": "6ec4045a-8dc0-5917-902b-11915224de0b",
+    "title": "LEGO Ideas 21373 Downton Abbey officially revealed",
+    "summary": "LEGO has officially unveiled its next Ideas set, a 4,711-piece recreation of Highclere Castle from Downton Abbey, arriving 1 October with 13 minifigures.",
+    "bodyMarkdown": "## What happened\nLEGO has officially revealed 21373 Downton Abbey, the latest LEGO Ideas set based on a fan submission by Sebastian Veselka. The 4,711-piece model recreates Highclere Castle, the real-life filming location for the TV series and films, complete with a removable top level revealing the dining room, main hall and library upstairs, and the kitchen, servants' hall and Mr Carson's office below.\n\nThe set includes 13 minifigures based on characters from Season 6 of the show, plus a cedar tree and bench for display. It supports 3D digital instructions via the LEGO Builder app.\n\n21373 Downton Abbey is aimed at adult builders (18+) and goes on sale 1 October, priced at £269.99 in the UK (US $349.99 / CAN $489.99).\n\n## Why it matters\nThe LEGO Ideas platform has been a reliable route for niche or unexpected licences to become official sets, following recent hits like The X-Files and the upcoming Wallace & Gromit. A Downton Abbey set is a notable pick for UK fans especially, given the show's British roots and Highclere Castle's real-world fame, and it adds another detailed, display-focused architecture build to the adult LEGO lineup.\n\n## What to watch next\nExpect more detailed piece counts, room-by-room images and reviews to surface as the October 1 release date approaches, along with reaction from LEGO Ideas fans and Downton Abbey enthusiasts.",
+    "category": "New Sets",
+    "tags": [
+      "lego-ideas",
+      "downton-abbey",
+      "highclere-castle",
+      "new-set-reveal",
+      "adult-lego"
+    ],
+    "sourceLinks": [
+      {
+        "id": "3428a3ac-5a6a-5191-a4cf-c9173dfa36fe",
+        "name": "The Brothers Brick",
+        "url": "https://www.brothers-brick.com/2026/09/10/lego-reveals-ideas-set-21373-downton-abbey-news/"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 88,
+    "riskNotes": "Confirm final pricing and piece count against LEGO's official product page closer to release, as third-party reporting could contain minor discrepancies. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-11T04:17:16Z",
+    "suggestedImageURLs": [
+      "https://media-cdn.brothers-brick.com/2026/09/21373_Box1_v29_0pgeK4NJ5Ry3-640x632.png"
+    ]
+  },
+  {
     "id": "8c68739e-f808-5301-909c-0c1b7b19e4f3",
     "title": "LEGO reveals Downton Abbey set — its biggest LEGO Ideas build yet",
     "summary": "LEGO has officially revealed 21373 Downton Abbey, a 4,711-piece LEGO Ideas set based on Highclere Castle, arriving 1 October 2026.",
@@ -1412,35 +1441,6 @@
     "foundAt": "2026-09-06T20:17:56Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/bccd3fe6-046b-47f5-ba0a-cf716a0c0a2a.png"
-    ]
-  },
-  {
-    "id": "024de511-dff1-5544-b9ba-dab5c768da03",
-    "title": "Two fan-built LEGO Lars Homesteads bring Tatooine to life",
-    "summary": "Two builders have created their own takes on Star Wars' iconic Lars Homestead in LEGO form, one with a modern, colourful build style and the other channelling a retro 90s look.",
-    "bodyMarkdown": "## What happened\nThe Brothers Brick has spotlighted two fan-made LEGO MOCs (custom builds) of the Lars Homestead from Tatooine, the desert home of young Luke Skywalker in Star Wars.\n\nBuilder Vance (earthbricks) went for a modern approach, using a round base, layered rockwork and clever SNOT (studs not on top) techniques to move away from the usual grid-based look, while leaning into vivid colours to liven up Tatooine's dusty palette.\n\nEddie (eddo.lego) took the opposite route, building in a retro late-90s LEGO Star Wars style complete with classic yellow minifigures. Details include a cosy Lars kitchen with an old-school chair and a pizza element, plus a T-16 Skyhopper flying overhead for extra atmosphere.\n\nBoth builds are fan creations shared via The Brothers Brick and are not official LEGO Group sets or products.\n\n## Why it matters\nFan reinterpretations like these are a great source of inspiration for anyone into LEGO Star Wars, custom building techniques, or display builds. Seeing two very different styles applied to the same iconic location shows just how flexible brick building can be, whether you prefer sleek modern SNOT work or nostalgic retro vibes.\n\n## What to watch next\nNo instructions or official set tie-ins have been mentioned, so this remains purely a showcase of fan creativity. Worth keeping an eye on these builders' galleries for future Star Wars-themed MOCs.",
-    "category": "Brick Culture",
-    "tags": [
-      "lego-star-wars",
-      "moc",
-      "fan-builds",
-      "tatooine",
-      "custom-building"
-    ],
-    "sourceLinks": [
-      {
-        "id": "1689e6c0-0be0-59c4-ab7f-f3bbe8413357",
-        "name": "The Brothers Brick",
-        "url": "https://www.brothers-brick.com/2026/08/30/two-takes-on-a-cozy-homestead-beneath-the-binary-suns/"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm correct spelling and social handles for both builders (Vance/earthbricks and Eddie/eddo.lego) and verify these are fan MOCs with no official LEGO Group involvement before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-06T20:17:46Z",
-    "suggestedImageURLs": [
-      "https://media-cdn.brothers-brick.com/2026/08/783087568_17941797783325332_5745674079262512329_n-640x800.jpg"
     ]
   }
 ]
