@@ -1,5 +1,34 @@
 [
   {
+    "id": "f3bd8aa2-072c-5c06-b4a6-891028844d39",
+    "title": "LEGO Ideas 21373 Downton Abbey Revealed as Largest-Ever Ideas Set",
+    "summary": "LEGO has confirmed 21373 Downton Abbey, a 4,711-piece recreation of Highclere Castle, as the biggest LEGO Ideas set by piece count yet — and it's got strong UK ties given the Hampshire filming location.",
+    "bodyMarkdown": "## What happened\nThe Brothers Brick has published an early review of LEGO Ideas 21373 Downton Abbey, confirmed by LEGO Group as the largest LEGO Ideas set ever released by piece count, coming in at 4,711 pieces across 35 bags.\n\nThe set is based on a fan submission by Sebastian Veselka (known as BRO3 on LEGO Ideas), and recreates the Crawley family, their servants, and the Downton Abbey estate — filmed on location at the real Highclere Castle in Hampshire, England. LEGO Ideas designers Marina Stampoli (who also designed the previous record-holder, 21356 River Steamboat) and Jordan David Scott led the official build.\n\nAccording to the review, the set includes a small sticker sheet (just 10 stickers) alongside a number of new minifigure prints, striking a balance between printed parts and stickers for a model of this scale.\n\nConfirmed release details: the set launches October 1 for LEGO Insiders, and October 4 for everyone else, priced at £269.99 in the UK (US $349.99 / CAN $489.99).\n\n## Why it matters\nThis is a milestone release for LEGO Ideas fans — the biggest set the theme has ever produced — and it has a genuine UK connection through its Highclere Castle inspiration. For collectors and display builders, it's set to be one of the standout large-scale builds of the year, and the fan-to-product journey (from Ideas submission to full release) is a great example of how community designs make it to shelves.\n\n## What to watch next\nKeep an eye out for the full Brothers Brick review as more details on the minifigure prints, hidden easter eggs on the stickers, and overall building experience are published ahead of the October 1 Insiders launch.",
+    "category": "New Sets",
+    "tags": [
+      "lego-ideas",
+      "downton-abbey",
+      "highclere-castle",
+      "large-sets",
+      "lego-review"
+    ],
+    "sourceLinks": [
+      {
+        "id": "e89ebcd4-9dd0-5c16-ade8-e46e7eeedd87",
+        "name": "The Brothers Brick",
+        "url": "https://www.brothers-brick.com/2026/09/11/lego-ideas-21373-downton-abbey-building-highclere-castle-review/"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 88,
+    "riskNotes": "Confirm final review details and any additional set contents once The Brothers Brick's full review is published, as this excerpt covers only the initial sections of a longer review. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-12T04:16:10Z",
+    "suggestedImageURLs": [
+      "https://media-cdn.brothers-brick.com/2026/09/LEGO-Ideas-1KHXRFGADD6J-TBB-Review-Cover-Photo.jpg"
+    ]
+  },
+  {
     "id": "aa423c07-6c7c-5383-8164-4775249f248e",
     "title": "Fans plan to turn LEGO Downton Abbey into Wayne Manor",
     "summary": "LEGO Ideas set 21373 Downton Abbey has sparked a wave of fan customisation plans to rebuild it as Batman's Wayne Manor, complete with a Batcave.",
@@ -1406,35 +1435,6 @@
     "foundAt": "2026-09-07T21:24:49Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/03bac5bc-7af7-4876-a26c-94219d6fa6d3.webp"
-    ]
-  },
-  {
-    "id": "16dba82e-3ac5-5b5f-ac9b-1a8c35abfa3f",
-    "title": "LEGO Friends' Cosy Autumn Forest Cabin gets its first discount",
-    "summary": "The 2026 LEGO Friends set 42705 Cosy Autumn Forest Cabin has dropped to £79.97 at Amazon UK, its first price cut since launch.",
-    "bodyMarkdown": "## What happened\nLEGO Friends set 42705 Cosy Autumn Forest Cabin (1,229 pieces, RRP £89.99) has seen its first discount since release, now available at Amazon UK for £79.97 — a saving of around £10.\n\nThe set fits the cosy, autumnal aesthetic LEGO Friends has leaned into recently, moving away from the theme's brighter early colour palettes towards a more muted, broadly appealing look.\n\n## Why it matters\nEven modest discounts on brand-new sets are worth flagging for UK LEGO fans, especially with autumn approaching and this build tapping into that seasonal mood. It's also a good example of how LEGO Friends continues to release sets that appeal well beyond its usual audience.\n\n## What to watch next\nAs this is an early discount on a recently released set, bigger reductions may follow later in its retail life. Worth keeping an eye on price trackers if you're not in a rush to buy.",
-    "category": "Deals",
-    "tags": [
-      "lego-friends",
-      "deals",
-      "amazon-uk",
-      "autumn-sets",
-      "cosy-cabin"
-    ],
-    "sourceLinks": [
-      {
-        "id": "9d72659e-e0cf-5caf-b0d6-2c5fb399e5e7",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/first-discount-on-lego-set-everyone-wants-autumn"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Price and discount figures are time-sensitive and may have changed since publication; verify current Amazon UK pricing before republishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-07T12:14:29Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/a6164d9e-bc59-4095-91f1-6d2a8a902848.png"
     ]
   }
 ]
