@@ -1,5 +1,63 @@
 [
   {
+    "id": "0868b0ea-f91f-53b2-8f79-7773bcdde015",
+    "title": "Review: Lumibricks' Manga Shop dazzles with lighting but tests builders' patience",
+    "summary": "Brick Fanatics has reviewed Lumibricks' 1,699-piece Manga Shop, a neon-lit cyberpunk build with an integrated light kit that impresses visually but frustrates during assembly.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics has published a review of Lumibricks' new 17015 Manga Shop, part of the brand's Neoncity Cyber collection alongside the existing Izakaya set. The 16+, 1,699-piece model recreates a Japanese wooden manga bookstore in a fictional cyberpunk district, featuring an integrated neon light kit and removable interior modules.\n\nThe reviewer scored it 6/10 overall, praising the impressive display model, the way the light kit elevates the build, and the removable interior sections. However, the review flagged a frustrating and time-consuming building process, unclear instructions, fiddly and delicate wiring, and poor minifigure design and selection - with minifigures scoring just 3/10. Design fared best at 8/10.\n\n## Why it matters\nLumibricks is a notable player in the compatible brick and light-kit space, and this review gives fans a clear-eyed look at both the strengths and pitfalls of building with integrated lighting - useful for anyone considering a light-kit set for the first time, or comparing third-party builds to official LEGO models.\n\n## What to watch next\nWorth checking whether Lumibricks addresses instruction clarity or wiring durability in future sets, and how the Manga Shop compares to the earlier Izakaya once more reviews emerge.",
+    "category": "Compatible Brick Brands",
+    "tags": [
+      "lumibricks",
+      "light-kit",
+      "cyberpunk-build",
+      "set-review",
+      "display-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "7cd00bd9-67dc-56da-b777-3c0a97c58040",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lumibricks-manga-shop-isnt-one-for-light-novices"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 72,
+    "riskNotes": "Review is a single reviewer's opinion from Brick Fanatics; verify pricing, release date and full spec details (piece count, minifigure count) before publishing, as the excerpt cuts off before these are confirmed. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-14T12:29:42Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/263b4fd9-28f2-467a-b537-d1fea4094d29.jpg"
+    ]
+  },
+  {
+    "id": "d67fa90e-48dc-5ae1-88cd-f810e57430a6",
+    "title": "LEGO Midnight Valley: official instructions reveal the collection's hidden lore",
+    "summary": "The printed instructions for 11383 Mayor Manor confirm that LEGO's new Midnight Valley theme has a backstory after all, hinting at rules the range may follow going forward.",
+    "bodyMarkdown": "## What happened\nEarly reviews suggested the first LEGO Midnight Valley set, 11383 Mayor Manor, had no real backstory. However, the official build instructions tell a different story. According to LEGO's own instructions, Midnight Valley is a town stuck in permanent night after some kind of mysterious event, and its buildings – including the mayor's manor – have gone from smart and orderly to crooked and overgrown as locals adapt to the endless dark.\n\nThis is confirmed by LEGO's official set instructions, giving Midnight Valley a clearer identity than the LEGO Winter Village theme, which has never had a defined central story.\n\n## Why it matters\nFor collectors, this matters because it hints at ground rules the range might stick to as it grows: buildings with a twisted, off-kilter look, and a constant \"always midnight\" setting. That's useful context if you're deciding whether to start collecting the theme, since future sets may lean further into eerie, Halloween-style architecture rather than everyday town builds.\n\n## What to watch next\n**Rumour/speculation:** Brick Fanatics floats the idea that a future Midnight Valley set could eventually explain the mysterious event itself – for example through a lab experiment gone wrong or a ritual-gone-wrong castle build. This is not confirmed by LEGO and is purely fan speculation about where the range could go next. Anyone building a collection around Midnight Valley may want to keep an eye on future set reveals to see if this lore is expanded further.",
+    "category": "New Sets",
+    "tags": [
+      "lego-midnight-valley",
+      "lego-lore",
+      "mayor-manor",
+      "lego-collecting",
+      "seasonal-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "084b8bb4-d6b3-561d-8ebf-01c09e6d9421",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-midnight-valley-lore-revealed-what-might-mean"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm the exact set number/name (11383 Mayor Manor) and that the lore text quoted originates from official LEGO instructions before publishing; clearly separate the confirmed lore from the speculative future-set predictions. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-14T12:29:25Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/d83aeb2c-bdba-4bc1-83d1-987238dfa4b0.jpg"
+    ]
+  },
+  {
     "id": "a1423473-5520-5320-bc13-abd2be6f85d9",
     "title": "LEGO Epona Set to Become the Biggest and Most Detailed LEGO Horse Yet",
     "summary": "The upcoming LEGO The Legend of Zelda: Link & Epona set, confirmed for Spring 2027, features a highly detailed buildable Epona figure that appears to outsize every other LEGO horse released so far.",
@@ -1376,64 +1434,6 @@
     "foundAt": "2026-09-09T11:08:49Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/4b44ac12-6717-479b-8055-9aeda941d4e7.png"
-    ]
-  },
-  {
-    "id": "2fd45c17-0c83-5ff7-ab00-f3b81d2248d7",
-    "title": "Rumour: First LEGO Avengers: Secret Wars 2027 set numbers and prices leak",
-    "summary": "An early, unconfirmed leak points to three LEGO Avengers: Secret Wars sets arriving October 2027, with set numbers and prices reportedly higher than this year's Doomsday wave.",
-    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, Instagram source mtdbricks—described as previously reliable—claims LEGO will release at least three sets tied to Marvel's Avengers: Secret Wars film in October 2027. The alleged set numbers are 67019, 67020 and 67021, priced at $60, $120 and $160 respectively.\n\nThis would mirror the pattern LEGO followed with Infinity War and Endgame, and the one it's currently repeating with this year's Avengers: Doomsday sets, which launch as a three-set wave on 1 October ahead of the film's December cinema release. Notably, the rumoured Secret Wars prices sit higher across the board than the equivalent Doomsday sets (76347 at $59.99, 76348 at $99.99, and 76352 at $109.99).\n\nThe source itself flags the details as 'very likely subject to change'. There's also a wrinkle: set number 67021 had previously been rumoured for a separate Doctor Doom model due in March, so the timeline and numbering don't fully line up yet.\n\n## Why it matters\nIf accurate, this gives collectors and Marvel fans an early heads-up on 2027 line-up scale and pricing, useful for budgeting ahead of release. It also hints LEGO may be pushing Marvel set prices higher than this year's wave, worth watching if you're planning future purchases.\n\n## What to watch next\nThis is very early and unconfirmed rumour territory—LEGO has not commented, and the source themselves warns details could change. Watch for official confirmation or further leaks as Avengers: Doomsday sets actually launch and more concrete Secret Wars details emerge.",
-    "category": "Rumours",
-    "tags": [
-      "lego-marvel",
-      "avengers-secret-wars",
-      "rumour",
-      "2027-sets",
-      "set-leak"
-    ],
-    "sourceLinks": [
-      {
-        "id": "10b87831-f9fb-5ae5-9534-76898cc6c990",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/first-details-lego-avengers-secret-wars-2027-sets"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 72,
-    "riskNotes": "Entirely based on an unverified Instagram leak with no official LEGO confirmation; set numbers, prices and release date could all change, and there's an unresolved conflict with an earlier rumoured use of set number 67021 for a March Doctor Doom set. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-09T11:08:39Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/29a74cd5-d2cb-44e6-8050-d2f264a38901.png"
-    ]
-  },
-  {
-    "id": "418d0118-7c29-5e89-a67b-0da6938246ae",
-    "title": "Retired LEGO Batman Collectible Returns via Insiders Rewards for Batman Day 2026",
-    "summary": "LEGO has brought back the retired 40726 Limited-edition Batman Collectible through the Insiders Rewards Centre to mark Batman Day 2026, available for 3,000 points while stocks last.",
-    "bodyMarkdown": "## What happened\nTo celebrate Batman Day 2026, LEGO has officially reintroduced 40726 Limited-edition Batman Collectible in the Insiders Rewards Centre. The set was originally released briefly at the end of 2024 for Batman's 85th anniversary, and it's now back for the same cost of 3,000 Insiders points.\n\nThe set bundles the retired BrickHeadz 40748 Batman 8 in 1 (325 pieces) with eight mini movie posters and a Batman comic, all in exclusive packaging. It's available at LEGO.com through 31 December 2026, or while stocks last.\n\nAccording to reporting, 3,000 points works out to roughly an £18.75 discount in the UK (or about $23 in the US) compared to buying points-equivalent purchases, and building up that many points would typically require around £375 of LEGO spend in the UK at the standard earn rate. Cheapest resale copies on BrickLink currently start at £26, making the points redemption the cheaper route if you've already got a stash saved up.\n\nOther Batman Day 2026 offers running alongside this include a free Batman polybag with qualifying orders and double Insiders points on selected DC sets.\n\n## Why it matters\nRetired sets rarely reappear through official channels, so this is a notable opportunity for LEGO Batman fans and Insiders members with points to spend. It's also a good moment for collectors weighing up secondary market prices against official routes back into a discontinued release.\n\n## What to watch next\nWatch for stock levels at LEGO.com, as this offer runs only \"while stocks last\" alongside its December 2026 cut-off date. Keep an eye out too for how the 2x points DC promotion might help fans top up towards the 3,000-point threshold before the set disappears again.",
-    "category": "Collectors",
-    "tags": [
-      "lego-batman",
-      "lego-insiders",
-      "batman-day",
-      "retired-sets",
-      "brickheadz"
-    ],
-    "sourceLinks": [
-      {
-        "id": "eb0d9ae1-29f7-5ae3-b534-853147ec1ffb",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/retired-lego-batman-set-returns-for-insiders-only"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Double-check the exact GBP/USD point-value conversions and regional points-earning rates, as these can vary by country and promotion; confirm the December 2026 end date remains accurate at publication. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-09T11:08:29Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2024/09/LEGO-Brickheadz-40726-Limited-Edition-Batman-85th-Anniversary-featured-image.png"
     ]
   }
 ]
