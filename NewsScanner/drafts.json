@@ -1,5 +1,34 @@
 [
   {
+    "id": "c3cfc28a-8a6e-5636-a376-526d9f864193",
+    "title": "11387 Holiday House: what other LEGO Christmas sets could join it?",
+    "summary": "Brick Fanatics has picked out festive sets to pair with the upcoming 11387 Holiday House, the 18th entry in LEGO's Winter Village collection.",
+    "bodyMarkdown": "## What happened\nLEGO Icons set 11387 Holiday House is due to arrive next month, becoming the 18th set in the much-loved LEGO Winter Village collection. Brick Fanatics has put together a list of existing Christmas-themed LEGO sets they reckon would sit nicely alongside it on a seasonal display shelf, aimed at fans building out their festive street scene from scratch or adding to an existing collection.\n\nThe specific sets recommended weren't detailed in the source material we've seen, so we'd suggest checking the original Brick Fanatics piece for their full picks before you start planning your Winter Village layout.\n\n## Why it matters\nThe Winter Village series is one of LEGO's longest-running annual traditions and a firm favourite with AFOLs (adult fans of LEGO) and collectors alike. Each new release, like 11387 Holiday House, gives builders a reason to revisit older sets in the range and think about how their display works as a whole – useful info for anyone planning shelf space, lighting, or a custom base to tie everything together.\n\n## What to watch next\nKeep an eye out for the official reveal details on 11387 Holiday House, including price and exact release date, plus confirmation of which companion sets are being recommended for this year's display.",
+    "category": "Display Builds",
+    "tags": [
+      "lego-winter-village",
+      "holiday-house",
+      "christmas-sets",
+      "lego-icons",
+      "seasonal-display"
+    ],
+    "sourceLinks": [
+      {
+        "id": "8a55674f-83ae-520a-85ad-6ba462a06fa1",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/the-best-lego-christmas-sets-to-go-with-11387-holiday-house"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "The source excerpt does not list the four recommended companion sets or confirm 11387's price/release date; verify these details directly from Brick Fanatics before publishing specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-16T21:10:44Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/public/storage/uploads/61e51fed-3d4b-4e83-9af7-b18c877354fc.jpg"
+    ]
+  },
+  {
     "id": "2df9da48-6995-5c53-b323-b6e9b5f96c30",
     "title": "LEGO Harry Potter Diagon Alley set discounted 44% before retirement",
     "summary": "Amazon UK has cut the price of the LEGO Harry Potter Quality Quidditch Supplies & Ice Cream Parlour set ahead of its planned retirement later this year.",
@@ -1398,35 +1427,6 @@
     "foundAt": "2026-09-11T20:51:14Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/public/storage/uploads/b1ebba31-3fcc-4721-aa0b-574b9799e75d.png"
-    ]
-  },
-  {
-    "id": "a4fb6658-895f-5700-a8e7-82b51e4cdb26",
-    "title": "LEGO Legend of Zelda Link & Epona set: release window and piece count confirmed",
-    "summary": "Nintendo has officially confirmed the LEGO Legend of Zelda Link & Epona set will launch in Spring 2027 with 1,750 pieces, though it's still not listed on LEGO.com and pricing is yet to be revealed.",
-    "bodyMarkdown": "## What happened\nFollowing its reveal in a recent Nintendo Direct, official confirmation has now come via The Legend of Zelda Japan account on X: the LEGO Link & Epona set will launch in **Spring 2027** and contain **1,750 pieces**. That's significantly more than 31166 Beautiful Horse, which has 685 elements but is a smaller, less detailed build.\n\nPricing hasn't been confirmed yet, and the set still hasn't appeared on LEGO.com, so official images and full details are still to come.\n\n**Rumour watch:** Earlier reports back in May suggested a set numbered 77094 might land later in 2026, possibly to coincide with the Ocarina of Time remake launching on 5 November. That connection to 77094 remains unconfirmed. What is official is that the Link & Epona model is now set for Spring 2027, later than some fans expected.\n\n## Why it matters\nThis is one of the more detailed LEGO Legend of Zelda models teased so far, and the confirmed piece count suggests a serious display build for fans of the game and for horse/animal builds generally. UK collectors planning ahead for 2027 releases will want to keep this on their radar, especially with pricing still unknown.\n\n## What to watch next\nWatch for an official LEGO.com listing, full box art, and pricing details. It's also worth confirming whether this set is indeed 77094, as earlier reported, once more official information is released.",
-    "category": "New Sets",
-    "tags": [
-      "lego-zelda",
-      "epona",
-      "nintendo-lego",
-      "release-date",
-      "new-sets"
-    ],
-    "sourceLinks": [
-      {
-        "id": "3e31882b-d277-5dc4-b118-8b252a34ead3",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-legend-of-zelda-epona-pricing-release-confirm"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 68,
-    "riskNotes": "The set number (77094) and its link to the Ocarina of Time remake timing are unconfirmed rumours from earlier reports, not officially verified in this update; pricing is also still unconfirmed and should not be stated as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-11T20:51:02Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/1e8d367a-18b3-4b10-9e36-078a10e67a72.png"
     ]
   }
 ]
