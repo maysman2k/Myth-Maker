@@ -1,5 +1,63 @@
 [
   {
+    "id": "62f128ba-b0ff-563a-8ee9-a796f9435fa0",
+    "title": "LEGO BrickLink Designer Program Series 9: Fisherman's Village creators reveal design changes",
+    "summary": "The fan designers behind 910069 Fisherman's Village have discussed how their original submission evolved before release, ahead of BDP Series 9 pre-orders opening on 9 October.",
+    "bodyMarkdown": "## What happened\nBrick Fanatics reports that the designers behind the upcoming BrickLink Designer Program (BDP) Series 9 set, 910069 Fisherman's Village, have spoken about how the model changed on its way from fan submission to final product. The 4,027-piece set was created by brothers Guillaume and Nicolas Roussel, known in the fan community as rocknbricks31 and GNbrick1331. According to the source, the final version has seen some significant changes compared to what was originally submitted for approval.\n\nFisherman's Village is one of five sets confirmed as part of BDP Series 9, with pre-orders for the full range set to open on 9 October.\n\n## Why it matters\nThe BrickLink Designer Program gives fan-created builds a route to becoming official, licensed sets, so seeing how a design evolves is a rare look behind the curtain for AFOLs and custom builders alike. For collectors, knowing pre-order dates and piece counts ahead of time helps with planning purchases, especially for a large 4,000+ piece display model.\n\n## What to watch next\nKeep an eye out for the full reveal of design details and official pricing for 910069 Fisherman's Village, plus information on the other four sets in BDP Series 9, as the 9 October pre-order date approaches.",
+    "category": "Collectors",
+    "tags": [
+      "bricklink-designer-program",
+      "fishermans-village",
+      "lego-news",
+      "fan-designed-sets",
+      "pre-order"
+    ],
+    "sourceLinks": [
+      {
+        "id": "6b234c56-44bb-54d4-b0dd-5da1a6dae6bd",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/lego-bdp-series-9-fisherman-s-village-redesign-added-a-personal-touch"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm exact piece count, pre-order date, and specific nature of the 'personal touch' design changes directly from source, as the excerpt was partially garbled and didn't detail what changed; verify all five BDP Series 9 sets before publishing full list. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-17T21:13:18Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/storage/uploads/1b62e256-5f53-4eb4-a2ff-309784a0489c.jpg"
+    ]
+  },
+  {
+    "id": "60d45f0e-f88e-53b6-84a2-a3ca86cc0ce8",
+    "title": "Brickset reviews LEGO Star Wars 75457 Executor Super Star Destroyer",
+    "summary": "Brickset has posted its full review of the enormous 75457 Executor Super Star Destroyer, LEGO's much bigger and more screen-accurate follow-up to 2011's 10221 model.",
+    "bodyMarkdown": "## What happened\nBrickset has published its review of 75457 Executor Super Star Destroyer, a 6,130-piece LEGO Star Wars set priced at £649.99 / $799.99 / €749.99. According to the review, the model is substantially larger than the 2011 release 10221 Super Star Destroyer and has proportions that more closely match the ship's on-screen appearance. The reviewer praises the improved accuracy but raises a genuine concern about whether the finished model's sheer size could make it tricky to display at home.\n\n## Why it matters\nUltimate Collector-style Star Wars sets are a big deal for adult fans and collectors, and the Executor-class Star Dreadnought is one of the franchise's most iconic ships. A significantly bigger, more accurate successor to a beloved 2011 set is exactly the kind of news that gets display-build and collector communities talking, especially with practical shelf-space and build-difficulty questions in the mix.\n\n## What to watch next\nKeep an eye on Brickset for further coverage, including build experience details and community reaction on display options for such a large model, plus any wider retailer availability updates.",
+    "category": "Display Builds",
+    "tags": [
+      "lego-star-wars",
+      "executor-super-star-destroyer",
+      "ucs-scale",
+      "brickset-review",
+      "large-builds"
+    ],
+    "sourceLinks": [
+      {
+        "id": "6c737cfc-9585-54d2-a8c4-2eb70977c952",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/134514"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm from Brickset's full review whether 75457 has an official UCS/Icons sub-line designation, and verify current retail availability and exact price consistency across regions before publishing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-17T21:13:02Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/134514?79969"
+    ]
+  },
+  {
     "id": "c57fe849-4659-5e2f-b8db-4b22546a4532",
     "title": "LEGO's October 2026 Releases: What We Know So Far",
     "summary": "Brick Fanatics has rounded up the LEGO sets due to land on shelves in October 2026, including the previously revealed 76348 Epic Battle: Avengers: Doomsday.",
@@ -1375,64 +1433,6 @@
     "foundAt": "2026-09-12T15:25:17Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2025/04/LEGO-40516-Everyone-is-Awesome-featured.jpg"
-    ]
-  },
-  {
-    "id": "ab3df031-f764-5975-991f-633a2f8d365f",
-    "title": "New LEGO Super Mario 2027 set could make a rare minifigure print more affordable",
-    "summary": "A newly revealed 2027 LEGO Super Mario set includes a bare-chest torso print that's normally hard to find and pricey on the secondary market, according to Brick Fanatics.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has covered a wave of LEGO Super Mario sets said to be arriving in early 2027, with eight new minifigure-scale builds highlighted. Among them, 72055 Mario's Beach Adventures stands out for a different reason than its Super Mario Odyssey-style beach theme.\n\nThe set includes a minifigure of Mario in beach attire with a bare chest, using a light nougat torso print. According to the report, this print style is genuinely rare in LEGO history, with only a handful of similar plain bare-chest torsos ever produced - and demand for them among collectors has pushed secondary market prices up, sometimes close to the cost of an entire set.\n\nBecause this new torso design is plain and not obviously tied to Mario, it could be repurposed by builders for all kinds of beach or summer minifigure scenes, not just Nintendo-themed ones.\n\n## Why it matters\nRare minifigure prints, especially skin-tone bare-chest torsos, can be expensive and hard to source second-hand. A new, affordable set introducing a similar print gives customisers, MOC builders and collectors a much cheaper way to get hold of one, which could ease demand (and prices) for older versions on the aftermarket.\n\n## What to watch next\nKeep an eye on official confirmation of pricing, release dates and full set contents for the 2027 LEGO Super Mario range, as details reported so far come from early reveals rather than a confirmed LEGO Group announcement.",
-    "category": "Collectors",
-    "tags": [
-      "lego-super-mario",
-      "minifigure-prints",
-      "2027-sets",
-      "aftermarket-value",
-      "collectors"
-    ],
-    "sourceLinks": [
-      {
-        "id": "c07fa23c-d2ff-5317-b552-83bb314384f0",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-super-mario-2027-great-news-specific-print"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm with LEGO Group or official channels whether the 2027 Super Mario sets and pricing are officially announced, as the source presents them as 'revealed' rather than confirmed; also verify the torso print rarity claims and pricing comparisons before publishing as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-12T15:25:03Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/4635e4f4-1801-496d-9a9e-dab07f499e59.jpg"
-    ]
-  },
-  {
-    "id": "d293ea87-aa12-5f03-b468-bd2529050b61",
-    "title": "LEGO Ideas reveals why Downton Abbey's minifigures can finally sit down",
-    "summary": "LEGO Ideas has explained how it solved the tricky problem of seated skirted minifigures in the upcoming 21373 Downton Abbey set, using a technique first seen in Rivendell.",
-    "bodyMarkdown": "## What happened\nLEGO Ideas has spoken about a neat minifigure design solution used in the upcoming 21373 Downton Abbey set, which is due to arrive early next month according to LEGO Ideas. The set includes 4,711 pieces and 13 minifigures, eight of whom are female characters that can be posed sitting down thanks to 2x2 'bow' elements standing in for their skirts.\n\nAccording to LEGO Ideas Creative Lead Jordan David Scott, speaking to fan media including Brick Fanatics, this approach was first tried on 10316 The Lord of the Rings: Rivendell and has now been reused for Downton Abbey because it works well within current production timelines. The bow pieces are colour-matched and printed to reflect each character's dress.\n\nScott suggested this is a practical short-term solution rather than a permanent design standard, hinting that a more advanced 'foldable hip' style piece could be developed by other teams in future, though nothing concrete has been confirmed.\n\n## Why it matters\nSeated minifigures wearing skirts or dresses have long been a tricky design challenge, often limiting how characters can be displayed. This reusable solution means more detailed period and fantasy sets can offer better posability without needing brand new elements every time, which is good news for anyone building detailed interior displays or dioramas.\n\n## What to watch next\nLEGO Ideas has left the door open for a more advanced seated-skirt solution down the line, but this is not yet confirmed. Fans should watch for whether future sets, especially other character-heavy Ideas builds, reuse the same bow-piece technique or introduce something new.",
-    "category": "New Sets",
-    "tags": [
-      "downton-abbey",
-      "lego-ideas",
-      "minifigure-design",
-      "seated-minifigures",
-      "collecting"
-    ],
-    "sourceLinks": [
-      {
-        "id": "843373d4-518c-5781-9a0c-e46b9fa328ae",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-says-downton-abbey-s-skirts-are-the-solution-for-now"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Confirm the exact release date, final price and piece count for 21373 Downton Abbey before publishing, as the excerpt only says 'early next month' from a September 2026 article. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-12T10:32:33Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/public/storage/uploads/873b476c-66ca-4b62-ac60-8d92c460a345.jpg"
     ]
   }
 ]
