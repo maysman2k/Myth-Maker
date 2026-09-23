@@ -1,5 +1,34 @@
 [
   {
+    "id": "60912070-f958-5a11-a8b1-2147c3edf87d",
+    "title": "LEGO Sagrada Família (21065) gets its first reviews – biggest LEGO set yet, but not flawless",
+    "summary": "Early hands-on reviews of the 12,060-piece LEGO Architecture Sagrada Família are in, praising new parts and sturdy towers but flagging accuracy issues with the Passion façade.",
+    "bodyMarkdown": "## What happened\nEarly reviews of LEGO Architecture set 21065 Sagrada Família have started appearing ahead of its official release, with New Elementary among the first to give it an in-depth look. At 12,060 pieces, it's being described as the largest LEGO set by piece count to date.\n\nThe model, designed by LEGO designer Rok Žgalin Kobe, marks 100 years since the death of architect Antoni Gaudí. Reviewers highlight a good number of new recolours and prints, including tan elements (with a drill-shaped piece used for the towers), Trans-Light Blue 6x8 plates, and printed windows reusing existing Nexo Knights shield pieces.\n\nThe build itself spans 64 bags across six separate modules, mirroring the real cathedral's actual construction sequence. Early impressions note the tower-building sections can feel repetitive, though the finished towers are said to be sturdy and look fantastic. The main criticism raised is around the lower Passion façade, which reviewers describe as quite inaccurate to the real building.\n\n## Why it matters\nAs LEGO Architecture continues pushing into ultra-large, premium territory, 21065 Sagrada Família sets a new benchmark for scale and price expectations. For collectors and display builders, early reviews help gauge whether the investment of time, space and money is worth it before launch.\n\n## What to watch next\nKeep an eye out for the official LEGO reveal, full pricing and release date, plus further reviews that may expand on the Passion façade accuracy concerns.",
+    "category": "New Sets",
+    "tags": [
+      "lego-architecture",
+      "sagrada-familia",
+      "new-set-review",
+      "display-builds",
+      "lego-2026"
+    ],
+    "sourceLinks": [
+      {
+        "id": "94b9a49d-63f1-5885-8d4a-29595e3e1a93",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/first-lego-sagrada-fam-lia-reviews-are-in-but-is-it-a-hit"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 88,
+    "riskNotes": "Set has not yet had an official LEGO Group announcement/price/release date confirmed in this excerpt - verify official reveal details before publishing as confirmed; piece count and 'biggest set ever' claim should be checked against LEGO's own announcement when available. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-23T21:23:59Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/storage/uploads/c17720a6-1283-4715-aedf-a76880a2425b.jpg"
+    ]
+  },
+  {
     "id": "99362a7e-3424-5ef8-aaa6-a07cbabccb36",
     "title": "LEGO Store Battersea opens early for dog owners to mark Wallace & Gromit launch",
     "summary": "LEGO's Battersea Power Station store is opening at 8am on 1 October, ahead of its usual hours, for a dog-friendly event tied to the launch of 21371 Wallace & Gromit. Fans can also meet the set's LEGO Ideas designer at a separate signing event in Bristol.",
@@ -1411,35 +1440,6 @@
     "foundAt": "2026-09-19T15:46:28Z",
     "suggestedImageURLs": [
       "https://media-cdn.brothers-brick.com/2026/09/11387_Box1_v29_feSEVQHyuRUD-640x509.png"
-    ]
-  },
-  {
-    "id": "d4ef22ea-1332-5d97-be99-1e51b81d57a0",
-    "title": "LEGO Batman Day 2026: Free gifts and double VIP points confirmed",
-    "summary": "LEGO is marking Batman Day 2026 on 19 September with a range of offers, including a free gift, double VIP points and limited collectibles, though exact details vary by region.",
-    "bodyMarkdown": "## What happened\nLEGO is joining DC Comics in celebrating Batman Day 2026, which falls on 19 September. To mark the occasion, LEGO is offering fans a selection of incentives, reportedly including a free gift with qualifying purchases, double VIP points, and limited-edition collectibles. Availability and specifics appear to vary depending on your location, so it's worth checking your local LEGO store or the official LEGO website for exact terms in the UK.\n\n## Why it matters\nBatman Day has become a regular fixture for LEGO fans, often bringing exclusive freebies and collectibles tied to the Dark Knight theme. For UK collectors and Batman fans, these promotions can be a good opportunity to pick up something extra when buying LEGO Batman sets, though stock and offer terms typically differ by country and may be limited while supplies last.\n\n## What to watch next\nKeep an eye on official LEGO channels and in-store signage for the precise UK offer details, as the source material didn't specify exact gift items, point multipliers, or which sets qualify. It's also worth checking whether any Batman Day promotions extend to LEGO.com.",
-    "category": "Deals",
-    "tags": [
-      "lego-batman-day",
-      "lego-dc",
-      "lego-vip-points",
-      "lego-free-gift",
-      "lego-collectibles"
-    ],
-    "sourceLinks": [
-      {
-        "id": "cb0d5f2d-0b44-530d-9aa6-40c91f54cfdb",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-batman-day-2026-free-gift-2x-points-and-more"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 72,
-    "riskNotes": "Source text was incomplete/cut off by ad-script content, so exact details of the free gift, qualifying spend, and UK-specific terms need verification before publishing; confirm official LEGO.com listing before stating offer specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-19T10:44:46Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/storage/uploads/5122260a-e4be-4896-a11c-2c2c80b25ee4.jpg"
     ]
   }
 ]
