@@ -1,5 +1,34 @@
 [
   {
+    "id": "4de9465f-3757-5e6b-8378-93e797098c15",
+    "title": "LEGO Ideas Downton Abbey Set Ties In With Highclere Castle's First Literary Festival",
+    "summary": "Highclere Castle, the real-life home behind the LEGO Ideas 21373 Downton Abbey set, is hosting its first ever Literary Festival to coincide with the set's global release, taking place on 3-4 October.",
+    "bodyMarkdown": "## What happened\nAccording to Brickset, the team behind the site has been in touch with Lady Carnarvon and her staff at Highclere Castle while reviewing the new LEGO Ideas 21373 Downton Abbey set. Highclere Castle is the real stately home used as the filming location for Downton Abbey, and the LEGO set recreates several of its details, right down to features like the entrance's black walnut doors and carved wolf-head decorations.\n\nTo mark the global release of the set, Highclere Castle will hold its first ever Literary Festival over the weekend of 3-4 October. Brickset reports that Lady Carnarvon has been photographed with her own copy of the set at the castle entrance, and that she reportedly owns a second Downton Abbey set as well.\n\nFurther specifics about the festival's programme weren't included in the excerpt we've seen, so fans wanting full details should check Brickset's original article or Highclere Castle's own channels closer to the date.\n\n## Why it matters\nThis is a nice example of a LEGO Ideas fan-designed set (originally submitted for the Downton Abbey property) leading to a real-world tie-in event at the location that inspired it. For UK-based fans and collectors, it's a chance to see the connection between the physical set and the real castle up close, and it shows how LEGO Ideas sets can build genuine links with the places and stories they represent.\n\n## What to watch next\nKeep an eye on Brickset and Highclere Castle's own announcements for ticketing details, festival programme, and any LEGO-related activities planned for the weekend.",
+    "category": "Events",
+    "tags": [
+      "lego-ideas",
+      "downton-abbey",
+      "highclere-castle",
+      "events",
+      "21373"
+    ],
+    "sourceLinks": [
+      {
+        "id": "ffdf92df-c111-5cff-b494-9c49900a7579",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/134891"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "Verify festival programme details, ticket information, and confirm whether LEGO Group has any official involvement in the event beyond the set tie-in, as the source excerpt is incomplete on specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-24T04:24:44Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/134891?19475"
+    ]
+  },
+  {
     "id": "60912070-f958-5a11-a8b1-2147c3edf87d",
     "title": "LEGO Sagrada Família (21065) gets its first reviews – biggest LEGO set yet, but not flawless",
     "summary": "Early hands-on reviews of the 12,060-piece LEGO Architecture Sagrada Família are in, praising new parts and sturdy towers but flagging accuracy issues with the Passion façade.",
@@ -1411,35 +1440,6 @@
     "foundAt": "2026-09-19T15:47:22Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/storage/uploads/1ebcdfd4-ec0b-46cf-8ac1-266b86789749.png"
-    ]
-  },
-  {
-    "id": "6194a1ad-d109-5a4f-a27f-61a79c7d7f2c",
-    "title": "LEGO Icons 11387 Holiday House joins the Winter Village Collection",
-    "summary": "LEGO has officially revealed 11387 Holiday House, a new 1,354-piece addition to the Winter Village Collection, arriving 1 October with an RRP of £99.99.",
-    "bodyMarkdown": "## What happened\nLEGO has officially unveiled 11387 Holiday House, the newest set to join the long-running Icons Winter Village Collection. The 1,354-piece build includes a light brick and depicts a snowy holiday home with a wrap-around porch, bay windows, and a festively decorated facade complete with garland, golden bells and holly.\n\nInside, builders get cosy antique-style furnishings such as a fireplace, gramophone, rotary phone and mantel clock, alongside festive touches like candy canes, presents, stockings and a pumpkin pie. A Christmas tree can be placed inside and lit up via the included light brick, glowing through the windows on both floors. The set also comes with a horse-drawn sleigh, a snowman, four minifigures and a horse.\n\n11387 Holiday House goes on general release from 1 October 2026, priced at £99.99 in the UK (US $119.99 / CAN $169.99). It includes 3D digital instructions via the LEGO Builder app, with a Build Together feature for collaborative building.\n\n## Why it matters\nThe Winter Village Collection is a firm favourite among AFOLs and seasonal display builders, and each new entry adds fresh display and lighting options for festive layouts. For UK collectors and Bricks in a Bag customers building winter scenes, this set offers another compatible-friendly centrepiece to expand village displays ahead of Christmas.\n\n## What to watch next\nKeep an eye out for early reviews and piece-count breakdowns once the set releases on 1 October, plus any retailer promotions in the run-up to the festive season.",
-    "category": "New Sets",
-    "tags": [
-      "lego-icons",
-      "winter-village",
-      "holiday-house",
-      "new-sets",
-      "christmas-lego"
-    ],
-    "sourceLinks": [
-      {
-        "id": "8ebcffba-551f-5bc1-bfc4-e5029d1b4d0e",
-        "name": "The Brothers Brick",
-        "url": "https://www.brothers-brick.com/2026/09/15/lego-expands-winter-village-collection-with-11387-holiday-house-news/"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "Confirm final UK pricing and release date closer to launch, as regional pricing/availability can shift before general release. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-19T15:46:28Z",
-    "suggestedImageURLs": [
-      "https://media-cdn.brothers-brick.com/2026/09/11387_Box1_v29_feSEVQHyuRUD-640x509.png"
     ]
   }
 ]
