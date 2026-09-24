@@ -1,5 +1,34 @@
 [
   {
+    "id": "dacdb57e-578f-52e8-b450-39047a487b9f",
+    "title": "Five must-have LEGO Batman minifigures from 2026 so far",
+    "summary": "Brick Fanatics has rounded up five standout exclusive Batman minifigures from LEGO DC sets released in 2026 to mark the Caped Crusader's 85th anniversary. Here's what we know about the first two on the list.",
+    "bodyMarkdown": "## What happened\nLEGO has leaned heavily into Batman's 85th anniversary throughout 2026, with a wave of new sets, books and a video game tie-in bringing some genuinely unique minifigure variants along for the ride. Brick Fanatics has picked out five exclusive Batman minifigures worth chasing down, two of which we have full details on.\n\nFirst up is the Golden Batman from **76330 Batman Logo** (£69.99 / $79.99 / €79.99, 678 pieces, released 1 March 2026). Alongside a standard Batman figure, this set includes an exclusive gold-coloured Batman minifigure with 20th anniversary logo back printing, a matching gold coin, and a code to unlock the character in LEGO Batman: Legacy of the Dark Knight.\n\nReleased the same day is **76333 Batman & Robin Batmobile** (£24.99 / $29.99 / €29.99, 272 pieces), which features the first-ever LEGO minifigure based on George Clooney's Batman from the 1997 film. It comes with printed torso, legs and feet, plus detailed cowl printing.\n\nThe remaining three minifigures on the list weren't fully detailed in the source material we've seen, so we'll update this piece once further specifics are confirmed.\n\n## Why it matters\nExclusive minifigure variants are a big draw for collectors, and Batman's anniversary year has clearly been designed to reward fans who pick up multiple sets. Knowing which figures are tied to which sets — and their retail prices — helps buyers decide where to spend before older sets potentially retire.\n\n## What to watch next\nKeep an eye on Brick Fanatics' full list for the other three exclusive Batman minifigures, and watch for stock levels on 76330 and 76333 as anniversary sets tend to sell through as they approach retirement.",
+    "category": "Collectors",
+    "tags": [
+      "lego-batman",
+      "minifigures",
+      "collectors",
+      "dc-sets",
+      "2026-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "d9031740-9e2f-5483-b855-792ff32dc3cf",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/five-exclusive-lego-batman-minifigures-to-buy-in-2026"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 66,
+    "riskNotes": "Source excerpt only fully details 2 of the 5 minifigures mentioned in the headline; the remaining three, plus full retail pricing and any retirement dates, should be verified against the complete Brick Fanatics article before publishing further specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-24T16:58:53Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/storage/uploads/c37d80bb-b55e-4a05-ba5d-094713f23779.jpg"
+    ]
+  },
+  {
     "id": "b0239cfc-394c-5f7e-be30-a7e409b04b25",
     "title": "LEGO Star Wars Sandcrawler drops to its lowest price yet",
     "summary": "The 2026 Offworld Sandcrawler and Mudhorn set has hit £140 at Amazon UK, £40 off its RRP and the best price seen since launch.",
@@ -1411,35 +1440,6 @@
     "foundAt": "2026-09-19T20:27:19Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/wp-content/uploads/2026/02/LEGO-Star-Wars-75447-The-Razor-Crest-featured-image.jpg"
-    ]
-  },
-  {
-    "id": "b3fa87a0-da69-5f32-9acd-8b04d4d85955",
-    "title": "LEGO Batman minifigure prices have soared, new list reveals",
-    "summary": "Brick Fanatics has updated its ranking of the priciest LEGO Batman minifigures, with some now fetching over £250 on the resale market — a big jump from its 2020 findings.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has published an updated list of the ten most expensive LEGO Batman minifigures ever released, based on average BrickLink sale prices over the past six months. It follows an earlier list from six years ago that covered just five figures, and the site says the secondary market has changed significantly since then. Notably, one very recently released minifigure ranks near the top of the list, though the article excerpt doesn't specify exact figures or names for all ten entries.\n\n## Why it matters\nMinifigure values are a big part of the appeal for collectors, and Batman-themed figures have long been sought after due to their tie-ins with popular sets and exclusives. A shifting price landscape is useful for anyone buying, selling, or building a collection, and shows how quickly certain figures can become valuable even shortly after release.\n\n## What to watch next\nIt's worth checking the full Brick Fanatics article for the complete top ten and pricing details, as this excerpt doesn't confirm exact names, values, or rankings beyond the general trend.",
-    "category": "Collectors",
-    "tags": [
-      "lego-batman",
-      "minifigures",
-      "bricklink",
-      "collecting",
-      "resale-value"
-    ],
-    "sourceLinks": [
-      {
-        "id": "d2b0782f-7cc8-5125-a0c3-40c0612db17d",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/10-most-expensive-lego-batman-minifigures-ever"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 78,
-    "riskNotes": "The source excerpt is incomplete and doesn't list the actual ten minifigures or their prices — verify full details from the original article before publishing specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-19T20:27:11Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/storage/uploads/91d883d3-a150-4dfd-980f-1a7086f48a39.png"
     ]
   }
 ]
