@@ -1,5 +1,63 @@
 [
   {
+    "id": "8512d8bd-2dc9-5a44-a1b4-0eb55c67e59d",
+    "title": "LEGO's PlayStation collection keeps growing: a full guide so far",
+    "summary": "From Spider-Man minifigures to Horizon's Tallneck and Gran Turismo cars, LEGO's PlayStation-themed sets have expanded fast — and a new console-inspired set with an Astro Bot build is on the way.",
+    "bodyMarkdown": "## What happened\nLEGO's ongoing partnership with PlayStation has quietly grown into a proper mini-collection of sets and minifigures spanning several major game franchises. According to Brick Fanatics, the range has nearly doubled since March 2026.\n\nHighlights so far include:\n\n- **Marvel's Spider-Man** – Two convention-exclusive minifigures (now pricey on the aftermarket), plus references in wider Spider-Man sets like 76342 Spider-Man vs. Mysterio: The Daily Bugle.\n- **Horizon** – Kicked off with 76989 Horizon Forbidden West: Tallneck, followed by 77037 Aloy & Varl vs. Shell-Walker & Sawtooth, which ties into the Horizon Adventures video game and is due to retire later this year.\n- **Gran Turismo** – Four LEGO Speed Champions sets have featured bespoke car designs made for the game, including 77253 Bugatti Vision Gran Turismo, which is still available.\n\nLooking ahead, LEGO is set to release 72306 PlayStation, a build based on the original console, alongside a PlayStation-themed gift-with-purchase featuring an Astro Bot build. Both add fresh franchises to the LEGO PlayStation lineup.\n\n## Why it matters\nFor collectors, this shows the LEGO-PlayStation tie-up isn't a one-off — it's becoming a proper collectible strand across Speed Champions, Marvel, and original PlayStation IP. If you're chasing the convention-exclusive Spider-Man minifigures or want to grab 77253 before it's gone, now's a good time to check availability.\n\n## What to watch next\nKeep an eye out for the official release of 72306 PlayStation and its Astro Bot gift-with-purchase, plus whether LEGO expands further into other PlayStation franchises down the line.",
+    "category": "New Sets",
+    "tags": [
+      "lego-playstation",
+      "astro-bot",
+      "horizon-lego",
+      "gran-turismo-lego",
+      "spider-man-lego"
+    ],
+    "sourceLinks": [
+      {
+        "id": "56d0de31-a7e4-59f5-b1b0-41f9c94cb100",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/every-lego-playstation-set-spider-man-to-astro-bot"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 72,
+    "riskNotes": "Confirm exact release date and official LEGO Group confirmation for 72306 PlayStation and the Astro Bot gift-with-purchase, as the source describes it as 'scheduled' rather than confirmed with a firm date. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-25T21:25:55Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/storage/uploads/4fcaf814-b30f-4da0-888f-9609296872af.png"
+    ]
+  },
+  {
+    "id": "3cb30244-d537-5c32-b04c-ca95a16e2570",
+    "title": "LEGO reveals 40899 Astro Bot as PlayStation gift-with-purchase set",
+    "summary": "LEGO has unveiled 40899 Astro Bot, a 276-piece companion set to the new 72306 PlayStation console model, launching as a gift-with-purchase from 1 October.",
+    "bodyMarkdown": "## What happened\nLEGO has revealed 40899 Astro Bot, a small model of Sony's platforming mascot, timed to launch alongside the new 72306 PlayStation set. The set contains 276 pieces and is confirmed to be a gift-with-purchase (GWP), becoming available from 1 October.\n\n**Rumour:** It's said online that the set will be given away free with qualifying purchases over $150, though LEGO has not officially confirmed the spend threshold or full terms yet.\n\n## Why it matters\nCrossover sets like this tend to generate a lot of buzz among both LEGO collectors and gaming fans, and GWP models often become sought-after extras once stock runs out. If you're planning to pick up 72306 PlayStation, it's worth keeping an eye on the exact GWP conditions so you don't miss out.\n\n## What to watch next\nWe're waiting on official confirmation of the purchase threshold, regional availability, and whether Astro Bot will appear in other LEGO promotions down the line. We'll update as soon as more details are confirmed.",
+    "category": "New Sets",
+    "tags": [
+      "lego-playstation",
+      "astro-bot",
+      "gift-with-purchase",
+      "new-sets",
+      "lego-icons"
+    ],
+    "sourceLinks": [
+      {
+        "id": "de9dc3e3-9b3f-54f8-965e-ece717e628d3",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/134914"
+      }
+    ],
+    "isRumour": true,
+    "relevanceScore": 72,
+    "riskNotes": "The $150 purchase threshold for the GWP is explicitly described as a rumour in the source and should be verified before publishing as fact; confirm regional availability and exact release terms once LEGO issues official details. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-25T21:25:36Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/134914?80726"
+    ]
+  },
+  {
     "id": "fbf0da3d-5743-59ed-bf83-1ab07c3fe3fa",
     "title": "Rumour: 2027 LEGO Minifigures series dates could shift earlier",
     "summary": "An unconfirmed Instagram tip suggests LEGO's second and third Minifigures series for 2027 may land in April and August rather than the usual May and September slots.",
@@ -1383,63 +1441,6 @@
     "foundAt": "2026-09-21T04:35:29Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/134815?20118"
-    ]
-  },
-  {
-    "id": "dda9aca6-72d8-5ce6-8d40-36a31ffcab4f",
-    "title": "BrickLink Designer Program Series 9: Castle factions confirmed for Sleepy Dragon Inn",
-    "summary": "The only Castle-themed set in Series 9, the 3,121-piece Sleepy Dragon Inn, has had its faction line-up confirmed - including one you might easily have missed.",
-    "bodyMarkdown": "## What happened\nLEGO's BrickLink Designer Program Series 9 includes just one Castle model this time round: 910070 Sleepy Dragon Inn. It's a hefty 3,121-piece build featuring nine minifigures, with parts pulled from both recent Castle sets and other LEGO themes.\n\nAccording to Brick Fanatics, the various Castle factions represented among those minifigures have now been confirmed - including one faction that's easy to overlook among the crowd.\n\nThe original source doesn't spell out every faction by name in the text we have, so we're not able to list them individually here without risking inaccuracy - worth checking the original Brick Fanatics piece for the full breakdown before sharing further.\n\n## Why it matters\nCastle fans have had a fairly quiet run in the BrickLink Designer Program, so a single, densely-packed set like this becomes a big deal for anyone building a themed display or collecting faction-specific minifigures. Nine minifigures in one model also makes it a tempting pick-up for customisers and army-builders alike.\n\n## What to watch next\nKeep an eye out for official BrickLink Designer Program voting and release details for Series 9, plus any further breakdowns of exactly which Castle factions appear in the Sleepy Dragon Inn line-up.",
-    "category": "Rumours",
-    "tags": [
-      "bricklink-designer-program",
-      "lego-castle",
-      "sleepy-dragon-inn",
-      "minifigures",
-      "series-9"
-    ],
-    "sourceLinks": [
-      {
-        "id": "baacad0b-35b5-5932-8068-4269b89eb86f",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/every-lego-castle-faction-in-bricklink-series-9-s-inn"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 76,
-    "riskNotes": "Source excerpt is incomplete/garbled and does not explicitly list the Castle factions referenced in the headline; verify full faction details and confirm official status (BrickLink Designer Program sets are typically fan-voted, not standard official releases) before publishing further specifics. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-20T20:40:15Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/storage/uploads/f4a79416-1eb5-48b3-b0ea-703acc0d5c15.png"
-    ]
-  },
-  {
-    "id": "e733f107-d52a-5cd1-99f5-3ed19fc7006e",
-    "title": "LEGO Modular Buildings: which sets are retiring, and when?",
-    "summary": "Several LEGO Modular Buildings look set to leave shelves later in 2026, with fewer retirements expected in 2027 - but exact set-by-set dates aren't fully confirmed yet.",
-    "bodyMarkdown": "## What happened\nBrick Fanatics has flagged that a number of sets in the long-running LEGO Modular Buildings collection are approaching retirement, with 2026 shaping up to be the busiest year for exits. According to the report, the back end of 2026 could get pricey for collectors trying to complete the range before sets disappear, while 2027 is expected to be a quieter year for Modular retirements by comparison.\n\nThe source doesn't lay out a full set-by-set retirement schedule in the available text, so if you're chasing a specific building, it's worth keeping an eye on Brick Fanatics' dedicated retiring sets tracker for updates as dates firm up.\n\n## Why it matters\nThe Modular Buildings series is one of the most collected LEGO themes around, prized for its display value, architectural detail and street-scene compatibility. Knowing when a set is retiring helps collectors and display builders decide whether to buy now, hunt clearance stock, or wait for the next wave of the range.\n\n## What to watch next\nKeep an eye on official LEGO retirement confirmations and Brick Fanatics' tracker for exact dates on individual Modular Buildings sets, especially as we move deeper into late 2026.",
-    "category": "Retiring Soon",
-    "tags": [
-      "lego-modular-buildings",
-      "retiring-sets",
-      "collectors",
-      "display-builds"
-    ],
-    "sourceLinks": [
-      {
-        "id": "ce362945-94d2-57ef-93dc-c4160f37838c",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/when-are-the-many-lego-modular-buildings-retiring"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 82,
-    "riskNotes": "Source excerpt is largely navigation/ad script text and doesn't list specific set numbers or exact retirement dates - editor should pull the full Brick Fanatics article or retiring-sets tracker to confirm which Modular Buildings sets and dates are actually named before publishing further detail. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-20T20:40:03Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/wp-content/uploads/2023/11/LEGO-Icons-10326-natural-history-museum-designer-video-full-set-featured.jpg"
     ]
   }
 ]
