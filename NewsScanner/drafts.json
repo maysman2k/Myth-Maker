@@ -1,5 +1,34 @@
 [
   {
+    "id": "9f07bc1f-a018-587d-bd78-0906e1128e79",
+    "title": "LEGO Police Heist Train drops to £103.99 on Amazon UK",
+    "summary": "The unique 60508 Police Heist Train has been slashed by 42% on Amazon UK, bringing it down from £179.99 to £103.99 with an extra checkout discount.",
+    "bodyMarkdown": "## What happened\nAmazon UK has cut the price of LEGO's 60508 Police Heist Train from £179.99 down to £103.99, with a further discount applied automatically at checkout. That works out at roughly 42% off the set's usual RRP.\n\nThe set includes 1,313 pieces, a three-wagon train, a full loop of track, electronic elements, a car, a helicopter, a level crossing, and six minifigures — some of which are exclusive to this set. It's designed for play as much as display, letting you recreate a mid-air heist or a prisoner breakout scene.\n\nLEGO trains rarely see discounts this deep, so this is a notable price drop for anyone who's been eyeing the set since its release.\n\n## Why it matters\nTrains are a popular but often pricey corner of LEGO collecting, and exclusive minifigures like the ones in this set tend to become harder to find once a set retires. A 42% discount makes this a much easier set to justify, whether you're after the play features, the unique figures, or just want a standout train for your collection.\n\n## What to watch next\nCheck the price and stock at the time you look, as Amazon deals like this can change quickly or sell out. It's also worth noting this deal is specific to Amazon UK and current at the time of the original report.",
+    "category": "Deals",
+    "tags": [
+      "lego-trains",
+      "police-heist-train",
+      "amazon-deals",
+      "lego-discount",
+      "minifigures"
+    ],
+    "sourceLinks": [
+      {
+        "id": "d7b6e141-871e-56f3-9f16-f493129fce93",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/unique-lego-heist-train-available-42-off-right-now"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 78,
+    "riskNotes": "Confirm the discount is still live and check exact checkout price, as Amazon deals and extra checkout discounts can change or expire quickly; also verify set number 60508 and piece count against LEGO's official listing. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-26T16:14:45Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/02/lego-city-60508-police-train-heist-review-featured-52.jpg"
+    ]
+  },
+  {
     "id": "448d53e1-3144-5fd1-99b5-677bf3d19b0a",
     "title": "LEGO Star Wars Magazine Issue 141 Includes Free Death Trooper Minifigure",
     "summary": "The latest LEGO Star Wars magazine, out now in the UK, comes with a free Death Trooper minifigure with blaster rifle, plus a preview of a 332nd Clone Trooper gift in the next issue.",
@@ -1418,29 +1447,6 @@
     "foundAt": "2026-09-21T12:35:52Z",
     "suggestedImageURLs": [
       "https://www.brickfanatics.com/storage/uploads/6230b76f-e4c6-4558-8ff2-24e4d15ceff5.png"
-    ]
-  },
-  {
-    "id": "3c3cbd75-93c8-5a93-baf0-36e05d34e8d0",
-    "title": "Free Scary Haunted Tree GWP now live at LEGO.com",
-    "summary": "The seasonal 40900 Scary Haunted Tree has officially launched as a gift-with-purchase on LEGO.com, alongside a separate paper bag freebie for select themes.",
-    "bodyMarkdown": "## What happened\nLEGO.com is now officially offering set 40900 Scary Haunted Tree as a gift with purchase (GWP). It's free when you spend over £90 / $100 / €100 on the site.\n\nSeparately, there's another freebie on offer: paper bag 30732 Alex's Campfire Conflict, which is included free when you spend over £35 / $40 / €40 on Minecraft, NINJAGO, Marvel or City sets.\n\nBoth promotions are live now, so if you're already planning a LEGO.com order, it's worth checking your basket total against these thresholds before you check out.\n\n## Why it matters\nGWPs are a great way to pad out a themed display or seasonal collection without extra spend, especially for anyone building a spooky or Halloween-style layout. It's also handy timing for shoppers picking up any currently retiring sets, as one buyer's basket may already clear the threshold.\n\n## What to watch next\nGWP stock and spending thresholds can change quickly or run out, so if either freebie appeals, don't leave your order too long. Keep an eye on LEGO.com for updates on how long these offers will last.",
-    "category": "Brick Culture",
-    "tags": [],
-    "sourceLinks": [
-      {
-        "id": "2050de06-2f27-57c8-b887-9691c5672136",
-        "name": "Brickset",
-        "url": "https://brickset.com/article/134820"
-      }
-    ],
-    "isRumour": false,
-    "relevanceScore": 62,
-    "riskNotes": "Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-21T12:35:36Z",
-    "suggestedImageURLs": [
-      "https://brickset.com/utils/ogimage/set/40900-1"
     ]
   }
 ]
