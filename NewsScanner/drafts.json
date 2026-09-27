@@ -1,5 +1,34 @@
 [
   {
+    "id": "2116dce3-9bd9-5d0d-873c-7930aa0c6711",
+    "title": "Brickset's most-viewed sets this week: Burj Khalifa dominates",
+    "summary": "Brickset's weekly page-view chart shows 21008 Burj Khalifa streets ahead of the pack, with retired classics like the Black Knight's Castle and Lion Knights' Castle also climbing.",
+    "bodyMarkdown": "## What happened\nBrickset has published its regular \"What's hot this week\" chart, ranking sets by how many times their detail pages were viewed on the site. Topping the list by a huge margin is 21008 Burj Khalifa, racking up over 12,000 views - more than five times the next entry. Other notable risers include the classic 6086 Black Knight's Castle and 10305 Lion Knights' Castle, both jumping significantly up the chart, alongside newer entries like the 40900 Scary Haunted Tree and the 60510 LEGO City Advent Calendar 2026. The 75192 Millennium Falcon dropped a few places compared to last week. Overall, Brickset logged 1,751,395 set page views this week, up 47,033 on the previous week.\n\nBrickset itself notes the surge in Burj Khalifa views is unusual, with speculation online (including Reddit chatter) as a possible cause - though Brickset hasn't confirmed an exact reason.\n\n## Why it matters\nThese charts are a handy pulse-check for what's capturing collector and builder attention right now, whether that's due to nostalgia, new releases, or online buzz. For UK fans, it's a good pointer towards which older Castle and Icons sets might be worth watching on the secondary market, and which new releases (like the 2026 Advent Calendar) are generating early interest.\n\n## What to watch next\nIt's worth keeping an eye on whether the Burj Khalifa's view spike is tied to a specific announcement, restock, or online discussion thread, and whether it translates into any pricing movement for this retired Icons set.",
+    "category": "Collectors",
+    "tags": [
+      "brickset",
+      "burj-khalifa",
+      "most-viewed-sets",
+      "icons",
+      "castle-sets"
+    ],
+    "sourceLinks": [
+      {
+        "id": "8425ec95-e674-5e30-ab10-83fbffed4c3a",
+        "name": "Brickset",
+        "url": "https://brickset.com/article/134950"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 62,
+    "riskNotes": "The cause of the Burj Khalifa view spike is unconfirmed speculation (mentioned in reader comments referencing Reddit) - do not state a definitive reason without verification. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-27T05:01:04Z",
+    "suggestedImageURLs": [
+      "https://brickset.com/utils/ogimage/article/134950?21654"
+    ]
+  },
+  {
     "id": "279d1b37-a85c-5950-ad5a-605ff3751558",
     "title": "LEGO Ideas Scuba Shop hits 10,000 votes in third 2026 review",
     "summary": "A fan-designed underwater scuba shop has become the 20th project to qualify for LEGO Ideas' third 2026 review round, though it's still far from becoming an official set.",
@@ -1418,35 +1447,6 @@
     "foundAt": "2026-09-21T21:54:22Z",
     "suggestedImageURLs": [
       "https://brickset.com/utils/ogimage/article/134830?82451"
-    ]
-  },
-  {
-    "id": "34ce3194-0972-5a35-ad76-a851046b5b9b",
-    "title": "LEGO Icons 11394 French Bulldog Puppy rumoured for 2027",
-    "summary": "A LEGO rumour suggests the Golden Retriever Puppy could get a French Bulldog follow-up in early 2027 – but fewer pieces for the same price has some fans raising an eyebrow.",
-    "bodyMarkdown": "## What happened\nAccording to an unofficial rumour, LEGO Icons could be adding a new buildable puppy to its lineup in 2027. Instagram account itavix_bricks, described as a generally reliable source for LEGO leaks, claims set 11394 French Bulldog Puppy will launch on 1 January 2027.\n\nThe rumoured set is said to include 1,417 pieces and carry a US price of $139.99 – exactly matching the price of the current LEGO Icons 11384 Golden Retriever Puppy. However, the French Bulldog is reportedly around 700 pieces lighter than its predecessor, despite sharing the same price tag.\n\nNone of this has been confirmed by LEGO, so treat these details as rumour only for now.\n\n## Why it matters\nThe Golden Retriever Puppy has been a hit with builders who enjoy animal-themed display models, so a follow-up breed would likely appeal to the same collector crowd. But if the piece count really has dropped by roughly a third while the price stays flat, that's a noticeable shift in value that fans and reviewers will want to scrutinise closely.\n\n## What to watch next\nKeep an eye out for official LEGO announcements or further leaks confirming the set number, piece count, and pricing before treating this as certain. As with all early-stage rumours, details could change or be dropped entirely before any official reveal.",
-    "category": "Rumours",
-    "tags": [
-      "lego-icons",
-      "french-bulldog-puppy",
-      "2027-sets",
-      "lego-rumour",
-      "golden-retriever-puppy"
-    ],
-    "sourceLinks": [
-      {
-        "id": "a87dded7-5d1c-5425-bd60-a94f033e0d20",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/lego-11394-french-bulldog-puppy-rumoured-for-2027"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 78,
-    "riskNotes": "Entirely based on an unverified Instagram leak (itavix_bricks); set number, piece count, price and release date are all unconfirmed by LEGO and should be checked against official sources before publishing as fact. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-21T12:36:23Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/storage/uploads/fb01fa91-d63a-41e6-a679-676c847c7693.jpg"
     ]
   }
 ]
