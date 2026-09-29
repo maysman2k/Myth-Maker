@@ -1,5 +1,28 @@
 [
   {
+    "id": "3e330497-8bec-55bd-afdf-db16988e44e2",
+    "title": "LEGO Formula 1 Helmet collection discounted at Amazon UK",
+    "summary": "All five LEGO Editions F1 Helmet sets are currently reduced at Amazon UK, with savings of up to 28% on these display-and-minifigure builds.",
+    "bodyMarkdown": "## What happened\nAmazon UK is currently running discounts across the full lineup of LEGO Editions Formula 1 Helmet sets. Each set normally retails at £79.99, but reported prices include:\n\n- **43014 Scuderia Ferrari HP Charles Leclerc Helmet** – down to £56.99 (28% off), includes an exclusive Leclerc minifigure\n- **43022 Scuderia Ferrari HP Lewis Hamilton Helmet** – down to £63.95 (20% off), includes a Hamilton minifigure with a new hair sculpt\n- **43017 McLaren Mastercard F1 Team Oscar Piastri Helmet** – £10 off, with a casual-outfit driver minifigure\n- **43023 McLaren Mastercard F1 Team Lando Norris Helmet** – £5 off, one of the better discounts seen on this set so far\n- **Ayrton Senna Helmet** – also listed with 20% off\n\nEach helmet set pairs a large display-style model with an exclusive minifigure of the driver.\n\n## Why it matters\nWith five LEGO F1 helmets now available and each normally priced at £79.99, completing the collection can be costly. This Amazon UK sale makes it cheaper to pick up the full set, or just grab a single helmet for its exclusive minifigure, without waiting for a bigger seasonal discount.\n\n## What to watch next\nRetail prices and stock can change quickly during sales, so it's worth double-checking current pricing on Amazon UK before buying, especially as discounts on newer helmets like Piastri's have been rare until now.",
+    "category": "Brick Culture",
+    "tags": [],
+    "sourceLinks": [
+      {
+        "id": "71bb4a4a-08fe-537c-ba81-288379e69172",
+        "name": "Brick Fanatics",
+        "url": "https://www.brickfanatics.com/every-lego-formula-1-helmet-sale-at-amazon-uk-now"
+      }
+    ],
+    "isRumour": false,
+    "relevanceScore": 68,
+    "riskNotes": "Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
+    "status": "needs_review",
+    "foundAt": "2026-09-29T05:26:47Z",
+    "suggestedImageURLs": [
+      "https://www.brickfanatics.com/wp-content/uploads/2026/03/lego-43014-leclerc-helmet-lifestyle-featured.png"
+    ]
+  },
+  {
     "id": "d8a9518e-84d7-512e-bba3-603e648c6042",
     "title": "LEGO Star Wars 40897 Darth Vader's Lightsaber GWP reviewed",
     "summary": "Brick Fanatics has reviewed the free Darth Vader's Lightsaber set, given away with purchases of the £649.99 Executor Super Star Destroyer. Here's what's inside the 174-piece promotional model.",
@@ -1417,35 +1440,6 @@
     "foundAt": "2026-09-23T11:19:03Z",
     "suggestedImageURLs": [
       "https://media-cdn.brothers-brick.com/2026/09/814908137_18341611090251106_554824456081257942_n.webp"
-    ]
-  },
-  {
-    "id": "846094b4-3e86-5781-af70-c8c26221a5f0",
-    "title": "First Look Leaks at Final LEGO BrickLink Designer Program Series 10 Sets",
-    "summary": "Instagram account Stud City has shared what appear to be the final designs for the five BrickLink Designer Program Series 10 sets, with one Castle build reportedly gaining an extra faction.",
-    "bodyMarkdown": "## What happened\nAccording to Brick Fanatics, Instagram page Stud City has posted a first look at what are said to be the finished designs for the upcoming BrickLink Designer Program Series 10 lineup. The five sets reportedly include two modular buildings, a city accessory, a further Castle-themed model, and a western-style train station.\n\nThe most notable change flagged is to one of the Castle sets, which is said to now feature five different LEGO Castle factions, up from four in its earlier fan proposal stage.\n\n**This is unofficial at this stage.** LEGO Group and BrickLink haven't confirmed these designs themselves — the information comes from a third-party Instagram account sharing what it says are final builds, as reported by Brick Fanatics.\n\n## Why it matters\nThe BrickLink Designer Program lets fan-submitted builds get turned into real sets, so any changes between proposal and final production version are always of interest to AFOLs tracking the process. A Castle set gaining an extra faction would be a nice bonus for collectors and custom builders wanting more variety of minifigures and themed parts to mix into their own creations.\n\n## What to watch next\nKeep an eye out for an official announcement or reveal from LEGO or BrickLink confirming these designs, pricing, and release timing before treating any details as certain.",
-    "category": "Rumours",
-    "tags": [
-      "lego-bricklink",
-      "designer-program",
-      "castle-theme",
-      "leak",
-      "fan-designs"
-    ],
-    "sourceLinks": [
-      {
-        "id": "6461b6e0-2bff-5b44-b3d8-0514f51267df",
-        "name": "Brick Fanatics",
-        "url": "https://www.brickfanatics.com/first-look-final-lego-bricklink-series-10-designs"
-      }
-    ],
-    "isRumour": true,
-    "relevanceScore": 82,
-    "riskNotes": "Details originate from a third-party Instagram account (Stud City) as reported by Brick Fanatics, not an official LEGO or BrickLink statement — verify set names, piece counts and the faction-count claim before treating as confirmed. Suggested images were scraped from the source page - licence unknown; check rights before publishing with an image (spec 10.8).",
-    "status": "needs_review",
-    "foundAt": "2026-09-22T21:10:16Z",
-    "suggestedImageURLs": [
-      "https://www.brickfanatics.com/storage/uploads/e42a8808-4372-4b76-8800-bd6dbfcb656a.png"
     ]
   }
 ]
